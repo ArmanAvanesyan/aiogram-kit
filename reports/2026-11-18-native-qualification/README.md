@@ -134,6 +134,10 @@ The additional Sentinel attempts are retained too:
   (0.107285 versus 0.025560 CPU seconds for 200,000 calls); it is not an
   end-to-end gate result.
 
+Patch/traceback files containing significant context whitespace are retained as
+lossless `.gz` archives; `archived-context.json` records original and archive
+checksums. Benchmark JSON and qualification verdicts remain unchanged.
+
 Every follow-up follows an actual candidate source change. Earlier failed
 attempts are not silently retried until a winner appears. Cmds' CPU result
 includes its bounded native snapshot-hash cache; it is an implementation

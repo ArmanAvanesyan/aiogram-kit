@@ -1,0 +1,17 @@
+{
+  "exploratory/rejected-traversal.patch": {
+    "archive": "exploratory/rejected-traversal.patch.gz",
+    "original_sha256": "5d40e1ab64351982e126bb838ba59041b40e151d403622073fcf0737c2517269",
+    "gzip_sha256": "43f5d955fd6593294399981791c26e0dab96420e8baad2f47523e47dc6c2b50d"
+  },
+  "functional/initial-tests-cmds.log": {
+    "archive": "functional/initial-tests-cmds.log.gz",
+    "original_sha256": "b28f2346ea2a1d08fe696360e788cbe7b1a7daefe7e643e06c29b0efd502109a",
+    "gzip_sha256": "8293bc0708b212c63f776cdc581fa7dd1f4e6b161adbe308b18973af31a337f6"
+  },
+  "functional/abi3audit.log": {
+    "archive": "functional/abi3audit.log.gz",
+    "original_sha256": "50709e11e0180e01c65d5c5c2a7549b352d43a3cc0bb4ae9596725cf19625fa2",
+    "gzip_sha256": "1e6c610860e5e12cd9e11ebae4c5fcef69a1758312ceaf69e2ba4b549f61df52"
+  }
+}
