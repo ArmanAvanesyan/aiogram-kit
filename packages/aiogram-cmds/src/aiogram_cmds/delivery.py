@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass
 from enum import Enum
 from typing import Literal, cast
@@ -101,7 +102,16 @@ class CommandBatchResult:
     error: Exception | None = None
 
 
+_HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
+
+
 def validate_fingerprint(previous_fingerprint: str | None) -> None:
+    if type(previous_fingerprint) is str:
+        if _HEX_DIGEST.fullmatch(previous_fingerprint) is None:
+            raise ValueError(
+                "previous_fingerprint must be a confirmed SHA256 hex string"
+            )
+        return
     if previous_fingerprint is not None and (
         not isinstance(cast(object, previous_fingerprint), str)
         or len(previous_fingerprint) != 64

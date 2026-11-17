@@ -3,16 +3,21 @@
 from __future__ import annotations
 
 import asyncio
+from contextvars import Token
 from typing import Literal
+
+from .._json_scope import JsonEngine, JsonRecord, active, begin, end
 
 
 class OwnedLock(asyncio.Lock):
     """Reenter only from the actual owning task, never an inherited context."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, processor: JsonEngine | None = None) -> None:
         super().__init__()
         self._owner: asyncio.Task[object] | None = None
         self._depth = 0
+        self._processor = processor
+        self._json_scope: tuple[Token[JsonRecord | None], JsonRecord] | None = None
 
     async def acquire(self) -> Literal[True]:
         task = asyncio.current_task()
@@ -21,6 +26,13 @@ class OwnedLock(asyncio.Lock):
             return True
         await super().acquire()
         self._owner, self._depth = task, 1
+        try:
+            if self._processor is not None or active():
+                self._json_scope = begin(self._processor)
+        except BaseException:
+            self._owner, self._depth = None, 0
+            super().release()
+            raise
         return True
 
     def release(self) -> None:
@@ -29,4 +41,7 @@ class OwnedLock(asyncio.Lock):
         self._depth -= 1
         if self._depth == 0:
             self._owner = None
+            scope, self._json_scope = self._json_scope, None
+            if scope is not None:
+                end(*scope)
             super().release()

@@ -46,13 +46,14 @@ def transition(
         )
         return history, state
     core = native_core()
+    changed = old is None or old.node_id != prepared.node_id or params_changed
     entries, values = core.transition_values(
         old.history if old else (),
-        HistoryEntry(old.node_id, old.params) if old else None,
+        HistoryEntry(old.node_id, old.params) if old and changed and mode == "push" else None,
         mode,
         limit,
         getattr(prepared.intent, "history_pop", 1),
-        old is None or old.node_id != prepared.node_id or params_changed,
+        changed,
         (
             str(old.nav_revision),
             str(old.activity_revision),

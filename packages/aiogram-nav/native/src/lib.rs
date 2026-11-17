@@ -1,4 +1,5 @@
 //! Deterministic data algorithms only. No Telegram, Redis, locks or business calls.
+mod canonical;
 pub mod json;
 pub mod registry;
 
@@ -388,6 +389,11 @@ fn _aiogram_nav_native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(transition_state, module)?)?;
     module.add_function(wrap_pyfunction!(transition_values, module)?)?;
     module.add_function(wrap_pyfunction!(token_matches, module)?)?;
+    module.add_class::<canonical::Canonicalizer>()?;
+    module.add(
+        "InvalidJson",
+        module.py().get_type::<canonical::InvalidJson>(),
+    )?;
     module.add_class::<Registry>()?;
     Ok(())
 }

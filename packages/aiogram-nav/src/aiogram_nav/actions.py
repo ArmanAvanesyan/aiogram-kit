@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
+from ._json_scope import construct
 from .effects import NavigationEffects, normalize_render
 from .errors import (
     AccessDenied,
@@ -35,6 +36,7 @@ from .models import (
     RenderResult,
     ViewState,
 )
+from .registry import parameter_values
 from .rendering.base import CleanupRequest
 
 if TYPE_CHECKING:
@@ -78,10 +80,12 @@ async def prepare(
 ) -> PreparedAction:
     await nav.authorize_session(key)
     node = nav.registry.get(node_id)
-    validated = nav.registry.validate_params(node.id, params)
+    validated = parameter_values(nav.registry, node.id, params, nav.json_processor)
     await nav.allowed(key, node, validated, source)
     loaded = await nav.repository.load(key)
-    intent = NavigationIntent(
+    intent = construct(
+        nav.json_processor,
+        NavigationIntent,
         operation_id,
         node.id,
         validated,

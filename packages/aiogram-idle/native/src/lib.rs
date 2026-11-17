@@ -1,4 +1,5 @@
 //! Optional deterministic core. Application code owns time, random IDs, I/O and locks.
+mod canonical;
 pub mod core;
 pub mod queue;
 use num_bigint::BigUint;
@@ -298,6 +299,11 @@ fn _aiogram_idle_native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(activity_guard, module)?)?;
     module.add_function(wrap_pyfunction!(session_guard, module)?)?;
     module.add_function(wrap_pyfunction!(claim_guard, module)?)?;
+    module.add_class::<canonical::Canonicalizer>()?;
+    module.add(
+        "InvalidJson",
+        module.py().get_type::<canonical::InvalidJson>(),
+    )?;
     module.add_class::<DeadlineCore>()?;
     Ok(())
 }

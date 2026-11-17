@@ -103,6 +103,20 @@ struct NativeSnapshot {
 
 #[pymethods]
 impl NativeSnapshot {
+    fn resolve_one(
+        &self,
+        profile: String,
+        locale: String,
+        bot: String,
+        scope: String,
+        language: String,
+    ) -> PyResult<String> {
+        let mut cache = self
+            .fingerprints
+            .lock()
+            .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
+        self.resolve((profile, locale, bot, scope, language), &mut cache)
+    }
     fn resolve_batch(&self, requests: Requests) -> PyResult<BatchResult> {
         let mut results = Vec::with_capacity(requests.len());
         let mut cache = self
@@ -110,28 +124,31 @@ impl NativeSnapshot {
             .lock()
             .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
         for request in requests {
-            if let Some(hash) = cache.get(&request) {
-                results.push(hash.clone());
-                continue;
-            }
-            let (profile, locale, bot, scope, language) = &request;
-            let (_rows, encoded) = self
-                .profiles
-                .get(&(profile.clone(), locale.clone()))
-                .ok_or_else(|| PyValueError::new_err("Unknown compiled profile/locale"))?;
-            let hash = fingerprint_encoded(bot, scope, language, encoded)
-                .map_err(PyValueError::new_err)?;
-            // Bound both entries and retained input bytes; oversized inputs work
-            // normally but are never retained. Clearing only affects performance.
-            if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
-                if cache.len() >= 256 {
-                    cache.clear();
-                }
-                cache.insert(request, hash.clone());
-            }
-            results.push(hash);
+            results.push(self.resolve(request, &mut cache)?);
         }
         Ok(results)
+    }
+}
+
+impl NativeSnapshot {
+    fn resolve(&self, request: Request, cache: &mut HashMap<Request, String>) -> PyResult<String> {
+        if let Some(hash) = cache.get(&request) {
+            return Ok(hash.clone());
+        }
+        let (profile, locale, bot, scope, language) = &request;
+        let (_, encoded) = self
+            .profiles
+            .get(&(profile.clone(), locale.clone()))
+            .ok_or_else(|| PyValueError::new_err("Unknown compiled profile/locale"))?;
+        let hash =
+            fingerprint_encoded(bot, scope, language, encoded).map_err(PyValueError::new_err)?;
+        if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
+            if cache.len() >= 256 {
+                cache.clear();
+            }
+            cache.insert(request, hash.clone());
+        }
+        Ok(hash)
     }
 }
 

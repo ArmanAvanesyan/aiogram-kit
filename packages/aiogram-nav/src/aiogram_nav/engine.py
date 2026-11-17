@@ -7,6 +7,7 @@ import json
 from functools import lru_cache
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
+from ._json_scope import JsonCore
 from .errors import ConfigurationError
 
 if TYPE_CHECKING:
@@ -24,7 +25,25 @@ class NativeRegistry(Protocol):
     def node_count(self) -> int: ...
 
 
+class CanonicalCore(JsonCore, Protocol):
+    def fork(self) -> CanonicalCore: ...
+
+    def fingerprint(self, value: object) -> str: ...
+
+
 class NativeCore(Protocol):
+    def Canonicalizer(
+        self,
+        enum_type: object,
+        mapping_type: object,
+        fields: object,
+        datetime_type: object = None,
+        view_type: object = None,
+        render_type: object = None,
+        immutable_types: object = None,
+    ) -> CanonicalCore: ...
+
+    InvalidJson: type[Exception]
     API_VERSION: int
     ENGINE_VERSION: str
 
@@ -93,6 +112,8 @@ def native_core() -> NativeCore:
         raise ConfigurationError("engine='rust' requires aiogram-nav-native==0.3.1") from error
     abi = getattr(module, "API_VERSION", None)
     functions = (
+        "Canonicalizer",
+        "InvalidJson",
         "Registry",
         "strict_loads",
         "validate_json",
@@ -110,6 +131,17 @@ def native_core() -> NativeCore:
         or not all(callable(getattr(module, name, None)) for name in functions)
     ):
         raise ConfigurationError("Incompatible aiogram-nav-native engine ABI/version")
+    invalid = getattr(module, "InvalidJson", None)
+    codec = getattr(module, "Canonicalizer", None)
+    if (
+        not isinstance(invalid, type)
+        or not issubclass(invalid, Exception)
+        or not all(
+            callable(getattr(codec, name, None))
+            for name in ("fingerprint", "freeze", "clear_cache", "cache_stats", "fork")
+        )
+    ):
+        raise ConfigurationError("Incompatible native codec ABI/version")
     try:
         probe = module.Registry(
             json.dumps(

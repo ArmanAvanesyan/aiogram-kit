@@ -7,13 +7,21 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
+from functools import lru_cache
 from typing import Literal, cast
 
 from aiogram_coordination import ExternalSession
 
-from ..engine import EngineName, native_core, require_engine
+from .._json_scope import selected
+from ..engine import CanonicalCore, EngineName, native_core, require_engine
 from ..models import (
     CommitResult,
+    ConversationKey,
+    EffectCheckpoint,
+    HistoryEntry,
+    MessageRef,
+    NavigationIntent,
+    NavigationMutation,
     NavigationToken,
     PreparedAction,
     RenderResult,
@@ -53,14 +61,39 @@ def payload_size(value: object) -> int:
     )
 
 
+@lru_cache(maxsize=1)
+def canonicalizer() -> CanonicalCore:
+    return native_core().Canonicalizer(
+        Enum,
+        Mapping,
+        fields,
+        None,
+        ViewState,
+        RenderResult,
+        (
+            ConversationKey,
+            EffectCheckpoint,
+            HistoryEntry,
+            MessageRef,
+            NavigationIntent,
+            NavigationMutation,
+            RenderResult,
+            ViewState,
+        ),
+    )
+
+
+def new_canonicalizer() -> CanonicalCore:
+    return canonicalizer().fork()
+
+
 def fingerprint(value: object, *, engine: EngineName = "python") -> str:
     require_engine(engine)
+    if engine == "rust":
+        processor = selected()
+        return (processor.core if processor else canonicalizer()).fingerprint(value)
     raw = json.dumps(_canonical(value), sort_keys=True, separators=(",", ":"), allow_nan=False)
-    return (
-        native_core().fingerprint_canonical(raw)
-        if engine == "rust"
-        else hashlib.sha256(raw.encode()).hexdigest()
-    )
+    return hashlib.sha256(raw.encode()).hexdigest()
 
 
 @dataclass

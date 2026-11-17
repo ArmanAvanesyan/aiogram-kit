@@ -6,7 +6,7 @@ from aiogram import Bot
 from aiogram.types import BotCommandScopeChat, BotCommandScopeChatMember
 
 from .compiled import CompiledCommands, ProfileRequest, build_profile_batch
-from .delivery import UNSET, CommandApplyResult, LanguageCode
+from .delivery import UNSET, CommandApplyResult, LanguageCode, validate_fingerprint
 from .engines import Engine, native_engine
 
 
@@ -26,8 +26,6 @@ async def apply_compiled_profile(
     native_engine(engine)
     if type(best_effort) is not bool:
         raise TypeError("best_effort must be a boolean")
-    from .delivery import validate_fingerprint
-
     validate_fingerprint(previous_fingerprint)
     fingerprint = None
     try:

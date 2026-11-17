@@ -10,6 +10,8 @@ from datetime import datetime
 from types import MappingProxyType
 from typing import TypeAlias, cast
 
+from ._json_scope import JsonEngine
+from ._json_scope import selected as json_engine
 from .errors import InvalidParameters
 
 JsonScalar: TypeAlias = str | int | float | bool | None
@@ -64,9 +66,24 @@ def thaw_json(value: JsonValue) -> object:
     return value
 
 
-def freeze_object(value: object, *, max_bytes: int = 16_384) -> JsonObject:
+def freeze_object(
+    value: object, *, max_bytes: int = 16_384, _processor: JsonEngine | None = None
+) -> JsonObject:
     if not isinstance(value, Mapping):
         raise InvalidParameters("Parameters must be a JSON object")
+    processor = _processor if _processor is not None else json_engine()
+    if processor is not None:
+        try:
+            result = processor.core.freeze(cast(object, value), MappingProxyType, "nav")
+        except processor.invalid as error:
+            raise InvalidParameters(str(error)) from error
+        except (ValueError, TypeError, OverflowError) as error:
+            raise InvalidParameters("JSON object cannot be represented safely") from error
+        if result is not None:
+            frozen, size = result
+            if size > max_bytes:
+                raise InvalidParameters("JSON object exceeds its configured size limit")
+            return cast(JsonObject, frozen)
     frozen = cast(JsonObject, freeze_json(cast(object, value)))
     try:
         size = len(json.dumps(thaw_json(frozen), ensure_ascii=False, allow_nan=False).encode())

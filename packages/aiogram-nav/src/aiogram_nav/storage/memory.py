@@ -8,9 +8,10 @@ import math
 import secrets
 from dataclasses import replace
 
+from .._json_scope import JsonEngine, JsonLock
 from ..clock import Clock, SystemClock
 from ..config import NavigationConfig
-from ..engine import EngineName
+from ..engine import EngineName, native_core
 from ..errors import (
     ConfigurationError,
     OperationIdConflict,
@@ -39,7 +40,7 @@ from ..protocols import Coordinator
 from .adoption import MemoryAdoption
 from .completion import complete
 from .sessions import MemorySessions
-from .state import Conversation, Operation, fingerprint, payload_size
+from .state import Conversation, Operation, fingerprint, new_canonicalizer, payload_size
 from .tokens import MemoryTokens
 
 
@@ -67,7 +68,14 @@ class MemoryNavigationRepository(MemoryAdoption, MemoryTokens, MemorySessions):
             self.config = replace(self.config, engine=engine)
         self.coordinator: Coordinator = MemoryCoordinator()
         self.application_coordinator_selected = False
-        self._lock = asyncio.Lock()
+        self.json_processor: JsonEngine | None = (
+            JsonEngine(new_canonicalizer(), native_core().InvalidJson)
+            if self.config.engine == "rust"
+            else None
+        )
+        self._lock = (
+            JsonLock(self.json_processor) if self.json_processor is not None else asyncio.Lock()
+        )
         self._records: dict[ConversationKey, Conversation] = {}
         self._sweep_cursor = 0
         if storage_format is not None and (
@@ -206,7 +214,11 @@ class MemoryNavigationRepository(MemoryAdoption, MemoryTokens, MemorySessions):
         intent: NavigationIntent,
         coordination_scope: object | None = None,
     ) -> PreparedAction:
-        freeze_object(intent.params, max_bytes=self.config.max_params_bytes)
+        owned_params = freeze_object(intent.params, max_bytes=self.config.max_params_bytes)
+        if self.json_processor is not None and type(intent) is NavigationIntent:
+            # The backend owns this detached immutable plan; reuse only trees
+            # created by its own codec, never a caller's mappingproxy backing.
+            intent = replace(intent, params=owned_params)
         digest = self._fingerprint(intent)
         self._guard_scope(key, coordination_scope)
         record = self._admit(key)
@@ -501,3 +513,5 @@ class MemoryNavigationRepository(MemoryAdoption, MemoryTokens, MemorySessions):
 
     async def close(self) -> None:
         """No caller-owned state is discarded by closing a memory repository."""
+        if self.json_processor is not None:
+            self.json_processor.core.clear_cache()

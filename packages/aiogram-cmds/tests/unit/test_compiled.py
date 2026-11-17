@@ -355,3 +355,16 @@ def test_native_module_is_validated_once_before_repeated_operations(monkeypatch)
     assert calls == ["_aiogram_cmds_native"]
     with pytest.raises(ValueError):
         engines.native_engine("invalid")
+
+
+def test_native_single_resolution_matches_batch_and_slot_boundaries():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile([("p", [("en", [("start", "First")])])])
+    for scope in ('{"type":"chat","chat_id":1}', '{"type":"chat","chat_id":2}'):
+        for language in ("null", '"hy"'):
+            request = ("p", "en", "123", scope, language)
+            assert (
+                snapshot.resolve_one(*request) == snapshot.resolve_batch([request])[0]
+            )
+    with pytest.raises(ValueError):
+        snapshot.resolve_one("missing", "en", "123", "{}", "null")
