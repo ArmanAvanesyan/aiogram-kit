@@ -30,9 +30,6 @@ jobs:
   push:
     branches:
     - main
-    paths:
-    - tools/optimization/**
-    - .github/workflows/optimization-tools.yml
   pull_request:
     paths:
     - tools/optimization/**

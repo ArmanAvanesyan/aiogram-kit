@@ -80,3 +80,10 @@ records the verified final state. Raw authenticated API responses remain in the 
 
 Private raw inventories, verified bundles, release assets and operational evidence remain locally
 at `../aiogram-migration-2026-11-11/`. Credential values were not exported.
+
+## Post-cutover review
+
+See [the 2026-11-17 end-to-end review](review-2026-11-17.md) for the correction of
+latest-main command-test transports, publishing handoff hardening, canonical history
+references, automatic main documentation deployment and shared-tool matrix coverage.
+The operational cutover and published artifact hashes remain unchanged.

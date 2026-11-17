@@ -42,4 +42,20 @@ def test_publisher_is_tag_scoped_and_uploads_only_verified_artifacts(package):
         for step in publish["steps"]
         if step.get("uses", "").startswith("actions/download-artifact@")
     )
-    assert download["with"]["name"] == upload["with"]["name"]
+    assert upload["id"] == "artifacts"
+    assert verify["outputs"] == {"artifact_id": "${{ steps.artifacts.outputs.artifact-id }}"}
+    assert download["with"]["artifact-ids"] == "${{ needs.verify.outputs.artifact_id }}"
+    assert download["with"]["path"] == "verified-input"
+    assert "dist/SHA256SUMS" in upload["with"]["path"]
+    handoff = next(
+        step
+        for step in publish["steps"]
+        if step.get("name") == "Recheck the reviewed manifest after artifact download"
+    )
+    assert handoff["env"]["RELEASE_PACKAGE"] == package
+    assert handoff["env"]["MANIFEST_SHA256"] == "${{ inputs.manifest_sha256 }}"
+    assert (
+        publish["steps"].index(download)
+        < publish["steps"].index(handoff)
+        < len(publish["steps"]) - 1
+    )

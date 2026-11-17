@@ -12,6 +12,10 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.12', '3.14']
     steps:
       - uses: actions/checkout@v6
         with:
@@ -19,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python }}
       - run: uv sync --frozen --all-packages --all-groups --all-extras
       - run: uv run --no-sync ruff check tools tests/integration
       - run: uv run --no-sync ruff format --check tools tests/integration
@@ -29,5 +33,7 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: uv run --no-sync python tools/check_news.py --base "$BASE_SHA"
       - run: uv run --no-sync pytest tests/integration -q
-      - run: uv run --no-sync python tools/verify_migration.py
-      - run: uv run --no-sync mkdocs build --strict
+      - run: uv run --no-sync python tools/verify_migration.py --historical-objects --remote-refs
+      - name: Build documentation on its supported toolchain
+        if: matrix.python == '3.12'
+        run: uv run --no-sync mkdocs build --strict

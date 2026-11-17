@@ -11,9 +11,9 @@ from aiogram.client.session.base import BaseSession
 from aiogram.exceptions import TelegramBadRequest, TelegramRetryAfter
 from aiogram.fsm.storage.base import BaseEventIsolation
 from aiogram.fsm.strategy import FSMStrategy
-from aiogram.methods import AnswerCallbackQuery, GetMe, SendMessage
+from aiogram.methods import AnswerCallbackQuery, GetChat, GetMe, SendMessage
 from aiogram.methods.base import TelegramMethod, TelegramType
-from aiogram.types import CallbackQuery, Message, Update, User
+from aiogram.types import CallbackQuery, ChatFullInfo, Message, Update, User
 
 from aiogram_idle.controls import InlinePromptControls, handle_control
 from aiogram_idle.coordinator import AiogramMemoryCoordinator
@@ -48,6 +48,25 @@ class RecordingSession(BaseSession):
         self.methods.append(method)
         if isinstance(method, GetMe):
             return User(id=bot.id, is_bot=True, first_name="Test", username="TestBot")
+        if isinstance(method, GetChat):
+            return ChatFullInfo.model_validate(
+                {
+                    "id": bot.id,
+                    "type": "private",
+                    "first_name": "Test",
+                    "username": "TestBot",
+                    "active_usernames": ["TestBot"],
+                    "accent_color_id": 0,
+                    "max_reaction_count": 0,
+                    "accepted_gift_types": {
+                        "unlimited_gifts": False,
+                        "limited_gifts": False,
+                        "unique_gifts": False,
+                        "premium_subscription": False,
+                        "gifts_from_channels": False,
+                    },
+                }
+            )
         if isinstance(method, AnswerCallbackQuery):
             return True
         return message(message_id=99)
