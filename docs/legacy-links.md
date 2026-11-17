@@ -37,3 +37,15 @@ Recreating `aiogram-sentinel` to restore the old Pages address would interfere w
 the GitHub repository redirect and is deliberately excluded. Update bookmarks,
 badges and consumers to the maintained URLs above. Native companions remain
 unpublished until their independent performance and platform gates pass.
+
+## Completed archival
+
+Cmds, Coordination, Nav, Idle and original Kit (`aiogram-kit-legacy`) were archived
+on 2026-11-17 after publisher retirement and preservation verification. The surviving
+Kit repository remains active. All six package cutover releases remain on PyPI and
+have independent monorepo GitHub releases.
+
+Cmds' old GitHub `v0.1.1` release remains a draft. GitHub hides draft releases in
+archived repositories; temporarily unarchive Cmds to access it. Its original release
+ID and four assets were verified intact through an archive/unarchive roundtrip and
+backed up. The migration did not publish or recreate that draft.
