@@ -14,3 +14,7 @@ The serial performance gate failed for this candidate. Native publication and
 native tags are withheld, and the base package advertises no native dependency
 extra. This directory remains available for explicit source builds. See
 [BENCHMARKS.md](BENCHMARKS.md) for the qualification decision and limitations.
+
+The [18 November qualification follow-up](../../../reports/2026-11-18-native-qualification/README.md)
+retains all repeated-run outcomes, rejected experiments and current release blockers.
+No companion is published by the qualification workflow.

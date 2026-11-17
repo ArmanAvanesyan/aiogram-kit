@@ -1,0 +1,24 @@
+   Compiling aiogram-idle-native v0.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-idle/native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.90s
+     Running unittests src/lib.rs (packages/aiogram-idle/native/target/debug/deps/_aiogram_idle_native-c783398ecb496413)
+
+running 8 tests
+test core::tests::guards_require_exact_live_generation ... ok
+test core::tests::duplicate_wins_over_capacity ... ok
+test queue::tests::invalid_reconcile_batch_is_atomic ... ok
+test core::tests::all_lifecycle_inputs_are_total ... ok
+test queue::tests::scoped_pollers_do_not_lose_other_routes ... ok
+test queue::tests::crash_expiry_and_replaced_generation_are_fenced ... ok
+test core::tests::exact_supplied_bytes_only ... ok
+test queue::tests::renewed_claim_and_compaction_preserve_due_jobs ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests _aiogram_idle_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking aiogram-idle-native v0.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-idle/native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.83s

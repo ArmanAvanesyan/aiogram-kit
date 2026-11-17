@@ -23,7 +23,7 @@ formatting, Unicode escapes and durable operation identity across engines.
 Build `uvx maturin build --release --manifest-path native/Cargo.toml`; test
 `cargo test --manifest-path native/Cargo.toml`; benchmark
 `cargo bench --manifest-path native/Cargo.toml --bench core`. The native companion
-can be published separately by native-v* tags, never by the base Python-only workflow.
+can be published separately by aiogram-idle-native-v* tags, never by the base Python-only workflow.
 No native tag or PyPI distribution is released for this version.
 An sdist install requires Rust/Cargo. Cargo.lock is retained for reproducibility.
 Native microbenchmarks do not establish end-to-end Redis/Telegram speedups. The
@@ -37,3 +37,7 @@ identities crossing the extension boundary are ASCII JSON strings, preserving
 low-level opaque Python codepoints; they are compared, never interpreted by Rust.
 Public persistent identifiers and JSON parameters reject surrogate code units early,
 using the same strict UTF-8 Unicode scalar contract for both engines.
+
+The [18 November qualification follow-up](../../../reports/2026-11-18-native-qualification/README.md)
+retains all repeated-run outcomes, rejected experiments and current release blockers.
+No companion is published by the qualification workflow.

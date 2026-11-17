@@ -1,0 +1,99 @@
+...s..............F..................................................... [ 22%]
+........................................................................ [ 44%]
+.........F.............................................................. [ 66%]
+........................................................................ [ 89%]
+...................................                                      [100%]
+=================================== FAILURES ===================================
+_______________ TestPerformanceBenchmarks.test_setup_performance _______________
+
+self = <test_benchmarks.TestPerformanceBenchmarks object at 0x1138f08c0>
+mock_bot = <AsyncMock spec='Bot' id='4630528176'>
+
+    @pytest.mark.asyncio
+    async def test_setup_performance(self, mock_bot):
+        """Test setup performance with various configurations."""
+        # Small config
+        small_config = CmdsConfig(
+            languages=["en"],
+            commands={"start": CommandDef(i18n_key="start.desc")},
+            profiles={"user": ProfileDef(include=["start"])},
+            scopes=[ScopeDef(scope="all_private_chats", profile="user")],
+        )
+    
+        start_time = time.time()
+        manager = CommandScopeManager(bot=mock_bot, config=small_config)
+        await manager.setup_all()
+        small_time = time.time() - start_time
+    
+        # Medium config
+        medium_config = CmdsConfig(
+            languages=["en", "ru", "es"],
+            commands={
+                f"cmd_{i}": CommandDef(i18n_key=f"cmd_{i}.desc") for i in range(10)
+            },
+            profiles={
+                f"profile_{i}": ProfileDef(include=[f"cmd_{i}"]) for i in range(5)
+            },
+            scopes=[
+                ScopeDef(scope="all_private_chats", profile="profile_0"),
+                ScopeDef(scope="all_group_chats", profile="profile_1"),
+            ],
+        )
+    
+        start_time = time.time()
+        manager = CommandScopeManager(bot=mock_bot, config=medium_config)
+        await manager.setup_all()
+        medium_time = time.time() - start_time
+    
+        # Large config
+        large_config = CmdsConfig(
+            languages=["en", "ru", "es", "fr", "de"],
+            commands={
+                f"cmd_{i}": CommandDef(i18n_key=f"cmd_{i}.desc") for i in range(50)
+            },
+            profiles={
+                f"profile_{i}": ProfileDef(
+                    include=[f"cmd_{j}" for j in range(i * 5, (i + 1) * 5)]
+                )
+                for i in range(10)
+            },
+            scopes=[
+                ScopeDef(scope="all_private_chats", profile="profile_0"),
+                ScopeDef(scope="all_group_chats", profile="profile_1"),
+                ScopeDef(scope="default", profile="profile_2"),
+            ],
+        )
+    
+        start_time = time.time()
+        manager = CommandScopeManager(bot=mock_bot, config=large_config)
+        await manager.setup_all()
+        large_time = time.time() - start_time
+    
+        # Performance should scale reasonably
+        assert small_time < 1.0  # Small config should be very fast
+        assert medium_time < 2.0  # Medium config should be fast
+        assert large_time < 5.0  # Large config should be reasonable
+    
+        # Large config shouldn't be more than 10x slower than small
+        # Handle case where timing is too fast due to mocked objects
+        if small_time > 0:
+>           assert large_time < small_time * 10
+E           assert 0.08718085289001465 < (0.00013184547424316406 * 10)
+
+tests/perf/test_benchmarks.py:88: AssertionError
+_______________ test_real_catalogs_three_locales_restore_context _______________
+
+tmp_path = PosixPath('/private/var/folders/0d/8_l3l4pj0jq4v6k1qk3y4wtr0000gn/T/pytest-of-root/pytest-86/test_real_catalogs_three_local0')
+
+    async def test_real_catalogs_three_locales_restore_context(tmp_path):
+        from gettext import GNUTranslations
+    
+        from aiogram.utils.i18n import I18n
+>       from babel.messages.catalog import Catalog
+E       ModuleNotFoundError: No module named 'babel'
+
+tests/unit/test_delivery.py:195: ModuleNotFoundError
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_examples.py:94: could not import 'babel.messages.pofile': No module named 'babel'
+FAILED tests/perf/test_benchmarks.py::TestPerformanceBenchmarks::test_setup_performance
+FAILED tests/unit/test_delivery.py::test_real_catalogs_three_locales_restore_context

@@ -46,3 +46,7 @@ optimized Python engine. Primitive SHA/JSON microbenchmarks are diagnostic only:
 a native boundary can add conversion overhead even when the underlying Rust
 algorithm is fast. No base dependency extra or native release should be enabled
 from correctness tests alone.
+
+The [18 November qualification follow-up](../../../reports/2026-11-18-native-qualification/README.md)
+retains all repeated-run outcomes, rejected experiments and current release blockers.
+No companion is published by the qualification workflow.

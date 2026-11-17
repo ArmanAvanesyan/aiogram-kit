@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "qualified": true,
+  "identity": [
+    "aiogram-sentinel",
+    "1.3.1",
+    "3.12.16",
+    "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+    "",
+    4,
+    137
+  ],
+  "cpu_workloads_selected": [
+    "rate_accepted_many",
+    "debounce_accepted_many"
+  ],
+  "required_latency_workloads": [
+    "middleware_fake_io"
+  ],
+  "inputs": [
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/python-a/aiogram-sentinel.json",
+      "sha256": "05fcdbc94563b13fa07159a938beaf2ffef54fd03cb2a6cf8da516952fed36d3",
+      "engine": "python",
+      "run_id": "8f4c3e58-8411-4d27-a9ef-3a95d5ec56a5",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": null,
+        "driver_sha256": "c4843e2745b2581c0b16cccc24cc23fa6095398958871146cba1ce9ed96ee36a"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/python-b/aiogram-sentinel.json",
+      "sha256": "6aee32ed9c1b59f14c30228aea0cf308caf2ce6fdd3ab952f02c1c35dfd0c3ce",
+      "engine": "python",
+      "run_id": "f7453203-60e1-4bc8-aa0b-925db955edc1",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": null,
+        "driver_sha256": "c4843e2745b2581c0b16cccc24cc23fa6095398958871146cba1ce9ed96ee36a"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/rust-a/aiogram-sentinel.json",
+      "sha256": "a50bb2045795262d5af7e3abd24fea888d65d065ee2ececfad15d5fddadce2b3",
+      "engine": "rust",
+      "run_id": "2aec9fc2-86d5-4d8e-b02e-d5dbb75a30d4",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": "9aea17d389fbfabc75984a1a3a32fc86865add7aebe7f02a69b71cd5846a6c14",
+        "driver_sha256": "c4843e2745b2581c0b16cccc24cc23fa6095398958871146cba1ce9ed96ee36a"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/rust-b/aiogram-sentinel.json",
+      "sha256": "a693cceaa3debbc5b68a832d0d93d401c5da8e906e0e72102f397a994c29d101",
+      "engine": "rust",
+      "run_id": "75654333-52ff-4c71-b385-6f330aba10dc",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": "9aea17d389fbfabc75984a1a3a32fc86865add7aebe7f02a69b71cd5846a6c14",
+        "driver_sha256": "c4843e2745b2581c0b16cccc24cc23fa6095398958871146cba1ce9ed96ee36a"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "debounce_accepted_many",
+      "rust_over_python_cpu": 0.6246452697393293
+    },
+    {
+      "workload": "middleware_fake_io",
+      "rust_over_python_p95": 0.92139056587058
+    },
+    {
+      "workload": "rate_accepted_many",
+      "rust_over_python_cpu": 0.5129041987534785
+    }
+  ],
+  "failures": [],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

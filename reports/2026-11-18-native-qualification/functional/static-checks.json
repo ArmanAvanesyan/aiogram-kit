@@ -1,0 +1,21 @@
+{
+  "ruff": "passed",
+  "strict_pyright_sentinel_idle": "passed",
+  "rust_unit_tests": {
+    "sentinel": 5,
+    "cmds": 2,
+    "nav": 5,
+    "idle": 8
+  },
+  "cargo_clippy_warnings_denied": "passed for all four crates",
+  "abi3audit_strict": {
+    "exit_code": 0,
+    "companions": [
+      "aiogram-sentinel-native",
+      "aiogram-cmds-native",
+      "aiogram-nav-native",
+      "aiogram-idle-native"
+    ]
+  },
+  "clean_standalone_imports": "all four, no Redis/native; Nav and Idle peer absent"
+}

@@ -1,0 +1,119 @@
+Using CPython 3.12.13
+Creating virtual environment at: /tmp/kit-native-20261118/standalone-sentinel
+Activate with: source /tmp/kit-native-20261118/standalone-sentinel/bin/activate
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-sentinel
+Resolved 19 packages in 582ms
+Installed 19 packages in 90ms
+ + aiofiles==25.1.0
+ + aiogram==3.32.0
+ + aiogram-sentinel==1.3.1 (from file:///tmp/kit-native-20261118/text-candidate/aiogram_sentinel-1.3.1-py3-none-any.whl)
+ + aiohappyeyeballs==2.7.1
+ + aiohttp==3.14.5
+ + aiosignal==1.4.0
+ + annotated-types==0.8.0
+ + attrs==26.1.0
+ + certifi==2026.10.23
+ + frozenlist==1.8.0
+ + idna==3.20
+ + magic-filter==1.0.12
+ + multidict==7.2.1
+ + propcache==0.5.4
+ + pydantic==2.14.3
+ + pydantic-core==2.50.4
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.5
+ + yarl==1.25.1
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-sentinel
+Checked 19 packages in 1ms
+All installed packages are compatible
+sentinel standalone import: PASS; native/Redis/optional peer absent
+Using CPython 3.12.13
+Creating virtual environment at: /tmp/kit-native-20261118/standalone-cmds
+Activate with: source /tmp/kit-native-20261118/standalone-cmds/bin/activate
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-cmds
+Resolved 19 packages in 39ms
+Installed 19 packages in 38ms
+ + aiofiles==25.1.0
+ + aiogram==3.32.0
+ + aiogram-cmds==0.3.1 (from file:///tmp/kit-native-20261118/candidate-wheels/aiogram_cmds-0.3.1-py3-none-any.whl)
+ + aiohappyeyeballs==2.7.1
+ + aiohttp==3.14.5
+ + aiosignal==1.4.0
+ + annotated-types==0.8.0
+ + attrs==26.1.0
+ + certifi==2026.10.23
+ + frozenlist==1.8.0
+ + idna==3.20
+ + magic-filter==1.0.12
+ + multidict==7.2.1
+ + propcache==0.5.4
+ + pydantic==2.14.3
+ + pydantic-core==2.50.4
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.5
+ + yarl==1.25.1
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-cmds
+Checked 19 packages in 0.96ms
+All installed packages are compatible
+cmds standalone import: PASS; native/Redis/optional peer absent
+Using CPython 3.12.13
+Creating virtual environment at: /tmp/kit-native-20261118/standalone-nav
+Activate with: source /tmp/kit-native-20261118/standalone-nav/bin/activate
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-nav
+Resolved 20 packages in 42ms
+Installed 20 packages in 41ms
+ + aiofiles==25.1.0
+ + aiogram==3.32.0
+ + aiogram-coordination==0.1.1 (from file:///tmp/kit-native-20261118/candidate-wheels/aiogram_coordination-0.1.1-py3-none-any.whl)
+ + aiogram-nav==0.3.1 (from file:///tmp/kit-native-20261118/candidate-wheels/aiogram_nav-0.3.1-py3-none-any.whl)
+ + aiohappyeyeballs==2.7.1
+ + aiohttp==3.14.5
+ + aiosignal==1.4.0
+ + annotated-types==0.8.0
+ + attrs==26.1.0
+ + certifi==2026.10.23
+ + frozenlist==1.8.0
+ + idna==3.20
+ + magic-filter==1.0.12
+ + multidict==7.2.1
+ + propcache==0.5.4
+ + pydantic==2.14.3
+ + pydantic-core==2.50.4
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.5
+ + yarl==1.25.1
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-nav
+Checked 20 packages in 1ms
+All installed packages are compatible
+nav standalone import: PASS; native/Redis/optional peer absent
+Using CPython 3.12.13
+Creating virtual environment at: /tmp/kit-native-20261118/standalone-idle
+Activate with: source /tmp/kit-native-20261118/standalone-idle/bin/activate
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-idle
+Resolved 20 packages in 33ms
+Installed 20 packages in 41ms
+ + aiofiles==25.1.0
+ + aiogram==3.32.0
+ + aiogram-coordination==0.1.1 (from file:///tmp/kit-native-20261118/candidate-wheels/aiogram_coordination-0.1.1-py3-none-any.whl)
+ + aiogram-idle==0.3.1 (from file:///tmp/kit-native-20261118/candidate-wheels/aiogram_idle-0.3.1-py3-none-any.whl)
+ + aiohappyeyeballs==2.7.1
+ + aiohttp==3.14.5
+ + aiosignal==1.4.0
+ + annotated-types==0.8.0
+ + attrs==26.1.0
+ + certifi==2026.10.23
+ + frozenlist==1.8.0
+ + idna==3.20
+ + magic-filter==1.0.12
+ + multidict==7.2.1
+ + propcache==0.5.4
+ + pydantic==2.14.3
+ + pydantic-core==2.50.4
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.5
+ + yarl==1.25.1
+Using Python 3.12.13 environment at: /tmp/kit-native-20261118/standalone-idle
+Checked 20 packages in 1ms
+All installed packages are compatible
+idle standalone import: PASS; native/Redis/optional peer absent
+Idle standalone memory operation PASS
