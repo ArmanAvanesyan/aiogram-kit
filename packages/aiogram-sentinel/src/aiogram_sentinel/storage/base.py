@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
+from ..exceptions import ConfigurationError
+
 
 @runtime_checkable
 class RateLimiterBackend(Protocol):
@@ -29,8 +31,8 @@ class DebounceBackend(Protocol):
 
 def validate_interval(value: object, name: str) -> None:
     """Validate public integer limits before storage calls (Redis-safe range)."""
-    from ..exceptions import ConfigurationError
-
+    if type(value) is int and 0 < value <= 2_147_483_647:
+        return
     if (
         isinstance(value, bool)
         or not isinstance(value, int)
