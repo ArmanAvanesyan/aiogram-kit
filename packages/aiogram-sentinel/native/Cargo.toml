@@ -12,6 +12,7 @@ name = "_aiogram_sentinel_native"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+hashbrown = { version = "0.16", default-features = false, features = ["inline-more"] }
 pyo3 = { version = "0.30.1", features = ["abi3-py310"] }
 
 [dev-dependencies]

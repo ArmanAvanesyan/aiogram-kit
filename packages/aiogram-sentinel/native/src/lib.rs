@@ -1,5 +1,6 @@
 //! Synchronous, process-local storage. Clocks and interval validation belong to Python.
-use std::collections::{HashMap, VecDeque};
+use hashbrown::HashMap;
+use std::collections::{hash_map::RandomState, VecDeque};
 use std::sync::Mutex;
 
 use pyo3::exceptions::PyRuntimeError;
@@ -7,17 +8,14 @@ use pyo3::prelude::*;
 
 #[derive(Default)]
 pub struct RateState {
-    pub counters: HashMap<Vec<u8>, VecDeque<f64>>,
+    pub counters: HashMap<Vec<u8>, VecDeque<f64>, RandomState>,
 }
 
 impl RateState {
     fn counter(&mut self, key: &[u8], window: f64, now: f64) -> &mut VecDeque<f64> {
-        // Avoid allocating an owned key on every hit. Keys are copied only
-        // for first admission; the extra lookup keeps std's randomized hasher.
-        if !self.counters.contains_key(key) {
-            self.counters.insert(key.to_owned(), VecDeque::new());
-        }
-        let counter = self.counters.get_mut(key).expect("admitted counter");
+        // One lookup, retaining std's keyed HashDoS-resistant RandomState.
+        // Borrowed entry lookup copies key bytes only on first admission.
+        let counter = self.counters.entry_ref(key).or_default();
         let cutoff = now - window;
         // Exact-boundary requests remain in the window, matching Python deque.
         while counter.front().is_some_and(|value| *value < cutoff) {
@@ -59,7 +57,7 @@ impl RateState {
 
 #[derive(Default)]
 pub struct DebounceState {
-    pub entries: HashMap<Vec<u8>, f64>,
+    pub entries: HashMap<Vec<u8>, f64, RandomState>,
 }
 
 impl DebounceState {
@@ -69,12 +67,11 @@ impl DebounceState {
         combined.extend_from_slice(key);
         combined.push(b':');
         combined.extend_from_slice(fingerprint);
-        let key = combined;
-        let timestamp = *self.entries.get(&key).unwrap_or(&0.0);
-        if timestamp != 0.0 && timestamp + window > now {
+        let timestamp = self.entries.entry(combined).or_insert(0.0);
+        if *timestamp != 0.0 && *timestamp + window > now {
             true
         } else {
-            self.entries.insert(key, now);
+            *timestamp = now;
             false
         }
     }
@@ -227,6 +224,31 @@ mod tests {
         rate.allow(b"old", 5, 5.0, 1.0);
         rate.allow(b"other", 5, 5.0, 100.0);
         assert_eq!(rate.remaining(b"old", 5, 1000.0, 100.0), 4);
+    }
+
+    #[test]
+    fn borrowed_entries_reuse_keys_and_preserve_reset() {
+        let mut state = RateState::default();
+        for index in 0..1024 {
+            let key = format!("user:{index}");
+            assert!(state.allow(key.as_bytes(), 2, 60.0, 100.0));
+            assert!(state.allow(key.as_bytes(), 2, 60.0, 100.0));
+            assert!(!state.allow(key.as_bytes(), 2, 60.0, 100.0));
+        }
+        assert_eq!(state.counters.len(), 1024);
+        state.reset(b"user:17");
+        assert_eq!(state.remaining(b"user:17", 2, 60.0, 100.0), 2);
+        assert_eq!(state.remaining(b"user:18", 2, 60.0, 100.0), 0);
+    }
+
+    #[test]
+    fn debounce_helpers_keep_composite_key_aliasing() {
+        let mut state = DebounceState::default();
+        state.set(b"key:fp", 5.0, 100.0);
+        assert!(state.seen(b"key", 10.0, b"fp", 110.0));
+        assert!(!state.seen(b"key", 10.0, b"fp", 115.0));
+        state.set(b"key:fp", 0.0, 116.0);
+        assert!(!state.seen(b"key", 10.0, b"fp", 116.0));
     }
 
     #[test]

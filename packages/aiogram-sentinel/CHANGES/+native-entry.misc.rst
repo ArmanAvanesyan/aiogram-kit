@@ -1,0 +1,1 @@
+Reduce optional Rust memory-core hash lookups while retaining keyed hashing, exact expiry boundaries and composite-key compatibility. Native publication remains gated by repeated end-to-end qualification.
