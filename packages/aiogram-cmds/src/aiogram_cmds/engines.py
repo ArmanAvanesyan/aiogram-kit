@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 from importlib import import_module
 from typing import Literal, Protocol, cast
 
@@ -41,6 +42,12 @@ def native_engine(engine: Engine = "python") -> NativeModule | None:
         raise ValueError("engine must be 'python' or 'rust'")
     if engine == "python":
         return None
+    return _load_native()
+
+
+@lru_cache(maxsize=1)
+def _load_native() -> NativeModule:
+    """Validate the immutable loaded extension once, before any effects."""
     try:
         module = cast(NativeModule, import_module("_aiogram_cmds_native"))
     except (ImportError, OSError) as error:

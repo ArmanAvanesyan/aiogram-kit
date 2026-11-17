@@ -9,6 +9,7 @@ from ._aiogram_nav_native import (
     token_matches,
     transition_history,
     transition_state,
+    transition_values,
     validate_json,
 )
 
@@ -21,5 +22,6 @@ __all__ = [
     "token_matches",
     "transition_history",
     "transition_state",
+    "transition_values",
     "validate_json",
 ]

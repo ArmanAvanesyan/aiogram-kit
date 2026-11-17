@@ -50,7 +50,14 @@ def payload_fingerprint(
     if type(bot_id) is not int or bot_id <= 0:
         raise ValueError("A positive bot identity is required for fingerprints")
     module = native_engine(engine)
-    if module is not None:
+    # Small one-shot payloads cost less in CPython's C-backed JSON/hash modules
+    # than converting their rows across the extension boundary. Selection is
+    # deterministic, not a fallback after a native error or application effect.
+    if module is not None and (
+        len(commands) > 10
+        or not isinstance(cast(object, scope), dict)
+        or not (language_code is None or isinstance(cast(object, language_code), str))
+    ):
         return module.fingerprint(
             str(bot_id),
             json.dumps(

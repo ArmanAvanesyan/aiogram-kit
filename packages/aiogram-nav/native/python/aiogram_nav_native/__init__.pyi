@@ -38,3 +38,14 @@ def token_matches(
     expires_at: str,
     now_ms: str,
 ) -> bool: ...
+def transition_values(
+    history: tuple[Any, ...],
+    current: Any | None,
+    mode: str,
+    limit: int,
+    pop: int,
+    changed: bool,
+    previous: tuple[str, str, str, str] | None,
+    accepted: bool,
+    now: str,
+) -> tuple[list[Any], tuple[str, str, str, str]]: ...

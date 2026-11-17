@@ -274,7 +274,9 @@ def build_profile_batch(
                 slot,
             )
         )
-    if module is None:
+    if module is None or (len(prepared) == 1 and len(prepared[0][1]) <= 10):
+        # Avoid extension marshalling for one small payload. Large batches still
+        # use the native snapshot and its bounded deterministic hash cache.
         results: list[ResolvedPayload] = []
         for request, rows, _scope, canonical, slot in prepared:
             language = json.dumps(slot, ensure_ascii=False)

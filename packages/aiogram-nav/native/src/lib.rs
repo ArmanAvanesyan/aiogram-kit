@@ -79,7 +79,16 @@ fn validate_json(raw: &str, max_bytes: usize, max_depth: usize) -> PyResult<()> 
 /// Hash only the exact canonical bytes supplied by the Python policy layer.
 /// No Rust JSON reserialization is allowed to alter durable receipt identity.
 pub fn canonical_digest(raw: &str) -> String {
-    format!("{:x}", Sha256::digest(raw.as_bytes()))
+    {
+        const HEX: &[u8; 16] = b"0123456789abcdef";
+        let digest = Sha256::digest(raw.as_bytes());
+        let mut encoded = String::with_capacity(64);
+        for byte in digest {
+            encoded.push(HEX[(byte >> 4) as usize] as char);
+            encoded.push(HEX[(byte & 15) as usize] as char);
+        }
+        encoded
+    }
 }
 #[pyfunction]
 fn fingerprint_canonical(raw: &str) -> String {
@@ -181,6 +190,65 @@ fn transition_history(
         push_current,
     )
     .map_err(invalid)
+}
+
+/// Keep opaque Python history entries in Python ownership; only the bounded
+/// history decisions and integer transitions cross this boundary, never JSON.
+#[pyfunction]
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
+#[pyo3(signature=(history, current, mode, limit, pop, changed, previous, accepted, now))]
+fn transition_values(
+    history: Vec<Py<PyAny>>,
+    current: Option<Py<PyAny>>,
+    mode: &str,
+    limit: usize,
+    pop: usize,
+    changed: bool,
+    previous: Option<(String, String, String, String)>,
+    accepted: bool,
+    now: &str,
+) -> PyResult<(Vec<Py<PyAny>>, (String, String, String, String))> {
+    if limit > 1000 || pop > 1000 {
+        return Err(invalid("History exceeds bounded capacity"));
+    }
+    if integer(now).map_err(invalid)?.0 {
+        return Err(invalid("Negative clock"));
+    }
+    let mut items = history;
+    match mode {
+        "push" if changed => {
+            if let Some(entry) = current {
+                items.push(entry);
+            }
+        }
+        "push" | "none" => (),
+        "pop" => items.truncate(items.len().saturating_sub(pop)),
+        "clear" => items.clear(),
+        _ => return Err(invalid("Unknown history mode")),
+    }
+    if items.len() > limit {
+        items.drain(..items.len() - limit);
+    }
+    let state = if let Some((nav, activity, entered, last)) = previous {
+        for value in [&nav, &activity, &entered, &last] {
+            if integer(value).map_err(invalid)?.0 {
+                return Err(invalid("Negative previous state"));
+            }
+        }
+        (
+            increment(&nav).map_err(invalid)?,
+            if accepted {
+                increment(&activity).map_err(invalid)?
+            } else {
+                activity
+            },
+            if changed { now.to_owned() } else { entered },
+            if accepted { now.to_owned() } else { last },
+        )
+    } else {
+        ("1".into(), "1".into(), now.into(), now.into())
+    };
+    Ok((items, state))
 }
 
 fn integer(raw: &str) -> Result<(bool, &str), String> {
@@ -318,6 +386,7 @@ fn _aiogram_nav_native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(fingerprint_canonical, module)?)?;
     module.add_function(wrap_pyfunction!(transition_history, module)?)?;
     module.add_function(wrap_pyfunction!(transition_state, module)?)?;
+    module.add_function(wrap_pyfunction!(transition_values, module)?)?;
     module.add_function(wrap_pyfunction!(token_matches, module)?)?;
     module.add_class::<Registry>()?;
     Ok(())

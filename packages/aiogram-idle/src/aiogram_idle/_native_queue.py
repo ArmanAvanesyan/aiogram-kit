@@ -9,6 +9,7 @@ from collections.abc import Callable, Iterator, MutableMapping, Sequence
 from functools import lru_cache
 from typing import Protocol, TypeVar, cast, overload
 
+from ._wire import wire as _wire
 from .errors import OwnershipLost
 from .models import IdleConversationKey, RuntimeSnapshot
 from .storage.queue import DeadlineQueue
@@ -66,10 +67,6 @@ class NativeDeadlineCore(Protocol):
         self, key: str, token: str, generation: str, now: float, deadline: float | None
     ) -> None: ...
     def reconcile(self, candidates: list[tuple[str, str, str, float]], limit: int) -> int: ...
-
-
-def _wire(value: str) -> str:
-    return json.dumps(value, ensure_ascii=True)
 
 
 def _unwire(value: str) -> str:

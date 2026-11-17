@@ -98,7 +98,7 @@ impl DebounceState {
     }
 }
 
-#[pyclass]
+#[pyclass(frozen)]
 #[derive(Default)]
 struct RateLimiterCore {
     state: Mutex<RateState>,
@@ -151,7 +151,7 @@ impl RateLimiterCore {
     }
 }
 
-#[pyclass]
+#[pyclass(frozen)]
 #[derive(Default)]
 struct DebounceCore {
     state: Mutex<DebounceState>,

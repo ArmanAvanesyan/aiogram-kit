@@ -95,3 +95,26 @@ This produces PNG/SVG and chart-data.json with input digests. Storage plots show
 measured hot state and total retained JSON separately; old workloads are never
 extrapolated beyond their measured checkpoints. The CPU chart does not substitute
 for the latency, functional or artifact gates.
+
+## Run the complete native qualification serially
+
+`qualify_native.py` runs the four prespecified workload groups without parallel
+builds/tests. Supply an isolated environment containing the reviewed local base
+and companion wheels plus their declared Redis dependencies (`redis>=5.0.8,<8`).
+Never install an unconstrained Redis client over those extra requirements.
+
+```sh
+python3 tools/optimization/qualify_native.py \
+  --python /tmp/candidate/bin/python \
+  --redis-url redis://127.0.0.1:6379/0 \
+  --protocol reports/2026-11-17-native-qualification/protocol.json \
+  --output /tmp/native-qualification
+```
+
+The output must be empty. The runner retains each attempt, freezes the protocol,
+uses Python–Rust–Rust–Python order and returns nonzero when any performance gate
+fails. Use `--package aiogram-cmds` to repeat the same predeclared workloads after
+changing only that candidate. Keep the earlier failed evidence. Do not run builds
+or other tests while timing, silently retry noisy runs or publish from CPU results
+alone. Installed-wheel provenance, functional/platform tests and independent
+release review remain required.
