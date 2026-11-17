@@ -63,6 +63,7 @@ class RecordingSession(BaseSession):
                         "limited_gifts": False,
                         "unique_gifts": False,
                         "premium_subscription": False,
+                        "gifts_from_channels": False,
                     },
                 }
             )

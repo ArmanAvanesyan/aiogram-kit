@@ -34,4 +34,6 @@ jobs:
         run: uv run --no-sync python tools/check_news.py --base "$BASE_SHA"
       - run: uv run --no-sync pytest tests/integration -q
       - run: uv run --no-sync python tools/verify_migration.py --historical-objects --remote-refs
-      - run: uv run --no-sync mkdocs build --strict
+      - name: Build documentation on its supported toolchain
+        if: matrix.python == '3.12'
+        run: uv run --no-sync mkdocs build --strict
