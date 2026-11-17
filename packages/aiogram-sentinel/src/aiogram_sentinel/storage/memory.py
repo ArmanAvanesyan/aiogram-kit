@@ -34,8 +34,8 @@ class MemoryRateLimiter(RateLimiterBackend):
         validate_interval(max_events, "max_events")
         validate_interval(per_seconds, "per_seconds")
         if self._native is not None:
-            return self._native.allow(
-                _native_key(key), max_events, per_seconds, time.monotonic()
+            return self._native.allow_text(
+                key, max_events, per_seconds, time.monotonic()
             )
         async with self._lock:
             now = time.monotonic()
@@ -122,8 +122,8 @@ class MemoryDebounce(DebounceBackend):
         """Check if fingerprint was seen within window and record it."""
         validate_interval(window_seconds, "window_seconds")
         if self._native is not None:
-            return self._native.seen_key(
-                _native_key(f"{key}:{fingerprint}"), window_seconds, time.monotonic()
+            return self._native.seen_text(
+                f"{key}:{fingerprint}", window_seconds, time.monotonic()
             )
         k = f"{key}:{fingerprint}"
         async with self._lock:

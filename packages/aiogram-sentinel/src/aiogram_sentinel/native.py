@@ -18,6 +18,8 @@ class NativeEngineIncompatible(ConfigurationError):
 
 
 class RateCore(Protocol):
+    def allow_text(self, key: str, maximum: int, window: float, now: float) -> bool: ...
+
     def allow(self, key: bytes, maximum: int, window: float, now: float) -> bool: ...
     def remaining(self, key: bytes, maximum: int, window: float, now: float) -> int: ...
     def increment(self, key: bytes, window: float, now: float) -> int: ...
@@ -27,6 +29,8 @@ class RateCore(Protocol):
 
 
 class DebounceCore(Protocol):
+    def seen_text(self, key: str, window: float, now: float) -> bool: ...
+
     def seen_key(self, key: bytes, window: float, now: float) -> bool: ...
 
     def seen(
@@ -70,9 +74,20 @@ def load_native() -> NativeModule:
         for core, methods in (
             (
                 native.RateLimiterCore(),
-                ("allow", "remaining", "increment", "count", "reset", "snapshot"),
+                (
+                    "allow",
+                    "allow_text",
+                    "remaining",
+                    "increment",
+                    "count",
+                    "reset",
+                    "snapshot",
+                ),
             ),
-            (native.DebounceCore(), ("seen", "seen_key", "set", "active", "snapshot")),
+            (
+                native.DebounceCore(),
+                ("seen", "seen_key", "seen_text", "set", "active", "snapshot"),
+            ),
         ):
             if any(not callable(getattr(core, method, None)) for method in methods):
                 raise ValueError("Incomplete native kernel interface")

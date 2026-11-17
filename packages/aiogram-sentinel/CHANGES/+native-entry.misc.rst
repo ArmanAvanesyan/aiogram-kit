@@ -1,1 +1,1 @@
-Reduce optional Rust memory-core hash lookups while retaining keyed hashing, exact expiry boundaries and composite-key compatibility. Native publication remains gated by repeated end-to-end qualification.
+Reduce optional Rust memory-core hash lookups and borrow CPython UTF-8 keys where possible, retaining keyed hashing, surrogate transport, exact expiry boundaries and composite-key compatibility. Native publication remains gated by repeated end-to-end qualification.

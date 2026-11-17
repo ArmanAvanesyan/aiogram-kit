@@ -5,6 +5,23 @@ use std::sync::Mutex;
 
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
+use pyo3::types::{PyBytes, PyString};
+
+// Borrow CPython's cached UTF-8 for ordinary strings. Surrogates use the exact
+// previous str.encode(..., surrogatepass) contract, before any state mutation.
+fn with_key<T>(
+    key: &Bound<'_, PyString>,
+    action: impl FnOnce(&[u8]) -> PyResult<T>,
+) -> PyResult<T> {
+    if let Ok(value) = key.to_str() {
+        return action(value.as_bytes());
+    }
+    let encoded = key
+        .py()
+        .get_type::<PyString>()
+        .call_method1("encode", (key, "utf-8", "surrogatepass"))?;
+    action(encoded.cast::<PyBytes>()?.as_bytes())
+}
 
 #[derive(Default)]
 pub struct RateState {
@@ -117,6 +134,21 @@ impl RateLimiterCore {
         Self::default()
     }
 
+    fn allow_text(
+        &self,
+        key: &Bound<'_, PyString>,
+        maximum: usize,
+        window: f64,
+        now: f64,
+    ) -> PyResult<bool> {
+        with_key(key, |bytes| {
+            Ok(self
+                .state
+                .lock()
+                .map_err(poisoned)?
+                .allow(bytes, maximum, window, now))
+        })
+    }
     fn allow(&self, key: &[u8], maximum: usize, window: f64, now: f64) -> PyResult<bool> {
         Ok(self
             .state
@@ -175,6 +207,15 @@ impl DebounceCore {
             .lock()
             .map_err(poisoned)?
             .seen(key, window, fingerprint, now))
+    }
+    fn seen_text(&self, key: &Bound<'_, PyString>, window: f64, now: f64) -> PyResult<bool> {
+        with_key(key, |bytes| {
+            Ok(self
+                .state
+                .lock()
+                .map_err(poisoned)?
+                .seen_key(bytes, window, now))
+        })
     }
     fn seen_key(&self, key: &[u8], window: f64, now: f64) -> PyResult<bool> {
         Ok(self

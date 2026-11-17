@@ -95,7 +95,7 @@ async def test_concurrent_limit_and_no_fallback(native):
     )
     assert await limiter.get_remaining("hot", 17, 60) == 0
     failing = SimpleNamespace(
-        allow=lambda *args: (_ for _ in ()).throw(RuntimeError("after mutation"))
+        allow_text=lambda *args: (_ for _ in ()).throw(RuntimeError("after mutation"))
     )
     limiter._native = failing
     with pytest.raises(RuntimeError, match="after mutation"):
@@ -273,3 +273,23 @@ async def test_debounce_combined_identity_keeps_formatting_and_aliases(native):
             assert await debounce.seen("a", 60, "b:c")
             assert not await debounce.seen("surrogate-\ud800", 60, "hy-հայ")
             assert await debounce.seen("surrogate-\ud800", 60, "hy-հայ")
+
+
+@pytest.mark.asyncio
+async def test_native_text_keys_match_byte_helpers_without_subclass_dispatch(native):
+    class Key(str):
+        def encode(self, *args, **kwargs):
+            raise AssertionError("must use base string encoding")
+
+    for key in ("ascii", "Հայերեն 😀", "lone-\ud800", Key("subclass"), Key("\udfff")):
+        for engine in ("python", "rust"):
+            limiter = MemoryRateLimiter(engine=engine)
+            with patch(
+                "aiogram_sentinel.storage.memory.time.monotonic", return_value=100
+            ):
+                assert await limiter.allow(key, 2, 60)
+                assert await limiter.get_remaining(key, 2, 60) == 1
+                assert await limiter.allow(key, 2, 60)
+                assert not await limiter.allow(key, 2, 60)
+                await limiter.reset_rate_limit(key)
+                assert await limiter.get_remaining(key, 2, 60) == 2
