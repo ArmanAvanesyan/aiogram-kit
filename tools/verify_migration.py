@@ -12,15 +12,35 @@ ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "reports/monorepo-migration"
 
 
-def verify(*, historical_objects: bool = False) -> None:
-    for row in json.loads((REPORT / "history-map.json").read_text()):
+def verify(*, historical_objects: bool = False, remote_refs: bool = False) -> None:
+    refs = json.loads((REPORT / "refs-map.json").read_text())
+    if len({row["destination_ref"] for row in refs}) != len(refs):
+        raise ValueError("Duplicate historical destination reference")
+    mapped = {(row["repository"], row["destination_ref"]): row["object_id"] for row in refs}
+    histories = json.loads((REPORT / "history-map.json").read_text())
+    sources = json.loads((REPORT / "repository-map.json").read_text())
+    if len({row["repository"] for row in histories}) != len(histories) or {
+        row["repository"] for row in histories
+    } != {row["source_name"] for row in sources}:
+        raise ValueError("Source history inventory differs from preserved repository identities")
+    for row in histories:
+        if mapped.get((row["repository"], row["history_ref"])) != row["source_head"]:
+            raise ValueError(f"Source history has no matching preserved ref: {row['repository']}")
         subprocess.run(
             ["git", "merge-base", "--is-ancestor", row["source_head"], "HEAD"], cwd=ROOT, check=True
         )
-    for row in json.loads((REPORT / "refs-map.json").read_text()) if historical_objects else []:
+    for row in refs if historical_objects else []:
         # Historical refs can be absent from shallow checkouts, but source objects
         # must remain retrievable by the recorded original identity.
         subprocess.run(["git", "cat-file", "-e", row["object_id"]], cwd=ROOT, check=True)
+    if remote_refs:
+        advertised = subprocess.check_output(
+            ["git", "ls-remote", "--refs", "origin"], cwd=ROOT, text=True
+        )
+        remote = {ref: oid for oid, ref in (line.split() for line in advertised.splitlines())}
+        for row in refs:
+            if remote.get(row["destination_ref"]) != row["object_id"]:
+                raise ValueError(f"Remote historical ref differs: {row['destination_ref']}")
     for row in json.loads((REPORT / "preserved-kit-working-copy.json").read_text()):
         path = ROOT / "packages/aiogram-kit" / row["path"]
         if hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
@@ -31,8 +51,14 @@ def verify(*, historical_objects: bool = False) -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
+        "--remote-refs",
+        action="store_true",
+        help="Verify every published historical ref still advertises its recorded object ID",
+    )
+    parser.add_argument(
         "--historical-objects",
         action="store_true",
         help="Require every preserved branch/tag object; run after history-ref publication",
     )
-    verify(historical_objects=parser.parse_args().historical_objects)
+    args = parser.parse_args()
+    verify(historical_objects=args.historical_objects, remote_refs=args.remote_refs)

@@ -128,3 +128,86 @@ def test_rejects_workspace_contamination(release, kind):
     digest = hashlib.sha256(manifest.read_bytes()).hexdigest()
     with pytest.raises(ValueError):
         module.verify(root, package, tag, dist, digest)
+
+
+def _approve_manifest(dist):
+    manifest = dist / "SHA256SUMS"
+    manifest.write_text(
+        "".join(
+            f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}\n"
+            for path in sorted(dist.iterdir())
+            if path.name != "SHA256SUMS"
+        )
+    )
+    return hashlib.sha256(manifest.read_bytes()).hexdigest()
+
+
+@pytest.mark.parametrize(
+    "kind",
+    ["traversal", "absolute", "backslash", "symlink", "duplicate", "duplicate-identity"],
+)
+def test_rejects_unsafe_wheel_even_with_approved_hashes(release, kind):
+    root, package, tag, dist, _ = release
+    wheel = dist / "aiogram_nav-0.3.1-py3-none-any.whl"
+    with zipfile.ZipFile(wheel, "a") as archive:
+        if kind == "symlink":
+            member = zipfile.ZipInfo("aiogram_nav/link")
+            member.create_system = 3
+            member.external_attr = 0o120777 << 16
+            archive.writestr(member, "../../outside")
+        elif kind == "duplicate-identity":
+            # Rebuild rather than duplicate the ZIP entry: duplicate headers are
+            # ambiguous even when the metadata file itself occurs only once.
+            pass
+        else:
+            name = {
+                "traversal": "aiogram_nav/../../outside.py",
+                "absolute": "/aiogram_nav/outside.py",
+                "backslash": "aiogram_nav/..\\outside.py",
+                "duplicate": "aiogram_nav/module.py",
+            }[kind]
+            archive.writestr(name, b"first")
+            if kind == "duplicate":
+                with pytest.warns(UserWarning, match="Duplicate"):
+                    archive.writestr(name, b"second")
+    if kind == "duplicate-identity":
+        with zipfile.ZipFile(wheel, "w") as archive:
+            archive.writestr(
+                "aiogram_nav-0.3.1.dist-info/METADATA",
+                "Name: aiogram-nav\nName: other\nVersion: 0.3.1\n",
+            )
+    with pytest.raises(ValueError):
+        module.verify(root, package, tag, dist, _approve_manifest(dist))
+
+
+@pytest.mark.parametrize(
+    "kind", ["traversal", "foreign-root", "symlink", "hardlink", "fifo", "duplicate"]
+)
+def test_rejects_unsafe_sdist_even_with_approved_hashes(release, kind):
+    root, package, tag, dist, _ = release
+    path = dist / "aiogram_nav-0.3.1.tar.gz"
+    with tarfile.open(path) as archive:
+        metadata = archive.extractfile(archive.getmembers()[0]).read()
+    with tarfile.open(path, "w:gz") as archive:
+        member = tarfile.TarInfo("aiogram_nav-0.3.1/PKG-INFO")
+        member.size = len(metadata)
+        archive.addfile(member, io.BytesIO(metadata))
+        name = {
+            "traversal": "aiogram_nav-0.3.1/../../outside",
+            "foreign-root": "other-project/file",
+            "duplicate": "aiogram_nav-0.3.1/PKG-INFO",
+        }.get(kind, "aiogram_nav-0.3.1/link")
+        member = tarfile.TarInfo(name)
+        if kind in {"symlink", "hardlink", "fifo"}:
+            member.type = {
+                "symlink": tarfile.SYMTYPE,
+                "hardlink": tarfile.LNKTYPE,
+                "fifo": tarfile.FIFOTYPE,
+            }[kind]
+            member.linkname = "../../outside"
+            archive.addfile(member)
+        else:
+            member.size = len(metadata)
+            archive.addfile(member, io.BytesIO(metadata))
+    with pytest.raises(ValueError):
+        module.verify(root, package, tag, dist, _approve_manifest(dist))

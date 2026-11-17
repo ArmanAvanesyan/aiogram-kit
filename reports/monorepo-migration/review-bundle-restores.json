@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "aiogram-kit",
+    "sha256": "ece8b15b9cc495794664efa7f19a605885364b71ea258eae14568283696ff7f2",
+    "restored_refs": 158,
+    "clone_and_fsck": "passed"
+  },
+  {
+    "repository": "aiogram-kit-legacy",
+    "sha256": "0d1c04fa8c8a56b5b8950bcd47cfab0c7549d658157219653408547b2524005f",
+    "restored_refs": 8,
+    "clone_and_fsck": "passed"
+  },
+  {
+    "repository": "aiogram-coordination",
+    "sha256": "c353a7e1584ca135bdb1098721fb68fa97ecb631f3d2d33d9b48d2ee9a55d0c8",
+    "restored_refs": 2,
+    "clone_and_fsck": "passed"
+  },
+  {
+    "repository": "aiogram-cmds",
+    "sha256": "bee4b99fa5d285b13f79c8b00bb3b3e8b195a122b4a239939fd838f577b35b74",
+    "restored_refs": 31,
+    "clone_and_fsck": "passed"
+  },
+  {
+    "repository": "aiogram-nav",
+    "sha256": "34ec00e98db56e9347f96b72111e3fb74f30efa04c29b9895a7aa3a2931e891b",
+    "restored_refs": 8,
+    "clone_and_fsck": "passed"
+  },
+  {
+    "repository": "aiogram-idle",
+    "sha256": "f8e33c9e93269de6d101d25d6258ee6de3ac2d33173426c80a120ecf27f25b92",
+    "restored_refs": 11,
+    "clone_and_fsck": "passed"
+  }
+]

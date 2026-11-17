@@ -1,0 +1,20 @@
+[
+  {
+    "id": 414134951,
+    "name": "aiogram-cmds: Changelog",
+    "path": ".github/workflows/aiogram-cmds-pr-management.yml",
+    "state": "disabled_manually"
+  },
+  {
+    "id": 414134957,
+    "name": "aiogram-kit: Optimization tooling",
+    "path": ".github/workflows/aiogram-kit-optimization-tools.yml",
+    "state": "disabled_manually"
+  },
+  {
+    "id": 414134955,
+    "name": "aiogram-sentinel: PR Management",
+    "path": ".github/workflows/aiogram-sentinel-pr-management.yml",
+    "state": "disabled_manually"
+  }
+]

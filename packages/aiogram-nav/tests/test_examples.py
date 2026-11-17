@@ -13,12 +13,14 @@ from aiogram.methods import (
     AnswerCallbackQuery,
     EditMessageReplyMarkup,
     EditMessageText,
+    GetChat,
     GetMe,
     SendMessage,
 )
 from aiogram.types import (
     CallbackQuery,
     Chat,
+    ChatFullInfo,
     InlineKeyboardMarkup,
     Message,
     ReplyKeyboardMarkup,
@@ -63,6 +65,24 @@ class RecordingSession(BaseSession):
         self.methods.append(method)
         if isinstance(method, GetMe):
             return BOT_USER
+        if isinstance(method, GetChat):
+            return ChatFullInfo.model_validate(
+                {
+                    "id": bot.id,
+                    "type": "private",
+                    "first_name": BOT_USER.first_name,
+                    "username": BOT_USER.username,
+                    "active_usernames": [BOT_USER.username],
+                    "accent_color_id": 0,
+                    "max_reaction_count": 0,
+                    "accepted_gift_types": {
+                        "unlimited_gifts": False,
+                        "limited_gifts": False,
+                        "unique_gifts": False,
+                        "premium_subscription": False,
+                    },
+                }
+            )
         if isinstance(method, (AnswerCallbackQuery, EditMessageReplyMarkup)):
             return True
         if isinstance(method, (SendMessage, EditMessageText)):

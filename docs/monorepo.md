@@ -53,3 +53,27 @@ pip install 'git+https://github.com/ArmanAvanesyan/aiogram-kit.git@aiogram-nav-v
 An unqualified install from the repository root is not a library installation. Historical
 Git tags retain their original layouts. Update floating Sentinel Git URLs and CI checkout
 commands to select the new subdirectory; GitHub's repository redirect does not add it.
+
+## Ongoing verification
+
+Main runs the complete package and shared-tool matrix. Documentation deploys automatically
+from main; PR builds have no deployment permissions. Independent publishers recheck the
+reviewed manifest after downloading the producer's immutable Actions artifact, before
+copying only the two verified distributions into the publishing directory.
+
+Check or regenerate the shared publisher handoff with:
+
+```sh
+uv run --no-sync python tools/publish_handoff.py
+uv run --no-sync python tools/publish_handoff.py --write
+```
+
+From a full clone with the canonical origin, verify original ancestry, protected working
+files and advertised history refs with:
+
+```sh
+uv run --no-sync python tools/verify_migration.py --historical-objects --remote-refs
+```
+
+The [post-cutover review](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/reports/monorepo-migration/review-2026-11-17.md)
+records the review findings and release/preservation evidence.
