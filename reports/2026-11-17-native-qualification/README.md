@@ -113,7 +113,7 @@ No ABI redesign or broader rewrite is approved for publication by these results.
 
 ## Review corrections — 2026-11-17
 
-The review found and fixed four issues without relaxing publication gates:
+The review found and fixed five issues without relaxing publication gates:
 
 1. Protocol metadata/order was not validated. Unknown package paths, repeated
    labels and thresholds/sample claims inconsistent with the actual comparator
@@ -128,6 +128,12 @@ The review found and fixed four issues without relaxing publication gates:
    subclasses. The fast path now accepts exact built-in strings only; subclasses
    retain the original JSON encoding. Regression tests cover overridden methods
    and concatenation, alongside the existing Unicode cases.
+
+5. An existing Cmds unit test enforced a 100 ms wall-clock budget while running
+   under coverage. CI reproduced a 104 ms failure on Intel macOS. The same 100 ms
+   wall-time budget now runs in the existing coverage-free performance suite using
+   a monotonic clock. Unit tests check result independence deterministically.
+   The native CPU/p95/stability thresholds are unchanged.
 
 All nine completed paired comparisons were replayed from their retained raw
 results. Every input hash, numeric comparison and failure list matches the
