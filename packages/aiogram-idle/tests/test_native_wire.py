@@ -12,8 +12,7 @@ def test_wire_matches_json() -> None:
     rng = random.Random(137)
     values = [chr(codepoint) for codepoint in range(256)]
     values.extend(
-        "".join(chr(rng.randrange(0x110000)) for _ in range(rng.randrange(65)))
-        for _ in range(1000)
+        "".join(chr(rng.randrange(0x110000)) for _ in range(rng.randrange(65))) for _ in range(1000)
     )
     for value in values:
         assert wire(value) == json.dumps(value, ensure_ascii=True)

@@ -1,0 +1,73 @@
+{
+  "publication_performed": false,
+  "decision": "Withhold all four companions; no threshold waived.",
+  "linux_run": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44054131749",
+  "packages": {
+    "sentinel": {
+      "qualified": false,
+      "cpu": [
+        {
+          "workload": "debounce_accepted_many",
+          "rust_over_python_cpu": 0.8192955420341593
+        },
+        {
+          "workload": "rate_accepted_many",
+          "rust_over_python_cpu": 0.8021298398534082
+        }
+      ],
+      "failures": [
+        "CPU improvement below 20%: debounce_accepted_many",
+        "Latency repeat spread exceeds 10%: middleware_fake_io",
+        "CPU improvement below 20%: rate_accepted_many"
+      ],
+      "publication_ready": false
+    },
+    "cmds": {
+      "qualified": false,
+      "cpu": [
+        {
+          "workload": "compiled_batch/100/10_profiles/30_targets",
+          "rust_over_python_cpu": 0.4987673606257086
+        }
+      ],
+      "failures": [
+        "End-to-end p95 regression exceeds 5%: compiled_fake_telegram_1ms/1",
+        "Latency repeat spread exceeds 10%: confirmation_hit/1"
+      ],
+      "publication_ready": false
+    },
+    "nav": {
+      "qualified": false,
+      "cpu": [
+        {
+          "workload": "memory-track/50",
+          "rust_over_python_cpu": 1.0532571699748068,
+          "rust_over_python_p95": 1.0473867127420242
+        }
+      ],
+      "failures": [
+        "CPU improvement below 20%: memory-track/50"
+      ],
+      "publication_ready": false
+    },
+    "idle": {
+      "qualified": false,
+      "cpu": [
+        {
+          "workload": "memory-activate-touch/50",
+          "rust_over_python_cpu": 1.058265978290686,
+          "rust_over_python_p95": 1.0680023696181453
+        }
+      ],
+      "failures": [
+        "CPU improvement below 20%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-deadline-claims/16",
+        "End-to-end p95 regression exceeds 5%: memory-track/50",
+        "Latency repeat spread exceeds 10%: memory-track/50",
+        "End-to-end p95 regression exceeds 5%: redis-activate-touch/50"
+      ],
+      "publication_ready": false
+    }
+  }
+}

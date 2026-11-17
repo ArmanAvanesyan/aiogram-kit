@@ -76,3 +76,35 @@ A faster CPU sample alone does not approve a release. Stable host evidence,
 functional/platform CI, final versioned artifacts, isolated installs and the
 independent release review remain required. Never lower thresholds, remove slow
 workloads, hide failed attempts, or trade recovery/ownership checks for speed.
+
+## Fresh Linux verification and publication decision
+
+The read-only [manual run 44054131749](https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44054131749)
+completed every build and all four paired benchmark groups. All nine downloaded
+wheel hashes match the uploaded manifest. Its failed status is the correct
+performance-gate result, not a build/infrastructure failure. Raw results are in
+`linux-44054131749/`; the exact source commit, artifact ID and ZIP digest are in
+`linux-run.json`. The small later test/format-only changes do not alter the SDK or
+native source measured by this run. Do not combine its Linux samples with macOS.
+
+| Companion | Linux Rust/Python CPU ratio | Publication decision |
+|---|---:|---|
+| Sentinel | 0.802 rate / 0.819 debounce | Withhold: both exceed 0.8; latency repeat spread |
+| Cmds | 0.499 compiled batch | Withhold: compiled fake-I/O p95 +5.57%, confirmation repeat spread |
+| Nav | 1.053 tracking | Withhold: CPU target missed |
+| Idle | 1.058 activation/touch | Withhold: CPU and multiple latency targets missed |
+
+`publication-verdict.json` is the consolidated decision. **None is ready to
+publish.** Cmds is the closest candidate: the batching benefit is reproducible,
+and small-call conversion overhead is corrected, but the remaining failures are
+still failures. Sentinel's 19.79%/18.07% improvements must not be rounded into a
+20% pass. Nav and Idle need larger useful native work per boundary crossing;
+removing recovery, authorization or ownership validation is not an optimization.
+
+The diagnostic cProfile files under `diagnostic-profiles/` explain the remaining
+Nav/Idle CPU costs. They are explicitly not qualification timings. Nav still
+spends substantial time in canonicalization, immutable JSON freezing and key/
+coordination normalization outside the native helpers. The next native design
+should batch validated state work while preserving exact fingerprints and full
+backend/FSM recovery parity. Idle's claim latency also needs boundary-level work.
+No ABI redesign or broader rewrite is approved for publication by these results.
