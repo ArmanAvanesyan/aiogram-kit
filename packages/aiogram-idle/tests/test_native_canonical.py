@@ -85,3 +85,34 @@ def test_recursive_input_does_not_crash():
     value.append(value)
     with pytest.raises(RecursionError):
         fingerprint(value, engine="rust")
+
+
+def test_datetime_fingerprints_use_python_isoformat():
+    native()
+    from datetime import datetime, timezone
+
+    for value in (datetime(2026, 11, 18), datetime(2026, 11, 18, tzinfo=timezone.utc)):
+        assert fingerprint(value, engine="rust") == fingerprint(value)
+
+
+def test_big_integer_runtime_digit_limit_is_not_hidden_by_memo():
+    native()
+    import sys
+
+    from aiogram_idle.models import ActivityGuard
+    from aiogram_idle.storage.receipts import new_canonicalizer
+
+    if not hasattr(sys, "set_int_max_str_digits"):
+        pytest.skip("Interpreter has no digit-limit control")
+    original = sys.get_int_max_str_digits()
+    core = new_canonicalizer()
+    value = ActivityGuard("session", "activity", 10**1000)
+    try:
+        sys.set_int_max_str_digits(0)
+        assert core.fingerprint(value) == fingerprint(value)
+        sys.set_int_max_str_digits(640)
+        for function in (core.fingerprint, fingerprint):
+            with pytest.raises(ValueError):
+                function(value)
+    finally:
+        sys.set_int_max_str_digits(original)

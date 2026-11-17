@@ -60,6 +60,17 @@ class NativeDeadlineCore(Protocol):
         namespace: str | None,
         bot_id: str | None,
     ) -> list[ClaimTuple]: ...
+    def claim_objects(
+        self,
+        limit: int,
+        lease_seconds: float,
+        now: float,
+        tokens: list[str],
+        namespace: str | None,
+        bot_id: str | None,
+        keys: dict[str, IdleConversationKey],
+        factory: type[Claim],
+    ) -> list[Claim]: ...
     def renew(
         self, key: str, token: str, generation: str, now: float, lease_seconds: float
     ) -> ClaimTuple: ...
@@ -247,21 +258,20 @@ class RustDeadlineQueue(DeadlineQueue):
         bot_id: int | None = None,
     ) -> list[Claim]:
         bounded = min(limit, len(self.core))
-        tokens = [_wire(secrets.token_urlsafe(18)) for _ in range(bounded)]
-        rows = self._owned(
-            lambda: self.core.claim(
+        tokens = [secrets.token_urlsafe(18) for _ in range(bounded)]
+        try:
+            return self.core.claim_objects(
                 bounded,
                 lease_seconds,
                 now,
                 tokens,
                 _wire(namespace) if namespace is not None else None,
                 format(bot_id, "x") if bot_id is not None else None,
+                self.keys,
+                Claim,
             )
-        )
-        return [
-            Claim(self.keys[key], _unwire(token), int(generation, 16), lease, deadline)
-            for key, token, generation, lease, deadline in rows
-        ]
+        except self.native.OwnershipLost as error:
+            raise OwnershipLost("The deadline claim has expired or was replaced") from error
 
     def renew(self, claim: Claim, *, now: float, lease_seconds: float) -> Claim:
         _, token, generation, lease, deadline = self._owned(

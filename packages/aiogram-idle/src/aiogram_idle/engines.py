@@ -112,6 +112,7 @@ def native_core() -> NativeCore:
             "schedule",
             "check",
             "claim",
+            "claim_objects",
             "renew",
             "release",
             "reconcile",

@@ -665,11 +665,15 @@ impl Canonicalizer {
         let ty = value.get_type();
         if value.is_none()
             || ty.is(py.get_type::<PyString>())
-            || ty.is(py.get_type::<PyInt>())
             || ty.is(py.get_type::<PyFloat>())
             || ty.is(py.get_type::<PyBool>())
         {
             return Ok(true);
+        }
+        // Large decimal conversion depends on Python's runtime digit limit.
+        // Keep those values uncached so a later policy change is observed.
+        if ty.is(py.get_type::<PyInt>()) {
+            return Ok(value.extract::<i64>().is_ok());
         }
         if ty.is(self.proxy_type.bind(py)) {
             return Ok(self.memo_encoded(value)?.is_some());

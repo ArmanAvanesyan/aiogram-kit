@@ -85,3 +85,20 @@ def test_recursive_input_does_not_crash():
     value.append(value)
     with pytest.raises(RecursionError):
         fingerprint(value, engine="rust")
+
+
+def test_cached_render_and_view_normalization_remain_equal():
+    native()
+    from dataclasses import replace
+
+    from aiogram_nav.models import RenderResult, ViewState
+    from aiogram_nav.storage.state import new_canonicalizer
+
+    core = new_canonicalizer()
+    result = RenderResult("view")
+    assert core.fingerprint(result) == fingerprint(result)
+    assert core.cache_stats()[0] > 0
+    assert core.fingerprint(ViewState("view")) == fingerprint(result)
+    changed = replace(result, locale="hy")
+    assert core.fingerprint(changed) == fingerprint(changed) != core.fingerprint(result)
+    assert core.fork().cache_stats() == (0, 0)
