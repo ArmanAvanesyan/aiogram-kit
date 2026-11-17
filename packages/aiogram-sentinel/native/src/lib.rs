@@ -67,11 +67,16 @@ impl DebounceState {
         combined.extend_from_slice(key);
         combined.push(b':');
         combined.extend_from_slice(fingerprint);
-        self.seen_key(&combined, window, now)
+        // Direct native callers already own this buffer: move it into an empty
+        // entry rather than copying it through the borrowed SDK entry point.
+        Self::mark_seen(self.entries.entry(combined).or_insert(0.0), window, now)
     }
 
     pub fn seen_key(&mut self, key: &[u8], window: f64, now: f64) -> bool {
-        let timestamp = self.entries.entry_ref(key).or_insert(0.0);
+        Self::mark_seen(self.entries.entry_ref(key).or_insert(0.0), window, now)
+    }
+
+    fn mark_seen(timestamp: &mut f64, window: f64, now: f64) -> bool {
         if *timestamp != 0.0 && *timestamp + window > now {
             true
         } else {
