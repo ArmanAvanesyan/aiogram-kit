@@ -1,0 +1,65 @@
+[
+  {
+    "gate": "reports/2026-11-17-native-qualification/attempt-1/aiogram-cmds/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/attempt-1/aiogram-idle/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/attempt-1/aiogram-nav/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/attempt-1/aiogram-sentinel/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/attempt-3/aiogram-cmds/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/linux-44054131749/aiogram-cmds/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/linux-44054131749/aiogram-idle/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/linux-44054131749/aiogram-nav/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  },
+  {
+    "gate": "reports/2026-11-17-native-qualification/linux-44054131749/aiogram-sentinel/native-gate.json",
+    "input_hashes_verified": true,
+    "comparisons_match": true,
+    "failures_match": true,
+    "qualified": false
+  }
+]

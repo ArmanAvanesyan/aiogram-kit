@@ -9,12 +9,86 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+
+
+PACKAGES = frozenset({"aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"})
+ORDER = ["python-a", "rust-a", "rust-b", "python-b"]
+GATE = {
+    "maximum_rust_python_cpu_ratio": 0.8,
+    "maximum_rust_python_p95_ratio": 1.05,
+    "maximum_repeat_spread": 0.1,
+}
+SAMPLES = {"cpu_repeats_minimum": 10, "individual_latency_minimum": 100}
+
+
+def validate_protocol(protocol: object) -> dict:
+    """Reject misleading metadata and unsafe/repeated output labels before writes."""
+    if (
+        not isinstance(protocol, dict)
+        or type(protocol.get("schema_version")) is not int
+        or protocol["schema_version"] != 1
+    ):
+        raise ValueError("Unsupported qualification protocol schema")
+    if protocol.get("order") != ORDER:
+        raise ValueError("Protocol requires unique, balanced Python-Rust-Rust-Python labels")
+    if protocol.get("gate") != GATE or protocol.get("samples") != SAMPLES:
+        raise ValueError("Protocol thresholds and samples must match the enforced gate")
+    workloads = protocol.get("cpu_workloads")
+    latency = protocol.get("required_latency")
+    if not isinstance(workloads, dict) or not workloads or not set(workloads) <= PACKAGES:
+        raise ValueError("Protocol must declare known packages and CPU workloads")
+    if not isinstance(latency, dict) or set(latency) != set(workloads):
+        raise ValueError("Every declared package requires latency workloads")
+    for names in [*workloads.values(), *latency.values()]:
+        if (
+            not isinstance(names, list)
+            or not names
+            or any(not isinstance(name, str) or not name.strip() for name in names)
+            or len(names) != len(set(names))
+        ):
+            raise ValueError("Protocol workloads must be nonempty unique strings")
+    return protocol
+
+
+def own_output(output: Path) -> None:
+    """Atomically reserve even an existing empty directory against concurrent runs."""
+    output.mkdir(parents=True, exist_ok=True)
+    if any(output.iterdir()):
+        raise ValueError("Qualification output must be empty; retain earlier attempts")
+    try:
+        descriptor = os.open(
+            output / ".qualification-owner", os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600
+        )
+    except FileExistsError as error:
+        raise ValueError("Qualification output already belongs to another attempt") from error
+    with os.fdopen(descriptor, "w") as owner:
+        owner.write(str(os.getpid()) + "\n")
+
+
+def checked_comparison(report: Path, returncode: int) -> dict:
+    """An erroneous comparator cannot promote a partial or contradictory report."""
+    if returncode not in (0, 1):
+        raise RuntimeError("Comparator process failed; qualification withheld")
+    result = json.loads(report.read_text())
+    if not isinstance(result, dict):
+        raise RuntimeError("Malformed comparator result; qualification withheld")
+    qualified, failures = result.get("qualified"), result.get("failures")
+    if (
+        type(qualified) is not bool
+        or not isinstance(failures, list)
+        or any(not isinstance(failure, str) for failure in failures)
+    ):
+        raise RuntimeError("Malformed comparator result; qualification withheld")
+    if qualified != (not failures) or returncode != (0 if qualified else 1):
+        raise RuntimeError("Comparator status contradicts its result; qualification withheld")
+    return result
 
 
 def driver_arguments(package: str) -> list[str]:
@@ -39,14 +113,12 @@ def main() -> int:
     )
     args = parser.parse_args()
     protocol_bytes = args.protocol.read_bytes()
-    protocol = json.loads(protocol_bytes)
+    protocol = validate_protocol(json.loads(protocol_bytes))
     requested = set(args.package or protocol["cpu_workloads"])
     if not requested or not requested <= set(protocol["cpu_workloads"]):
         raise ValueError("Selected packages must have predeclared workloads")
     output = args.output.resolve()
-    if output.exists() and any(output.iterdir()):
-        raise ValueError("Qualification output must be empty; retain earlier attempts")
-    output.mkdir(parents=True, exist_ok=True)
+    own_output(output)
     (output / "protocol.json").write_bytes(protocol_bytes)
     results = {}
     for package, workloads in protocol["cpu_workloads"].items():
@@ -87,8 +159,8 @@ def main() -> int:
             command += ["--latency-workload", workload]
         report = directory / "native-gate.json"
         command += ["--output", str(report)]
-        subprocess.run(command, cwd=ROOT, check=False)
-        results[package] = json.loads(report.read_text())
+        comparison = subprocess.run(command, cwd=ROOT, check=False)
+        results[package] = checked_comparison(report, comparison.returncode)
     summary = {
         "protocol_sha256": hashlib.sha256(protocol_bytes).hexdigest(),
         "publication_performed": False,

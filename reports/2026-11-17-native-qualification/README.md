@@ -84,8 +84,9 @@ completed every build and all four paired benchmark groups. All nine downloaded
 wheel hashes match the uploaded manifest. Its failed status is the correct
 performance-gate result, not a build/infrastructure failure. Raw results are in
 `linux-44054131749/`; the exact source commit, artifact ID and ZIP digest are in
-`linux-run.json`. The small later test/format-only changes do not alter the SDK or
-native source measured by this run. Do not combine its Linux samples with macOS.
+`linux-run.json`. This run measures its recorded source commit; subsequent review fixes are
+listed below and are not covered by these timings. Do not combine its Linux
+samples with macOS.
 
 | Companion | Linux Rust/Python CPU ratio | Publication decision |
 |---|---:|---|
@@ -108,3 +109,29 @@ coordination normalization outside the native helpers. The next native design
 should batch validated state work while preserving exact fingerprints and full
 backend/FSM recovery parity. Idle's claim latency also needs boundary-level work.
 No ABI redesign or broader rewrite is approved for publication by these results.
+
+
+## Review corrections — 2026-11-17
+
+The review found and fixed four issues without relaxing publication gates:
+
+1. Protocol metadata/order was not validated. Unknown package paths, repeated
+   labels and thresholds/sample claims inconsistent with the actual comparator
+   are now rejected before writing output or starting any benchmark.
+2. Two processes could both observe an empty output directory and overwrite the
+   same attempt. An exclusive owner file now reserves the directory atomically;
+   a regression test forces the concurrent empty-check interleaving.
+3. Comparator process status was ignored. Malformed/contradictory reports and
+   process errors now withhold qualification and cannot produce a successful
+   summary, even if a partial report says `qualified: true`.
+4. Idle's fast encoder dispatched overridable methods on accepted `str`
+   subclasses. The fast path now accepts exact built-in strings only; subclasses
+   retain the original JSON encoding. Regression tests cover overridden methods
+   and concatenation, alongside the existing Unicode cases.
+
+All nine completed paired comparisons were replayed from their retained raw
+results. Every input hash, numeric comparison and failure list matches the
+original verdict (`review-evidence-replay.json`). This is an arithmetic/evidence
+verification, not a fresh timing run. **All four companions remain withheld.**
+The reviewed Idle change needs fresh performance qualification before any release;
+the original measurements remain attached to their exact original artifacts.

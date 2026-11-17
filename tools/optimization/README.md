@@ -118,3 +118,10 @@ changing only that candidate. Keep the earlier failed evidence. Do not run build
 or other tests while timing, silently retry noisy runs or publish from CPU results
 alone. Installed-wheel provenance, functional/platform tests and independent
 release review remain required.
+
+The runner validates the version-1 protocol before starting: known package IDs,
+unique fixed Python-Rust-Rust-Python labels, nonempty CPU/latency workload lists,
+and threshold/sample metadata matching the enforced comparator. It reserves the
+output directory with an exclusive owner file so concurrent attempts cannot
+reuse it. Comparator process errors or contradictory reports withhold qualification
+and cannot produce a successful summary.

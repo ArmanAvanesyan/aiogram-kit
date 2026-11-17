@@ -24,3 +24,18 @@ def test_wire_matches_json() -> None:
 )
 def test_wire_identifiers(value: str) -> None:
     assert wire(value) == json.dumps(value, ensure_ascii=True)
+
+
+def test_string_subclasses_use_the_original_json_encoder() -> None:
+    class Identifier(str):
+        def isascii(self) -> bool:
+            raise AssertionError("Fast-path methods must not be dispatched on subclasses")
+
+        def isprintable(self) -> bool:
+            raise AssertionError("Fast-path methods must not be dispatched on subclasses")
+
+        def __radd__(self, value: str) -> str:
+            raise AssertionError("Subclass concatenation must not replace encoded contents")
+
+    for value in (Identifier("identifier"), Identifier('line\n"Հայերեն')):
+        assert wire(value) == json.dumps(value, ensure_ascii=True)
