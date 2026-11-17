@@ -27,3 +27,8 @@ def test_docs_deploy_main_automatically_and_keep_prs_read_only():
     assert deploy["permissions"] == {"pages": "write", "id-token": "write"}
     assert data["permissions"] == {"contents": "read"}
     assert data["concurrency"]["cancel-in-progress"] is True
+
+
+def test_workspace_checks_cover_minimum_and_latest_python():
+    data, _ = workflow("workspace.yml")
+    assert set(data["jobs"]["verify"]["strategy"]["matrix"]["python"]) >= {"3.10", "3.12", "3.14"}

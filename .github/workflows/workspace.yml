@@ -12,6 +12,10 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.12', '3.14']
     steps:
       - uses: actions/checkout@v6
         with:
@@ -19,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python }}
       - run: uv sync --frozen --all-packages --all-groups --all-extras
       - run: uv run --no-sync ruff check tools tests/integration
       - run: uv run --no-sync ruff format --check tools tests/integration
