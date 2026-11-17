@@ -122,11 +122,8 @@ class MemoryDebounce(DebounceBackend):
         """Check if fingerprint was seen within window and record it."""
         validate_interval(window_seconds, "window_seconds")
         if self._native is not None:
-            return self._native.seen(
-                _native_key(key),
-                window_seconds,
-                _native_key(fingerprint),
-                time.monotonic(),
+            return self._native.seen_key(
+                _native_key(f"{key}:{fingerprint}"), window_seconds, time.monotonic()
             )
         k = f"{key}:{fingerprint}"
         async with self._lock:

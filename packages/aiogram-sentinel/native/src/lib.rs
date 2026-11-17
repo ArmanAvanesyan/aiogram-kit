@@ -1,6 +1,6 @@
 //! Synchronous, process-local storage. Clocks and interval validation belong to Python.
 use hashbrown::HashMap;
-use std::collections::{hash_map::RandomState, VecDeque};
+use std::collections::{VecDeque, hash_map::RandomState};
 use std::sync::Mutex;
 
 use pyo3::exceptions::PyRuntimeError;
@@ -67,7 +67,11 @@ impl DebounceState {
         combined.extend_from_slice(key);
         combined.push(b':');
         combined.extend_from_slice(fingerprint);
-        let timestamp = self.entries.entry(combined).or_insert(0.0);
+        self.seen_key(&combined, window, now)
+    }
+
+    pub fn seen_key(&mut self, key: &[u8], window: f64, now: f64) -> bool {
+        let timestamp = self.entries.entry_ref(key).or_insert(0.0);
         if *timestamp != 0.0 && *timestamp + window > now {
             true
         } else {
@@ -167,6 +171,14 @@ impl DebounceCore {
             .map_err(poisoned)?
             .seen(key, window, fingerprint, now))
     }
+    fn seen_key(&self, key: &[u8], window: f64, now: f64) -> PyResult<bool> {
+        Ok(self
+            .state
+            .lock()
+            .map_err(poisoned)?
+            .seen_key(key, window, now))
+    }
+
     fn set(&self, key: &[u8], delay: f64, now: f64) -> PyResult<()> {
         self.state.lock().map_err(poisoned)?.set(key, delay, now);
         Ok(())

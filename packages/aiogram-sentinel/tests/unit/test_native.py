@@ -256,3 +256,20 @@ def test_partial_native_core_rejected_before_any_operation(kind, missing):
             with pytest.raises(NativeEngineIncompatible):
                 backend(engine="rust")
     assert calls == []
+
+
+@pytest.mark.asyncio
+async def test_debounce_combined_identity_keeps_formatting_and_aliases(native):
+    class Label(str):
+        def __format__(self, spec):
+            return "formatted:" + super().__format__(spec)
+
+    for engine in ("python", "rust"):
+        debounce = MemoryDebounce(engine=engine)
+        with patch("aiogram_sentinel.storage.memory.time.monotonic", return_value=100):
+            assert not await debounce.seen(Label("key"), 60, "fp")
+            assert await debounce.seen("formatted:key", 60, "fp")
+            assert not await debounce.seen("a:b", 60, "c")
+            assert await debounce.seen("a", 60, "b:c")
+            assert not await debounce.seen("surrogate-\ud800", 60, "hy-հայ")
+            assert await debounce.seen("surrogate-\ud800", 60, "hy-հայ")

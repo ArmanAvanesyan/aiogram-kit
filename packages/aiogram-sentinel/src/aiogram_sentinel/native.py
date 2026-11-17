@@ -27,6 +27,8 @@ class RateCore(Protocol):
 
 
 class DebounceCore(Protocol):
+    def seen_key(self, key: bytes, window: float, now: float) -> bool: ...
+
     def seen(
         self, key: bytes, window: float, fingerprint: bytes, now: float
     ) -> bool: ...
@@ -70,7 +72,7 @@ def load_native() -> NativeModule:
                 native.RateLimiterCore(),
                 ("allow", "remaining", "increment", "count", "reset", "snapshot"),
             ),
-            (native.DebounceCore(), ("seen", "set", "active", "snapshot")),
+            (native.DebounceCore(), ("seen", "seen_key", "set", "active", "snapshot")),
         ):
             if any(not callable(getattr(core, method, None)) for method in methods):
                 raise ValueError("Incomplete native kernel interface")
