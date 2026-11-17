@@ -5,9 +5,12 @@ from __future__ import annotations
 import importlib
 import json
 from functools import lru_cache
-from typing import Literal, Protocol, cast
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from .errors import ConfigurationError
+
+if TYPE_CHECKING:
+    from .models import HistoryEntry
 
 EngineName = Literal["python", "rust"]
 
@@ -46,6 +49,18 @@ class NativeCore(Protocol):
         accepted_activity: bool,
         now_ms: str,
     ) -> str: ...
+    def transition_values(
+        self,
+        history: tuple[HistoryEntry, ...],
+        current: HistoryEntry | None,
+        mode: str,
+        limit: int,
+        pop: int,
+        changed: bool,
+        previous: tuple[str, str, str, str] | None,
+        accepted: bool,
+        now: str,
+    ) -> tuple[list[HistoryEntry], tuple[str, str, str, str]]: ...
     def token_matches(
         self,
         token_key: str,
@@ -84,6 +99,7 @@ def native_core() -> NativeCore:
         "fingerprint_canonical",
         "transition_state",
         "transition_history",
+        "transition_values",
         "token_matches",
     )
     if (

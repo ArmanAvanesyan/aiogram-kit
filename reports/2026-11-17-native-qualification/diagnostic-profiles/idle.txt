@@ -1,0 +1,44 @@
+Diagnostic cProfile overhead is included; this is not qualification timing.
+         1677268 function calls (1592641 primitive calls) in 1.923 seconds
+
+   Ordered by: cumulative time
+   List reduced from 519 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.952    1.952 runners.py:160(run)
+        3    0.000    0.000    1.951    0.650 base_events.py:655(run_until_complete)
+        3    0.000    0.000    1.951    0.650 base_events.py:631(run_forever)
+        6    0.000    0.000    1.951    0.325 base_events.py:1922(_run_once)
+        1    0.000    0.000    1.951    1.951 runners.py:86(run)
+        6    0.000    0.000    1.951    0.325 events.py:86(_run)
+        6    0.000    0.000    1.951    0.325 {method 'run' of '_contextvars.Context' objects}
+        1    0.003    0.003    1.951    1.951 workloads.py:202(memory_workload)
+     1500    0.005    0.000    1.218    0.001 workloads.py:144(accept)
+     1350    0.012    0.000    1.005    0.001 activity.py:182(touch)
+       10    0.695    0.070    0.695    0.070 {built-in method gc.collect}
+     1350    0.016    0.000    0.659    0.000 memory.py:325(touch)
+     6180    0.006    0.000    0.378    0.000 models.py:85(freeze_object)
+     4360    0.031    0.000    0.371    0.000 dataclasses.py:1540(replace)
+     6180    0.018    0.000    0.356    0.000 models.py:52(freeze_json)
+     1510    0.008    0.000    0.222    0.000 memory.py:161(_save)
+      150    0.002    0.000    0.192    0.001 activity.py:70(activate)
+37500/6180    0.087    0.000    0.176    0.000 models.py:55(freeze)
+   336685    0.086    0.000    0.175    0.000 {built-in method builtins.isinstance}
+     3020    0.003    0.000    0.170    0.000 models.py:285(__post_init__)
+     1500    0.010    0.000    0.163    0.000 models.py:208(__post_init__)
+      150    0.003    0.000    0.154    0.001 fused_activity.py:27(fused_activate)
+     1800    0.008    0.000    0.134    0.000 receipts.py:36(fingerprint)
+     3000    0.016    0.000    0.133    0.000 memory.py:100(hold)
+     1500    0.003    0.000    0.131    0.000 runtime.py:185(manifest)
+    12511    0.031    0.000    0.130    0.000 __init__.py:183(dumps)
+3000/1500    0.005    0.000    0.117    0.000 contextlib.py:205(__aenter__)
+     1510    0.008    0.000    0.113    0.000 policies.py:86(digest)
+     1500    0.001    0.000    0.103    0.000 memory.py:158(_fingerprint)
+      150    0.003    0.000    0.098    0.001 memory.py:258(enter)
+37500/6180    0.037    0.000    0.097    0.000 models.py:92(thaw_json)
+    12511    0.023    0.000    0.095    0.000 encoder.py:183(encode)
+16140/1800    0.037    0.000    0.094    0.000 receipts.py:20(_canonical)
+    71590    0.023    0.000    0.089    0.000 <frozen abc>:117(__instancecheck__)
+     3020    0.010    0.000    0.082    0.000 policies.py:55(policy_digest)
+
+

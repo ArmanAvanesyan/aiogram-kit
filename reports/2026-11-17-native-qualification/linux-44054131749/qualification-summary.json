@@ -1,0 +1,44 @@
+{
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "publication_performed": false,
+  "packages_selected": [
+    "aiogram-sentinel",
+    "aiogram-cmds",
+    "aiogram-nav",
+    "aiogram-idle"
+  ],
+  "performance_gates": {
+    "aiogram-sentinel": {
+      "qualified": false,
+      "failures": [
+        "CPU improvement below 20%: debounce_accepted_many",
+        "Latency repeat spread exceeds 10%: middleware_fake_io",
+        "CPU improvement below 20%: rate_accepted_many"
+      ]
+    },
+    "aiogram-cmds": {
+      "qualified": false,
+      "failures": [
+        "End-to-end p95 regression exceeds 5%: compiled_fake_telegram_1ms/1",
+        "Latency repeat spread exceeds 10%: confirmation_hit/1"
+      ]
+    },
+    "aiogram-nav": {
+      "qualified": false,
+      "failures": [
+        "CPU improvement below 20%: memory-track/50"
+      ]
+    },
+    "aiogram-idle": {
+      "qualified": false,
+      "failures": [
+        "CPU improvement below 20%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-deadline-claims/16",
+        "End-to-end p95 regression exceeds 5%: memory-track/50",
+        "Latency repeat spread exceeds 10%: memory-track/50",
+        "End-to-end p95 regression exceeds 5%: redis-activate-touch/50"
+      ]
+    }
+  }
+}

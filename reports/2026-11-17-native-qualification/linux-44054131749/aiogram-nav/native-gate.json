@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "qualified": false,
+  "identity": [
+    "aiogram-nav",
+    "0.3.1",
+    "3.12.16 (main, Nov 11 2026, 00:15:59) [Clang 23.1.3 ]",
+    "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+    "",
+    4,
+    0
+  ],
+  "cpu_workloads_selected": [
+    "memory-track/50"
+  ],
+  "required_latency_workloads": [
+    "redis-dispatch-noop/50",
+    "redis-dispatch-track/50"
+  ],
+  "inputs": [
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-nav/python-a/aiogram-nav.json",
+      "sha256": "7c80f64ea41d16dc9cc4d618174f4f830a9babed679cf5c6940bc519cfa0fa2b",
+      "engine": "python",
+      "run_id": "e2b22088-b460-416c-9dfc-0591b3b417ad",
+      "qualification_provenance": {
+        "base_artifact_sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0",
+        "native_artifact_sha256": null,
+        "driver_sha256": "635f1e0bae355de534b37771e12015565b25d97ee97c05147c4f2173850a3beb"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-nav/python-b/aiogram-nav.json",
+      "sha256": "3d2a81103b2f448f7a0a86f27c71b547b7d2ddb29cbc05f0ea34b8c2d1076997",
+      "engine": "python",
+      "run_id": "1f4e8ef0-484b-49c4-beac-94632f40c519",
+      "qualification_provenance": {
+        "base_artifact_sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0",
+        "native_artifact_sha256": null,
+        "driver_sha256": "635f1e0bae355de534b37771e12015565b25d97ee97c05147c4f2173850a3beb"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-nav/rust-a/aiogram-nav.json",
+      "sha256": "cd77c063d1b0544bbbe0cfaecd2c855b3ff2d92809f2f19a3def05c4e022c9d5",
+      "engine": "rust",
+      "run_id": "47be14cc-a9d4-4c3a-ac8e-8d9fcf69353b",
+      "qualification_provenance": {
+        "base_artifact_sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0",
+        "native_artifact_sha256": "b99dd782e4fb8fdc2bd6b9b0c1cedf70864ebd5c6f76c853d4f88bd9a158e257",
+        "driver_sha256": "635f1e0bae355de534b37771e12015565b25d97ee97c05147c4f2173850a3beb"
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-nav/rust-b/aiogram-nav.json",
+      "sha256": "a0ca8d04dfe34227246bd01760c244c7223b25e7332771d7dc57654d12aee730",
+      "engine": "rust",
+      "run_id": "1f09548f-acbc-4618-a72a-f5d62c6dc7f4",
+      "qualification_provenance": {
+        "base_artifact_sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0",
+        "native_artifact_sha256": "b99dd782e4fb8fdc2bd6b9b0c1cedf70864ebd5c6f76c853d4f88bd9a158e257",
+        "driver_sha256": "635f1e0bae355de534b37771e12015565b25d97ee97c05147c4f2173850a3beb"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "memory-track/50",
+      "rust_over_python_cpu": 1.0532571699748068,
+      "rust_over_python_p95": 1.0473867127420242
+    },
+    {
+      "workload": "redis-dispatch-noop/50",
+      "rust_over_python_p95": 1.002102675372149
+    },
+    {
+      "workload": "redis-dispatch-track/50",
+      "rust_over_python_p95": 1.023638474324173
+    }
+  ],
+  "failures": [
+    "CPU improvement below 20%: memory-track/50"
+  ],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

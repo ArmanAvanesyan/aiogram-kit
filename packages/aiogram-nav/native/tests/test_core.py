@@ -306,3 +306,57 @@ def test_registry_graph_property_against_reference():
             assert graph.cancel_target(node["id"]) == "n0"
 
     check()
+
+
+@pytest.mark.parametrize(
+    "mode,pop,limit",
+    [
+        (mode, pop, limit)
+        for mode in ("push", "pop", "clear", "none")
+        for pop in (0, 1, 3)
+        for limit in (0, 1, 3)
+    ],
+)
+def test_object_transition_matches_json_boundary(mode, pop, limit):
+    entries = ({"node": "a", "params": {"value": [1, 2]}}, {"node": "b"})
+    current = {"node": "c", "params": {"large": 2**200}}
+    expected = json.loads(
+        native.transition_history(json.dumps(entries), json.dumps(current), mode, limit, pop, True)
+    )
+    actual, state = native.transition_values(
+        entries, current, mode, limit, pop, True, (str(2**200), "4", "5", "6"), True, "10"
+    )
+    assert actual == expected
+    assert tuple(map(int, state)) == (2**200 + 1, 5, 10, 10)
+    assert entries == ({"node": "a", "params": {"value": [1, 2]}}, {"node": "b"})
+    # The native boundary borrows opaque objects, without JSON reconstruction.
+    for entry in actual:
+        assert any(entry is item for item in (*entries, current))
+
+
+def test_object_transition_first_entry_and_rejections():
+    assert native.transition_values((), None, "none", 0, 0, True, None, False, "10") == (
+        [],
+        ("1", "1", "10", "10"),
+    )
+    for kwargs in (
+        {"mode": "invalid"},
+        {"limit": 1001},
+        {"pop": 1001},
+        {"now": "-1"},
+        {"previous": ("-1", "1", "1", "1")},
+    ):
+        args = dict(
+            history=(),
+            current=None,
+            mode="none",
+            limit=1,
+            pop=1,
+            changed=False,
+            previous=("1", "1", "1", "1"),
+            accepted=False,
+            now="10",
+        )
+        args.update(kwargs)
+        with pytest.raises(ValueError):
+            native.transition_values(**args)

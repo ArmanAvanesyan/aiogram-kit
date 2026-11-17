@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import hashlib
 import importlib
-import json
 import math
 from functools import lru_cache
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
+from ._wire import wire as _wire
 from .errors import ActivityConflict, ConfigurationError
 
 if TYPE_CHECKING:
@@ -252,10 +252,6 @@ def claim_guard(
     return (
         None if actual is not None and actual[:2] == expected and actual[2] > now else "ownership"
     )
-
-
-def _wire(value: str) -> str:
-    return json.dumps(value, ensure_ascii=True)
 
 
 def make_queue(engine: EngineName = "python") -> DeadlineQueue:

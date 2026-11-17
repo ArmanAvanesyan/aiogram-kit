@@ -23,6 +23,15 @@ from aiogram_cmds.delivery import payload_fingerprint
 from aiogram_cmds.engines import native_engine
 
 
+@pytest.fixture(autouse=True)
+def reset_native_module_cache():
+    from aiogram_cmds.engines import _load_native
+
+    _load_native.cache_clear()
+    yield
+    _load_native.cache_clear()
+
+
 def sample():
     return CmdsConfig(
         languages=["en", "ru", "hy"],
@@ -308,3 +317,41 @@ def test_native_dynamic_loader_failure_is_normalized(monkeypatch):
     monkeypatch.setattr(engines, "import_module", broken)
     with pytest.raises(NativeEngineError):
         native_engine("rust")
+
+
+def test_native_fingerprint_cache_preserves_scope_and_snapshot_identity():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile([("p", [("en", [("start", "First")])])])
+    other = native.compile([("p", [("en", [("start", "Second")])])])
+    requests = [("p", "en", "1", '{"type":"default"}', "null")]
+    expected = snapshot.resolve_batch(requests)
+    assert snapshot.resolve_batch(requests * 300) == expected * 300
+    assert other.resolve_batch(requests) != expected
+    # Exercise capacity flush and oversized uncached inputs, then replay the first key.
+    for index in range(300):
+        snapshot.resolve_batch(
+            [("p", "en", str(index + 1), '{"type":"default"}', "null")]
+        )
+    assert snapshot.resolve_batch(requests) == expected
+    large = [("p", "en", "1", '{"type":"' + "a" * 5000 + '"}', "null")]
+    assert snapshot.resolve_batch(large) == snapshot.resolve_batch(large)
+    with pytest.raises(ValueError):
+        snapshot.resolve_batch([("missing", "en", "1", "{}", "null")])
+
+
+def test_native_module_is_validated_once_before_repeated_operations(monkeypatch):
+    import aiogram_cmds.engines as engines
+
+    real = pytest.importorskip("_aiogram_cmds_native")
+    calls = []
+
+    def load(name):
+        calls.append(name)
+        return real
+
+    monkeypatch.setattr(engines, "import_module", load)
+    assert engines.native_engine("rust") is real
+    assert engines.native_engine("rust") is real
+    assert calls == ["_aiogram_cmds_native"]
+    with pytest.raises(ValueError):
+        engines.native_engine("invalid")

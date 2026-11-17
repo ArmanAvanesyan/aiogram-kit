@@ -1,0 +1,21 @@
+{
+  "packages/aiogram-cmds/src/aiogram_cmds/scopes.py": "ff9b62a4ff9ef602fdbd574a3843a89d8aedb8a1a85fbed538e43d28842bea17",
+  "packages/aiogram-cmds/src/aiogram_cmds/delivery.py": "b9aa919eae8789f800446db0df678e9df00683bfb65dd770434167a8ec486bd2",
+  "packages/aiogram-cmds/src/aiogram_cmds/compiled_delivery.py": "eb69e762e5ce75a6ad78608f815c9efef724e87120b0610682b3bca2263051be",
+  "packages/aiogram-cmds/src/aiogram_cmds/auto_setup.py": "0ba5f4d284b4fc2c960d88c8f9fc9b75029c63c7e58b79273339a6199704c8b8",
+  "packages/aiogram-cmds/src/aiogram_cmds/version.py": "815784a6a042cc560fa0077ec4d69ac2e47e36aeeafb6d00df35ec883302da5f",
+  "packages/aiogram-cmds/src/aiogram_cmds/setters.py": "87239082b6fbe0c77c56a8ccd9ecdeeb76f798aec1d4020ccc135f0aca569c51",
+  "packages/aiogram-cmds/src/aiogram_cmds/engines.py": "e3513547aeb6361e8c71e21adc222dccad701fbb8c116bdaa10fc48e1f961c89",
+  "packages/aiogram-cmds/src/aiogram_cmds/registry.py": "03528a470a32e1478217fd2f782b069c0e88192dfb614246b432513d94c598d3",
+  "packages/aiogram-cmds/src/aiogram_cmds/builders_configured.py": "b2286d86ef571ba5f08f723ecacb4b47e0c443939eb4c3915c199c4ee78a99cb",
+  "packages/aiogram-cmds/src/aiogram_cmds/customize.py": "4f69c20403a27aa74d6321f0fe33ad44d81fa487a74f8cd8b13051c79bec61fa",
+  "packages/aiogram-cmds/src/aiogram_cmds/policy.py": "131ebcfafb58a2752a6dd0b5a74d065d23d24e81d6e614cb177b34d6c9ebd1cd",
+  "packages/aiogram-cmds/src/aiogram_cmds/__init__.py": "7830cb8c2e6907f0af13d736f8534d98bed72293428ebfc1936b07decc6a8f69",
+  "packages/aiogram-cmds/src/aiogram_cmds/compiled.py": "5b5961cf54e2af87f410674e156c48c54da689fbd99888934dc87585ddc7a5aa",
+  "packages/aiogram-cmds/src/aiogram_cmds/builder.py": "66508986973618f15c7e6aea0b3eda51f8203308e60745f8955531279072c2c2",
+  "packages/aiogram-cmds/src/aiogram_cmds/dynamic.py": "7b6f345f3494694aeaaba9dd9d1c1743925d25daa30fd32c7eab02d0639b0d4e",
+  "packages/aiogram-cmds/src/aiogram_cmds/settings.py": "2bc37b90841c1ebde5c0aea70495bf4cdc31ecc61bbb6e9f8b4a769cee9b4040",
+  "packages/aiogram-cmds/src/aiogram_cmds/translator.py": "b2d4edb05373caac4c760a76a1ad0067aa7ce8912c174b745bd35f8c89f2af32",
+  "packages/aiogram-cmds/src/aiogram_cmds/manager.py": "742416299d0d6fa8e4f99e9ee53be15262a0e5ebd9843fe46c6e47ce0aa17720",
+  "packages/aiogram-cmds/src/aiogram_cmds/apply.py": "0e849a51444c9e751dbef74aaa99d30314dcd9f6c21de191db65cbdd58d15ae1"
+}

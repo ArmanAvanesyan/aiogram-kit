@@ -1,13 +1,16 @@
 //! CPU-only native boundaries. Python resolves all translator callbacks first.
-use pyo3::exceptions::PyValueError;
+use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
+use std::sync::Mutex;
 
 type Rows = Vec<(String, String)>;
 type Profiles = Vec<(String, Vec<(String, Rows)>)>;
-type Requests = Vec<(String, String, String, String, String)>;
+type Request = (String, String, String, String, String);
+type Requests = Vec<Request>;
+type FingerprintCache = Mutex<HashMap<Request, String>>;
 type BatchResult = Vec<String>;
 
 pub fn resolve_profile(include: &[String], exclude: &[String], known: &[String]) -> Vec<String> {
@@ -79,25 +82,53 @@ pub fn fingerprint_encoded(
     let value = format!(
         "{{\"bot_id\":{bot},\"commands\":{commands},\"language_code\":{language},\"scope\":{scope}}}"
     );
-    Ok(format!("{:x}", Sha256::digest(value.as_bytes())))
+    Ok({
+        const HEX: &[u8; 16] = b"0123456789abcdef";
+        let digest = Sha256::digest(value.as_bytes());
+        let mut encoded = String::with_capacity(64);
+        for byte in digest {
+            encoded.push(HEX[(byte >> 4) as usize] as char);
+            encoded.push(HEX[(byte & 15) as usize] as char);
+        }
+        encoded
+    })
 }
 
 #[pyclass(frozen)]
 struct NativeSnapshot {
     profiles: HashMap<(String, String), (Rows, String)>,
+    // Snapshot-local cache; no confirmation, delivery or business state is cached.
+    fingerprints: FingerprintCache,
 }
 
 #[pymethods]
 impl NativeSnapshot {
     fn resolve_batch(&self, requests: Requests) -> PyResult<BatchResult> {
         let mut results = Vec::with_capacity(requests.len());
-        for (profile, locale, bot, scope, language) in requests {
+        let mut cache = self
+            .fingerprints
+            .lock()
+            .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
+        for request in requests {
+            if let Some(hash) = cache.get(&request) {
+                results.push(hash.clone());
+                continue;
+            }
+            let (profile, locale, bot, scope, language) = &request;
             let (_rows, encoded) = self
                 .profiles
-                .get(&(profile, locale))
+                .get(&(profile.clone(), locale.clone()))
                 .ok_or_else(|| PyValueError::new_err("Unknown compiled profile/locale"))?;
-            let hash = fingerprint_encoded(&bot, &scope, &language, encoded)
+            let hash = fingerprint_encoded(bot, scope, language, encoded)
                 .map_err(PyValueError::new_err)?;
+            // Bound both entries and retained input bytes; oversized inputs work
+            // normally but are never retained. Clearing only affects performance.
+            if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
+                if cache.len() >= 256 {
+                    cache.clear();
+                }
+                cache.insert(request, hash.clone());
+            }
             results.push(hash);
         }
         Ok(results)
@@ -141,7 +172,10 @@ fn compile_py(rows: Profiles) -> PyResult<NativeSnapshot> {
             }
         }
     }
-    Ok(NativeSnapshot { profiles })
+    Ok(NativeSnapshot {
+        profiles,
+        fingerprints: Mutex::new(HashMap::new()),
+    })
 }
 #[pyfunction]
 fn abi_version() -> u32 {

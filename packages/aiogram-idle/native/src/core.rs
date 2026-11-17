@@ -56,7 +56,16 @@ pub fn transition(phase: &str, trigger: &str) -> Option<&'static str> {
     }
 }
 pub fn digest(raw: &str) -> String {
-    format!("{:x}", Sha256::digest(raw.as_bytes()))
+    {
+        const HEX: &[u8; 16] = b"0123456789abcdef";
+        let digest = Sha256::digest(raw.as_bytes());
+        let mut encoded = String::with_capacity(64);
+        for byte in digest {
+            encoded.push(HEX[(byte >> 4) as usize] as char);
+            encoded.push(HEX[(byte & 15) as usize] as char);
+        }
+        encoded
+    }
 }
 pub fn receipt(existing: Option<&str>, digest: &str, count: usize, limit: usize) -> &'static str {
     match existing {

@@ -32,3 +32,32 @@ def test_docs_deploy_main_automatically_and_keep_prs_read_only():
 def test_workspace_checks_cover_minimum_and_latest_python():
     data, _ = workflow("workspace.yml")
     assert set(data["jobs"]["verify"]["strategy"]["matrix"]["python"]) >= {"3.10", "3.12", "3.14"}
+
+
+def test_manual_native_qualification_is_read_only_and_retains_failures():
+    data, triggers = workflow("optimization-tools.yml")
+    choices = triggers["workflow_dispatch"]["inputs"]["native_package"]
+    assert choices["default"] == "none"
+    assert set(choices["options"]) == {
+        "none",
+        "all",
+        "aiogram-sentinel",
+        "aiogram-cmds",
+        "aiogram-nav",
+        "aiogram-idle",
+    }
+    job = data["jobs"]["qualify-native"]
+    assert "workflow_dispatch" in job["if"]
+    assert job["needs"] == "verify"
+    assert data["permissions"] == {"contents": "read"}
+    assert all("pypa/gh-action-pypi-publish" not in step.get("uses", "") for step in job["steps"])
+    upload = job["steps"][-1]
+    assert upload["if"] == "always()"
+    run = next(
+        step["run"]
+        for step in job["steps"]
+        if step.get("name") == "Run serial unchanged performance gates"
+    )
+    assert 'exit "$result"' in run
+    assert "qualify_native.py" in run
+    assert "--quick" not in run

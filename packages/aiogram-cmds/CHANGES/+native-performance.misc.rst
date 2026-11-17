@@ -1,0 +1,1 @@
+Reuse deterministic fingerprints inside immutable Rust compiled snapshots with bounded storage. Cache identity includes profile, locale, bot, scope and language; delivery confirmations are never cached. Validate the loaded extension once and avoid native marshalling for single small payloads, without falling back after errors.

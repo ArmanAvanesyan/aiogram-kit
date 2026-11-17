@@ -2,8 +2,8 @@ name: Shared optimization evidence tools
 permissions:
   contents: read
 concurrency:
-  group: optimization-tools-${{ github.ref }}
-  cancel-in-progress: true
+  group: optimization-tools-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -26,6 +26,67 @@ jobs:
         'redis>=5,<8' --with 'tomli>=2,<3' pytest -q -o asyncio_default_fixture_loop_scope=function tools/optimization/tests
     - name: Lint tool sources
       run: uvx ruff check tools/optimization
+  qualify-native:
+    if: github.event_name == 'workflow_dispatch' && inputs.native_package != 'none'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s
+          --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: '3.12'
+      - name: Build locked companion wheels before timing
+        shell: bash
+        run: |
+          for package in coordination sentinel cmds nav idle; do
+            uv build --package "aiogram-$package" --wheel --out-dir "$RUNNER_TEMP/native-wheels"
+          done
+          for package in sentinel cmds nav idle; do
+            (
+              cd "packages/aiogram-$package/native"
+              uvx --from 'maturin>=1.9,<2' maturin build --release --locked --out "$RUNNER_TEMP/native-wheels"
+            )
+          done
+          sha256sum "$RUNNER_TEMP/native-wheels/"*.whl > "$RUNNER_TEMP/native-wheels/SHA256SUMS"
+          uv venv --python 3.12 "$RUNNER_TEMP/native-env"
+          uv pip install --python "$RUNNER_TEMP/native-env/bin/python" "$RUNNER_TEMP/native-wheels/"*.whl 'redis>=5.0.8,<8' psutil pyperf orjson
+          uv pip check --python "$RUNNER_TEMP/native-env/bin/python"
+      - name: Run serial unchanged performance gates
+        shell: bash
+        env:
+          NATIVE_PACKAGE: ${{ inputs.native_package }}
+        run: |
+          selection=()
+          if [ "$NATIVE_PACKAGE" != all ]; then
+            selection=(--package "$NATIVE_PACKAGE")
+          fi
+          result=0
+          python3 tools/optimization/qualify_native.py \
+            --python "$RUNNER_TEMP/native-env/bin/python" \
+            --redis-url redis://127.0.0.1:6379/0 \
+            --protocol reports/2026-11-17-native-qualification/protocol.json \
+            --output "$RUNNER_TEMP/native-qualification" "${selection[@]}" || result=$?
+          cp "$RUNNER_TEMP/native-wheels/SHA256SUMS" "$RUNNER_TEMP/native-qualification/"
+          exit "$result"
+      - name: Retain successes, failures and exact artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: native-qualification-${{ inputs.native_package }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/native-qualification/
+            ${{ runner.temp }}/native-wheels/
+          if-no-files-found: error
 'on':
   push:
     branches:
@@ -35,4 +96,10 @@ jobs:
     - tools/optimization/**
     - .github/workflows/optimization-tools.yml
     - pyproject.toml
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      native_package:
+        description: Run native performance qualification (never publishes)
+        type: choice
+        default: none
+        options: [none, all, aiogram-sentinel, aiogram-cmds, aiogram-nav, aiogram-idle]
