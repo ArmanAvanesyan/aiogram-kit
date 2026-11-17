@@ -70,6 +70,12 @@ class NativeDeadlineCore(Protocol):
 
 
 def _unwire(value: str) -> str:
+    # Inverse of the printable-ASCII wire fast path. Escaped/Unicode identities
+    # and subclasses retain the JSON decoder and its validation semantics.
+    if type(value) is str and len(value) >= 2 and value[0] == value[-1] == '"':
+        inner = value[1:-1]
+        if inner.isascii() and inner.isprintable() and '"' not in inner and "\\" not in inner:
+            return inner
     return cast(str, json.loads(value))
 
 
@@ -205,16 +211,19 @@ class RustDeadlineQueue(DeadlineQueue):
         from .storage.component_transaction import component_deadline
 
         key, packed = record.key, _key(record.key)
+        deadline = component_deadline(record)
         self._owned(
             lambda: self.core.schedule(
                 packed,
                 _wire(key.namespace),
                 format(key.bot_id, "x"),
-                component_deadline(record),
+                deadline,
                 _wire(preserve.token) if preserve else None,
             )
         )
-        if self.core.get(packed) is None:
+        # A successful schedule either preserves an owned job or installs exactly
+        # the requested deadline; avoid materializing a second native job snapshot.
+        if preserve is None and deadline is None:
             self.keys.pop(packed, None)
         else:
             self.keys[packed] = key
@@ -278,7 +287,7 @@ class RustDeadlineQueue(DeadlineQueue):
                 packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
             )
         )
-        if self.core.get(packed) is None:
+        if deadline is None:
             self.keys.pop(packed, None)
 
     def reconcile(self, records: Sequence[RuntimeSnapshot], *, limit: int) -> int:

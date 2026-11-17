@@ -328,3 +328,38 @@ def test_native_queue_views_do_not_delay_core_release_until_gc():
     finally:
         if enabled:
             gc.enable()
+
+
+@NATIVE
+def test_schedule_and_release_need_no_second_native_snapshot():
+    from aiogram_idle._native_queue import RustDeadlineQueue
+
+    queue = RustDeadlineQueue()
+    original = queue.core
+
+    class NoSnapshots:
+        def __getattr__(self, name):
+            return getattr(original, name)
+
+        def __len__(self):
+            return len(original)
+
+        def get(self, key):
+            raise AssertionError("redundant native snapshot")
+
+    queue.core = NoSnapshots()
+    key = IdleConversationKey("test", 1, 42, 42)
+    queue.schedule(record(key, 5))
+    assert list(queue.keys.values()) == [key]
+    claim = queue.claim(limit=1, lease_seconds=10, now=5)[0]
+    # A preserved owned job remains present even when no new deadline is supplied.
+    queue.schedule(record(key, None), preserve=claim)
+    assert list(queue.keys.values()) == [key]
+    queue.release(claim, record(key, None), now=6, retry_at=8)
+    assert list(queue.keys.values()) == [key]
+    claim = queue.claim(limit=1, lease_seconds=10, now=8)[0]
+    queue.release(claim, record(key, None), now=9)
+    assert not queue.keys
+    queue.schedule(record(key, 10))
+    queue.schedule(record(key, None))
+    assert not queue.keys
