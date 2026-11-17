@@ -570,5 +570,35 @@
     "source_ref": "refs/heads/revert-7-chore/fix-project-urls",
     "destination_ref": "refs/heads/history/aiogram-cmds/heads/revert-7-chore/fix-project-urls",
     "object_id": "d8ecbb385882894c69e614fbd8a378d57e83db23"
+  },
+  {
+    "repository": "aiogram-kit",
+    "source_ref": "refs/heads/main",
+    "object_id": "45470689ca1365ebdf13a89c66e918d255863cf7",
+    "destination_ref": "refs/tags/history/aiogram-kit/archival-2026-11-17/heads/main"
+  },
+  {
+    "repository": "aiogram-coordination",
+    "source_ref": "refs/heads/main",
+    "object_id": "a4882334f40f288ef427103ffd3e08c0bcd1ff89",
+    "destination_ref": "refs/tags/history/aiogram-coordination/archival-2026-11-17/heads/main"
+  },
+  {
+    "repository": "aiogram-cmds",
+    "source_ref": "refs/heads/main",
+    "object_id": "0a235b692339e7a0c28af50cbc93f70b23a75fdd",
+    "destination_ref": "refs/tags/history/aiogram-cmds/archival-2026-11-17/heads/main"
+  },
+  {
+    "repository": "aiogram-nav",
+    "source_ref": "refs/heads/main",
+    "object_id": "f0f2f8564892877b88f20ae8516755504cb35d4e",
+    "destination_ref": "refs/tags/history/aiogram-nav/archival-2026-11-17/heads/main"
+  },
+  {
+    "repository": "aiogram-idle",
+    "source_ref": "refs/heads/main",
+    "object_id": "01756e5f9e9cba293ce1f389464f6f246030b023",
+    "destination_ref": "refs/tags/history/aiogram-idle/archival-2026-11-17/heads/main"
   }
 ]

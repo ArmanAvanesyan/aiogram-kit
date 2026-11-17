@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-17",
+  "repositories": [
+    {
+      "repository": "aiogram-kit-legacy",
+      "id": 1424361052,
+      "archived": true,
+      "published_releases_visible": 1,
+      "published_assets_visible": 4,
+      "draft_releases_retained_requires_unarchive": [],
+      "historical_pull_requests_retained": 3,
+      "forks_retained": 0,
+      "url": "https://github.com/ArmanAvanesyan/aiogram-kit-legacy"
+    },
+    {
+      "repository": "aiogram-coordination",
+      "id": 1452468905,
+      "archived": true,
+      "published_releases_visible": 1,
+      "published_assets_visible": 4,
+      "draft_releases_retained_requires_unarchive": [],
+      "historical_pull_requests_retained": 0,
+      "forks_retained": 0,
+      "url": "https://github.com/ArmanAvanesyan/aiogram-coordination"
+    },
+    {
+      "repository": "aiogram-cmds",
+      "id": 1075781724,
+      "archived": true,
+      "published_releases_visible": 3,
+      "published_assets_visible": 12,
+      "draft_releases_retained_requires_unarchive": [
+        {
+          "id": 254429599,
+          "tag": "v0.1.1",
+          "assets": 4
+        }
+      ],
+      "historical_pull_requests_retained": 18,
+      "forks_retained": 1,
+      "url": "https://github.com/ArmanAvanesyan/aiogram-cmds"
+    },
+    {
+      "repository": "aiogram-nav",
+      "id": 1452215589,
+      "archived": true,
+      "published_releases_visible": 3,
+      "published_assets_visible": 12,
+      "draft_releases_retained_requires_unarchive": [],
+      "historical_pull_requests_retained": 2,
+      "forks_retained": 0,
+      "url": "https://github.com/ArmanAvanesyan/aiogram-nav"
+    },
+    {
+      "repository": "aiogram-idle",
+      "id": 1452215497,
+      "archived": true,
+      "published_releases_visible": 4,
+      "published_assets_visible": 16,
+      "draft_releases_retained_requires_unarchive": [],
+      "historical_pull_requests_retained": 3,
+      "forks_retained": 0,
+      "url": "https://github.com/ArmanAvanesyan/aiogram-idle"
+    }
+  ]
+}

@@ -69,7 +69,9 @@
     "inventory_gaps": {
       "discussions": "gh: Discussions are disabled for this repo (HTTP 410)"
     },
-    "retained_repository": "ArmanAvanesyan/aiogram-kit-legacy"
+    "retained_repository": "ArmanAvanesyan/aiogram-kit-legacy",
+    "archived": true,
+    "archival_verified_on": "2026-11-17"
   },
   {
     "source_name": "aiogram-coordination",
@@ -117,7 +119,9 @@
       "pages": "gh: Not Found (HTTP 404)",
       "discussions": "gh: Discussions are disabled for this repo (HTTP 410)"
     },
-    "retained_repository": "ArmanAvanesyan/aiogram-coordination"
+    "retained_repository": "ArmanAvanesyan/aiogram-coordination",
+    "archived": true,
+    "archival_verified_on": "2026-11-17"
   },
   {
     "source_name": "aiogram-sentinel",
@@ -829,7 +833,9 @@
       }
     ],
     "inventory_gaps": {},
-    "retained_repository": "ArmanAvanesyan/aiogram-kit"
+    "retained_repository": "ArmanAvanesyan/aiogram-kit",
+    "archived": false,
+    "archival_verified_on": "2026-11-17"
   },
   {
     "source_name": "aiogram-cmds",
@@ -1015,7 +1021,8 @@
             "digest": "sha256:0cdbe2633c93d28abfdfdcd38df30eb9922b381ed462a14f32f1b578f08cea19"
           }
         ],
-        "retained_url": "https://github.com/ArmanAvanesyan/aiogram-cmds/releases/tag/v0.1.1"
+        "retained_url": "https://github.com/ArmanAvanesyan/aiogram-cmds/releases/tag/v0.1.1",
+        "visibility_note": "Retained as an unpublished draft. GitHub hides drafts in archived repositories; temporarily unarchive to access. Release ID and four assets verified intact by an archive/unarchive roundtrip; backups retained."
       },
       {
         "id": 441070321,
@@ -1115,7 +1122,9 @@
       }
     ],
     "inventory_gaps": {},
-    "retained_repository": "ArmanAvanesyan/aiogram-cmds"
+    "retained_repository": "ArmanAvanesyan/aiogram-cmds",
+    "archived": true,
+    "archival_verified_on": "2026-11-17"
   },
   {
     "source_name": "aiogram-nav",
@@ -1244,7 +1253,9 @@
       "pages": "gh: Not Found (HTTP 404)",
       "discussions": "gh: Discussions are disabled for this repo (HTTP 410)"
     },
-    "retained_repository": "ArmanAvanesyan/aiogram-nav"
+    "retained_repository": "ArmanAvanesyan/aiogram-nav",
+    "archived": true,
+    "archival_verified_on": "2026-11-17"
   },
   {
     "source_name": "aiogram-idle",
@@ -1413,6 +1424,8 @@
       "pages": "gh: Not Found (HTTP 404)",
       "discussions": "gh: Discussions are disabled for this repo (HTTP 410)"
     },
-    "retained_repository": "ArmanAvanesyan/aiogram-idle"
+    "retained_repository": "ArmanAvanesyan/aiogram-idle",
+    "archived": true,
+    "archival_verified_on": "2026-11-17"
   }
 ]

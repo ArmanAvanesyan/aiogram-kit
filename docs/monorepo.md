@@ -28,8 +28,10 @@ existing benchmark and platform gates pass; base migration releases do not enabl
 locations and Kit working-copy hashes. Original commit IDs remain unchanged. Historical Git
 checkouts retain their original layout; migration commits introduce the package directories.
 Git history does not contain GitHub issues, PRs, projects, releases or assets. These have a
-separate inventory and cutover checklist. Repositories remain unarchived until every required
-gate passes. Do not reuse the old Sentinel repository name after the final rename.
+separate inventory and cutover checklist. The five retiring repositories were archived on
+2026-11-17 after the preservation and release gates passed. The six obsolete publisher bindings
+were removed; each package publishes only through its matching monorepo workflow.
+See the migration status report for verified evidence. Do not reuse the old Sentinel repository name.
 
 The migration patch changes native identity versions without changing their ABI or kernel behavior.
 Applications opting into source-built native engines must rebuild the matching companion.
