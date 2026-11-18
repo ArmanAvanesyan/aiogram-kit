@@ -7,6 +7,7 @@ import json
 import math
 from collections.abc import Iterator, Mapping
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from types import MappingProxyType
 from typing import ClassVar, Literal, TypeAlias, cast
 
@@ -52,7 +53,30 @@ class QuietRestorePolicy:
 IdlePolicy: TypeAlias = ExemptPolicy | PromptPolicy | QuietRestorePolicy
 
 
+@lru_cache(maxsize=256)
+def _policy_hash(kind: str, values: tuple[tuple[str, type[object], str | int | float], ...]) -> str:
+    # Include scalar types in the cache key: JSON distinguishes 1 from 1.0.
+    payload = {"kind": kind, **{name: value for name, _, value in values}}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
 def policy_digest(policy: IdlePolicy) -> str:
+    names = (
+        ("after_seconds", "grace_seconds", "controls")
+        if type(policy) is PromptPolicy
+        else ("after_seconds",)
+        if type(policy) is QuietRestorePolicy
+        else ()
+        if type(policy) is ExemptPolicy
+        else None
+    )
+    if names is not None and type(policy.kind) is str and len(policy.kind) <= 256:
+        raw = tuple((name, cast(object, getattr(policy, name))) for name in names)
+        if all(type(value) in (str, int, float) for _, value in raw):
+            values = tuple(
+                (name, type(value), cast(str | int | float, value)) for name, value in raw
+            )
+            return _policy_hash(policy.kind, values)
     value = {"kind": policy.kind, **asdict(policy)}
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
@@ -70,6 +94,7 @@ class IdlePolicies(Mapping[str, IdlePolicy]):
             ):
                 raise ConfigurationError("unsupported idle policy")
         self._policies = MappingProxyType(dict(policies))
+        self._digest_cache: tuple[tuple[tuple[str, str], ...], str] | None = None
 
     def __getitem__(self, key: str) -> IdlePolicy:
         try:
@@ -86,4 +111,12 @@ class IdlePolicies(Mapping[str, IdlePolicy]):
     @property
     def digest(self) -> str:
         pairs = {name: policy_digest(policy) for name, policy in self.items()}
+        if all(type(name) is str for name in pairs):
+            key = tuple(sorted(pairs.items()))
+            previous = self._digest_cache
+            if previous is not None and previous[0] == key:
+                return previous[1]
+            digest = hashlib.sha256(json.dumps(pairs, sort_keys=True).encode()).hexdigest()
+            self._digest_cache = (key, digest)
+            return digest
         return hashlib.sha256(json.dumps(pairs, sort_keys=True).encode()).hexdigest()

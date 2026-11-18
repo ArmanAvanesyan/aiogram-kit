@@ -125,3 +125,100 @@ and threshold/sample metadata matching the enforced comparator. It reserves the
 output directory with an exclusive owner file so concurrent attempts cannot
 reuse it. Comparator process errors or contradictory reports withhold qualification
 and cannot produce a successful summary.
+
+## Controlled scheduling and observational host evidence
+
+Qualification can explicitly select a scheduling condition with
+`--cpu-affinity auto` (Linux), or fixed comma-separated CPU IDs. Auto resolves
+**once before any paired run**, selecting the lowest available physical-package,
+core and CPU tuple when topology is exposed; otherwise it chooses the first
+allowed CPU. Every Python/Rust subprocess receives the same resolved CPU set.
+Unavailable/duplicate CPU IDs, missing scheduling support and an empty available
+set fail before measurements. The parent controller's affinity is unchanged.
+This pins the measured process; it does **not** reserve a physical core, move
+Redis, isolate an SMT sibling, or exclude host/hypervisor competition.
+
+The workflow input `cpu_affinity` defaults to `none`, preserving inherited
+scheduling. A controlled experiment must explicitly select `auto` or CPU IDs,
+retain the original protocol and declare that host condition before running.
+`host-controls.json` records the request, deterministic selection and available
+CPU set. Historical unpinned failures remain evidence; a newly pinned result
+cannot erase their instability or by itself authorize publication.
+
+Each driver also writes `<package>.host.json`: observations before/after the
+whole driver of GC state/counts, process CPU/context switches/page faults, load,
+CPU affinity/frequency and available Linux CPU pressure/cgroup counters. No
+observer runs inside timed operations, and the controller does not disable GC,
+change its thresholds, alter sample counts, filter observations, or tune clocks.
+Unavailable OS counters are `null`; root cgroup counters may include other work
+and are diagnostic observations, not proof that contention was absent.
+
+The result and manifest distinguish host CPU count from effective affinity CPU
+count. Qualification compares strict `measurement_controls` across every paired
+run, including the controller source hash, actual affinity, enabled automatic GC
+and unchanged GC thresholds. A changed affinity during a driver, missing controls, incompatible control
+sets or changed controller source withhold qualification. Time-varying telemetry
+is retained separately and is not falsely required to be identical. Historical
+results without these controls remain readable but cannot qualify through the
+hardened evaluator. Exact artifact and driver-provenance checks remain intact.
+
+Cmds retains its already-collected individual latency observations alongside the
+summary. When raw observations are present, the evaluator verifies their count,
+positive finite values and exact p95 before evaluating the unchanged thresholds.
+It does not trim tails, resample, or substitute batched latency for operations.
+
+### Explicit stronger-sampling experiment
+
+Historical qualifier defaults remain 10 Nav/Idle CPU repetitions, one additional
+latency window and 1,000 Cmds individual latencies. An explicitly predeclared run
+may select `--cpu-samples 30 --latency-windows 10
+--individual-latency-samples 3000`. These are **increased** sample counts; they
+supersede the earlier unchanged-count experiment only when selected explicitly.
+The original protocol still requires its unchanged minima, balanced order and
+20% CPU / 5% p95 / 10% repeat-spread limits.
+
+Nav/Idle CPU and claim samples retain 100 operations per fresh fixture; additional
+Redis and combined windows also use 100 operations each. Receipt age remains
+50→150 within each applicable fresh window, rather than growing one fixture to
+age1,050. All observations and end-exclusive window boundaries are retained;
+failed or incomplete windows cannot be skipped or retried. `calls=100` remains
+the CPU-window normalizer; `total_calls` and raw observation count report the
+pooled operations separately. Cmds retains its stateless target/configuration
+and unchanged 31 CPU trials; only its individual operation count increases.
+
+`--redis-container-id` explicitly identifies the job's owned disposable Redis.
+It requires client affinity and configures Redis once on a disjoint allowed
+logical CPU, preferring a different exposed physical core. With unavailable or
+shared topology, the logical-only fallback is recorded without an exclusive-core
+claim. No available disjoint logical CPU fails before timing. Only selected
+Docker identity/image/PID/CPU fields are inspected, never container credentials.
+Configured CPU set and actual process affinity are verified before/after every
+driver; identity or affinity changes fail rather than choosing another CPU.
+
+The workflow's `robust_sampling` input defaults to `false`. Set it to `true`
+with explicit `cpu_affinity=auto` (or IDs) to select 30/10/3,000 plus disjoint
+Redis control. `host-controls.json` and schema-two paired measurement controls
+record the selected counts and service condition. The evaluator verifies those
+requests against actual CPU vector lengths, raw latency counts, fresh-window
+bounds/ages and complete fixtures; all four equally undersampled reports cannot
+qualify merely because their headers agree. Missing/duplicate/partial windows,
+unequal observed sample counts, changed service controls and fabricated p95
+summaries withhold qualification. Historical attempts remain retained; stronger
+sampling and service pinning do not turn their failures into successes.
+
+### Sentinel's independent latency phase
+
+For a newly declared run, `--latency-windows 10` now also requests ten fresh Sentinel
+middleware fixtures of **1,000 operations each**. Its default remains one. The
+original full Sentinel CPU phase stays **15 × 50,000** operations; the latency
+phase is explicitly separate, so its ten windows must not be confused with the
+fifteen CPU samples or use a 1,000-call CPU normalizer. The observed-plan validator
+binds both phases independently, checking the complete 10,000-observation vector,
+distinct fixtures, 0→1,000 state windows and unchanged CPU dimensions. All first
+observations and tails remain; an incomplete or failed fixture fails the run.
+There is no new warmup, sleep, GC change, adaptive count or winning-window filter.
+
+The workflow choice `native_package=sentinel-cmds` qualifies just those two
+independent projects and labels its artifact accordingly. It does not rerun or
+claim new measurements for already-qualified Nav/Idle artifacts. Existing reports
+remain retained with their original controller/source hashes and conditions.

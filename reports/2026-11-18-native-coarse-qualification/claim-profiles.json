@@ -1,0 +1,12 @@
+[
+  {
+    "file": "claim-profile-python.txt.gz",
+    "raw_sha256": "531b59bea040cac09e11d083db71f20be5b1084752b99c54d72602de1cf83196",
+    "scope": "instrumented diagnostic including setup, not qualification timing"
+  },
+  {
+    "file": "claim-profile-rust.txt.gz",
+    "raw_sha256": "e4150ef6f591da2c734e509bddd9d8c0c47c1280df666b9855931906ab7d4f6e",
+    "scope": "instrumented diagnostic including setup, not qualification timing"
+  }
+]

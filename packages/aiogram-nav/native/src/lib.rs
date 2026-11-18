@@ -1,10 +1,12 @@
 //! Deterministic data algorithms only. No Telegram, Redis, locks or business calls.
+mod canonical;
 pub mod json;
+mod python_json;
 pub mod registry;
 
 use pyo3::exceptions::{PyKeyError, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyDict, PyList, PyModule};
+use pyo3::types::PyModule;
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 
@@ -12,48 +14,6 @@ pub const API_VERSION: u32 = 1;
 pub const ENGINE_VERSION: &str = "0.3.1";
 fn invalid(error: impl ToString) -> PyErr {
     PyValueError::new_err(error.to_string())
-}
-
-fn to_python(py: Python<'_>, value: &Value) -> PyResult<Py<PyAny>> {
-    Ok(match value {
-        Value::Null => py.None(),
-        Value::Bool(x) => x.into_pyobject(py)?.to_owned().into_any().unbind(),
-        Value::String(x) => x.into_pyobject(py)?.into_any().unbind(),
-        Value::Number(x) => {
-            let text = x.to_string();
-            if text.contains(['.', 'e', 'E']) {
-                x.as_f64()
-                    .ok_or_else(|| invalid("Non-finite JSON number"))?
-                    .into_pyobject(py)?
-                    .into_any()
-                    .unbind()
-            } else if let Ok(value) = text.parse::<i64>() {
-                value.into_pyobject(py)?.into_any().unbind()
-            } else if let Ok(value) = text.parse::<u64>() {
-                value.into_pyobject(py)?.into_any().unbind()
-            } else {
-                // Preserve Python's unbounded integers and configured digit limit.
-                PyModule::import(py, "builtins")?
-                    .getattr("int")?
-                    .call1((text,))?
-                    .unbind()
-            }
-        }
-        Value::Array(xs) => {
-            let out = PyList::empty(py);
-            for x in xs {
-                out.append(to_python(py, x)?)?;
-            }
-            out.into_any().unbind()
-        }
-        Value::Object(xs) => {
-            let out = PyDict::new(py);
-            for (key, value) in xs {
-                out.set_item(key, to_python(py, value)?)?;
-            }
-            out.into_any().unbind()
-        }
-    })
 }
 
 #[pyfunction]
@@ -64,8 +24,7 @@ fn strict_loads(
     max_bytes: usize,
     max_depth: usize,
 ) -> PyResult<Py<PyAny>> {
-    let value = json::parse(raw, max_bytes, max_depth).map_err(invalid)?;
-    to_python(py, &value)
+    python_json::parse(py, raw, max_bytes, max_depth)
 }
 
 #[pyfunction]
@@ -161,7 +120,7 @@ pub fn history(
             items.truncate(items.len().saturating_sub(pop));
         }
         "clear" => items.clear(),
-        "none" => (),
+        "none" | "replace" => (),
         _ => return Err("Unknown history mode".into()),
     }
     if limit == 0 {
@@ -221,7 +180,7 @@ fn transition_values(
                 items.push(entry);
             }
         }
-        "push" | "none" => (),
+        "push" | "none" | "replace" => (),
         "pop" => items.truncate(items.len().saturating_sub(pop)),
         "clear" => items.clear(),
         _ => return Err(invalid("Unknown history mode")),
@@ -388,6 +347,11 @@ fn _aiogram_nav_native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(transition_state, module)?)?;
     module.add_function(wrap_pyfunction!(transition_values, module)?)?;
     module.add_function(wrap_pyfunction!(token_matches, module)?)?;
+    module.add_class::<canonical::Canonicalizer>()?;
+    module.add(
+        "InvalidJson",
+        module.py().get_type::<canonical::InvalidJson>(),
+    )?;
     module.add_class::<Registry>()?;
     Ok(())
 }

@@ -130,3 +130,132 @@ def test_local_uv_wheel_without_recorded_digest_requires_installed_file_parity(
 
     with pytest.raises(RuntimeError, match="Installed files differ"):
         namespace["installed"]("demo-pkg")
+
+
+def test_cpu_affinity_rejects_unavailable_or_ambiguous_ids(monkeypatch):
+    import pytest
+
+    monkeypatch.setattr(MODULE.os, "sched_getaffinity", lambda pid: {2, 4}, raising=False)
+    monkeypatch.setattr(MODULE.os, "sched_setaffinity", lambda *args: None, raising=False)
+    assert MODULE.cpu_affinity(None) is None
+    assert MODULE.cpu_affinity("4,2") == [2, 4]
+    for bad in ("", "1", "2,2", "-1", "2-4", " 2", "\uff12"):
+        with pytest.raises(ValueError, match="CPU affinity"):
+            MODULE.cpu_affinity(bad)
+
+
+def test_measurement_controls_reject_mid_driver_affinity_changes():
+    import pytest
+
+    before = {
+        "cpu_affinity": [2],
+        "host_cpu_count": 8,
+        "gc_enabled": True,
+        "gc_thresholds": [700, 10, 10],
+    }
+    after = {**before, "cpu_affinity": [3]}
+    with pytest.raises(ValueError, match="affinity changed"):
+        MODULE.measurement_controls({"before": before, "after": after}, [2])
+    with pytest.raises(ValueError, match="affinity changed"):
+        MODULE.measurement_controls({"before": before, "after": before}, [3])
+    controls = MODULE.measurement_controls({"before": before, "after": before}, [2])
+    assert controls["effective_cpu_count"] == 1
+    assert controls["host_cpu_count"] == 8
+    assert controls["gc_policy"] == "unchanged"
+
+
+def test_bootstrap_observations_survive_driver_failure_without_changing_gc(tmp_path):
+    import json
+    import subprocess
+    import sys
+
+    import pytest
+
+    driver = tmp_path / "failure.py"
+    driver.write_text("raise RuntimeError('deliberate driver failure')\n")
+    observations = tmp_path / "host.json"
+    command = MODULE.benchmark_command(
+        sys.executable,
+        [],
+        driver,
+        "python",
+        tmp_path / "result.json",
+        [],
+        observations=observations,
+    )
+    with pytest.raises(subprocess.CalledProcessError):
+        subprocess.check_output(command, stderr=subprocess.STDOUT)
+    recorded = json.loads(observations.read_text())
+    assert recorded["before"]["gc_enabled"] is True
+    assert recorded["after"]["gc_enabled"] is True
+    assert recorded["before"]["gc_thresholds"] == recorded["after"]["gc_thresholds"]
+    assert "process_usage" in recorded["before"]
+    assert "linux_cpu" in recorded["before"]
+
+
+def test_bootstrap_pins_only_child_and_records_effective_count(tmp_path):
+    import json
+    import os
+    import subprocess
+    import sys
+
+    import pytest
+
+    if not hasattr(os, "sched_getaffinity"):
+        pytest.skip("Linux affinity is unavailable")
+    original = sorted(os.sched_getaffinity(0))
+    selected = [original[0]]
+    driver = tmp_path / "affinity.py"
+    driver.write_text("import os,json; print(json.dumps(sorted(os.sched_getaffinity(0))))\n")
+    output = tmp_path / "result.json"
+    command = MODULE.benchmark_command(
+        sys.executable,
+        [],
+        driver,
+        "python",
+        output,
+        [],
+        affinity=selected,
+    )
+    assert json.loads(subprocess.check_output(command, text=True)) == selected
+    assert sorted(os.sched_getaffinity(0)) == original
+    recorded = json.loads(output.with_suffix(".host.json").read_text())
+    assert MODULE.measurement_controls(recorded, selected)["effective_cpu_count"] == 1
+
+
+def test_cmds_driver_preserves_existing_individual_samples_without_resampling():
+    import ast
+
+    driver = Path(__file__).parents[3] / "packages/aiogram-cmds/benchmarks/run.py"
+    tree = ast.parse(driver.read_text())
+    found = set()
+    for function in tree.body:
+        if isinstance(function, (ast.FunctionDef, ast.AsyncFunctionDef)) and function.name in {
+            "sample",
+            "sample_async",
+        }:
+            for node in ast.walk(function):
+                if not isinstance(node, ast.Dict):
+                    continue
+                for key, value in zip(node.keys, node.values, strict=True):
+                    if isinstance(key, ast.Constant) and key.value == "individual_latency_ns":
+                        assert isinstance(value, ast.Dict)
+                        fields = dict(zip((k.value for k in value.keys), value.values, strict=True))
+                        assert isinstance(fields["values"], ast.Name)
+                        assert fields["values"].id == "individual"
+                        found.add(function.name)
+    assert found == {"sample", "sample_async"}
+
+
+def test_measurement_controls_cannot_hide_disabled_or_changed_gc():
+    import pytest
+
+    before = {
+        "cpu_affinity": [2],
+        "host_cpu_count": 8,
+        "gc_enabled": True,
+        "gc_thresholds": [700, 10, 10],
+    }
+    for after in ({**before, "gc_enabled": False}, {**before, "gc_thresholds": [0, 10, 10]}):
+        with pytest.raises(ValueError, match="GC controls"):
+            MODULE.measurement_controls({"before": before, "after": after}, [2])

@@ -12,6 +12,7 @@ from typing import Protocol, TypeVar, cast, overload
 from ._wire import wire as _wire
 from .errors import OwnershipLost
 from .models import IdleConversationKey, RuntimeSnapshot
+from .storage.component_transaction import component_deadline
 from .storage.queue import DeadlineQueue
 from .storage.state import Claim, Job
 
@@ -60,16 +61,36 @@ class NativeDeadlineCore(Protocol):
         namespace: str | None,
         bot_id: str | None,
     ) -> list[ClaimTuple]: ...
+    def claim_objects(
+        self,
+        limit: int,
+        lease_seconds: float,
+        now: float,
+        tokens: list[str],
+        namespace: str | None,
+        bot_id: str | None,
+        keys: dict[str, IdleConversationKey],
+        factory: type[Claim],
+    ) -> list[Claim]: ...
     def renew(
         self, key: str, token: str, generation: str, now: float, lease_seconds: float
     ) -> ClaimTuple: ...
     def release(
         self, key: str, token: str, generation: str, now: float, deadline: float | None
     ) -> None: ...
+    def release_values(
+        self, key: str, token: str, generation: int, now: float, deadline: float | None
+    ) -> None: ...
     def reconcile(self, candidates: list[tuple[str, str, str, float]], limit: int) -> int: ...
 
 
 def _unwire(value: str) -> str:
+    # Inverse of the printable-ASCII wire fast path. Escaped/Unicode identities
+    # and subclasses retain the JSON decoder and its validation semantics.
+    if type(value) is str and len(value) >= 2 and value[0] == value[-1] == '"':
+        inner = value[1:-1]
+        if inner.isascii() and inner.isprintable() and '"' not in inner and "\\" not in inner:
+            return inner
     return cast(str, json.loads(value))
 
 
@@ -202,19 +223,20 @@ class RustDeadlineQueue(DeadlineQueue):
         self.core.push(_key(key))
 
     def schedule(self, record: RuntimeSnapshot, *, preserve: Claim | None = None) -> None:
-        from .storage.component_transaction import component_deadline
-
         key, packed = record.key, _key(record.key)
+        deadline = component_deadline(record)
         self._owned(
             lambda: self.core.schedule(
                 packed,
                 _wire(key.namespace),
                 format(key.bot_id, "x"),
-                component_deadline(record),
+                deadline,
                 _wire(preserve.token) if preserve else None,
             )
         )
-        if self.core.get(packed) is None:
+        # A successful schedule either preserves an owned job or installs exactly
+        # the requested deadline; avoid materializing a second native job snapshot.
+        if preserve is None and deadline is None:
             self.keys.pop(packed, None)
         else:
             self.keys[packed] = key
@@ -238,21 +260,20 @@ class RustDeadlineQueue(DeadlineQueue):
         bot_id: int | None = None,
     ) -> list[Claim]:
         bounded = min(limit, len(self.core))
-        tokens = [_wire(secrets.token_urlsafe(18)) for _ in range(bounded)]
-        rows = self._owned(
-            lambda: self.core.claim(
+        tokens = [secrets.token_urlsafe(18) for _ in range(bounded)]
+        try:
+            return self.core.claim_objects(
                 bounded,
                 lease_seconds,
                 now,
                 tokens,
                 _wire(namespace) if namespace is not None else None,
                 format(bot_id, "x") if bot_id is not None else None,
+                self.keys,
+                Claim,
             )
-        )
-        return [
-            Claim(self.keys[key], _unwire(token), int(generation, 16), lease, deadline)
-            for key, token, generation, lease, deadline in rows
-        ]
+        except self.native.OwnershipLost as error:
+            raise OwnershipLost("The deadline claim has expired or was replaced") from error
 
     def renew(self, claim: Claim, *, now: float, lease_seconds: float) -> Claim:
         _, token, generation, lease, deadline = self._owned(
@@ -269,21 +290,23 @@ class RustDeadlineQueue(DeadlineQueue):
     def release(
         self, claim: Claim, record: RuntimeSnapshot, *, now: float, retry_at: float | None = None
     ) -> None:
-        from .storage.component_transaction import component_deadline
-
         deadline = retry_at if retry_at is not None else component_deadline(record)
         packed = _key(claim.key)
-        self._owned(
-            lambda: self.core.release(
-                packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
-            )
-        )
-        if self.core.get(packed) is None:
+        try:
+            if type(claim.token) is str and type(claim.generation) is int:
+                self.core.release_values(packed, claim.token, claim.generation, now, deadline)
+            else:
+                # Match the original format/JSON behavior for unusual scalar
+                # subclasses before native mutation, never after a native error.
+                self.core.release(
+                    packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
+                )
+        except self.native.OwnershipLost as error:
+            raise OwnershipLost("The deadline claim has expired or was replaced") from error
+        if deadline is None:
             self.keys.pop(packed, None)
 
     def reconcile(self, records: Sequence[RuntimeSnapshot], *, limit: int) -> int:
-        from .storage.component_transaction import component_deadline
-
         candidates: list[tuple[str, str, str, float]] = []
         selected: dict[str, IdleConversationKey] = {}
         for record in records[:limit]:

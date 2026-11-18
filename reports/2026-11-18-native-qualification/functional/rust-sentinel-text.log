@@ -1,0 +1,21 @@
+   Compiling aiogram-sentinel-native v1.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-sentinel/native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.00s
+     Running unittests src/lib.rs (packages/aiogram-sentinel/native/target/debug/deps/_aiogram_sentinel_native-6e24a76e5a09865a)
+
+running 5 tests
+test tests::debounce_helpers_keep_composite_key_aliasing ... ok
+test tests::debounce_zero_and_inclusive_helper_boundaries ... ok
+test tests::quiet_keys_are_not_garbage_collected_for_other_keys ... ok
+test tests::rate_boundaries_and_destructive_window_changes ... ok
+test tests::borrowed_entries_reuse_keys_and_preserve_reset ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests _aiogram_sentinel_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking aiogram-sentinel-native v1.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-sentinel/native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.80s

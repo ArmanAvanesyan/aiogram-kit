@@ -1,0 +1,21 @@
+{
+  "source_commit": "f4567d1",
+  "scope": "Same independent scripts rerun against root-assembled exact installed artifacts; functional only.",
+  "files": [
+    {
+      "raw_filename": "assembled-idle-release.json",
+      "retained": "assembled-idle-release.json.gz",
+      "raw_sha256": "25f87e03b88aa9faf3b726c8a5a39d7da072a01ebdbfe42772c992b9a0c1b68e"
+    },
+    {
+      "raw_filename": "assembled-cmds-delivery.json",
+      "retained": "assembled-cmds-delivery.json.gz",
+      "raw_sha256": "d533b9c0c34c0e74b4f860f4b06d11c50958337ce78d6b763fbbe7b134ea4c3e"
+    },
+    {
+      "raw_filename": "assembled-nav-parser.json",
+      "retained": "assembled-nav-parser.json.gz",
+      "raw_sha256": "64f73035dd34fe1b804ed7d3df1ac8cede5e9d15739410843fe102c715309054"
+    }
+  ]
+}

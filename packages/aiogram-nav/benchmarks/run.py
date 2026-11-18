@@ -103,6 +103,21 @@ async def workload(age, engine, samples, repeats):
         samples=samples,
         cpu_count=len(cpu),
         repeats=repeats,
+        latency_windows=repeats,
+        operations_per_cpu_sample=samples,
+        total_calls=samples * repeats,
+        latency_window_boundaries=[
+            dict(
+                window=index,
+                start=index * samples,
+                stop=(index + 1) * samples,
+                operation_count=samples,
+                samples=samples,
+                state_age=age,
+                end_state_age=age + samples,
+            )
+            for index in range(repeats)
+        ],
         median_cpu_ns=statistics.median(cpu) * 1_000_000_000 / samples,
         median_ns=statistics.median(latencies),
         p95_ns=percentile(latencies),
@@ -168,6 +183,12 @@ async def main():
     parser.add_argument("--samples", type=int)
     parser.add_argument("--cpu-samples", type=int)
     parser.add_argument(
+        "--latency-windows",
+        type=int,
+        default=1,
+        help="Fresh Redis fixtures; each keeps --samples observations at the original age",
+    )
+    parser.add_argument(
         "--redis-url", help="Dedicated benchmark primary; only owned random prefixes are removed"
     )
     args = parser.parse_args()
@@ -181,10 +202,11 @@ async def main():
     samples = args.samples if args.samples is not None else (100 if args.quick or legacy else 1000)
     repeats = args.cpu_samples if args.cpu_samples is not None else (1 if args.quick else 10)
     if (
-        min([samples, repeats, *ages, *sizes]) < 1
+        min([samples, repeats, args.latency_windows, *ages, *sizes]) < 1
         or max(ages + sizes) > 10000
         or repeats > 100
         or samples > 10000
+        or args.latency_windows > 100
     ):
         parser.error("Benchmark dimensions exceed their bounded positive range")
     if args.registry_only and args.skip_registry:
@@ -203,7 +225,14 @@ async def main():
 
         for age in ages:
             results.extend(
-                await redis_workload(args.redis_url, args.engine, age, samples, configuration)
+                await redis_workload(
+                    args.redis_url,
+                    args.engine,
+                    age,
+                    samples,
+                    configuration,
+                    windows=args.latency_windows,
+                )
             )
     try:
         commit = (
@@ -236,6 +265,13 @@ async def main():
         qualification=False,
         qualification_owner="external serial comparison gate",
         exploratory=args.quick,
+        sampling_plan=dict(
+            cpu_samples=repeats,
+            operations_per_cpu_sample=samples,
+            redis_latency_windows=args.latency_windows,
+            operations_per_latency_window=samples,
+            fixture_policy="fresh Redis prefix/session per window; fixed original age; no trimming",
+        ),
         representative_workload="memory-track/50",
         cpu_count=os.cpu_count(),
         rss_peak_bytes=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
@@ -243,6 +279,8 @@ async def main():
         results=results,
     )
     args.output.write_text(json.dumps(report, indent=2) + "\n")
+    if any(row.get("status") == "unavailable" for row in results):
+        raise SystemExit("A Redis latency window failed; evidence is not qualified")
 
 
 if __name__ == "__main__":

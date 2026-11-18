@@ -1,0 +1,618 @@
+{
+  "run_id": 44212572066,
+  "source_commit": "0c4e2a4",
+  "files": [
+    {
+      "path": "native-qualification/SHA256SUMS",
+      "sha256": "adf6a73a8a2f5e589bdcc0b257b6791765900a9c3a4ad430867dcba6e479c46d",
+      "bytes": 1382,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/native-gate.json",
+      "sha256": "7525b094de90a399db63581a09745a75c4e665d0ffb71a788378cc5ba5c3976e",
+      "bytes": 6905,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a/aiogram-cmds.host.json",
+      "sha256": "b2c5a1880356e0df47af6978d1119873536dd8312989f672097bef3e1205c557",
+      "bytes": 2690,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a/aiogram-cmds.json",
+      "sha256": "38f5476383ef5e442d0adc8d06c18551822384b4eb1db71598ce27044b8088eb",
+      "bytes": 284990,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a/aiogram-cmds.log",
+      "sha256": "691c1778476c0a5d5203227d26186d0592c28c070e019b7b6705dbef10fa7fb5",
+      "bytes": 85,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a/aiogram-cmds.pyperf.json",
+      "sha256": "1d96b1c02cf5c5753989f2548628ce00d80d48418d16bef30d214e2f0796c001",
+      "bytes": 27486,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a/run-manifest.json",
+      "sha256": "be6273ffefe19cfaf1848bb5dfa754ade4e1d30e68764e4f7411633b15cb031e",
+      "bytes": 389230,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-a.log",
+      "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b/aiogram-cmds.host.json",
+      "sha256": "3c971e67087006a1bb2b64555b2663fce1e7a35354262390fc45817e016b7656",
+      "bytes": 2690,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b/aiogram-cmds.json",
+      "sha256": "a0c7aab9254579dbfa006681e257bf4812beb98876748cb17718efdef6dc54bc",
+      "bytes": 285006,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b/aiogram-cmds.log",
+      "sha256": "49c9f0a4267c545fd142713bf67699f6605ac36a06dd96d254d5a989256aa6ad",
+      "bytes": 85,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b/aiogram-cmds.pyperf.json",
+      "sha256": "d05f998c648b3dccca1c8aa9eb4055b4ea7f6592a74cd33cceefd62c73c5e6b6",
+      "bytes": 27501,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b/run-manifest.json",
+      "sha256": "f23030af91cb910d42408319d195f1c575afb7173ef9bb0f86cd664ad2e2b1a8",
+      "bytes": 389246,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/python-b.log",
+      "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a/aiogram-cmds.host.json",
+      "sha256": "d02baacacd8b31c117db963448260caa31d9cc73f98bc54d41492e6bd78fd5e6",
+      "bytes": 2703,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a/aiogram-cmds.json",
+      "sha256": "8786b78e571411bbb829fbd9925434685cd7e1253917a24fe20f94b212c76cbb",
+      "bytes": 285435,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a/aiogram-cmds.log",
+      "sha256": "9edce3fadd23e5edeb0c38ffff83b5bce91e7472ffbeb31d1cb453c72ef0d6e3",
+      "bytes": 83,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a/aiogram-cmds.pyperf.json",
+      "sha256": "30b3310d64db9317a72cd0db7de77320762fc3563c123eea349770e09a1e9a29",
+      "bytes": 27657,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a/run-manifest.json",
+      "sha256": "832b8065fa027947e1905f724b2105e2762e8dc16f79901cfe5c982f378af2ef",
+      "bytes": 391095,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-a.log",
+      "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b/aiogram-cmds.host.json",
+      "sha256": "014e2495460c19eac84978d38fdbb82dd040bde1dc388e708e03812884615beb",
+      "bytes": 2696,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b/aiogram-cmds.json",
+      "sha256": "db66be56ec12f7d0d52b35dda6041179ac0d308d065c556ecf04a341c613b04f",
+      "bytes": 285332,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b/aiogram-cmds.log",
+      "sha256": "7d355c6cf3c8440107f135d7c4324c4f0aa6f4accde5793621f7e865aa47cb93",
+      "bytes": 83,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b/aiogram-cmds.pyperf.json",
+      "sha256": "9961c61ace639e4a8f64800892f25ea96b766ef1c0175d92281f3e8f97aec8e1",
+      "bytes": 26913,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b/run-manifest.json",
+      "sha256": "c808714b847324181f2c9c1f120720bd68cfc956a401d55648138d4e51e8e741",
+      "bytes": 390985,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-cmds/rust-b.log",
+      "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/native-gate.json",
+      "sha256": "2ce0ca143c7bde905edb4349a60af8182d57b783157e61bfc41035e38aae09b3",
+      "bytes": 7001,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-a/aiogram-idle.host.json",
+      "sha256": "09a91b7a43937dc1f402de4723bb2f76f5e9fd9fc9e524404734ae5eb1165deb",
+      "bytes": 2709,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-a/aiogram-idle.json",
+      "sha256": "d99d41c05921143d6ea8d21e8a44a16872b55aa27d339014b3132e4590b4119e",
+      "bytes": 88365,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-a/aiogram-idle.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-a/run-manifest.json",
+      "sha256": "4d17c2b9c64e7aaad912381d7635aa9495e3bf141582d6b1fd3594bd75470c8f",
+      "bytes": 121971,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-a.log",
+      "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-b/aiogram-idle.host.json",
+      "sha256": "945c46b3dfabf9756a9c59671e0dc632ac310bc7ab01507e98c1111576dc45c7",
+      "bytes": 2710,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-b/aiogram-idle.json",
+      "sha256": "fec88d9bfd30bcfd5f7a84b1226bd56be7b481dc74b02cace5c0e8b934565037",
+      "bytes": 88394,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-b/aiogram-idle.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-b/run-manifest.json",
+      "sha256": "43b419f350acff2d3090f55a1dd9f28fc681851cefaf263d8c562aa73c050191",
+      "bytes": 122000,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/python-b.log",
+      "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-a/aiogram-idle.host.json",
+      "sha256": "066b38f180beaa9c26fe521a9c91ec52ae9600c75c7a194b5d5fcdc520b3a8e2",
+      "bytes": 2720,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-a/aiogram-idle.json",
+      "sha256": "f0bb03d01ccac8f65f643c5d23053b42771e64245b18ef2f4e4b1f4db23d6ae2",
+      "bytes": 88542,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-a/aiogram-idle.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-a/run-manifest.json",
+      "sha256": "77bc389f770e6039798a9da35a733171d4eeca96076249550336543ffc4cc009",
+      "bytes": 123563,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-a.log",
+      "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-b/aiogram-idle.host.json",
+      "sha256": "57774f2cb69af858a507d379a6455dad913847824afc0e679833bb79454be2b8",
+      "bytes": 2707,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-b/aiogram-idle.json",
+      "sha256": "b36f53d486064db055081c10c6f4cf4a93c1b2fe83a455917828b67064fb5d0e",
+      "bytes": 88518,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-b/aiogram-idle.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-b/run-manifest.json",
+      "sha256": "f8383961702f26d76626cb918c2b0e5ca60ee9b047a776b49cc60df2d22f0bd2",
+      "bytes": 123526,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-idle/rust-b.log",
+      "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+      "bytes": 23,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/native-gate.json",
+      "sha256": "0bf2bac9517001a4bf6f64a975d1a37f514f911ed3798e812b45c3383ca98ab1",
+      "bytes": 5618,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-a/aiogram-nav.host.json",
+      "sha256": "b30a2984bc5b1f143488f162fd7875975e5d8f6413d21ce836261affdecc8a4e",
+      "bytes": 2687,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-a/aiogram-nav.json",
+      "sha256": "1f277a39f8bce1f77da77c200d0737a15cb668a12088f296db88f168e5883a83",
+      "bytes": 39357,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-a/aiogram-nav.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-a/run-manifest.json",
+      "sha256": "17659851c138e9a1151b68acdb10ccdf3e15619bf6564c7b2332c3f15c06ade2",
+      "bytes": 64358,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-a.log",
+      "sha256": "9823d407c4db3521390ffc5e3253099a4f1958ddf2d58e4d6b896bc0419e2637",
+      "bytes": 22,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-b/aiogram-nav.host.json",
+      "sha256": "b22fb589d2d83032d3c5091cbce7f82cfe1348a981128a4018903ee43e3aa2aa",
+      "bytes": 2672,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-b/aiogram-nav.json",
+      "sha256": "8d4b6e3ae66e0790aaded6fdcbe35889936b59601998142722de8103188a2339",
+      "bytes": 39260,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-b/aiogram-nav.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-b/run-manifest.json",
+      "sha256": "c913b19e158d16d7c8e0797001cc6836c709130a33d651d686471dfa9d012bad",
+      "bytes": 64229,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/python-b.log",
+      "sha256": "9823d407c4db3521390ffc5e3253099a4f1958ddf2d58e4d6b896bc0419e2637",
+      "bytes": 22,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-a/aiogram-nav.host.json",
+      "sha256": "b793fad71de2b9df6a5628b33a5c3a77121692410d190d39a58fcd06eb33d14c",
+      "bytes": 2699,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-a/aiogram-nav.json",
+      "sha256": "11338bca27b43d86966e6e8e156bbaba535ad2d1888dd59d7162549b04453e59",
+      "bytes": 39326,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-a/aiogram-nav.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-a/run-manifest.json",
+      "sha256": "1a2ad153a129a94422e13df3f7702bf85e792a69345d421297788646b75b357e",
+      "bytes": 65720,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-a.log",
+      "sha256": "9823d407c4db3521390ffc5e3253099a4f1958ddf2d58e4d6b896bc0419e2637",
+      "bytes": 22,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-b/aiogram-nav.host.json",
+      "sha256": "77aca7849306a1248b800f9846e4e071fdc44536eb2812870e1d140f7ad01e5f",
+      "bytes": 2710,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-b/aiogram-nav.json",
+      "sha256": "efdb1fbfae1533d730f1cea7008aead8baa37e3c392efdd1c0cdf1301a2b37fd",
+      "bytes": 39364,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-b/aiogram-nav.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-b/run-manifest.json",
+      "sha256": "6c02f9957449ddfde42ccbba9ac98cc0594661e9c4d7c339bec5577773ba45a3",
+      "bytes": 65770,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-nav/rust-b.log",
+      "sha256": "9823d407c4db3521390ffc5e3253099a4f1958ddf2d58e4d6b896bc0419e2637",
+      "bytes": 22,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/native-gate.json",
+      "sha256": "5737ea0877b93fc8e8c0c8453a9def89e9ab356822d0892ffbca5bfb669bc21f",
+      "bytes": 5430,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-a/aiogram-sentinel.host.json",
+      "sha256": "fb4f30d24c523bec6b8b320da7de3d905577793d37d652a93836128255ad5a8b",
+      "bytes": 2698,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-a/aiogram-sentinel.json",
+      "sha256": "25cddb668508cc59b64701941e8ab0eb2c355e5c3356eb35a052a8eac24e8a22",
+      "bytes": 42013,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-a/aiogram-sentinel.log",
+      "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e",
+      "bytes": 69,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-a/run-manifest.json",
+      "sha256": "a24c8022e0e1ca554cdeac2329bf9c2a74b106197bc7cf5585dd9e549d0857b9",
+      "bytes": 62690,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-a.log",
+      "sha256": "71a4edc71c466dcd29a79bfe9d297c28e276678a630d86c4f99945b90b763ae1",
+      "bytes": 27,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-b/aiogram-sentinel.host.json",
+      "sha256": "ff4912b47435ac037864d4363a900373e5c7347b8b1e13321e8b7f493d3287be",
+      "bytes": 2692,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-b/aiogram-sentinel.json",
+      "sha256": "c8c0cbfe0d413f40393eb7dc31f46c09244e39700ad6f37ed80fa096c1257200",
+      "bytes": 42054,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-b/aiogram-sentinel.log",
+      "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e",
+      "bytes": 69,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-b/run-manifest.json",
+      "sha256": "86fe26b06ed517aff3da28a4a95951528bd9cf82043fe68af54b3cfddfdc85e5",
+      "bytes": 62724,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/python-b.log",
+      "sha256": "71a4edc71c466dcd29a79bfe9d297c28e276678a630d86c4f99945b90b763ae1",
+      "bytes": 27,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-a/aiogram-sentinel.host.json",
+      "sha256": "6fd59a15a6360b78148641fef702c99065e5786495119d1bef615c7580af13c4",
+      "bytes": 2693,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-a/aiogram-sentinel.json",
+      "sha256": "cca048743f9215de9d030ad9c612705984e0fc89bfff2e696912b9ba2782a460",
+      "bytes": 41935,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-a/aiogram-sentinel.log",
+      "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e",
+      "bytes": 69,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-a/run-manifest.json",
+      "sha256": "0219b97168a8282a67e8af65b3312cfad622021aebc355997dc4677797cfa439",
+      "bytes": 64038,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-a.log",
+      "sha256": "71a4edc71c466dcd29a79bfe9d297c28e276678a630d86c4f99945b90b763ae1",
+      "bytes": 27,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-b/aiogram-sentinel.host.json",
+      "sha256": "4e98ec652cda816e9440900bf8bf5fc20a84ad4b88e652b9055b1dc7d3d2ceb7",
+      "bytes": 2697,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-b/aiogram-sentinel.json",
+      "sha256": "2cd867e982d73249aabccff5a6de11ed225fbe5b32de2b7522fffcc6e9a037e8",
+      "bytes": 42137,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-b/aiogram-sentinel.log",
+      "sha256": "d2b35cacadc66b7fad8dedd1be5244e17150a6625978c9330f831bd7a9cd6b1e",
+      "bytes": 69,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-b/run-manifest.json",
+      "sha256": "73e90a2217daab6a13db21b5ae70fb7abb9b20b7223dc7084cfd24c519373861",
+      "bytes": 64245,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/aiogram-sentinel/rust-b.log",
+      "sha256": "71a4edc71c466dcd29a79bfe9d297c28e276678a630d86c4f99945b90b763ae1",
+      "bytes": 27,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/host-controls.json",
+      "sha256": "5c1c8992657e35f0e1087297841120a49adc14d243e61ad15d6e229199645d11",
+      "bytes": 365,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/protocol.json",
+      "sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+      "bytes": 1477,
+      "location": "repository"
+    },
+    {
+      "path": "native-qualification/qualification-summary.json",
+      "sha256": "8204beb95b83fa9cd895415f9454bd92ebb4e90dc982de4b019a534a54592c62",
+      "bytes": 1318,
+      "location": "repository"
+    },
+    {
+      "path": "native-wheels/SHA256SUMS",
+      "sha256": "adf6a73a8a2f5e589bdcc0b257b6791765900a9c3a4ad430867dcba6e479c46d",
+      "bytes": 1382,
+      "location": "repository"
+    },
+    {
+      "path": "native-wheels/aiogram_cmds-0.3.1-py3-none-any.whl",
+      "sha256": "5e58a3da4d06186adac68dba55f53210c0bcb9a2dbdcdcf8ad615bd67ffe9712",
+      "bytes": 31655,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_cmds_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+      "sha256": "9973120ef14c05477a6590864c48f986ee1e6daaf0a5e50794c5ec1f3868ca7b",
+      "bytes": 368103,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_coordination-0.1.1-py3-none-any.whl",
+      "sha256": "e3968449faee82324774f7b9cde8608b842923913e097d362955be5d468c1f68",
+      "bytes": 21274,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_idle-0.3.1-py3-none-any.whl",
+      "sha256": "419f19ec1017ec87abc7acd8730b303e6daff0c26786cb24982fa8637a0ac8aa",
+      "bytes": 202686,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_idle_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+      "sha256": "665765e52ae672c590dc0143f35cd6c9b93c03d4e5ba6f09b6ac504545c6cb96",
+      "bytes": 409711,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_nav-0.3.1-py3-none-any.whl",
+      "sha256": "ef372d41e4aff4fb56509ec01f7bdb63538e30a507f5c5abf778aeb15522a20f",
+      "bytes": 108465,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_nav_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+      "sha256": "b50f3451ff73453a0681d378269b5d268531c7d10d265936be7575667b212c59",
+      "bytes": 446494,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_sentinel-1.3.1-py3-none-any.whl",
+      "sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+      "bytes": 40128,
+      "location": "external-wheels"
+    },
+    {
+      "path": "native-wheels/aiogram_sentinel_native-1.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+      "sha256": "3c607b4c6b65e4c4f0855b3cf6f0513f35ede6a2d9303e6a51e8000aa8c4922d",
+      "bytes": 266754,
+      "location": "external-wheels"
+    }
+  ]
+}

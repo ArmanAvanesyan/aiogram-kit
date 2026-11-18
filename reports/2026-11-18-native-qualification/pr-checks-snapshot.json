@@ -1,0 +1,611 @@
+{
+  "captured_at_utc": "2026-11-17T22:34:57.506652+00:00",
+  "checks": [
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707278",
+      "name": "runtime (3.14, windows-latest)",
+      "state": "IN_PROGRESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707126",
+      "name": "runtime (3.14, macos-15-intel)",
+      "state": "IN_PROGRESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707078",
+      "name": "runtime (3.14, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707125",
+      "name": "runtime (3.14, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707001",
+      "name": "runtime (3.13, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417706925",
+      "name": "runtime (3.13, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417706785",
+      "name": "runtime (3.13, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704082",
+      "name": "runtime (3.12, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704059",
+      "name": "runtime (3.11, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417706693",
+      "name": "runtime (3.13, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704073",
+      "name": "runtime (3.12, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704302",
+      "name": "runtime (3.12, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620899",
+      "name": "installed-python-matrix (3.12, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621023",
+      "name": "installed-python-matrix (3.14, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621085",
+      "name": "installed-python-matrix (3.13, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134419071116",
+      "name": "required",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704066",
+      "name": "runtime (3.12, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417703997",
+      "name": "runtime (3.11, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704079",
+      "name": "runtime (3.12, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704187",
+      "name": "runtime (3.11, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620914",
+      "name": "installed-python-matrix (3.12, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620904",
+      "name": "installed-python-matrix (3.13, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621021",
+      "name": "installed-python-matrix (3.14, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704118",
+      "name": "runtime (3.11, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756274",
+      "name": "combined (3.14, 7, rust, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756444",
+      "name": "combined (3.13, 7, rust, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620650",
+      "name": "installed-python-matrix (3.10, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621098",
+      "name": "installed-python-matrix (3.14, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756397",
+      "name": "combined (3.11, 7, python, python, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620738",
+      "name": "installed-python-matrix (3.10, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621043",
+      "name": "installed-python-matrix (3.13, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620734",
+      "name": "installed-python-matrix (3.11, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620584",
+      "name": "installed-python-matrix (3.11, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417621246",
+      "name": "installed-python-matrix (3.13, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620759",
+      "name": "installed-python-matrix (3.10, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704040",
+      "name": "runtime (3.11, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620851",
+      "name": "installed-python-matrix (3.14, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134417943926",
+      "name": "Required Checks",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704108",
+      "name": "runtime (3.10, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620838",
+      "name": "installed-python-matrix (3.14, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620952",
+      "name": "installed-python-matrix (3.12, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620552",
+      "name": "installed-python-matrix (3.11, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704085",
+      "name": "runtime (3.10, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620942",
+      "name": "installed-python-matrix (3.12, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704070",
+      "name": "runtime (3.10, macos-15-intel)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620625",
+      "name": "installed-python-matrix (3.11, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620541",
+      "name": "installed-python-matrix (3.10, macos-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620857",
+      "name": "installed-python-matrix (3.13, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704090",
+      "name": "runtime (3.10, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620602",
+      "name": "installed-python-matrix (3.10, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417704078",
+      "name": "runtime (3.10, ubuntu-24.04-arm)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756029",
+      "name": "combined (3.10, 7, python, python, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707400",
+      "name": "runtime (3.14, macos-latest)",
+      "state": "QUEUED"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134417707013",
+      "name": "runtime (3.13, macos-latest)",
+      "state": "QUEUED"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620696",
+      "name": "installed-python-matrix (3.12, ubuntu-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134417620537",
+      "name": "installed-python-matrix (3.11, windows-latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756351",
+      "name": "combined (3.12, 8, rust, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415757229",
+      "name": "Tests (Python 3.10, aiogram latest, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415757096",
+      "name": "Security scans",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415755726",
+      "name": "combined (3.12, 8, rust, python, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415756325",
+      "name": "compatibility (3.12, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415756250",
+      "name": "compatibility (3.10, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415756020",
+      "name": "compatibility (3.12, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415756078",
+      "name": "format-three (7)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415756144",
+      "name": "compatibility (3.11, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755985",
+      "name": "compatibility (3.11, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755943",
+      "name": "compatibility (3.13, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756335",
+      "name": "combined (3.12, 8, python, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755820",
+      "name": "navigation-integration",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755843",
+      "name": "redis-compatibility (redis:7-alpine, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761119",
+      "name": "wheels (macos-latest, aarch64, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415757069",
+      "name": "Tests (Python 3.14, aiogram latest, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774303/job/134415759611",
+      "name": "verify (3.10)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761224",
+      "name": "parity (3.14, 7)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415757042",
+      "name": "Tests (Python 3.12, aiogram latest, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756934",
+      "name": "Distribution and base install",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755699",
+      "name": "compatibility (3.13, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415757047",
+      "name": "Tests (Python 3.10, aiogram 3.0.0, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756300",
+      "name": "combined (3.12, 8, python, python, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760992",
+      "name": "parity (3.10, 7)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760974",
+      "name": "parity (3.12, 8)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761144",
+      "name": "wheels (windows-latest, x86_64, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755948",
+      "name": "compatibility (3.10, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756990",
+      "name": "Tests (Python 3.13, aiogram latest, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756196",
+      "name": "wheels (macos-latest, aarch64-apple-darwin, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761103",
+      "name": "wheels (ubuntu-latest, x86_64, 2014)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761041",
+      "name": "parity (3.12, 7)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760875",
+      "name": "source",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760933",
+      "name": "wheels (ubuntu-latest, x86_64-unknown-linux-musl, musllinux_1_2)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774303/job/134415759977",
+      "name": "verify (3.12)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755663",
+      "name": "quality",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760620",
+      "name": "rust",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755548",
+      "name": "documentation",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756479",
+      "name": "wheels (ubuntu-latest, x86_64-unknown-linux-musl, musllinux_1_2)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756941",
+      "name": "Tests (Python 3.12, aiogram latest, redis:8-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756949",
+      "name": "Tests (Python 3.11, aiogram latest, redis:7-alpine)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774303/job/134415760007",
+      "name": "verify (3.14)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756909",
+      "name": "Changelog fragment",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756376",
+      "name": "combined (3.12, 7, python, python, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756224",
+      "name": "wheels (macos-15-intel, x86_64-apple-darwin, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415761053",
+      "name": "wheels (ubuntu-24.04-arm, aarch64, 2014)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756326",
+      "name": "wheels (ubuntu-24.04-arm, aarch64-unknown-linux-musl, musllinux_1_2)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773928/job/134415756438",
+      "name": "Quality Checks",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756366",
+      "name": "wheels (windows-latest, x86_64-pc-windows-msvc, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773968/job/134415925699",
+      "name": "deploy",
+      "state": "SKIPPED"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756106",
+      "name": "wheels (ubuntu-latest, x86_64-unknown-linux-gnu, 2_17)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760935",
+      "name": "wheels (macos-15-intel, x86_64, auto)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189774079/job/134415760865",
+      "name": "wheels (ubuntu-24.04-arm, aarch64-unknown-linux-musl, musllinux_1_2)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415756143",
+      "name": "wheels (ubuntu-24.04-arm, aarch64-unknown-linux-gnu, 2_17)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755621",
+      "name": "redis-compatibility (redis:7-alpine, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756219",
+      "name": "combined (3.12, 7, rust, python, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756258",
+      "name": "combined (3.12, 7, rust, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755679",
+      "name": "redis-compatibility (redis:8-alpine, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755588",
+      "name": "redis-compatibility (redis:8-alpine, minimum)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773923/job/134415756352",
+      "name": "combined (3.12, 7, python, rust, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415755994",
+      "name": "rust",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755561",
+      "name": "compatibility (3.14, latest)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755240",
+      "name": "security",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773968/job/134415756283",
+      "name": "build",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773891/job/134415755519",
+      "name": "format-three (8)",
+      "state": "SUCCESS"
+    },
+    {
+      "link": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44189773905/job/134415755630",
+      "name": "source",
+      "state": "SUCCESS"
+    }
+  ],
+  "head_sha": "ec151ef105a76d1556e43d5690edcdfbed8411ed"
+}

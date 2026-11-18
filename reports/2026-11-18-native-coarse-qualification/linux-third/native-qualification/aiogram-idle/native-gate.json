@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "qualified": false,
+  "identity": [
+    "aiogram-idle",
+    "0.3.1",
+    "3.12.16 (main, Nov 11 2026, 00:15:59) [Clang 23.1.3 ]",
+    "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "",
+    4,
+    0
+  ],
+  "cpu_workloads_selected": [
+    "memory-activate-touch/50"
+  ],
+  "required_latency_workloads": [
+    "redis-activate-touch/50",
+    "redis-dispatcher-noop/1",
+    "redis-track/50"
+  ],
+  "inputs": [
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-idle/python-a/aiogram-idle.json",
+      "sha256": "087f9877aff1874d05c8a68a11a99d557dea896e90e503d083279baa5af15516",
+      "engine": "python",
+      "run_id": "ce794298-b099-4f16-b01f-b9c60610fc64",
+      "qualification_provenance": {
+        "base_artifact_sha256": "50f9371bdf89f715f0f9c5844a1578e1868420bea054d38d1814aec968d8a471",
+        "native_artifact_sha256": null,
+        "driver_sha256": "72b18bd5f0a5a8ec2736f8eef5216f3ef91100ae2c01fab7b612447771413981",
+        "peer_artifacts_sha256": {
+          "aiogram-nav": "4d286eb0a75e33157b5b056a600997c57866210dd41eeb8128e191867523d9b2",
+          "aiogram-nav-native": "e8049aa02e5744d3a232697f0d9616c75d29649bef339c4857370eeec1d59503"
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-idle/python-b/aiogram-idle.json",
+      "sha256": "57f462c7fc08dc60fb6ba570b22ded98f8399de259a88351b3c411de03b0e6fa",
+      "engine": "python",
+      "run_id": "360cf8fb-c384-4f03-9383-83e9bb6550d4",
+      "qualification_provenance": {
+        "base_artifact_sha256": "50f9371bdf89f715f0f9c5844a1578e1868420bea054d38d1814aec968d8a471",
+        "native_artifact_sha256": null,
+        "driver_sha256": "72b18bd5f0a5a8ec2736f8eef5216f3ef91100ae2c01fab7b612447771413981",
+        "peer_artifacts_sha256": {
+          "aiogram-nav": "4d286eb0a75e33157b5b056a600997c57866210dd41eeb8128e191867523d9b2",
+          "aiogram-nav-native": "e8049aa02e5744d3a232697f0d9616c75d29649bef339c4857370eeec1d59503"
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-idle/rust-a/aiogram-idle.json",
+      "sha256": "1cc46c17b22151844855348e7f953e7f6adbbc3f5549fde21e85e017e941756d",
+      "engine": "rust",
+      "run_id": "5397ffae-6284-4abe-a91c-f4f996f37138",
+      "qualification_provenance": {
+        "base_artifact_sha256": "50f9371bdf89f715f0f9c5844a1578e1868420bea054d38d1814aec968d8a471",
+        "native_artifact_sha256": "9f9eaa5eaf607b28f1cd383df1b21aee40f2cf58d2cb79ca6763a3678edb013d",
+        "driver_sha256": "72b18bd5f0a5a8ec2736f8eef5216f3ef91100ae2c01fab7b612447771413981",
+        "peer_artifacts_sha256": {
+          "aiogram-nav": "4d286eb0a75e33157b5b056a600997c57866210dd41eeb8128e191867523d9b2",
+          "aiogram-nav-native": "e8049aa02e5744d3a232697f0d9616c75d29649bef339c4857370eeec1d59503"
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-idle/rust-b/aiogram-idle.json",
+      "sha256": "bb07319f9e4eb599effd37e3de9d37ee8716e3eaaa1d203590249c6f12c573c9",
+      "engine": "rust",
+      "run_id": "96e377a8-4aa8-4648-b351-44b88fa39657",
+      "qualification_provenance": {
+        "base_artifact_sha256": "50f9371bdf89f715f0f9c5844a1578e1868420bea054d38d1814aec968d8a471",
+        "native_artifact_sha256": "9f9eaa5eaf607b28f1cd383df1b21aee40f2cf58d2cb79ca6763a3678edb013d",
+        "driver_sha256": "72b18bd5f0a5a8ec2736f8eef5216f3ef91100ae2c01fab7b612447771413981",
+        "peer_artifacts_sha256": {
+          "aiogram-nav": "4d286eb0a75e33157b5b056a600997c57866210dd41eeb8128e191867523d9b2",
+          "aiogram-nav-native": "e8049aa02e5744d3a232697f0d9616c75d29649bef339c4857370eeec1d59503"
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "memory-activate-touch/50",
+      "rust_over_python_cpu": 0.7570539484012907,
+      "rust_over_python_p95": 0.8948191090209434
+    },
+    {
+      "workload": "memory-deadline-claims/16",
+      "rust_over_python_p95": 1.1147676433719496
+    },
+    {
+      "workload": "memory-track/50",
+      "rust_over_python_p95": 1.0301064234000403
+    },
+    {
+      "workload": "redis-activate-touch/50",
+      "rust_over_python_p95": 1.0131181298679521
+    },
+    {
+      "workload": "redis-dispatcher-noop/1",
+      "rust_over_python_p95": 1.0331405891877805
+    },
+    {
+      "workload": "redis-track/50",
+      "rust_over_python_p95": 0.9990754667926203
+    }
+  ],
+  "failures": [
+    "End-to-end p95 regression exceeds 5%: memory-deadline-claims/16"
+  ],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

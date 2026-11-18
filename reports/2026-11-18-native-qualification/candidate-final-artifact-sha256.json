@@ -1,0 +1,21 @@
+{
+  ".gitignore": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+  "aiogram_cmds-0.3.1-py3-none-any.whl": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+  "aiogram_cmds-0.3.1.tar.gz": "6f152cda5e283bac14ce3f5a742dd85e762f1dbe54aaf21023d62d93c744f42b",
+  "aiogram_cmds_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "5e0f8f9ff7a4a1d94e0b641de846a6495342a7a08700ff9d4ee4009909344a06",
+  "aiogram_cmds_native-0.3.1.tar.gz": "4c50c555f450088879d966d674b9c79cccf09e53e9ef79c21e3cf8601b8f6fa2",
+  "aiogram_coordination-0.1.1-py3-none-any.whl": "e3968449faee82324774f7b9cde8608b842923913e097d362955be5d468c1f68",
+  "aiogram_coordination-0.1.1.tar.gz": "e5ec22b5452c3505c2a9cd46f17894e2381f949fd7f9c179e88f35e9faeb14f7",
+  "aiogram_idle-0.3.1-py3-none-any.whl": "714c37168eae55caf51ef5f7d6f7ec7774aa5c2ad8a15ca523a3bfd85a84b2f0",
+  "aiogram_idle-0.3.1.tar.gz": "bd1957b45994503484adad4770762963c556cbb1c5e20024b73d3c30c97e214c",
+  "aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "65e7ff266a4ebe61d19e16d9ee87b776c46193a86d2f7e0d713b168316e9d9ec",
+  "aiogram_idle_native-0.3.1.tar.gz": "fae6442819f7dc6a4213b992e3a02d14317dce9311cbab692e230c64e5d3fe70",
+  "aiogram_nav-0.3.1-py3-none-any.whl": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0",
+  "aiogram_nav-0.3.1.tar.gz": "c52d879d27f9c3a730578ab27f297cdcaaec0268b43d74e60323fbad19c9dada",
+  "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "88f1adb6deece4e10d51ef722516f545cadb746c7037f363d5bebd10b8ab99c3",
+  "aiogram_nav_native-0.3.1.tar.gz": "8153543d623d8da3689413a494c165c8818870978ffded04e8b1b83deff90975",
+  "aiogram_sentinel-1.3.1-py3-none-any.whl": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+  "aiogram_sentinel-1.3.1.tar.gz": "fdb083eb3a5e812f7ae61b40a71271f0375a007a1ae6e9ec669b75539e96821e",
+  "aiogram_sentinel_native-1.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "474db624275672a8fc01a64d1d2257ac6618d091ac5626ff694b97bcc6ecf70c",
+  "aiogram_sentinel_native-1.3.1.tar.gz": "e6e1022a9fadc86f1c04d86fe62af618cbc62d59972851702efa54fa2fc4b092"
+}

@@ -23,8 +23,8 @@ from .compiled import (
 )
 from .compiled_delivery import apply_compiled_profile
 from .delivery import UNSET, CommandApplyResult, CommandBatchResult, LanguageCode
-from .dynamic import apply_profile, clear_language_variants, set_user_profile
-from .engines import Engine, native_engine
+from .dynamic import clear_language_variants, resolved_profile, set_user_profile
+from .engines import Engine, NativeModule, native_engine
 from .policy import CommandPolicy, Flags, ProfileResolver, default_policy
 from .setters import (
     set_user_commands_by_flags,
@@ -55,10 +55,9 @@ class CommandScopeManager:
     ) -> None:
         if type(best_effort) is not bool:
             raise TypeError("best_effort must be a boolean")
-        native_engine(engine)
+        self.engine = engine
         if compiled is not None and (config is not None or translator is not None):
             raise ValueError("Pass either compiled or live config/translator, not both")
-        self.engine: Engine = engine
         self.compiled = compiled.bind(engine) if compiled is not None else None
         config = compiled.config() if compiled is not None else config
         self.best_effort = best_effort
@@ -68,6 +67,18 @@ class CommandScopeManager:
         self.translator = translator
         self.policy = policy or default_policy
         self.profile_resolver = profile_resolver
+
+    @property
+    def engine(self) -> Engine:
+        """Current validated selection; assigning a new value validates it eagerly."""
+        return self._engine_selection[0]
+
+    @engine.setter
+    def engine(self, value: Engine) -> None:
+        # Publish a complete selection atomically only after validation succeeds.
+        # Keep compatible explicit engine changes without rechecking every menu.
+        module = native_engine(value)
+        self._engine_selection: tuple[Engine, NativeModule | None] = (value, module)
 
     async def update_user_commands(
         self,
@@ -286,7 +297,7 @@ class CommandScopeManager:
                 best_effort=self.best_effort,
                 engine=self.engine,
             )
-        return await apply_profile(
+        return await resolved_profile(
             self.bot,
             self.config,
             translator=self.translator,
@@ -297,7 +308,7 @@ class CommandScopeManager:
             language_code=language_code,
             previous_fingerprint=previous_fingerprint,
             best_effort=self.best_effort,
-            engine=self.engine,
+            module=self._engine_selection[1],
         )
 
     async def apply_all(self) -> CommandBatchResult:

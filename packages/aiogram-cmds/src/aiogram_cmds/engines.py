@@ -17,6 +17,10 @@ class NativeEngineError(RuntimeError):
 
 
 class NativeSnapshot(Protocol):
+    def resolve_one(
+        self, profile: str, locale: str, bot: str, scope: str, language: str
+    ) -> str: ...
+
     def resolve_batch(self, requests: NativeRequests) -> list[str]: ...
 
 
@@ -67,6 +71,13 @@ def _load_native() -> NativeModule:
         ):
             raise NativeEngineError(
                 "aiogram-cmds-native ABI/version is incompatible with this base package"
+            )
+        snapshot = module.compile([])
+        if not callable(getattr(snapshot, "resolve_one", None)) or not callable(
+            getattr(snapshot, "resolve_batch", None)
+        ):
+            raise NativeEngineError(
+                "aiogram-cmds-native snapshot capabilities are incomplete"
             )
     except (AttributeError, TypeError, ValueError) as error:
         raise NativeEngineError(

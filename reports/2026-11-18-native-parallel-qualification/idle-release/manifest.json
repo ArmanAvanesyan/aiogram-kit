@@ -1,0 +1,17 @@
+{
+  "scope": "Independent installed-wheel functional audit, not timing qualification",
+  "files": [
+    {
+      "raw_filename": "idle-release-audit.py",
+      "retained": "idle-release-audit.py.gz",
+      "raw_sha256": "4d9791263b0a9d7daffa532e2786a58dd5fd8a73bcd5e8a267e9e6b9e478c867",
+      "bytes": 2510
+    },
+    {
+      "raw_filename": "idle-release-audit-results.json",
+      "retained": "idle-release-audit-results.json.gz",
+      "raw_sha256": "7ce976a38336333ee79f59306c723855e53854beefa390d6d56912a2597e110d",
+      "bytes": 71731
+    }
+  ]
+}

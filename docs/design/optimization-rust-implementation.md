@@ -139,3 +139,11 @@ same generation after expiry. These changes passed independent audits and real-R
 Benchmark tooling is isolated and provenance-checked, with101 tests and
 CPython3.10/3.12/3.14 CI. Kit PR3 carries the complete raw evidence, reports and
 rendered charts. Pre-existing uncommitted Kit drafts remain excluded.
+
+
+## November 18 follow-up
+
+The earlier status above is historical. The subsequent Sentinel candidate passed
+the measured-host performance gate but remains unpublished. Cmds, Nav and Idle
+are undergoing a further [coarse-boundary implementation and qualification](native-coarse-boundaries.md).
+All four native distributions, tags and releases remain on hold.

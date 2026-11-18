@@ -1,0 +1,8 @@
+{
+  "job_id": 134470345311,
+  "source": "568a847",
+  "raw_sha256": "1ff0a85de3ffe39a9d0e706ef7f509d6cd5c4e9c630b0af138521ffcbcacaaff",
+  "retained": "unicode-regression-ci.log.gz",
+  "fixed_by": "741cd73",
+  "local_regression_tests": "49 passed, including original opaque_unicode_identities test"
+}

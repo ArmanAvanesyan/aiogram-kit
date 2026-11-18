@@ -8,10 +8,21 @@ from contextlib import contextmanager
 from dataclasses import fields, is_dataclass
 from datetime import datetime
 from enum import Enum
+from functools import lru_cache
 from typing import Literal, TypeVar, cast
 
+from .._json_scope import selected
+from ..engines import CanonicalCore, fingerprint_canonical, native_core
 from ..errors import OperationIdConflict, Overloaded
-from ..models import timestamp, validate_identifier
+from ..models import (
+    ActivityGuard,
+    ActivitySnapshot,
+    IdleConversationKey,
+    SessionGuard,
+    SessionSnapshot,
+    timestamp,
+    validate_identifier,
+)
 from .state import OperationLookup, OperationReceipt
 
 T = TypeVar("T")
@@ -33,11 +44,29 @@ def _canonical(value: object) -> object:
     return value
 
 
-def fingerprint(value: object, *, engine: Literal["python", "rust"] = "python") -> str:
-    encoded = json.dumps(_canonical(value), sort_keys=True, separators=(",", ":"), allow_nan=False)
-    from ..engines import fingerprint_canonical
+@lru_cache(maxsize=1)
+def canonicalizer() -> CanonicalCore:
+    return native_core().Canonicalizer(
+        Enum,
+        Mapping,
+        fields,
+        datetime,
+        None,
+        None,
+        (ActivityGuard, ActivitySnapshot, IdleConversationKey, SessionGuard, SessionSnapshot),
+    )
 
-    return fingerprint_canonical(encoded, engine=engine)
+
+def new_canonicalizer() -> CanonicalCore:
+    return canonicalizer().fork()
+
+
+def fingerprint(value: object, *, engine: Literal["python", "rust"] = "python") -> str:
+    if engine == "rust":
+        processor = selected()
+        return (processor.core if processor else canonicalizer()).fingerprint(value)
+    encoded = json.dumps(_canonical(value), sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return fingerprint_canonical(encoded)
 
 
 class Receipts:

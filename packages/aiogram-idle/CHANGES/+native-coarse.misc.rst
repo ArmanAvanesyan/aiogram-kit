@@ -1,0 +1,1 @@
+Fuse optional native JSON freezing, canonical fingerprints and claim projection; bound derived caches and preserve session, lease, recovery and coordinator semantics. Native distributions remain unpublished pending full qualification.

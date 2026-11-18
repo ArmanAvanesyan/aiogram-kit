@@ -3,7 +3,9 @@
 from ._aiogram_idle_native import (
     API_VERSION,
     ENGINE_VERSION,
+    Canonicalizer,
     DeadlineCore,
+    InvalidJson,
     OwnershipLost,
     activity_guard,
     claim_guard,
@@ -16,7 +18,9 @@ from ._aiogram_idle_native import (
 __all__ = [
     "API_VERSION",
     "ENGINE_VERSION",
+    "Canonicalizer",
     "DeadlineCore",
+    "InvalidJson",
     "OwnershipLost",
     "activity_guard",
     "claim_guard",

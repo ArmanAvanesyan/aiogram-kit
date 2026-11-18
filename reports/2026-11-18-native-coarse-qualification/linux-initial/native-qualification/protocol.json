@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "prespecified before full repeated runs",
+  "gate": {"maximum_rust_python_cpu_ratio": 0.8, "maximum_rust_python_p95_ratio": 1.05, "maximum_repeat_spread": 0.1},
+  "order": ["python-a", "rust-a", "rust-b", "python-b"],
+  "samples": {"cpu_repeats_minimum": 10, "individual_latency_minimum": 100},
+  "cpu_workloads": {
+    "aiogram-sentinel": ["rate_accepted_many", "debounce_accepted_many"],
+    "aiogram-cmds": ["compiled_batch/100/10_profiles/30_targets"],
+    "aiogram-nav": ["memory-track/50"],
+    "aiogram-idle": ["memory-activate-touch/50"]
+  },
+  "required_latency": {
+    "aiogram-sentinel": ["middleware_fake_io"],
+    "aiogram-cmds": ["confirmation_hit/1", "confirmation_hit/10", "confirmation_hit/100", "fake_telegram_1ms/1", "fake_telegram_1ms/10", "fake_telegram_1ms/100"],
+    "aiogram-nav": ["redis-dispatch-noop/50", "redis-dispatch-track/50"],
+    "aiogram-idle": ["redis-activate-touch/50", "redis-dispatcher-noop/1", "redis-track/50"]
+  },
+  "additional_latency": "All individual-latency workloads emitted by each driver are checked, without selecting a winning subset.",
+  "artifacts": "Exact freshly built wheels installed outside the checkout; controllers verify installed files and artifact hashes.",
+  "redis": "Dedicated disposable Redis 7 primary, no shared application data.",
+  "publication": "No package is published in this task; performance, platform, metadata and release authorization are separate gates."
+}

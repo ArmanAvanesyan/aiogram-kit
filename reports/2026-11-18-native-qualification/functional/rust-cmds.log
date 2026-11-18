@@ -1,0 +1,18 @@
+   Compiling aiogram-cmds-native v0.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-cmds/native)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.24s
+     Running unittests src/lib.rs (packages/aiogram-cmds/native/target/debug/deps/_aiogram_cmds_native-cc9a7d39c8773e85)
+
+running 2 tests
+test tests::validates_before_hashing ... ok
+test tests::preserves_duplicates_and_exclusions ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests _aiogram_cmds_native
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+    Checking aiogram-cmds-native v0.3.1 (/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-cmds/native)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.70s

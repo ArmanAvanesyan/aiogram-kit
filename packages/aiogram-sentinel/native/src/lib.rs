@@ -1,23 +1,38 @@
 //! Synchronous, process-local storage. Clocks and interval validation belong to Python.
-use std::collections::{HashMap, VecDeque};
+use hashbrown::HashMap;
+use std::collections::{VecDeque, hash_map::RandomState};
 use std::sync::Mutex;
 
 use pyo3::exceptions::PyRuntimeError;
 use pyo3::prelude::*;
+use pyo3::types::{PyBytes, PyString};
+
+// Borrow CPython's cached UTF-8 for ordinary strings. Surrogates use the exact
+// previous str.encode(..., surrogatepass) contract, before any state mutation.
+fn with_key<T>(
+    key: &Bound<'_, PyString>,
+    action: impl FnOnce(&[u8]) -> PyResult<T>,
+) -> PyResult<T> {
+    if let Ok(value) = key.to_str() {
+        return action(value.as_bytes());
+    }
+    let encoded = key
+        .py()
+        .get_type::<PyString>()
+        .call_method1("encode", (key, "utf-8", "surrogatepass"))?;
+    action(encoded.cast::<PyBytes>()?.as_bytes())
+}
 
 #[derive(Default)]
 pub struct RateState {
-    pub counters: HashMap<Vec<u8>, VecDeque<f64>>,
+    pub counters: HashMap<Vec<u8>, VecDeque<f64>, RandomState>,
 }
 
 impl RateState {
     fn counter(&mut self, key: &[u8], window: f64, now: f64) -> &mut VecDeque<f64> {
-        // Avoid allocating an owned key on every hit. Keys are copied only
-        // for first admission; the extra lookup keeps std's randomized hasher.
-        if !self.counters.contains_key(key) {
-            self.counters.insert(key.to_owned(), VecDeque::new());
-        }
-        let counter = self.counters.get_mut(key).expect("admitted counter");
+        // One lookup, retaining std's keyed HashDoS-resistant RandomState.
+        // Borrowed entry lookup copies key bytes only on first admission.
+        let counter = self.counters.entry_ref(key).or_default();
         let cutoff = now - window;
         // Exact-boundary requests remain in the window, matching Python deque.
         while counter.front().is_some_and(|value| *value < cutoff) {
@@ -59,7 +74,7 @@ impl RateState {
 
 #[derive(Default)]
 pub struct DebounceState {
-    pub entries: HashMap<Vec<u8>, f64>,
+    pub entries: HashMap<Vec<u8>, f64, RandomState>,
 }
 
 impl DebounceState {
@@ -69,12 +84,20 @@ impl DebounceState {
         combined.extend_from_slice(key);
         combined.push(b':');
         combined.extend_from_slice(fingerprint);
-        let key = combined;
-        let timestamp = *self.entries.get(&key).unwrap_or(&0.0);
-        if timestamp != 0.0 && timestamp + window > now {
+        // Direct native callers already own this buffer: move it into an empty
+        // entry rather than copying it through the borrowed SDK entry point.
+        Self::mark_seen(self.entries.entry(combined).or_insert(0.0), window, now)
+    }
+
+    pub fn seen_key(&mut self, key: &[u8], window: f64, now: f64) -> bool {
+        Self::mark_seen(self.entries.entry_ref(key).or_insert(0.0), window, now)
+    }
+
+    fn mark_seen(timestamp: &mut f64, window: f64, now: f64) -> bool {
+        if *timestamp != 0.0 && *timestamp + window > now {
             true
         } else {
-            self.entries.insert(key, now);
+            *timestamp = now;
             false
         }
     }
@@ -111,6 +134,21 @@ impl RateLimiterCore {
         Self::default()
     }
 
+    fn allow_text(
+        &self,
+        key: &Bound<'_, PyString>,
+        maximum: usize,
+        window: f64,
+        now: f64,
+    ) -> PyResult<bool> {
+        with_key(key, |bytes| {
+            Ok(self
+                .state
+                .lock()
+                .map_err(poisoned)?
+                .allow(bytes, maximum, window, now))
+        })
+    }
     fn allow(&self, key: &[u8], maximum: usize, window: f64, now: f64) -> PyResult<bool> {
         Ok(self
             .state
@@ -170,6 +208,23 @@ impl DebounceCore {
             .map_err(poisoned)?
             .seen(key, window, fingerprint, now))
     }
+    fn seen_text(&self, key: &Bound<'_, PyString>, window: f64, now: f64) -> PyResult<bool> {
+        with_key(key, |bytes| {
+            Ok(self
+                .state
+                .lock()
+                .map_err(poisoned)?
+                .seen_key(bytes, window, now))
+        })
+    }
+    fn seen_key(&self, key: &[u8], window: f64, now: f64) -> PyResult<bool> {
+        Ok(self
+            .state
+            .lock()
+            .map_err(poisoned)?
+            .seen_key(key, window, now))
+    }
+
     fn set(&self, key: &[u8], delay: f64, now: f64) -> PyResult<()> {
         self.state.lock().map_err(poisoned)?.set(key, delay, now);
         Ok(())
@@ -227,6 +282,31 @@ mod tests {
         rate.allow(b"old", 5, 5.0, 1.0);
         rate.allow(b"other", 5, 5.0, 100.0);
         assert_eq!(rate.remaining(b"old", 5, 1000.0, 100.0), 4);
+    }
+
+    #[test]
+    fn borrowed_entries_reuse_keys_and_preserve_reset() {
+        let mut state = RateState::default();
+        for index in 0..1024 {
+            let key = format!("user:{index}");
+            assert!(state.allow(key.as_bytes(), 2, 60.0, 100.0));
+            assert!(state.allow(key.as_bytes(), 2, 60.0, 100.0));
+            assert!(!state.allow(key.as_bytes(), 2, 60.0, 100.0));
+        }
+        assert_eq!(state.counters.len(), 1024);
+        state.reset(b"user:17");
+        assert_eq!(state.remaining(b"user:17", 2, 60.0, 100.0), 2);
+        assert_eq!(state.remaining(b"user:18", 2, 60.0, 100.0), 0);
+    }
+
+    #[test]
+    fn debounce_helpers_keep_composite_key_aliasing() {
+        let mut state = DebounceState::default();
+        state.set(b"key:fp", 5.0, 100.0);
+        assert!(state.seen(b"key", 10.0, b"fp", 110.0));
+        assert!(!state.seen(b"key", 10.0, b"fp", 115.0));
+        state.set(b"key:fp", 0.0, 116.0);
+        assert!(!state.seen(b"key", 10.0, b"fp", 116.0));
     }
 
     #[test]

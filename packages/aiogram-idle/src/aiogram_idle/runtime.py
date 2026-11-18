@@ -175,6 +175,8 @@ class IdleRuntime:
     async def initialize(self) -> None:
         if self.component_validator is not None:
             self.component_validator()
+        if self._initialized:
+            return
         async with self._initialize_lock:
             if not self._initialized:
                 await self.backend.bootstrap_config(

@@ -1,9 +1,30 @@
-from typing import Literal
+from collections.abc import Callable
+from typing import Any, Literal, TypeVar
 
 API_VERSION: Literal[1]
-ENGINE_VERSION: Literal["0.3.0"]
+ENGINE_VERSION: Literal["0.3.1"]
+
+T = TypeVar("T")
 
 class OwnershipLost(RuntimeError): ...
+class InvalidJson(ValueError): ...
+
+class Canonicalizer:
+    def __init__(
+        self,
+        enum_type: object,
+        mapping_type: object,
+        fields: object,
+        datetime_type: object = None,
+        view_type: object = None,
+        render_type: object = None,
+        immutable_types: object = None,
+    ) -> None: ...
+    def fork(self) -> Canonicalizer: ...
+    def fingerprint(self, value: object) -> str: ...
+    def freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None: ...
+    def clear_cache(self) -> None: ...
+    def cache_stats(self) -> tuple[int, int]: ...
 
 def phase_transition(phase: str, trigger: str) -> str: ...
 def fingerprint_canonical(raw: str) -> str: ...
@@ -62,10 +83,29 @@ class DeadlineCore:
         namespace: str | None = None,
         bot_id: str | None = None,
     ) -> list[tuple[str, str, str, float, float]]: ...
+    def claim_objects(
+        self,
+        limit: int,
+        lease_seconds: float,
+        now: float,
+        tokens: list[str],
+        namespace: str | None,
+        bot_id: str | None,
+        keys: dict[str, Any],
+        factory: Callable[..., T],
+    ) -> list[T]: ...
     def renew(
         self, key: str, token: str, generation: str, now: float, lease_seconds: float
     ) -> tuple[str, str, str, float, float]: ...
     def release(
         self, key: str, token: str, generation: str, now: float, deadline: float | None = None
+    ) -> None: ...
+    def release_values(
+        self,
+        key: str,
+        token: str,
+        generation: int,
+        now: float,
+        deadline: float | None = None,
     ) -> None: ...
     def reconcile(self, candidates: list[tuple[str, str, str, float]], limit: int) -> int: ...

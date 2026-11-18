@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "qualified": false,
+  "identity": [
+    "aiogram-cmds",
+    "0.3.1",
+    "3.12.13",
+    "macOS-15.8.1-x86_64-i386-64bit",
+    "i386",
+    16,
+    1729
+  ],
+  "cpu_workloads_selected": [
+    "compiled_batch/100/10_profiles/30_targets"
+  ],
+  "required_latency_workloads": [
+    "confirmation_hit/1",
+    "confirmation_hit/10",
+    "confirmation_hit/100",
+    "fake_telegram_1ms/1",
+    "fake_telegram_1ms/10",
+    "fake_telegram_1ms/100"
+  ],
+  "inputs": [
+    {
+      "path": "/Users/armanavanesyan/oss/own/aiogram-kit/reports/2026-11-18-native-qualification/local/aiogram-cmds/python-a/aiogram-cmds.json",
+      "sha256": "d5c4f350ce775d683518a8f3d111d54548d79e0a00a7fd548bdf5edc85a046b0",
+      "engine": "python",
+      "run_id": "43a7b811-e470-4e94-8444-14a489b4a5c6",
+      "qualification_provenance": {
+        "base_artifact_sha256": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+        "native_artifact_sha256": null,
+        "driver_sha256": "6d08385cf841a9f05b9e9ca4a3f490c070ad6d38af86fc58ee67e08b353ad4c5"
+      }
+    },
+    {
+      "path": "/Users/armanavanesyan/oss/own/aiogram-kit/reports/2026-11-18-native-qualification/local/aiogram-cmds/python-b/aiogram-cmds.json",
+      "sha256": "bf4396e0b15c3799c45dcaab5c40486ecc7226f804563317c7f4e621ec8b4987",
+      "engine": "python",
+      "run_id": "15616928-b805-45d9-93b9-5ce5c8288b3f",
+      "qualification_provenance": {
+        "base_artifact_sha256": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+        "native_artifact_sha256": null,
+        "driver_sha256": "6d08385cf841a9f05b9e9ca4a3f490c070ad6d38af86fc58ee67e08b353ad4c5"
+      }
+    },
+    {
+      "path": "/Users/armanavanesyan/oss/own/aiogram-kit/reports/2026-11-18-native-qualification/local/aiogram-cmds/rust-a/aiogram-cmds.json",
+      "sha256": "92d7a54001a05fe0323b9eb73a60c6e2579274569298cb3ce70a54186ab02f19",
+      "engine": "rust",
+      "run_id": "12e43719-5a4c-48ec-9471-0795c6ddae85",
+      "qualification_provenance": {
+        "base_artifact_sha256": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+        "native_artifact_sha256": "570dd332e97d52e8f5719b41009b2980b628359ff92955dd3131c6c9c4fd2086",
+        "driver_sha256": "6d08385cf841a9f05b9e9ca4a3f490c070ad6d38af86fc58ee67e08b353ad4c5"
+      }
+    },
+    {
+      "path": "/Users/armanavanesyan/oss/own/aiogram-kit/reports/2026-11-18-native-qualification/local/aiogram-cmds/rust-b/aiogram-cmds.json",
+      "sha256": "e668eee6e97c1e0176e7082005cc7a03715aa4eb4005674e41e435a3251af6be",
+      "engine": "rust",
+      "run_id": "0073e105-e0c2-4560-beb2-5b5de509b343",
+      "qualification_provenance": {
+        "base_artifact_sha256": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+        "native_artifact_sha256": "570dd332e97d52e8f5719b41009b2980b628359ff92955dd3131c6c9c4fd2086",
+        "driver_sha256": "6d08385cf841a9f05b9e9ca4a3f490c070ad6d38af86fc58ee67e08b353ad4c5"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "compiled_batch/100/10_profiles/30_targets",
+      "rust_over_python_cpu": 0.4137746294422287
+    },
+    {
+      "workload": "compiled_confirmation_hit/1",
+      "rust_over_python_p95": 0.8842343255890814
+    },
+    {
+      "workload": "compiled_confirmation_hit/10",
+      "rust_over_python_p95": 1.1152171771890083
+    },
+    {
+      "workload": "compiled_confirmation_hit/100",
+      "rust_over_python_p95": 0.8314541561633144
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/1",
+      "rust_over_python_p95": 0.9509808677463976
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/10",
+      "rust_over_python_p95": 0.9654103072807267
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/100",
+      "rust_over_python_p95": 1.0772501098454494
+    },
+    {
+      "workload": "confirmation_hit/1",
+      "rust_over_python_p95": 1.5541421872473455
+    },
+    {
+      "workload": "confirmation_hit/10",
+      "rust_over_python_p95": 0.888926293654051
+    },
+    {
+      "workload": "confirmation_hit/100",
+      "rust_over_python_p95": 0.9326116421652769
+    },
+    {
+      "workload": "fake_telegram_1ms/1",
+      "rust_over_python_p95": 0.9708639478651958
+    },
+    {
+      "workload": "fake_telegram_1ms/10",
+      "rust_over_python_p95": 0.9909522995995033
+    },
+    {
+      "workload": "fake_telegram_1ms/100",
+      "rust_over_python_p95": 1.1187548191660188
+    }
+  ],
+  "failures": [
+    "CPU repeat spread exceeds 10%: compiled_batch/100/10_profiles/30_targets",
+    "Latency repeat spread exceeds 10%: compiled_confirmation_hit/1",
+    "End-to-end p95 regression exceeds 5%: compiled_confirmation_hit/10",
+    "Latency repeat spread exceeds 10%: compiled_confirmation_hit/10",
+    "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100",
+    "End-to-end p95 regression exceeds 5%: compiled_fake_telegram_1ms/100",
+    "Latency repeat spread exceeds 10%: compiled_fake_telegram_1ms/100",
+    "End-to-end p95 regression exceeds 5%: confirmation_hit/1",
+    "Latency repeat spread exceeds 10%: confirmation_hit/1",
+    "Latency repeat spread exceeds 10%: confirmation_hit/10",
+    "Latency repeat spread exceeds 10%: confirmation_hit/100",
+    "End-to-end p95 regression exceeds 5%: fake_telegram_1ms/100",
+    "Latency repeat spread exceeds 10%: fake_telegram_1ms/100"
+  ],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

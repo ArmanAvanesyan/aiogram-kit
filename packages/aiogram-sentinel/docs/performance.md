@@ -341,3 +341,21 @@ aiogram-sentinel provides excellent performance characteristics:
 - **Production Ready**: Tested up to 100,000+ concurrent users
 
 Choose the appropriate backend based on your deployment requirements and scale accordingly.
+### Explicit repeated middleware-latency fixtures
+
+The benchmark's `--latency-windows` option defaults to one, preserving the original
+1,000-operation latency fixture. A separately declared stronger experiment uses
+exactly ten fresh fixtures, each with a new limiter, resolver, throttle, event and
+event loop. Each fixture still processes exactly 1,000 accepted middleware updates
+with the same user/key/policy, from an empty counter to 1,000. Every observation,
+including the first-operation cost and all tails, is retained with fixture IDs and
+end-exclusive window boundaries. No failed fixture is skipped or retried; completed
+and partial observations are saved in a nonqualifying failure report.
+
+This is a **separate latency phase**. The original full CPU phase remains fifteen
+batches of 50,000 operations with five warmups (quick-mode CPU dimensions also
+remain unchanged). Increasing latency fixtures never substitutes a 1,000-operation
+CPU denominator for the original 50,000-operation batches. No extra warmups,
+sleeps, GC collection, GC suppression, or clock adjustments are added. Source
+benchmark tests use fake observations rather than performing qualification timing.
+All native companions remain unpublished until the complete applicable gates pass.

@@ -1,0 +1,35 @@
+{
+  "cases": 2159,
+  "differences": 0,
+  "seed": 81342,
+  "scope": "Independent installed-wheel direct-parser differential: scalar types, IEEE bits, key order, errors, signed zero, Unicode, duplicates, depth and integer digit-limit behavior.",
+  "python": "3.12.13",
+  "files": [
+    {
+      "raw_filename": "kit-native-parser-audit.py",
+      "retained": "kit-native-parser-audit.py.gz",
+      "raw_sha256": "f18e6498ba4216db678a4c9eb7509fc5a60eff1d17d02bfa34a3dd467ab82493",
+      "bytes": 2176
+    },
+    {
+      "raw_filename": "kit-parser-old-with-provenance.json",
+      "retained": "kit-parser-old-with-provenance.json.gz",
+      "raw_sha256": "5a48aeb299ba6cc091fa4c1224c37daa32a38ec6c2134a625d10f56b405fd0f5",
+      "bytes": 131827
+    },
+    {
+      "raw_filename": "kit-parser-new-with-provenance.json",
+      "retained": "kit-parser-new-with-provenance.json.gz",
+      "raw_sha256": "440663d1cfd4f5c111f1adbf8388b8d7103aafc8072c5d06c16d41f77e3f7c18",
+      "bytes": 131773
+    },
+    {
+      "artifact": "/Users/armanavanesyan/oss/own/aiogram-native-parallel-qualification-2026-11-18/parser-audit/old/aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "7ace3841035bc1fbcdc59339d942d8f3f6619b5ee442bc7f5f2216ad4fea53a6"
+    },
+    {
+      "artifact": "/Users/armanavanesyan/oss/own/aiogram-native-parallel-qualification-2026-11-18/parser-audit/new/aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "2bbc9b1d32269a6de46b586f45a92db491992edb70e49cb18a243fae410b661b"
+    }
+  ]
+}

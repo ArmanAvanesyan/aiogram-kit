@@ -1,0 +1,155 @@
+{
+  "publication_performed": false,
+  "all_release_gates_complete": false,
+  "scope": "Per-package performance qualification only; full platform CI, release versions and exact release-artifact review remain separate gates.",
+  "performance_gates": {
+    "aiogram-cmds": {
+      "qualified": false,
+      "failures": [
+        "End-to-end p95 regression exceeds 5%: compiled_confirmation_hit/1",
+        "Latency repeat spread exceeds 10%: compiled_confirmation_hit/1",
+        "Latency repeat spread exceeds 10%: compiled_confirmation_hit/10",
+        "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100",
+        "Latency repeat spread exceeds 10%: compiled_fake_telegram_1ms/100",
+        "End-to-end p95 regression exceeds 5%: confirmation_hit/1",
+        "Latency repeat spread exceeds 10%: confirmation_hit/1"
+      ],
+      "comparisons": [
+        {
+          "workload": "compiled_batch/100/10_profiles/30_targets",
+          "rust_over_python_cpu": 0.5289844701615246
+        },
+        {
+          "workload": "compiled_confirmation_hit/1",
+          "rust_over_python_p95": 1.490977544708888
+        },
+        {
+          "workload": "compiled_confirmation_hit/10",
+          "rust_over_python_p95": 0.9339858251771853
+        },
+        {
+          "workload": "compiled_confirmation_hit/100",
+          "rust_over_python_p95": 0.8613984109889663
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/1",
+          "rust_over_python_p95": 1.0089537477048995
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/10",
+          "rust_over_python_p95": 1.008897939415287
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/100",
+          "rust_over_python_p95": 0.9520807973962023
+        },
+        {
+          "workload": "confirmation_hit/1",
+          "rust_over_python_p95": 1.463454135138723
+        },
+        {
+          "workload": "confirmation_hit/10",
+          "rust_over_python_p95": 1.0252076982846214
+        },
+        {
+          "workload": "confirmation_hit/100",
+          "rust_over_python_p95": 0.9133632189001424
+        },
+        {
+          "workload": "fake_telegram_1ms/1",
+          "rust_over_python_p95": 1.0024825805597393
+        },
+        {
+          "workload": "fake_telegram_1ms/10",
+          "rust_over_python_p95": 0.9999913859342643
+        },
+        {
+          "workload": "fake_telegram_1ms/100",
+          "rust_over_python_p95": 0.978806675713472
+        }
+      ],
+      "evidence": "linux-candidate/native-qualification/aiogram-cmds/native-gate.json"
+    },
+    "aiogram-idle": {
+      "qualified": false,
+      "failures": [
+        "CPU improvement below 20%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-activate-touch/50",
+        "End-to-end p95 regression exceeds 5%: memory-deadline-claims/16",
+        "Latency repeat spread exceeds 10%: memory-deadline-claims/16",
+        "End-to-end p95 regression exceeds 5%: redis-dispatcher-noop/1"
+      ],
+      "comparisons": [
+        {
+          "workload": "memory-activate-touch/50",
+          "rust_over_python_cpu": 1.0755115014278038,
+          "rust_over_python_p95": 1.0861869051994077
+        },
+        {
+          "workload": "memory-deadline-claims/16",
+          "rust_over_python_p95": 1.4085484581034198
+        },
+        {
+          "workload": "memory-track/50",
+          "rust_over_python_p95": 1.0268268807053433
+        },
+        {
+          "workload": "redis-activate-touch/50",
+          "rust_over_python_p95": 1.0190079708702038
+        },
+        {
+          "workload": "redis-dispatcher-noop/1",
+          "rust_over_python_p95": 1.0589887691634485
+        },
+        {
+          "workload": "redis-track/50",
+          "rust_over_python_p95": 1.0136320979751714
+        }
+      ],
+      "evidence": "linux-candidate/native-qualification/aiogram-idle/native-gate.json"
+    },
+    "aiogram-nav": {
+      "qualified": false,
+      "failures": [
+        "CPU improvement below 20%: memory-track/50",
+        "End-to-end p95 regression exceeds 5%: memory-track/50",
+        "End-to-end p95 regression exceeds 5%: redis-dispatch-track/50"
+      ],
+      "comparisons": [
+        {
+          "workload": "memory-track/50",
+          "rust_over_python_cpu": 1.0546360381918138,
+          "rust_over_python_p95": 1.0567699777676622
+        },
+        {
+          "workload": "redis-dispatch-noop/50",
+          "rust_over_python_p95": 1.036645064911167
+        },
+        {
+          "workload": "redis-dispatch-track/50",
+          "rust_over_python_p95": 1.0684606318731569
+        }
+      ],
+      "evidence": "linux-candidate/native-qualification/aiogram-nav/native-gate.json"
+    },
+    "aiogram-sentinel": {
+      "qualified": true,
+      "failures": [],
+      "comparisons": [
+        {
+          "workload": "debounce_accepted_many",
+          "rust_over_python_cpu": 0.6246452697393293
+        },
+        {
+          "workload": "middleware_fake_io",
+          "rust_over_python_p95": 0.92139056587058
+        },
+        {
+          "workload": "rate_accepted_many",
+          "rust_over_python_cpu": 0.5129041987534785
+        }
+      ],
+      "evidence": "linux-validation-final/native-qualification/aiogram-sentinel/native-gate.json"
+    }
+  }
+}

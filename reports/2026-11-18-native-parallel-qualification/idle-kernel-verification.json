@@ -1,0 +1,61 @@
+{
+  "scope": "Guarded in-place release kernel and prospectively declared stronger sampling; no timing/commits/push",
+  "native_wheel": {
+    "path": "/tmp/idle-native-finish-wheels/aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "45ac48ae422f28beb4ebce570f087c9748e10e60725cf7abc57c6c80c3b8179b"
+  },
+  "verification": [
+    {
+      "name": "Rust unit tests including frozen old-algorithm full-state comparisons",
+      "passed": 11,
+      "evidence": "tool stdout, not redirected",
+      "traces": [
+        "600 successful release/heap-compaction cycles",
+        "4000 mixed scheduling/claim/renew/release/reclaim operations",
+        "missing/stale/expired/invalid-time/deadline failures with full-state atomicity"
+      ]
+    },
+    {
+      "name": "Clippy all-targets -D warnings",
+      "result": "pass",
+      "evidence": "tool stdout, not redirected"
+    },
+    {
+      "name": "Native engine/backend/canonical/json/lifetime tests",
+      "passed": 116,
+      "failed": 0,
+      "log": "/tmp/idle-inplace-native-tests.log"
+    },
+    {
+      "name": "Benchmark functional tests (fake fresh helpers, never qualification timings)",
+      "passed": 10,
+      "failed": 0,
+      "evidence": "tool stdout, not redirected"
+    },
+    {
+      "name": "Ruff/diff whitespace",
+      "result": "pass"
+    }
+  ],
+  "sampling_contract": {
+    "default_latency_windows": 1,
+    "prospective_latency_windows": 10,
+    "prospective_cpu_samples": 30,
+    "operations_per_window": 100,
+    "fixed_age": 50,
+    "fixture_end_age": 150,
+    "all_observations_retained": true,
+    "exceptions_fail_profile": true,
+    "gc_changes": false,
+    "threshold_changes": false,
+    "calls_semantics": "operations per CPU sample",
+    "total_calls_semantics": "all pooled operations; transport denominator"
+  },
+  "source_hashes": {
+    "packages/aiogram-idle/native/src/queue.rs": "8a89ba1e8adce7d34467f86da6bf459906de23b81682d41f63386950bb455e7f",
+    "packages/aiogram-idle/benchmarks/run.py": "8fe7c238555f0c2a1a922015c73dea9bff0627f8d7a9ba7823f95d9b8b119aaa",
+    "packages/aiogram-idle/benchmarks/support.py": "f9e1572fe8cab2e9e366fe7770cb2156d242e7e89557cdbd03e6c12afe4a7b5a",
+    "packages/aiogram-idle/benchmarks/workloads.py": "678a55319636ff66c85ae4f2c7d68bd8370530c67792d76a4b96f87df393411f",
+    "packages/aiogram-idle/tests/test_benchmark_driver.py": "30f9a10193702b1758297290a72008ec7917ae0fc69a3139fb48feef736fdaea"
+  }
+}

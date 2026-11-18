@@ -1,0 +1,1 @@
+Avoid redundant job snapshots and JSON decoding for printable ASCII tokens in the optional Rust queue adapter. Escaped identities, ownership checks and lease decisions retain their existing semantics; publication remains withheld pending qualification.

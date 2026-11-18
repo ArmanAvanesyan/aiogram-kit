@@ -1,0 +1,1 @@
+Honor the already-supported ``history="replace"`` policy in both native history reducers, preserving the existing stack rather than rejecting a valid navigation intent. Python and native repository behavior now agree without changing persisted state formats.

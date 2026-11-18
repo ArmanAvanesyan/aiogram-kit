@@ -7,6 +7,7 @@ import json
 from functools import lru_cache
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
+from ._json_scope import JsonCore
 from .errors import ConfigurationError
 
 if TYPE_CHECKING:
@@ -24,7 +25,25 @@ class NativeRegistry(Protocol):
     def node_count(self) -> int: ...
 
 
+class CanonicalCore(JsonCore, Protocol):
+    def fork(self) -> CanonicalCore: ...
+
+    def fingerprint(self, value: object) -> str: ...
+
+
 class NativeCore(Protocol):
+    def Canonicalizer(
+        self,
+        enum_type: object,
+        mapping_type: object,
+        fields: object,
+        datetime_type: object = None,
+        view_type: object = None,
+        render_type: object = None,
+        immutable_types: object = None,
+    ) -> CanonicalCore: ...
+
+    InvalidJson: type[Exception]
     API_VERSION: int
     ENGINE_VERSION: str
 
@@ -93,6 +112,8 @@ def native_core() -> NativeCore:
         raise ConfigurationError("engine='rust' requires aiogram-nav-native==0.3.1") from error
     abi = getattr(module, "API_VERSION", None)
     functions = (
+        "Canonicalizer",
+        "InvalidJson",
         "Registry",
         "strict_loads",
         "validate_json",
@@ -110,6 +131,17 @@ def native_core() -> NativeCore:
         or not all(callable(getattr(module, name, None)) for name in functions)
     ):
         raise ConfigurationError("Incompatible aiogram-nav-native engine ABI/version")
+    invalid = getattr(module, "InvalidJson", None)
+    codec = getattr(module, "Canonicalizer", None)
+    if (
+        not isinstance(invalid, type)
+        or not issubclass(invalid, Exception)
+        or not all(
+            callable(getattr(codec, name, None))
+            for name in ("fingerprint", "freeze", "clear_cache", "cache_stats", "fork")
+        )
+    ):
+        raise ConfigurationError("Incompatible native codec ABI/version")
     try:
         probe = module.Registry(
             json.dumps(
@@ -153,14 +185,11 @@ def require_engine(engine: EngineName) -> None:
 
 def strict_loads(raw: str, *, engine: EngineName, max_bytes: int) -> object:
     require_engine(engine)
-    if (
-        type(raw) is not str
-        or type(max_bytes) is not int
-        or max_bytes <= 0
-        or len(raw.encode("utf-8")) > max_bytes
-    ):
+    if type(raw) is not str or type(max_bytes) is not int or max_bytes <= 0:
         raise ValueError("Strict JSON input exceeds its supported UTF-8 bound")
     if engine == "rust":
         # Typed codec validation independently enforces logical depth <=64.
         return native_core().strict_loads(raw, max_bytes, 512)
+    if len(raw.encode("utf-8")) > max_bytes:
+        raise ValueError("Strict JSON input exceeds its supported UTF-8 bound")
     return json.loads(raw, object_pairs_hook=_pairs)

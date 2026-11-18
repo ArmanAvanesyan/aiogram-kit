@@ -49,7 +49,21 @@ snapshot once. Native ABI/version mismatches and missing modules raise
 `NativeEngineError` before effects; the library never silently falls back after
 an explicit request. Rust receives resolved strings, never translators, async
 callbacks, Telegram clients or application business logic. The supported native
-ABI is 1 and candidate companion version is 0.3.0.
+ABI is 1 and candidate companion version is 0.3.1. Snapshot capabilities include
+`resolve_one` and `resolve_batch`; incomplete companions are rejected before
+translation or delivery effects.
+
+A compiled single-target delivery validates its aiogram scope once, then resolves
+the immutable rows and exact canonical fingerprint without constructing a batch
+or parsing the scope's own JSON. The native single-target cache compares borrowed
+request strings before allocating a new key. At most 256 derived fingerprint
+entries are retained per snapshot (a last-request entry plus up to 255 batch
+entries), each admitted request bounded to 4096 encoded input bytes. Oversized
+requests are resolved without retention. Every key includes profile, locale, bot,
+scope and language slot; a new snapshot has a separate cache. These entries never
+represent successful delivery or caller confirmation. Command models remain
+fresh, and a confirmation hit constructs none. Mutable live configuration and
+translator callbacks retain their uncached behavior.
 
 ## Reproducible evidence
 
@@ -70,10 +84,73 @@ Native publication requires serial matched measurements showing at least 20%
 CPU improvement and no greater than 5% realistic p95 regression. No such result is
 claimed merely because correctness tests pass. Seven native platform wheels and
 Python 3.10–3.14 runtime CI are separate from the pure Python package. Native
-release tags use `native-v*`; base tags remain `v*`.
+release tags use `aiogram-cmds-native-v*`; base tags use `aiogram-cmds-v*`.
 
 The original serial ABBA native gate failed (selected compiled batch CPU was
 56.7% slower, with dynamic confirmation-hit p95 regressions). Native publication,
 native tags and a dependency extra are withheld. Buildable source is retained;
 the Python 0.3.0 package can release independently. Supplemental compiled manager
 workloads retain the original failed gate and include deferred SDK construction.
+
+
+### Live tiny menus and retained qualification diagnostics
+
+Live delivery validates the selected engine and ABI once before translator
+callbacks. Its internal fingerprint boundary reuses that validation; menus with
+at most ten freshly rendered commands use CPython's JSON/SHA implementation
+without an additional native boundary. Larger live menus retain the explicit
+native path, and an unexpected native failure is never retried in Python. The
+standalone public fingerprint function retains its own eager validation.
+No configuration, translator output or confirmation is cached by live delivery.
+
+The controlled follow-up run 44210106073 still failed qualification. The
+compiled-confirmation/10 repeat-spread failure was in the Python baseline
+(14,487 ns versus 15,950 ns, about 10.10%); Rust was 13,896 ns versus 13,845 ns
+(about 0.37%). Before/after driver telemetry recorded no generation-two
+collections, but cannot attribute particular tails to lower-generation GC or
+host scheduling. The package report
+`reports/2026-11-18-confirmation-tail-analysis.json` retains sample-window
+summaries and exact input hashes. This is diagnostic evidence, not a reason to
+waive a failed gate or rerun unchanged code until it passes.
+
+
+### Declared individual-latency sample counts
+
+`benchmarks/run.py --individual-latency-samples N` declares the number of
+individual observations for each delivery/confirmation workload before the run.
+The historical defaults remain 1,000 for full runs and 100 with `--quick`; an
+explicit positive integer overrides either. The driver retains every raw
+observation and records the requested and actual counts. No outliers are removed.
+
+The next qualification experiment declares 3,000 observations. This is a new
+sampling declaration, not an unchanged rerun of the failed 1,000-observation
+reports. Workloads, command counts, targets, operation semantics, five warmups
+and 31 CPU trials remain unchanged. CPU-only workloads do not gain extra loops.
+The CPU/p95/repeat-spread thresholds remain unchanged, and this sample-size
+change makes no claim that a previously failed gate now passes.
+
+
+### Manager engine binding
+
+A live `CommandScopeManager` binds its validated engine/module selection during
+construction and captures that immutable selection when an operation begins.
+It delegates to the resolved live executor without repeating the same engine
+lookup for each menu. Configuration and translators are still read on every
+operation; no menu, authorization decision or successful confirmation is cached.
+Direct public `apply_profile` and `payload_fingerprint` calls keep their own
+eager ABI validation before translator callbacks or delivery effects.
+
+Explicit `manager.engine = "python"` / `"rust"` changes remain supported. Assignment
+validates the complete new selection before publishing it atomically. An invalid
+engine or missing/incompatible companion now fails at assignment, leaving the
+previous selection active. A selection change during a translator callback affects
+subsequent operations, not the already captured selection of the current one.
+Compiled snapshots are not changed or retranslated by assigning an engine.
+
+The 3,000-observation run 44217592129 still failed one-command dynamic latency
+and repeatability. Its Rust-a raw vector contains clustered tails largely absent
+in Rust-b, while median differences are smaller. The package report
+`reports/2026-11-18-manager-binding-tail-analysis.json` retains every 100-sample
+window and source hashes. Host/GC causality is not established, and the failed
+measurements are not discarded. The binding change removes actual lookup work;
+its performance still requires a new unchanged-gate qualification run.

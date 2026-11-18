@@ -7,13 +7,21 @@ import json
 from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
+from functools import lru_cache
 from typing import Literal, cast
 
 from aiogram_coordination import ExternalSession
 
-from ..engine import EngineName, native_core, require_engine
+from .._json_scope import selected
+from ..engine import CanonicalCore, EngineName, native_core, require_engine
 from ..models import (
     CommitResult,
+    ConversationKey,
+    EffectCheckpoint,
+    HistoryEntry,
+    MessageRef,
+    NavigationIntent,
+    NavigationMutation,
     NavigationToken,
     PreparedAction,
     RenderResult,
@@ -53,14 +61,78 @@ def payload_size(value: object) -> int:
     )
 
 
+@lru_cache(maxsize=1)
+def canonicalizer() -> CanonicalCore:
+    return native_core().Canonicalizer(
+        Enum,
+        Mapping,
+        fields,
+        None,
+        ViewState,
+        RenderResult,
+        (
+            ConversationKey,
+            EffectCheckpoint,
+            HistoryEntry,
+            MessageRef,
+            NavigationIntent,
+            NavigationMutation,
+            RenderResult,
+            ViewState,
+        ),
+    )
+
+
+class _DeferredCanonicalizer:
+    """Backend-owned codec, allocated only when pure JSON work is requested.
+
+    Redis read projections use the same memory reducer but often do not perform
+    any fingerprint/freezing work. Creating twenty metadata references and a
+    native cache for each such read is unnecessary. No native result or mutable
+    record is shared between backends, and ABI checks remain eager in the owner.
+    """
+
+    def __init__(self) -> None:
+        self._loaded: CanonicalCore | None = None
+
+    def _core(self) -> CanonicalCore:
+        if self._loaded is None:
+            self._loaded = canonicalizer().fork()
+            # Cold dispatch lives on the class, never as self-bound methods in
+            # the instance: unused read projections must not form GC cycles.
+            # Native bound methods retain only this backend's core, not self.
+            object.__setattr__(self, "fingerprint", self._loaded.fingerprint)
+            object.__setattr__(self, "freeze", self._loaded.freeze)
+        return self._loaded
+
+    def fork(self) -> CanonicalCore:
+        return _DeferredCanonicalizer()
+
+    def fingerprint(self, value: object) -> str:
+        return self._core().fingerprint(value)
+
+    def freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None:
+        return self._core().freeze(value, proxy, style)
+
+    def clear_cache(self) -> None:
+        if self._loaded is not None:
+            self._loaded.clear_cache()
+
+    def cache_stats(self) -> tuple[int, int]:
+        return self._loaded.cache_stats() if self._loaded is not None else (0, 0)
+
+
+def new_canonicalizer() -> CanonicalCore:
+    return _DeferredCanonicalizer()
+
+
 def fingerprint(value: object, *, engine: EngineName = "python") -> str:
     require_engine(engine)
+    if engine == "rust":
+        processor = selected()
+        return (processor.core if processor else canonicalizer()).fingerprint(value)
     raw = json.dumps(_canonical(value), sort_keys=True, separators=(",", ":"), allow_nan=False)
-    return (
-        native_core().fingerprint_canonical(raw)
-        if engine == "rust"
-        else hashlib.sha256(raw.encode()).hexdigest()
-    )
+    return hashlib.sha256(raw.encode()).hexdigest()
 
 
 @dataclass

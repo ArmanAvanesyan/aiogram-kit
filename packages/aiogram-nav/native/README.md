@@ -9,8 +9,9 @@ Rust owns graph validation/cached targets, strict JSON parsing, bounded history
 and scalar transition calculations, token provenance comparison, and exact-byte
 SHA256. Typed Python model construction, application validators, I/O, locking,
 clocks, random generations and presenter/business effects stay in Python.
-Canonical JSON text for fingerprints is supplied by Python, preserving Unicode,
-float formatting and arbitrary integer receipt identities across engines.
+The coarse canonicalizer owns traversal, immutable JSON freezing and exact-byte
+fingerprints while retaining Python scalar formatting and arbitrary integer
+receipt identities. Its bounded derived cache belongs to one backend.
 
 Build: `uvx maturin build --release --manifest-path native/Cargo.toml`.
 Run Rust tests: `cargo test --manifest-path native/Cargo.toml`.
@@ -46,3 +47,18 @@ optimized Python engine. Primitive SHA/JSON microbenchmarks are diagnostic only:
 a native boundary can add conversion overhead even when the underlying Rust
 algorithm is fast. No base dependency extra or native release should be enabled
 from correctness tests alone.
+
+The [18 November qualification follow-up](../../../reports/2026-11-18-native-qualification/README.md)
+retains all repeated-run outcomes, rejected experiments and current release blockers.
+No companion is published by the qualification workflow.
+
+
+The development `strict_loads` boundary builds Python values directly while
+checking strict JSON grammar, duplicate decoded keys, finite numbers and bounds.
+It preserves integer `-0`, floating `-0.0`, configured integer digit limits and
+object insertion order. This replaces the intermediate Rust JSON tree for reads;
+`validate_json` continues to use the independent Rust-only parser.
+
+`Canonicalizer` and `InvalidJson` are exposed by both the extension and public
+package, with matching typed declarations. The companion remains unpublished
+until full installed-artifact performance and platform qualification pass.
