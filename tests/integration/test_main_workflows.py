@@ -41,6 +41,7 @@ def test_manual_native_qualification_is_read_only_and_retains_failures():
     assert set(choices["options"]) == {
         "none",
         "all",
+        "sentinel-cmds",
         "aiogram-sentinel",
         "aiogram-cmds",
         "aiogram-nav",
@@ -61,3 +62,8 @@ def test_manual_native_qualification_is_read_only_and_retains_failures():
     assert 'exit "$result"' in run
     assert "qualify_native.py" in run
     assert "--quick" not in run
+    pair_branch = run.split('if [ "$NATIVE_PACKAGE" = sentinel-cmds ]; then', 1)[1].split(
+        "elif", 1
+    )[0]
+    assert "selection=(--package aiogram-sentinel --package aiogram-cmds)" in pair_branch
+    assert "aiogram-nav" not in pair_branch and "aiogram-idle" not in pair_branch

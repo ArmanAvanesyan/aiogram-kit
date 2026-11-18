@@ -8,11 +8,12 @@ identified by hash in `experiment-declaration.json`.
 The controlled qualification will apply the same explicitly recorded CPU affinity
 to every measured profile. This controls CPU migration; it does not reserve a
 physical core or isolate background work. New telemetry is observational and runs
-outside measured scopes. Thresholds, samples, workloads and GC policy are unchanged.
+outside measured scopes. The first experiment preserves thresholds, samples,
+workloads and GC policy; later declared sampling revisions are recorded below.
 Earlier measurements and failures remain in the adjacent qualification reports.
 
-Package changes and final functional/qualification evidence will be recorded here
-after verification. No performance or release-readiness result is claimed yet.
+Final results below qualify all four exact candidates on the measured host and
+workloads. This is performance qualification, not authorization to publish.
 
 
 ## First controlled candidate: f4567d1
@@ -154,3 +155,41 @@ Independent review found no new effect, freshness or denominator blocker.
 The same source update fixes Nav artifact-test helper staging and Cmds package
 formatting, with preserved-input workflow-generator tests so regeneration cannot
 restore the omission. Installed SDK tests still run without copying SDK source.
+
+## Final measured result
+
+[Run 44222753653](https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44222753653)
+qualifies Sentinel and Cmds at source `498fae6`. Complete raw observations,
+host controls, provenance and gate reports are retained in `linux-sentinel-cmds/`;
+the sibling retention manifest maps exact binary backups and original hashes.
+Nav and Idle retain their independently qualified `0448d0b` artifacts from
+run44217592129. No unchanged candidate was resampled to replace a failure.
+
+| Package | Selected CPU Rust/Python | All required latency and repeatability gates |
+| --- | ---: | --- |
+| Sentinel | rate0.535; debounce0.666 | pass; middleware p950.937 |
+| Cmds |0.508 | pass; worst required p951.036 |
+| Nav |0.792 | pass |
+| Idle |0.773 | pass; claims p950.956 |
+
+The fixed thresholds remain CPU<=0.80, individual p95<=1.05 and repeat
+spread<=10%. Increased observation counts were declared before timing; every
+cold observation, tail and failed earlier run remains available. No GC change,
+threshold waiver, favorable subset or automatic performance retry was used.
+
+These are development candidates with paired SDK/native capability changes.
+All four companions remain unpublished. Publication still needs a separately
+authorized release with fresh matching versions, exact reviewed artifacts and
+the complete platform/distribution gates. These results cover the recorded
+Linux/Python3.12 host, not every supported platform or application workload.
+
+## Final CI and packaging checks
+
+The final workflow-only follow-up adds a missing `sentinel-cmds` selection guard
+and a bounded60second pip-audit socket timeout after three checks failed on
+PyPI read timeouts. Audits retain their ordinary failing exit status and scan
+targets; no vulnerability ignores or fail-open retries were introduced. Workflow
+regeneration preserves these changes and helper staging. Root integration tests
+passed61; strict MkDocs build and root lint/format checks passed. Package-specific
+installed-artifact and standalone verification records accompany this report.
+No measured runtime/benchmark source changed after the qualifying artifacts.

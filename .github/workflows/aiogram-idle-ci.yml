@@ -125,7 +125,7 @@ jobs:
       run: uv run --no-sync bandit -r src -f json -o bandit-report.json
     - name: Audit installed dependencies
       if: ${{ !cancelled() }}
-      run: uv run --no-sync pip-audit --skip-editable --format json --output pip-audit-report.json
+      run: uv run --no-sync pip-audit --timeout 60 --skip-editable --format json --output pip-audit-report.json
     - name: Retain security reports
       if: always()
       uses: actions/upload-artifact@v4

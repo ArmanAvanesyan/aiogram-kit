@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "sampling_plans": {
+    "aiogram-sentinel": {
+      "cpu_repeats": 15,
+      "cpu_calls_per_sample": 50000,
+      "latency_phase": "separate-sentinel-phase",
+      "additional_latency_windows": 10,
+      "operations_per_window": 1000,
+      "individual_latency_samples": 10000,
+      "state_age": null
+    },
+    "aiogram-cmds": {
+      "cpu_repeats": 31,
+      "additional_latency_windows": null,
+      "operations_per_window": null,
+      "individual_latency_samples": 3000,
+      "state_age": null
+    }
+  },
+  "redis_service_control": {
+    "schema_version": 1,
+    "mode": "docker-disjoint-logical",
+    "client_cpu_affinity": [
+      0
+    ],
+    "service": {
+      "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+      "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+      "pid": 2470,
+      "cpuset_cpus": "2",
+      "cpu_affinity": [
+        2
+      ]
+    },
+    "available_topology": [
+      {
+        "cpu": 0,
+        "package": 0,
+        "core": 0
+      },
+      {
+        "cpu": 1,
+        "package": 0,
+        "core": 0
+      },
+      {
+        "cpu": 2,
+        "package": 0,
+        "core": 1
+      },
+      {
+        "cpu": 3,
+        "package": 0,
+        "core": 1
+      }
+    ],
+    "physical_core_disjoint": true,
+    "physical_isolation_claimed": false
+  },
+  "affinity_request": "auto",
+  "resolved_cpu_affinity": [
+    0
+  ],
+  "selection_policy": "lowest available physical-package/core/CPU tuple; first allowed CPU if topology unavailable",
+  "available_cpu_affinity": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "host_cpu_count": 4,
+  "physical_isolation_claimed": false,
+  "gc_policy": "unchanged"
+}

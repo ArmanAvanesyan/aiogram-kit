@@ -168,7 +168,7 @@ jobs:
       if: '!cancelled()'
       run: 'mkdir -p reports/security
 
-        uv run --no-sync pip-audit --skip-editable --format json --output reports/security/pip-audit-report.json
+        uv run --no-sync pip-audit --timeout 60 --skip-editable --format json --output reports/security/pip-audit-report.json
 
         '
     - uses: actions/upload-artifact@v6

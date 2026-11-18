@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "qualified": true,
+  "identity": [
+    "aiogram-sentinel",
+    "1.3.1",
+    "3.12.16",
+    "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "",
+    4,
+    137
+  ],
+  "measurement_controls": {
+    "schema_version": 2,
+    "affinity_policy": "pinned",
+    "cpu_affinity": [
+      0
+    ],
+    "host_cpu_count": 4,
+    "effective_cpu_count": 1,
+    "gc_policy": "unchanged",
+    "gc_enabled": true,
+    "gc_thresholds": [
+      700,
+      10,
+      10
+    ],
+    "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+    "sampling_plan": {
+      "additional_latency_windows": 10,
+      "cpu_calls_per_sample": 50000,
+      "cpu_repeats": 15,
+      "individual_latency_samples": 10000,
+      "latency_phase": "separate-sentinel-phase",
+      "operations_per_window": 1000,
+      "state_age": null
+    },
+    "service_cpu_control": {
+      "schema_version": 1,
+      "mode": "docker-disjoint-logical",
+      "client_cpu_affinity": [
+        0
+      ],
+      "service": {
+        "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+        "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+        "pid": 2470,
+        "cpuset_cpus": "2",
+        "cpu_affinity": [
+          2
+        ]
+      },
+      "available_topology": [
+        {
+          "cpu": 0,
+          "package": 0,
+          "core": 0
+        },
+        {
+          "cpu": 1,
+          "package": 0,
+          "core": 0
+        },
+        {
+          "cpu": 2,
+          "package": 0,
+          "core": 1
+        },
+        {
+          "cpu": 3,
+          "package": 0,
+          "core": 1
+        }
+      ],
+      "physical_core_disjoint": true,
+      "physical_isolation_claimed": false
+    }
+  },
+  "cpu_workloads_selected": [
+    "rate_accepted_many",
+    "debounce_accepted_many"
+  ],
+  "required_latency_workloads": [
+    "middleware_fake_io"
+  ],
+  "inputs": [
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/python-a/aiogram-sentinel.json",
+      "sha256": "687ef48076927b8c9bf2a74b1e3f09a5879879700b376cc4dc110f61d8de6551",
+      "engine": "python",
+      "run_id": "fac7eab3-9e5e-41ad-9a1b-7a42f749b69f",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": null,
+        "driver_sha256": "efef058cb95f6338b614ab56b1b204955c233cb260274cc546444ffea5fd702e"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": 10,
+          "cpu_calls_per_sample": 50000,
+          "cpu_repeats": 15,
+          "individual_latency_samples": 10000,
+          "latency_phase": "separate-sentinel-phase",
+          "operations_per_window": 1000,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2470,
+            "cpuset_cpus": "2",
+            "cpu_affinity": [
+              2
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/python-b/aiogram-sentinel.json",
+      "sha256": "123aa8ce3a49adfd56c39b2c7ef18aa68c8fc71dad373890e013c8c5c7d1cd3e",
+      "engine": "python",
+      "run_id": "cb7d6164-9673-4669-9b25-5de2d1abbde2",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": null,
+        "driver_sha256": "efef058cb95f6338b614ab56b1b204955c233cb260274cc546444ffea5fd702e"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": 10,
+          "cpu_calls_per_sample": 50000,
+          "cpu_repeats": 15,
+          "individual_latency_samples": 10000,
+          "latency_phase": "separate-sentinel-phase",
+          "operations_per_window": 1000,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2470,
+            "cpuset_cpus": "2",
+            "cpu_affinity": [
+              2
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/rust-a/aiogram-sentinel.json",
+      "sha256": "eafcc6b14a2cfdd34277f4160dbc7146a1d0ca1156e4dd682b8385207223a104",
+      "engine": "rust",
+      "run_id": "4aacb5c3-dc8e-415d-b2ea-9a713eb17860",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": "fc708492c46928187c1393201654c2e885a5608c2eff51016c5fdba21b9d17ef",
+        "driver_sha256": "efef058cb95f6338b614ab56b1b204955c233cb260274cc546444ffea5fd702e"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": 10,
+          "cpu_calls_per_sample": 50000,
+          "cpu_repeats": 15,
+          "individual_latency_samples": 10000,
+          "latency_phase": "separate-sentinel-phase",
+          "operations_per_window": 1000,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2470,
+            "cpuset_cpus": "2",
+            "cpu_affinity": [
+              2
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-sentinel/rust-b/aiogram-sentinel.json",
+      "sha256": "a047bf30561f4b4c665e025fc10bbfb4b0c232dcb8f84f1b149ec6cf868bfa63",
+      "engine": "rust",
+      "run_id": "fc2a94f9-27f0-4e50-96f1-a65be2895f4c",
+      "qualification_provenance": {
+        "base_artifact_sha256": "33d4da098fb4cc5f073f0d812b45c3fa36ee6a8d93cfcf8c3a3744a33f1aed36",
+        "native_artifact_sha256": "fc708492c46928187c1393201654c2e885a5608c2eff51016c5fdba21b9d17ef",
+        "driver_sha256": "efef058cb95f6338b614ab56b1b204955c233cb260274cc546444ffea5fd702e"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": 10,
+          "cpu_calls_per_sample": 50000,
+          "cpu_repeats": 15,
+          "individual_latency_samples": 10000,
+          "latency_phase": "separate-sentinel-phase",
+          "operations_per_window": 1000,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "85ecac1d92c9eede229dda0c7e87b1a8483cad776b69c8268ba67a38c02acce8",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2470,
+            "cpuset_cpus": "2",
+            "cpu_affinity": [
+              2
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "debounce_accepted_many",
+      "rust_over_python_cpu": 0.6657013552632558
+    },
+    {
+      "workload": "middleware_fake_io",
+      "rust_over_python_p95": 0.93745825883442
+    },
+    {
+      "workload": "rate_accepted_many",
+      "rust_over_python_cpu": 0.5347478145727451
+    }
+  ],
+  "failures": [],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

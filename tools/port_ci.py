@@ -110,6 +110,13 @@ def port(package: pathlib.Path, source: pathlib.Path) -> dict:
                 continue
             if "run" in step:
                 step["run"] = step["run"].replace("uv run --frozen", "uv run --no-sync")
+                if job_name == "security" and "--timeout" not in step["run"]:
+                    # Dependency advisory lookups can exceed pip-audit's 15s
+                    # socket default on shared runners. Bound them explicitly;
+                    # scanner failures and vulnerability exit codes still fail CI.
+                    step["run"] = re.sub(
+                        r"(?<!\S)pip-audit(?=\s|$)", "pip-audit --timeout 60", step["run"]
+                    )
                 if package.name == "aiogram-nav":
                     # Artifact tests intentionally run without SDK source. Their
                     # deterministic benchmark tests also need source-only helpers.

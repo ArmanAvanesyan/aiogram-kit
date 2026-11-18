@@ -80,7 +80,8 @@ Standalone Python installs require no Rust, Redis or optional peer integration.
 The next candidate adds direct Nav Redis decoding, deferred backend-owned codecs,
 raw typed Idle release guards, and a borrowed Cmds single-target cache lookup.
 Matched CPU affinity and before/after observational telemetry control migration
-noise without changing thresholds, samples, workloads or GC policy. See the
+noise. Later explicitly declared revisions increase observation counts while
+preserving state-age windows, thresholds, workloads and GC policy. See the
 [predeclared experiment](https://github.com/ArmanAvanesyan/aiogram-kit/blob/perf/native-gates-followup/reports/2026-11-18-native-parallel-qualification/README.md).
 
 Durable fingerprint guarantees cover validated JSON and immutable SDK records.
@@ -89,3 +90,8 @@ application dataclasses with stateful property accessors must be normalized to
 JSON first and are not valid activity/navigation parameter values. The independent
 audit records this existing generic-accessor limitation separately from validated
 backend parity.
+
+All four exact candidates now pass the recorded Linux performance qualification:
+Sentinel/Cmds at498fae6 and Nav/Idle at0448d0b. The report retains all failed
+experiments and exact-artifact mappings. This does not authorize publishing;
+all four companions remain unpublished pending separate release qualification.

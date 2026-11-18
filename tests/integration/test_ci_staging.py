@@ -126,3 +126,68 @@ def test_cmds_benchmark_tools_are_installed_after_clean_sdk_verification():
         "orjson psutil pyperf"
     )
     assert "-m pytest tests/unit/test_benchmark_sampling.py" in script
+
+
+def test_security_audits_use_bounded_network_timeout_and_still_fail_closed():
+    audited = []
+    for name in (
+        "aiogram-sentinel",
+        "aiogram-cmds",
+        "aiogram-coordination",
+        "aiogram-nav",
+        "aiogram-idle",
+    ):
+        package = ROOT / "packages" / name
+        security = module.port(package, package / ".github/workflows/ci.yml")["jobs"]["security"]
+        assert not security.get("continue-on-error", False)
+        for step in security["steps"]:
+            run = step.get("run", "")
+            if "pip-audit " not in run:
+                continue
+            audited.append(name)
+            assert "pip-audit --timeout 60 " in run
+            assert "--ignore-vuln" not in run
+            assert "--exit-zero" not in run
+            assert "|| true" not in run
+            assert not step.get("continue-on-error", False)
+    assert sorted(audited) == sorted(
+        ("aiogram-sentinel", "aiogram-cmds", "aiogram-coordination", "aiogram-nav", "aiogram-idle")
+    )
+
+
+def test_sentinel_full_package_staging_retains_benchmark_helpers_for_unit_tests(tmp_path):
+    import os
+    import subprocess
+
+    package = ROOT / "packages/aiogram-sentinel"
+    generated = module.port(package, package / ".github/workflows/ci.yml")
+    test_job = generated["jobs"]["tests"]
+    stage = next(
+        step
+        for step in test_job["steps"]
+        if step.get("name") == "Stage isolated distribution checkout"
+    )
+    # Execute the real generated staging command on a tiny representative tree,
+    # not on local Rust build outputs or SDK source from other distributions.
+    source = tmp_path / "monorepo-source/packages/aiogram-sentinel"
+    files = ("benchmarks/latency_windows.py", "tests/unit/test_benchmark_sampling.py")
+    for relative in files:
+        path = source / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes((package / relative).read_bytes())
+    subprocess.run(
+        ["bash", "-e", "-c", stage["run"]],
+        cwd=tmp_path,
+        env={**os.environ, "GITHUB_WORKSPACE": str(tmp_path)},
+        check=True,
+    )
+    for relative in files:
+        assert (tmp_path / "distribution" / relative).read_bytes() == (
+            package / relative
+        ).read_bytes()
+    assert any(
+        "pytest tests/unit tests/integration" in step.get("run", "") for step in test_job["steps"]
+    )
+    quality = generated["jobs"]["quality-checks"]
+    assert any("ruff check ." in step.get("run", "") for step in quality["steps"])
+    assert any("black --check src tests" in step.get("run", "") for step in quality["steps"])
