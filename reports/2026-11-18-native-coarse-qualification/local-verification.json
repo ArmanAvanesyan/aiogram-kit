@@ -109,9 +109,36 @@
       "name": "Strict MkDocs build",
       "result": "pass",
       "note": "after correcting source-report link"
+    },
+    {
+      "name": "Complete Idle Rust format-three core plus combined Rust/Rust corpus",
+      "passed": 471,
+      "source": "568a847",
+      "manifest": "native-all-profile-third.json"
+    },
+    {
+      "name": "Idle lossless Unicode correction regression corpus",
+      "passed": 49,
+      "source": "741cd73"
+    },
+    {
+      "name": "Nav independent native/core codec corpus",
+      "passed": 141,
+      "source": "1e8794d plus DTO rejection regression"
+    },
+    {
+      "name": "Idle independent native/core codec corpus",
+      "passed": 46,
+      "source": "1e8794d plus DTO rejection regression"
+    },
+    {
+      "name": "Cmds compiled native unit tests",
+      "passed": 24,
+      "source": "bdafaa1"
     }
   ],
-  "artifacts": [
+  "scope": "Local functional evidence; Linux qualification and full platform CI remain separate.",
+  "earlier_local_artifact_fingerprints": [
     {
       "filename": ".gitignore",
       "sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"
@@ -149,5 +176,55 @@
       "sha256": "7ace3841035bc1fbcdc59339d942d8f3f6619b5ee442bc7f5f2216ad4fea53a6"
     }
   ],
-  "scope": "Local functional evidence; Linux qualification and full platform CI remain separate."
+  "earlier_local_artifact_note": "Earlier local functional binaries were superseded; these fingerprints are historical, not release qualification evidence. Linux qualification binaries are retained separately for every attempt.",
+  "latest_local_artifacts": {
+    "source": "741cd73",
+    "backup": "/Users/armanavanesyan/oss/own/aiogram-native-coarse-qualification-2026-11-18/local-functional-741cd73",
+    "files": [
+      {
+        "filename": ".gitignore",
+        "sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"
+      },
+      {
+        "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+        "sha256": "4c256bcc1e3f6683aa87819af3aa3279672c2381b68a2ab718aa762f40c5603a"
+      },
+      {
+        "filename": "aiogram_cmds-0.3.1.tar.gz",
+        "sha256": "b7b0eefb55f575fd21cd81d5fbc80328d4c9506cc6d5d28f6b82d0a1e952f772"
+      },
+      {
+        "filename": "aiogram_idle-0.3.1-py3-none-any.whl",
+        "sha256": "50f9371bdf89f715f0f9c5844a1578e1868420bea054d38d1814aec968d8a471"
+      },
+      {
+        "filename": "aiogram_idle-0.3.1.tar.gz",
+        "sha256": "a3ed75849f5520a096033f18252c8fdae3a158d5798210dab329bc7560cbcad3"
+      },
+      {
+        "filename": "aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "35f33804cc8a50b9ea2cecbdde637257db856c6f8ea0a77e29d1843427fbd64a"
+      },
+      {
+        "filename": "aiogram_idle_native-0.3.1.tar.gz",
+        "sha256": "dd72a34f5e931dcbd8f156aee4c3adadc6ff41d44bdb00bb3bfa41aed42a9c7e"
+      },
+      {
+        "filename": "aiogram_nav-0.3.1-py3-none-any.whl",
+        "sha256": "4d286eb0a75e33157b5b056a600997c57866210dd41eeb8128e191867523d9b2"
+      },
+      {
+        "filename": "aiogram_nav-0.3.1.tar.gz",
+        "sha256": "ae1170a5e0f23244a3623db8c7c5d85c4d376a071cb93e40d4108271a8530adb"
+      },
+      {
+        "filename": "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "7ace3841035bc1fbcdc59339d942d8f3f6619b5ee442bc7f5f2216ad4fea53a6"
+      },
+      {
+        "filename": "aiogram_nav_native-0.3.1.tar.gz",
+        "sha256": "7100ceb3ffa9a13a6a6fc74f778150b965b3f079136df415294a27a8e06e38b0"
+      }
+    ]
+  }
 }
