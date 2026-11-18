@@ -1,0 +1,87 @@
+{
+  "scope": "Idle package-only parallel agent; no timing runs, commits, tags, pushes, or publication",
+  "env": "/tmp/idle-native-finish-env/bin/python",
+  "native_only_env": "/tmp/idle-native-companion-only/bin/python",
+  "python": "3.12.13",
+  "aiogram": "3.32.0",
+  "redis": "redis://127.0.0.1:56323/0; isolated prefixes, no flush",
+  "artifacts": [
+    {
+      "path": "/tmp/idle-native-finish-wheels/aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "58c010b5d3678b8ed40fc361bc219426f335526bd1e0e98b8532353691c1fe9d"
+    },
+    {
+      "path": "/tmp/idle-native-finish-wheels/aiogram_idle-0.3.1-py3-none-any.whl",
+      "sha256": "b9bbbf5d7f7dca3cff051c1baaeaf45a462953aec1c709c9592931dcd4529e35"
+    }
+  ],
+  "checks": [
+    {
+      "check": "Targeted native engine/backend/canonical/json regression tests",
+      "passed": 107,
+      "failed": 0,
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Format-three Rust core corpus with real Redis",
+      "passed": 344,
+      "failed": 0,
+      "manifest": "/tmp/idle-native-finish-core-profile.json",
+      "evidence": "tool stdout and collected profile manifest"
+    },
+    {
+      "check": "Strict SDK Pyright",
+      "errors": 0,
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Native-only installed typed-surface Pyright",
+      "errors": 0,
+      "file": "/tmp/idle-native-stub-smoke.py",
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Clippy all-targets -D warnings",
+      "result": "pass",
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Rust core unit tests",
+      "passed": 8,
+      "note": "Executed before final builtin-format helper adjustment; helper covered by final107 regression tests; rerun with integrated candidate if required"
+    },
+    {
+      "check": "Strict ABI3 audit",
+      "result": "pass",
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Ruff and diff whitespace checks",
+      "result": "pass",
+      "evidence": "tool stdout; no raw log redirected"
+    },
+    {
+      "check": "Native companion standalone imports",
+      "result": "pass",
+      "absent_dependencies": [
+        "aiogram_idle",
+        "redis",
+        "aiogram_nav"
+      ],
+      "evidence": "tool stdout; no raw log redirected"
+    }
+  ],
+  "source_hashes": {
+    "packages/aiogram-idle/native/python/aiogram_idle_native/_aiogram_idle_native.pyi": "fd0ae7c1fe055ae36efa602c76dbf8ad22101d738fb3089c0bdf81de98fe87cf",
+    "packages/aiogram-idle/native/python/aiogram_idle_native/__init__.py": "ea20cddc03a4624882947c44f9ef9e2b530d4417316444a602cae0fee2420d5c",
+    "packages/aiogram-idle/native/src/lib.rs": "c4b2ccbe7cd1be185cfc5963bcecc612d6f289c4cabaa23e401c29d7816ab15b",
+    "packages/aiogram-idle/native/src/canonical.rs": "5f6e1b0d60863dccd5c5fe90efff6fca5f156f09479b921da896c89a56b449d4",
+    "packages/aiogram-idle/tests/__init__.py": "c3d573137460f64b946344712fae5d316bddc85eaeea32840bf140e69cb683d8",
+    "packages/aiogram-idle/tests/unit/__init__.py": "69a997d91a0338d538c2f282aef228d86c8a9edd411c3d66c19053ee169bc304",
+    "packages/aiogram-idle/src/aiogram_idle/engines.py": "6dacf94ef656ada221499b237b6ea1729c15c3652cb726d24daa2e5e136fc2df",
+    "packages/aiogram-idle/src/aiogram_idle/__init__.py": "395256dcde0a9cb1816c36ebed15f17af0d6f21b81313604d2ce9a6deef99892",
+    "packages/aiogram-idle/src/aiogram_idle/_native_queue.py": "dea7d297306e90cf44428cd2e01d2e12c73aed2d3f30958394052282a79f77cb",
+    "packages/aiogram-idle/src/aiogram_idle/storage/__init__.py": "07fdad9a779b77ab3908aea4a83bd98246f211a0ac62703142eaf61fee2e2dff",
+    "packages/aiogram-idle/src/aiogram_idle/integrations/nav/__init__.py": "0f21c7758a487f9fb8354637f516936b6179af5da579d5c0c09552744b9b78f1"
+  }
+}

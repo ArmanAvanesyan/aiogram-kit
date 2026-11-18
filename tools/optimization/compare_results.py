@@ -31,6 +31,20 @@ def load(path: Path) -> dict:
     elif isinstance(document.get("benchmarks"), dict):
         for name, row in document["benchmarks"].items():
             individual = row.get("individual_latency_ns", {})
+            if "values" in individual:
+                values, count = individual["values"], individual.get("count")
+                if (
+                    not isinstance(values, list)
+                    or type(count) is not int
+                    or count != len(values)
+                    or any(not positive_finite(value) for value in values)
+                    or (
+                        values
+                        and individual.get("p95") != sorted(values)[math.ceil(0.95 * count) - 1]
+                    )
+                    or (not values and individual.get("p95") is not None)
+                ):
+                    raise ValueError("Raw individual latency samples do not match summary")
             rows[name] = {
                 "cpu_ns": row["cpu_ns"]["median"],
                 "cpu_samples": row["samples"],
@@ -55,6 +69,7 @@ def load(path: Path) -> dict:
         "engine": metadata["engine"],
         "run_id": document.get("run_id", metadata.get("run_id")),
         "qualification_provenance": document.get("qualification_provenance"),
+        "measurement_controls": document.get("measurement_controls"),
         "rows": rows,
     }
 
@@ -90,6 +105,60 @@ def peer_artifacts(value: dict) -> bool:
             for name, checksum in peers.items()
         )
     )
+
+
+def valid_controls(value: object) -> bool:
+    if not isinstance(value, dict) or set(value) != {
+        "schema_version",
+        "affinity_policy",
+        "cpu_affinity",
+        "host_cpu_count",
+        "effective_cpu_count",
+        "gc_policy",
+        "gc_enabled",
+        "gc_thresholds",
+        "controller_sha256",
+    }:
+        return False
+    cpus, count = value["cpu_affinity"], value["host_cpu_count"]
+    if cpus is not None and (
+        not isinstance(cpus, list)
+        or not cpus
+        or any(type(cpu) is not int or cpu < 0 for cpu in cpus)
+        or sorted(set(cpus)) != cpus
+    ):
+        return False
+    return (
+        type(value["schema_version"]) is int
+        and value["schema_version"] == 1
+        and value["affinity_policy"] in ("pinned", "inherited")
+        and (value["affinity_policy"] != "pinned" or cpus is not None)
+        and (count is None or positive_integer(count))
+        and (
+            (cpus is None and value["effective_cpu_count"] is None)
+            or (
+                cpus is not None
+                and type(value["effective_cpu_count"]) is int
+                and value["effective_cpu_count"] == len(cpus)
+            )
+        )
+        and value["gc_policy"] == "unchanged"
+        and value["gc_enabled"] is True
+        and isinstance(value["gc_thresholds"], list)
+        and len(value["gc_thresholds"]) == 3
+        and all(type(item) is int and item >= 0 for item in value["gc_thresholds"])
+        and value["gc_thresholds"][0] > 0
+        and digest(value["controller_sha256"])
+    )
+
+
+def control_failures(runs: list[dict]) -> list[str]:
+    values = [run.get("measurement_controls") for run in runs]
+    if any(not valid_controls(value) for value in values):
+        return ["Missing or invalid measurement controls; historical runs cannot qualify"]
+    if any(value != values[0] for value in values[1:]):
+        return ["Mismatched measurement controls across paired runs"]
+    return []
 
 
 def provenance_failures(runs: list[dict]) -> list[str]:
@@ -158,7 +227,7 @@ def compare(
         item["engine"] != "rust" for item in rust
     ):
         raise ValueError("Input engine selection does not match the requested groups")
-    evidence, failures = [], provenance_failures(all_runs)
+    evidence, failures = [], provenance_failures(all_runs) + control_failures(all_runs)
     for item in all_runs:
         for name, row in item["rows"].items():
             if (
@@ -244,6 +313,7 @@ def compare(
         "schema_version": 1,
         "qualified": not failures,
         "identity": all_runs[0]["identity"],
+        "measurement_controls": all_runs[0].get("measurement_controls"),
         "cpu_workloads_selected": workloads,
         "required_latency_workloads": required_latency or [],
         "inputs": [
@@ -253,6 +323,7 @@ def compare(
                 "engine": item["engine"],
                 "run_id": item.get("run_id"),
                 "qualification_provenance": item.get("qualification_provenance"),
+                "measurement_controls": item.get("measurement_controls"),
             }
             for item in all_runs
         ],

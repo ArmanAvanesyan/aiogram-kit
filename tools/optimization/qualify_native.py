@@ -10,12 +10,16 @@ import argparse
 import hashlib
 import json
 import os
+import runpy
 import subprocess
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+VALID_CONTROLS = runpy.run_path(
+    str(HERE / "compare_results.py"), run_name="qualification_control_validation"
+)["valid_controls"]
 
 
 PACKAGES = frozenset({"aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"})
@@ -72,7 +76,7 @@ def own_output(output: Path) -> None:
         owner.write(str(os.getpid()) + "\n")
 
 
-def checked_comparison(report: Path, returncode: int) -> dict:
+def checked_comparison(report: Path, returncode: int, affinity: list[int] | None = None) -> dict:
     """An erroneous comparator cannot promote a partial or contradictory report."""
     if returncode not in (0, 1):
         raise RuntimeError("Comparator process failed; qualification withheld")
@@ -88,6 +92,18 @@ def checked_comparison(report: Path, returncode: int) -> dict:
         raise RuntimeError("Malformed comparator result; qualification withheld")
     if qualified != (not failures) or returncode != (0 if qualified else 1):
         raise RuntimeError("Comparator status contradicts its result; qualification withheld")
+    controls = result.get("measurement_controls")
+    if qualified and (
+        not VALID_CONTROLS(controls)
+        or (
+            affinity is not None
+            and (
+                controls.get("affinity_policy") != "pinned"
+                or controls.get("cpu_affinity") != affinity
+            )
+        )
+    ):
+        raise RuntimeError("Comparator host controls contradict the run; qualification withheld")
     return result
 
 
@@ -100,6 +116,36 @@ def driver_arguments(package: str) -> list[str]:
     )
 
 
+def resolve_affinity(value: str | None) -> list[int] | None:
+    """Select once, before all paired runs; never adapt selection to timings."""
+    if value is None:
+        return None
+    if not hasattr(os, "sched_getaffinity") or not hasattr(os, "sched_setaffinity"):
+        raise ValueError("CPU affinity control is unsupported on this platform")
+    available = sorted(os.sched_getaffinity(0))
+    if not available:
+        raise ValueError("No available CPU for qualification")
+    if value == "auto":
+        topology = []
+        for cpu in available:
+            root = Path(f"/sys/devices/system/cpu/cpu{cpu}/topology")
+            try:
+                package = int((root / "physical_package_id").read_text())
+                core = int((root / "core_id").read_text())
+            except (OSError, ValueError):
+                topology = []
+                break
+            topology.append((package, core, cpu))
+        return [min(topology)[2] if topology else available[0]]
+    parts = value.split(",")
+    if any(not part.isascii() or not part.isdecimal() for part in parts):
+        raise ValueError("CPU affinity must be auto or comma-separated CPU IDs")
+    cpus = [int(part) for part in parts]
+    if len(set(cpus)) != len(cpus) or not set(cpus) <= set(available):
+        raise ValueError("CPU affinity must contain unique available CPU IDs")
+    return sorted(cpus)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--python", type=Path, required=True)
@@ -107,11 +153,16 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--protocol", type=Path, required=True)
     parser.add_argument(
+        "--cpu-affinity",
+        help="Fixed CPU IDs or auto (select one available logical CPU once using topology)",
+    )
+    parser.add_argument(
         "--package",
         action="append",
         choices=("aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"),
     )
     args = parser.parse_args()
+    affinity = resolve_affinity(args.cpu_affinity)
     protocol_bytes = args.protocol.read_bytes()
     protocol = validate_protocol(json.loads(protocol_bytes))
     requested = set(args.package or protocol["cpu_workloads"])
@@ -120,6 +171,25 @@ def main() -> int:
     output = args.output.resolve()
     own_output(output)
     (output / "protocol.json").write_bytes(protocol_bytes)
+    host_controls = {
+        "schema_version": 1,
+        "affinity_request": args.cpu_affinity,
+        "resolved_cpu_affinity": affinity,
+        "selection_policy": (
+            "lowest available physical-package/core/CPU tuple; first allowed CPU if topology unavailable"
+            if args.cpu_affinity == "auto"
+            else "explicit IDs"
+            if affinity
+            else "inherited"
+        ),
+        "available_cpu_affinity": (
+            sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None
+        ),
+        "host_cpu_count": os.cpu_count(),
+        "physical_isolation_claimed": False,
+        "gc_policy": "unchanged",
+    }
+    (output / "host-controls.json").write_text(json.dumps(host_controls, indent=2) + "\n")
     results = {}
     for package, workloads in protocol["cpu_workloads"].items():
         if args.package and package not in args.package:
@@ -141,6 +211,8 @@ def main() -> int:
                 "--redis-url",
                 args.redis_url,
             ]
+            if affinity is not None:
+                command += ["--cpu-affinity", ",".join(map(str, affinity))]
             if package == "aiogram-idle":
                 command += ["--peer-package", "aiogram-nav"]
             command += [f"--driver-arg={argument}" for argument in driver_arguments(package)]
@@ -160,10 +232,12 @@ def main() -> int:
         report = directory / "native-gate.json"
         command += ["--output", str(report)]
         comparison = subprocess.run(command, cwd=ROOT, check=False)
-        results[package] = checked_comparison(report, comparison.returncode)
+        results[package] = checked_comparison(report, comparison.returncode, affinity)
     summary = {
         "protocol_sha256": hashlib.sha256(protocol_bytes).hexdigest(),
         "publication_performed": False,
+        "requested_cpu_affinity": affinity,
+        "host_control_declaration": "host-controls.json",
         "packages_selected": list(results),
         "performance_gates": {
             package: {"qualified": result["qualified"], "failures": result["failures"]}

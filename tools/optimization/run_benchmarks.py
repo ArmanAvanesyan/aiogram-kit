@@ -65,25 +65,140 @@ def installed(name):
             'executable': sys.executable, 'direct_url': direct}
 """
 PROBE = PROBE_COMMON + "\nprint(json.dumps(installed(sys.argv[1])))\n"
+HOST_OBSERVATION = r"""
+import gc, os
+def host_observation():
+    result = {
+        "cpu_affinity": sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
+        "host_cpu_count": os.cpu_count(),
+        "gc_enabled": gc.isenabled(),
+        "gc_thresholds": list(gc.get_threshold()),
+        "gc_counts": list(gc.get_count()),
+        "gc_collections": gc.get_stats(),
+    }
+    try:
+        result["load_average"] = list(os.getloadavg())
+    except (AttributeError, OSError):
+        result["load_average"] = None
+    try:
+        import resource
+        usage = resource.getrusage(resource.RUSAGE_SELF)
+        result["process_usage"] = {name: getattr(usage, name) for name in (
+            "ru_utime", "ru_stime", "ru_nvcsw", "ru_nivcsw", "ru_minflt", "ru_majflt"
+        )}
+    except (ImportError, OSError):
+        result["process_usage"] = None
+    paths = {
+        "cgroup_cpu_stat": "/sys/fs/cgroup/cpu.stat",
+        "cgroup_cpu_max": "/sys/fs/cgroup/cpu.max",
+        "cgroup_cpuset": "/sys/fs/cgroup/cpuset.cpus.effective",
+        "cpu_pressure": "/proc/pressure/cpu",
+    }
+    result["linux_cpu"] = {}
+    for name, location in paths.items():
+        try:
+            result["linux_cpu"][name] = Path(location).read_text()[:16384]
+        except (OSError, UnicodeError):
+            result["linux_cpu"][name] = None
+    affinity = result["cpu_affinity"] or []
+    frequencies = {}
+    for cpu in affinity[:256]:
+        location = Path(f"/sys/devices/system/cpu/cpu{cpu}/cpufreq/scaling_cur_freq")
+        try:
+            frequencies[str(cpu)] = int(location.read_text())
+        except (OSError, ValueError):
+            frequencies[str(cpu)] = None
+    result["cpu_frequency_khz"] = frequencies
+    return result
+"""
+
+
 BOOTSTRAP = (
     PROBE_COMMON
-    + """
+    + HOST_OBSERVATION
+    + r"""
 import runpy
 expected = json.loads(sys.argv[1])
+controls = json.loads(sys.argv[2])
+requested = controls["cpu_affinity"]
+if requested is not None:
+    os.sched_setaffinity(0, requested)
+    if sorted(os.sched_getaffinity(0)) != requested:
+        raise RuntimeError('Benchmark CPU affinity differs from its declared control')
 for probe in expected:
     if installed(probe['distribution']) != probe:
         raise RuntimeError('Actual benchmark imports differ from the isolated installed probe')
-driver = Path(sys.argv[2])
-sys.argv = [str(driver), *sys.argv[3:]]
+driver = Path(sys.argv[3])
+sys.argv = [str(driver), *sys.argv[4:]]
 # The verified installed packages are already imported before local helper paths.
 # Their __path__ remains the installed package path, including lazy submodules.
 sys.path.insert(0, str(driver.parent))
-runpy.run_path(str(driver), run_name='__main__')
+before = host_observation()
+try:
+    runpy.run_path(str(driver), run_name='__main__')
+finally:
+    after = host_observation()
+    Path(controls["observations"]).write_text(json.dumps({
+        "schema_version": 1,
+        "scope": "Before/after driver only; no instrumentation inside measured operations",
+        "before": before, "after": after,
+    }, indent=2) + "\n")
 """
 )
 
 
-def benchmark_command(executable, probes, driver, engine, result, extra, quick=False):
+def cpu_affinity(value: str | None) -> list[int] | None:
+    """Explicit available CPU IDs only; never silently choose another CPU."""
+    if value is None:
+        return None
+    if not hasattr(os, "sched_getaffinity") or not hasattr(os, "sched_setaffinity"):
+        raise ValueError("CPU affinity control is unsupported on this platform")
+    parts = value.split(",")
+    if not parts or any(not item.isascii() or not item.isdecimal() for item in parts):
+        raise ValueError("CPU affinity must be comma-separated nonnegative CPU IDs")
+    cpus = [int(item) for item in parts]
+    if len(set(cpus)) != len(cpus) or not set(cpus) <= os.sched_getaffinity(0):
+        raise ValueError("CPU affinity must contain unique available CPU IDs")
+    return sorted(cpus)
+
+
+def measurement_controls(observations: dict, affinity: list[int] | None) -> dict:
+    before, after = observations["before"], observations["after"]
+    actual = before["cpu_affinity"]
+    if actual != after["cpu_affinity"] or (affinity is not None and actual != affinity):
+        raise ValueError("Benchmark CPU affinity changed during the driver")
+    if (
+        before["gc_enabled"] is not True
+        or after["gc_enabled"] is not True
+        or before["gc_thresholds"] != after["gc_thresholds"]
+    ):
+        raise ValueError("Benchmark GC controls changed or automatic GC was disabled")
+    count = before["host_cpu_count"]
+    if count != after["host_cpu_count"]:
+        raise ValueError("Host CPU count changed during the driver")
+    return {
+        "schema_version": 1,
+        "affinity_policy": "pinned" if affinity is not None else "inherited",
+        "cpu_affinity": actual,
+        "host_cpu_count": count,
+        "effective_cpu_count": len(actual) if actual is not None else None,
+        "gc_policy": "unchanged",
+        "gc_enabled": before["gc_enabled"],
+        "gc_thresholds": before["gc_thresholds"],
+    }
+
+
+def benchmark_command(
+    executable,
+    probes,
+    driver,
+    engine,
+    result,
+    extra,
+    quick=False,
+    affinity=None,
+    observations=None,
+):
     for argument in extra:
         flag = argument.split("=", 1)[0]
         if flag.startswith("--") and any(
@@ -96,6 +211,12 @@ def benchmark_command(executable, probes, driver, engine, result, extra, quick=F
         "-c",
         BOOTSTRAP,
         json.dumps(probes),
+        json.dumps(
+            {
+                "cpu_affinity": affinity,
+                "observations": str(observations or Path(result).with_suffix(".host.json")),
+            }
+        ),
         str(driver),
         "--engine",
         engine,
@@ -126,6 +247,7 @@ def main() -> int:
     )
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--redis-url")
+    parser.add_argument("--cpu-affinity", help="Fixed comma-separated available CPU IDs")
     parser.add_argument(
         "--peer-package",
         action="append",
@@ -142,6 +264,8 @@ def main() -> int:
     parser.add_argument("--quick", action="store_true")
     parser.add_argument("--timeout", type=int, default=900)
     args = parser.parse_args()
+    affinity = cpu_affinity(args.cpu_affinity)
+    controller_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     # Resolving a venv's python symlink would select the global interpreter and
     # silently discard the installed profile this controller is meant to audit.
     executable = args.python.absolute()
@@ -241,6 +365,8 @@ def main() -> int:
                     result,
                     args.driver_arg,
                     quick=args.quick,
+                    affinity=affinity,
+                    observations=output / (package + ".host.json"),
                 )
                 if args.redis_url and package in {"aiogram-nav", "aiogram-idle"}:
                     command.extend(["--redis-url", args.redis_url])
@@ -256,6 +382,13 @@ def main() -> int:
                         check=True,
                         timeout=args.timeout,
                     )
+                observations = json.loads((output / (package + ".host.json")).read_text())
+                row["host_observations"] = observations
+                controls = measurement_controls(observations, affinity)
+                controls["controller_sha256"] = controller_sha256
+                if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != controller_sha256:
+                    raise ValueError("Benchmark controller changed during measurement")
+                row["measurement_controls"] = controls
                 row["benchmark"] = json.loads(result.read_text())
                 if driver_fingerprints(driver.parent) != row["driver_files_sha256"]:
                     raise ValueError(
@@ -271,6 +404,7 @@ def main() -> int:
                     or reported_version != row["installed"]["version"]
                 ):
                     raise ValueError("Driver reported a different installed package/version")
+                document["measurement_controls"] = controls
                 document["run_id"] = str(uuid.uuid4())
                 document["qualification_provenance"] = {
                     "base_artifact_sha256": row["installed"].get("artifact_sha256"),

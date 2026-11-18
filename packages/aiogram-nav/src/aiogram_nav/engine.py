@@ -185,14 +185,11 @@ def require_engine(engine: EngineName) -> None:
 
 def strict_loads(raw: str, *, engine: EngineName, max_bytes: int) -> object:
     require_engine(engine)
-    if (
-        type(raw) is not str
-        or type(max_bytes) is not int
-        or max_bytes <= 0
-        or len(raw.encode("utf-8")) > max_bytes
-    ):
+    if type(raw) is not str or type(max_bytes) is not int or max_bytes <= 0:
         raise ValueError("Strict JSON input exceeds its supported UTF-8 bound")
     if engine == "rust":
         # Typed codec validation independently enforces logical depth <=64.
         return native_core().strict_loads(raw, max_bytes, 512)
+    if len(raw.encode("utf-8")) > max_bytes:
+        raise ValueError("Strict JSON input exceeds its supported UTF-8 bound")
     return json.loads(raw, object_pairs_hook=_pairs)

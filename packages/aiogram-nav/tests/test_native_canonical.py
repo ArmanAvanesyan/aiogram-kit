@@ -102,3 +102,31 @@ def test_cached_render_and_view_normalization_remain_equal():
     changed = replace(result, locale="hy")
     assert core.fingerprint(changed) == fingerprint(changed) != core.fingerprint(result)
     assert core.fork().cache_stats() == (0, 0)
+
+
+@pytest.mark.parametrize("pair", [("x", 1), ("x",), ("x", 1, 2)])
+def test_generic_mapping_items_use_iterable_unpack_semantics(pair):
+    from collections.abc import Mapping
+
+    native()
+
+    class IterableItems(Mapping):
+        def __getitem__(self, key):
+            return 1
+
+        def __iter__(self):
+            return iter(("x",))
+
+        def __len__(self):
+            return 1
+
+        def items(self):
+            return iter((iter(pair),))
+
+    value = IterableItems()
+    if len(pair) == 2:
+        assert fingerprint(value, engine="rust") == fingerprint(value)
+    else:
+        for engine in ("python", "rust"):
+            with pytest.raises(ValueError):
+                fingerprint(value, engine=engine)

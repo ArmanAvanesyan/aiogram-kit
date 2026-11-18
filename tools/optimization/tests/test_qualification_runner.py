@@ -195,3 +195,92 @@ def test_output_reservation_handles_concurrent_empty_checks(monkeypatch, tmp_pat
     with ThreadPoolExecutor(max_workers=2) as pool:
         results = list(pool.map(lambda _: reserve(), range(2)))
     assert sorted(results) == [False, True]
+
+
+def test_affinity_is_selected_once_and_forwarded_identically(monkeypatch, tmp_path):
+    arguments(monkeypatch, tmp_path)
+    MODULE.sys.argv += ["--cpu-affinity", "auto"]
+    selections = []
+
+    def selected(value):
+        selections.append(value)
+        return [3]
+
+    monkeypatch.setattr(MODULE, "resolve_affinity", selected)
+    calls = []
+
+    def run(command, **kwargs):
+        calls.append(command)
+        if "--output" in command:
+            Path(command[command.index("--output") + 1]).write_text(
+                json.dumps(
+                    {
+                        "qualified": False,
+                        "failures": ["latency regression"],
+                    }
+                )
+            )
+        return SimpleNamespace(returncode=1 if "--output" in command else 0)
+
+    monkeypatch.setattr(MODULE.subprocess, "run", run)
+    assert MODULE.main() == 1
+    assert selections == ["auto"]
+    assert [call[call.index("--cpu-affinity") + 1] for call in calls[:4]] == ["3"] * 4
+    summary = json.loads((tmp_path / "results/qualification-summary.json").read_text())
+    assert summary["requested_cpu_affinity"] == [3]
+
+
+def test_auto_affinity_uses_topology_without_timing_feedback(monkeypatch):
+    monkeypatch.setattr(MODULE.os, "sched_getaffinity", lambda pid: {2, 3, 5}, raising=False)
+    monkeypatch.setattr(MODULE.os, "sched_setaffinity", lambda *args: None, raising=False)
+
+    def read(path, *args, **kwargs):
+        cpu = int(str(path).split("/cpu/cpu")[1].split("/")[0])
+        return "0" if path.name == "physical_package_id" else str({2: 1, 3: 0, 5: 0}[cpu])
+
+    monkeypatch.setattr(MODULE.Path, "read_text", read)
+    assert MODULE.resolve_affinity("auto") == [3]
+    assert MODULE.resolve_affinity("5,2") == [2, 5]
+    with pytest.raises(ValueError, match="available"):
+        MODULE.resolve_affinity("8")
+
+
+def test_qualified_comparator_cannot_claim_different_affinity(tmp_path):
+    report = tmp_path / "gate.json"
+    report.write_text(
+        json.dumps(
+            {
+                "qualified": True,
+                "failures": [],
+                "measurement_controls": {
+                    "schema_version": 1,
+                    "gc_policy": "unchanged",
+                    "affinity_policy": "pinned",
+                    "cpu_affinity": [4],
+                },
+            }
+        )
+    )
+    with pytest.raises(RuntimeError, match="host controls"):
+        MODULE.checked_comparison(report, 0, [3])
+
+
+def test_requested_affinity_fails_if_platform_or_cpu_unavailable(monkeypatch):
+    monkeypatch.delattr(MODULE.os, "sched_getaffinity", raising=False)
+    with pytest.raises(ValueError, match="unsupported"):
+        MODULE.resolve_affinity("auto")
+    monkeypatch.setattr(MODULE.os, "sched_getaffinity", lambda pid: set(), raising=False)
+    monkeypatch.setattr(MODULE.os, "sched_setaffinity", lambda *args: None, raising=False)
+    with pytest.raises(ValueError, match="No available CPU"):
+        MODULE.resolve_affinity("auto")
+
+
+def test_auto_affinity_without_topology_uses_first_allowed_cpu(monkeypatch):
+    monkeypatch.setattr(MODULE.os, "sched_getaffinity", lambda pid: {8, 3, 5}, raising=False)
+    monkeypatch.setattr(MODULE.os, "sched_setaffinity", lambda *args: None, raising=False)
+
+    def unavailable(*args, **kwargs):
+        raise OSError("topology unavailable")
+
+    monkeypatch.setattr(MODULE.Path, "read_text", unavailable)
+    assert MODULE.resolve_affinity("auto") == [3]

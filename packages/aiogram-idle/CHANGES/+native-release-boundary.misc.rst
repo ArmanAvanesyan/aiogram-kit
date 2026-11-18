@@ -1,0 +1,1 @@
+Optimize optional native lease release transport while preserving complete guards, lossless opaque tokens, arbitrary integer generations, and scalar subclass behavior. Correct native typing metadata and iterable mapping-pair fingerprint parity. Native publication remains gated.

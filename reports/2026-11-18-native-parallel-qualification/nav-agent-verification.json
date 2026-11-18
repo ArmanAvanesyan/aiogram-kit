@@ -1,0 +1,54 @@
+{
+  "scope": "functional checks only; no timing or qualification performed",
+  "environment": {
+    "python": "3.12.13",
+    "aiogram": "3.32.0",
+    "redis_client": "7.4.1",
+    "redis_url": "redis://127.0.0.1:56323/0",
+    "interpreter": "/tmp/kit-nav-agent/env/bin/python",
+    "imports": "installed wheel site-packages, no src pythonpath"
+  },
+  "checks": {
+    "ordinary_tests": 502,
+    "native_tests": 195,
+    "native_real_redis_tests": 12,
+    "rust_unit_tests": 5,
+    "strict_pyright_errors": 0,
+    "ruff": "pass",
+    "clippy_all_targets_deny_warnings": "pass",
+    "abi3audit_strict": "pass",
+    "independent_parser_differential_cases": 2159,
+    "sdist_contains_python_json_rs": true,
+    "standalone_sdk_without_redis_native_idle": "pass"
+  },
+  "artifacts": [
+    {
+      "name": "aiogram_nav-0.3.1-py3-none-any.whl",
+      "sha256": "cf0fbbb8230d3b33dccfa78884230ca877adf12af17fea8bfe12ea91aff5854c",
+      "bytes": 108429
+    },
+    {
+      "name": "aiogram_nav-0.3.1.tar.gz",
+      "sha256": "18ca4b41113977efb46acfffebaa3b925cf4b8716248925c1cd218359a8d76c1",
+      "bytes": 465693
+    },
+    {
+      "name": "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "5bb1babdc7baf45b3b12ffc2988ead6d089acb063b2cd1879376ff92c1fad7d2",
+      "bytes": 411457
+    },
+    {
+      "name": "aiogram_nav_native-0.3.1.tar.gz",
+      "sha256": "dd2b4e86b15514f5b71020510be79cfcd6720bfd654dc8bf40496eb3143c5444",
+      "bytes": 30125
+    }
+  ],
+  "logs": [
+    "ordinary.log",
+    "ordinary.xml",
+    "native.log",
+    "native.xml",
+    "native-redis.log",
+    "native-redis.xml"
+  ]
+}

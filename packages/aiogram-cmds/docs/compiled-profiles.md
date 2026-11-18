@@ -49,7 +49,21 @@ snapshot once. Native ABI/version mismatches and missing modules raise
 `NativeEngineError` before effects; the library never silently falls back after
 an explicit request. Rust receives resolved strings, never translators, async
 callbacks, Telegram clients or application business logic. The supported native
-ABI is 1 and candidate companion version is 0.3.0.
+ABI is 1 and candidate companion version is 0.3.1. Snapshot capabilities include
+`resolve_one` and `resolve_batch`; incomplete companions are rejected before
+translation or delivery effects.
+
+A compiled single-target delivery validates its aiogram scope once, then resolves
+the immutable rows and exact canonical fingerprint without constructing a batch
+or parsing the scope's own JSON. The native single-target cache compares borrowed
+request strings before allocating a new key. At most 256 derived fingerprint
+entries are retained per snapshot (a last-request entry plus up to 255 batch
+entries), each admitted request bounded to 4096 encoded input bytes. Oversized
+requests are resolved without retention. Every key includes profile, locale, bot,
+scope and language slot; a new snapshot has a separate cache. These entries never
+represent successful delivery or caller confirmation. Command models remain
+fresh, and a confirmation hit constructs none. Mutable live configuration and
+translator callbacks retain their uncached behavior.
 
 ## Reproducible evidence
 
@@ -70,7 +84,7 @@ Native publication requires serial matched measurements showing at least 20%
 CPU improvement and no greater than 5% realistic p95 regression. No such result is
 claimed merely because correctness tests pass. Seven native platform wheels and
 Python 3.10–3.14 runtime CI are separate from the pure Python package. Native
-release tags use `native-v*`; base tags remain `v*`.
+release tags use `aiogram-cmds-native-v*`; base tags use `aiogram-cmds-v*`.
 
 The original serial ABBA native gate failed (selected compiled batch CPU was
 56.7% slower, with dynamic confirmation-hit p95 regressions). Native publication,

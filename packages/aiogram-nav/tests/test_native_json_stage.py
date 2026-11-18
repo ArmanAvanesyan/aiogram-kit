@@ -204,3 +204,63 @@ def test_cached_sdk_record_is_not_accepted_as_json():
     core.fingerprint(key)
     assert core.cache_stats()[0] > 0
     assert core.freeze(key, MappingProxyType, "nav") is None
+
+
+@pytest.mark.asyncio
+async def test_read_only_memory_projection_does_not_allocate_a_native_codec(monkeypatch):
+    pytest.importorskip("aiogram_nav_native")
+    from aiogram_nav import ConversationKey, MemoryNavigationRepository, NavigationConfig
+    from aiogram_nav.storage import state
+
+    def unexpected():
+        raise AssertionError("Read-only projection allocated a native codec")
+
+    monkeypatch.setattr(state, "canonicalizer", unexpected)
+    repository = MemoryNavigationRepository(config=NavigationConfig(engine="rust"))
+    assert await repository.load(ConversationKey("test", 1, 42, 42)) is None
+    assert repository.json_processor.core.cache_stats() == (0, 0)
+    await repository.close()
+
+
+def test_deferred_codecs_fork_once_and_never_share_derived_data(monkeypatch):
+    from aiogram_nav.storage import state
+
+    class Core:
+        def __init__(self):
+            self.values = []
+
+        def fingerprint(self, value):
+            self.values.append(value)
+            return str(value)
+
+        def freeze(self, value, proxy, style):
+            return None
+
+        def cache_stats(self):
+            return len(self.values), len(self.values)
+
+        def clear_cache(self):
+            self.values.clear()
+
+    created = []
+
+    class Template:
+        def fork(self):
+            core = Core()
+            created.append(core)
+            return core
+
+    monkeypatch.setattr(state, "canonicalizer", Template)
+    first = state.new_canonicalizer()
+    second = first.fork()
+    assert first.cache_stats() == second.cache_stats() == (0, 0)
+    first.clear_cache()
+    assert created == []
+    assert first.fingerprint("a") == "a"
+    assert first.fingerprint("b") == "b"
+    assert len(created) == 1
+    assert second.cache_stats() == (0, 0)
+    assert second.fingerprint("c") == "c"
+    assert len(created) == 2
+    first.clear_cache()
+    assert second.cache_stats() == (1, 1)

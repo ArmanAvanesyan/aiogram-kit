@@ -187,3 +187,28 @@ package can release independently. Native source and platform CI remain, but no
 native PyPI package, release tag or `[native]` extra is published for this result.
 Selecting Rust requires an explicitly built, exact-version local companion;
 ordinary installations continue to use Python.
+
+
+### Development native decoding boundary
+
+The unpublished development companion materializes strict JSON directly into
+Python objects in one native pass. It avoids an intermediate Rust JSON tree and
+a second conversion traversal for every Redis projection. The existing parser
+remains authoritative for validation-only/internal Rust operations. Duplicate
+decoded keys, insertion order, finite floats, raw depth/byte bounds and arbitrary
+integers retain their existing semantics. Python's runtime integer digit limit
+is still applied; `-0` is integer zero and `-0.0` retains its floating sign bit.
+No stored format or fingerprint encoding changes.
+
+Each memory reducer owns a deferred native codec. Read-only Redis projections
+that do no JSON freezing/fingerprinting allocate no native derived-data cache.
+The first pure-data operation creates that backend's own fork; no cache, mutable
+record or authorization result is shared across backends. Capability checks still
+happen eagerly before mutation, and unused/reused codecs keep the same bounded
+cache and task-ownership rules. Generic mapping canonicalization unpacks exactly
+two iterable values from each `items()` pair, matching Python's reference path.
+
+The typed companion API includes `Canonicalizer` and `InvalidJson`, matching the
+existing extension capabilities. These changes still require the unchanged full
+performance qualification and platform gates. All Rust companions remain
+unpublished; a faster decoder alone is not a release qualification.

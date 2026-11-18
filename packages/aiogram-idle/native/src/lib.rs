@@ -27,6 +27,51 @@ fn integer(raw: &str, zero: bool) -> PyResult<BigUint> {
     }
     BigUint::parse_bytes(raw.as_bytes(), 16).ok_or_else(|| invalid("invalid integer"))
 }
+/// Preserve the SDK's ASCII JSON wire representation without round-tripping
+/// ordinary opaque strings through Python. Exceptional strings keep CPython's
+/// encoder, including its lossless handling of surrogate code points.
+fn wire_string(value: &Bound<'_, pyo3::types::PyString>) -> PyResult<String> {
+    if let Ok(text) = value.to_str() {
+        if text
+            .bytes()
+            .all(|c| (0x20..0x7f).contains(&c) && c != b'"' && c != b'\\')
+        {
+            return Ok(format!("\"{text}\""));
+        }
+    }
+    value
+        .py()
+        .import("json.encoder")?
+        .getattr("encode_basestring_ascii")?
+        .call1((value,))?
+        .extract::<String>()
+}
+
+fn generation_value(value: &Bound<'_, pyo3::types::PyInt>) -> PyResult<BigUint> {
+    // Only exact built-in integers may bypass __format__; subclasses keep the
+    // same customization/error behavior as the Python adapter's format(x, "x").
+    if value
+        .get_type()
+        .is(value.py().get_type::<pyo3::types::PyInt>())
+    {
+        if let Ok(number) = value.extract::<u64>() {
+            if number == 0 {
+                return Err(invalid(
+                    "expected canonical nonnegative hexadecimal integer",
+                ));
+            }
+            return Ok(BigUint::from(number));
+        }
+    }
+    let encoded = value
+        .py()
+        .import("builtins")?
+        .getattr("format")?
+        .call1((value, "x"))?
+        .extract::<String>()?;
+    integer(&encoded, false)
+}
+
 fn domain(error: &str) -> PyErr {
     if error == "ownership" {
         OwnershipLost::new_err("deadline claim expired or replaced")
@@ -269,25 +314,9 @@ impl DeadlineCore {
         keys: &Bound<'_, pyo3::types::PyDict>,
         factory: &Bound<'_, PyAny>,
     ) -> PyResult<Vec<Py<PyAny>>> {
-        // Preserve opaque strings, including surrogates, without lossy UTF-8
-        // extraction. Only exceptional tokens need CPython's JSON encoder.
         let encoded = tokens
             .iter()
-            .map(|token| {
-                let value = token.bind(py);
-                if let Ok(text) = value.to_str() {
-                    if text
-                        .bytes()
-                        .all(|c| c.is_ascii_alphanumeric() || c == b'_' || c == b'-')
-                    {
-                        return Ok(format!("\"{text}\""));
-                    }
-                }
-                py.import("json.encoder")?
-                    .getattr("encode_basestring_ascii")?
-                    .call1((value,))?
-                    .extract::<String>()
-            })
+            .map(|token| wire_string(token.bind(py)))
             .collect::<PyResult<Vec<_>>>()?;
         let values = self
             .state
@@ -332,6 +361,23 @@ impl DeadlineCore {
     ) -> PyResult<()> {
         self.state
             .release(key, token, integer(generation, false)?, now, deadline)
+            .map_err(domain)
+    }
+    /// Transport a release guard in SDK scalar form. Ownership is still checked
+    /// against the authoritative native job; this never caches authorization.
+    #[pyo3(signature=(key, token, generation, now, deadline=None))]
+    fn release_values(
+        &mut self,
+        key: &str,
+        token: &Bound<'_, pyo3::types::PyString>,
+        generation: &Bound<'_, pyo3::types::PyInt>,
+        now: f64,
+        deadline: Option<f64>,
+    ) -> PyResult<()> {
+        let token = wire_string(token)?;
+        let generation = generation_value(generation)?;
+        self.state
+            .release(key, &token, generation, now, deadline)
             .map_err(domain)
     }
     fn reconcile(

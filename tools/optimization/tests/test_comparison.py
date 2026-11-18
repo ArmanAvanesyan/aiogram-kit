@@ -29,6 +29,17 @@ def runs(engine, ratio=1):
                 "native_artifact_sha256": "b" * 64 if engine == "rust" else None,
                 "driver_sha256": "c" * 64,
             },
+            "measurement_controls": {
+                "schema_version": 1,
+                "affinity_policy": "pinned",
+                "cpu_affinity": [2],
+                "host_cpu_count": 8,
+                "effective_cpu_count": 1,
+                "gc_policy": "unchanged",
+                "gc_enabled": True,
+                "gc_thresholds": [700, 10, 10],
+                "controller_sha256": "d" * 64,
+            },
             "rows": {
                 "core": {
                     "cpu_ns": 100 * ratio,
@@ -230,3 +241,119 @@ def test_peer_artifacts_must_match_across_all_engines(difference):
     result = module.compare(a, b, ["core"])
     assert not result["qualified"]
     assert "Mismatched qualification provenance: peer_artifacts_sha256" in result["failures"]
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("cpu_affinity", [3]),
+        ("affinity_policy", "inherited"),
+        ("host_cpu_count", 16),
+        ("controller_sha256", "e" * 64),
+    ],
+)
+def test_mismatched_host_controls_withhold_qualification(field, value):
+    a, b = runs("python"), runs("rust", 0.5)
+    b[0]["measurement_controls"][field] = value
+    result = module.compare(a, b, ["core"])
+    assert not result["qualified"]
+    assert any("measurement controls" in failure for failure in result["failures"])
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("cpu_affinity", []),
+        ("cpu_affinity", [True]),
+        ("cpu_affinity", [2, 2]),
+        ("cpu_affinity", [3, 2]),
+        ("cpu_affinity", [-1]),
+        ("schema_version", True),
+        ("effective_cpu_count", True),
+        ("effective_cpu_count", 2),
+        ("gc_policy", "disabled"),
+        ("controller_sha256", "invalid"),
+    ],
+)
+def test_invalid_host_controls_cannot_qualify(field, value):
+    b = runs("rust", 0.5)
+    b[0]["measurement_controls"][field] = value
+    assert not module.compare(runs("python"), b, ["core"])["qualified"]
+
+
+def test_historical_results_without_host_controls_remain_historical():
+    a = runs("python")
+    for run in a:
+        run.pop("measurement_controls")
+    result = module.compare(a, runs("rust", 0.5), ["core"])
+    assert not result["qualified"]
+    assert any("historical" in failure for failure in result["failures"])
+
+
+def test_load_preserves_host_control_provenance(tmp_path):
+    item = runs("python")[0]
+    path = tmp_path / "result.json"
+    metadata = dict(
+        zip(
+            ("package", "version", "python", "os", "cpu", "cpu_count", "seed"),
+            item["identity"],
+            strict=True,
+        ),
+        engine="python",
+    )
+    path.write_text(
+        json.dumps(
+            {
+                "metadata": metadata,
+                "measurement_controls": item["measurement_controls"],
+                "benchmarks": {"core": {"cpu_ns": {"median": 100}, "samples": 15, "loops": 1000}},
+            }
+        )
+    )
+    assert module.load(path)["measurement_controls"] == item["measurement_controls"]
+
+
+@pytest.mark.parametrize(
+    "values,count,p95,valid",
+    [
+        ([10] * 100, 100, 10, True),
+        ([], 0, None, True),
+        ([10] * 100, 99, 10, False),
+        ([10] * 100, 100, 11, False),
+        ([True] * 100, 100, True, False),
+        ([float("nan")] * 100, 100, 10, False),
+    ],
+)
+def test_raw_individual_samples_must_reproduce_recorded_summary(
+    tmp_path, values, count, p95, valid
+):
+    row = runs("python")[0]
+    metadata = dict(
+        zip(
+            ("package", "version", "python", "os", "cpu", "cpu_count", "seed"),
+            row["identity"],
+            strict=True,
+        ),
+        engine="python",
+    )
+    path = tmp_path / "samples.json"
+    path.write_text(
+        json.dumps(
+            {
+                "metadata": metadata,
+                "benchmarks": {
+                    "core": {
+                        "cpu_ns": {"median": 100},
+                        "samples": 15,
+                        "loops": 1000,
+                        "individual_latency_ns": {"values": values, "count": count, "p95": p95},
+                    }
+                },
+            }
+        )
+    )
+    if valid:
+        assert module.load(path)["rows"]["core"]["latency_samples"] == count
+    else:
+        with pytest.raises(ValueError, match="Raw individual"):
+            module.load(path)

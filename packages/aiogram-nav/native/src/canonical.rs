@@ -374,7 +374,30 @@ impl Canonicalizer {
             let dict = PyDict::new(py);
             for pair in value.call_method0("items")?.try_iter()? {
                 let pair = pair?;
-                dict.set_item(pair.get_item(0)?.str()?, pair.get_item(1)?)?;
+                if let Ok(pair) = pair.downcast::<PyTuple>() {
+                    if pair.len() != 2 {
+                        return Err(PyValueError::new_err(
+                            "Mapping item must contain two values",
+                        ));
+                    }
+                    dict.set_item(pair.get_item(0)?.str()?, pair.get_item(1)?)?;
+                } else {
+                    // Python's mapping comprehension unpacks any two-item iterable,
+                    // not only subscriptable pairs. Exhaust before coercing keys.
+                    let mut items = pair.try_iter()?;
+                    let key = items.next().transpose()?.ok_or_else(|| {
+                        PyValueError::new_err("Mapping item must contain two values")
+                    })?;
+                    let child = items.next().transpose()?.ok_or_else(|| {
+                        PyValueError::new_err("Mapping item must contain two values")
+                    })?;
+                    if items.next().transpose()?.is_some() {
+                        return Err(PyValueError::new_err(
+                            "Mapping item must contain two values",
+                        ));
+                    }
+                    dict.set_item(key.str()?, child)?;
+                }
             }
             return self.object(&dict, out, depth);
         }

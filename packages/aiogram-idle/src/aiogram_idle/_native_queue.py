@@ -77,6 +77,9 @@ class NativeDeadlineCore(Protocol):
     def release(
         self, key: str, token: str, generation: str, now: float, deadline: float | None
     ) -> None: ...
+    def release_values(
+        self, key: str, token: str, generation: int, now: float, deadline: float | None
+    ) -> None: ...
     def reconcile(self, candidates: list[tuple[str, str, str, float]], limit: int) -> int: ...
 
 
@@ -293,9 +296,14 @@ class RustDeadlineQueue(DeadlineQueue):
         deadline = retry_at if retry_at is not None else component_deadline(record)
         packed = _key(claim.key)
         try:
-            self.core.release(
-                packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
-            )
+            if type(claim.token) is str and type(claim.generation) is int:
+                self.core.release_values(packed, claim.token, claim.generation, now, deadline)
+            else:
+                # Match the original format/JSON behavior for unusual scalar
+                # subclasses before native mutation, never after a native error.
+                self.core.release(
+                    packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
+                )
         except self.native.OwnershipLost as error:
             raise OwnershipLost("The deadline claim has expired or was replaced") from error
         if deadline is None:

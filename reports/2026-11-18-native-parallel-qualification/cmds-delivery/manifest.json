@@ -1,0 +1,17 @@
+{
+  "scope": "Independent installed-wheel functional audit, not timing qualification",
+  "files": [
+    {
+      "raw_filename": "cmds-delivery-audit.py",
+      "retained": "cmds-delivery-audit.py.gz",
+      "raw_sha256": "b6afc16a475b5798e2ecd1d6c7e863d41979c1f667df01ababa51cb9dd3a4380",
+      "bytes": 3611
+    },
+    {
+      "raw_filename": "cmds-delivery-audit-results.json",
+      "retained": "cmds-delivery-audit-results.json.gz",
+      "raw_sha256": "a2bbcbad6c5d8f9ccd983ca0b684ccda5e0ea01011fd7b0bf040a4a2c4c79fc7",
+      "bytes": 5718
+    }
+  ]
+}

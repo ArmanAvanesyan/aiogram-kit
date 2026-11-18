@@ -19,7 +19,7 @@ from aiogram_cmds import (
     build_profile_batch,
     compile_config,
 )
-from aiogram_cmds.delivery import payload_fingerprint
+from aiogram_cmds.delivery import UNSET, payload_fingerprint
 from aiogram_cmds.engines import native_engine
 
 
@@ -158,32 +158,46 @@ async def test_compiled_manager_confirmations_and_partial_batches(mock_bot, engi
     assert partial.failed_target and partial.error
 
 
-async def test_live_translator_is_never_implicitly_cached(mock_bot):
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_live_translator_is_never_implicitly_cached(mock_bot, engine):
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
     state = {"calls": 0}
 
     def translator(key, **kwargs):
         state["calls"] += 1
         return f"Call {state['calls']}"
 
-    manager = CommandScopeManager(mock_bot, config=sample(), translator=translator)
+    manager = CommandScopeManager(
+        mock_bot, config=sample(), translator=translator, engine=engine
+    )
     await manager.update_profile(42, "member")
     await manager.update_profile(42, "member")
     assert state["calls"] == 4
 
 
-async def test_compiled_cancellation_propagates_and_no_false_confirmation(mock_bot):
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_compiled_cancellation_propagates_and_no_false_confirmation(
+    mock_bot, engine
+):
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
     mock_bot.id = 123
     mock_bot.set_my_commands.side_effect = asyncio.CancelledError
     manager = CommandScopeManager(
         mock_bot,
-        compiled=compile_config(sample(), config_revision="1"),
+        compiled=compile_config(sample(), config_revision="1", engine=engine),
         best_effort=True,
+        engine=engine,
     )
     with pytest.raises(asyncio.CancelledError):
         await manager.apply_profile(42, "member")
     mock_bot.set_my_commands.side_effect = None
     mock_bot.set_my_commands.return_value = None
     assert (await manager.apply_profile(42, "member")).confirmed_fingerprint is None
+    mock_bot.set_my_commands.return_value = True
+    assert (await manager.apply_profile(42, "member")).status == "applied"
+    assert mock_bot.set_my_commands.await_count == 3
 
 
 def test_engine_configuration_is_explicit_and_before_effects(monkeypatch, mock_bot):
@@ -368,3 +382,92 @@ def test_native_single_resolution_matches_batch_and_slot_boundaries():
             )
     with pytest.raises(ValueError):
         snapshot.resolve_one("missing", "en", "123", "{}", "null")
+
+
+@pytest.mark.parametrize("engine", ["python", "rust"])
+@pytest.mark.parametrize("chat_id", [None, -10042])
+@pytest.mark.parametrize("language_code", [None, "", "hy", UNSET])
+@pytest.mark.parametrize("per_language", [True, False])
+async def test_single_delivery_preserves_batch_scope_hash_and_confirmation(
+    mock_bot, engine, chat_id, language_code, per_language, monkeypatch
+):
+    from aiogram.types import BotCommandScopeChat, BotCommandScopeChatMember
+
+    from aiogram_cmds.compiled import ResolvedPayload
+
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
+    mock_bot.id = 123
+    config = sample()
+    config.per_language = per_language
+    snapshot = compile_config(config, config_revision="single", engine=engine)
+    scope = (
+        BotCommandScopeChat(chat_id=42)
+        if chat_id is None
+        else BotCommandScopeChatMember(chat_id=chat_id, user_id=42)
+    )
+    expected = build_profile_batch(
+        snapshot,
+        [ProfileRequest("member", "ru", 123, scope.model_dump_json(), language_code)],
+        engine=engine,
+    )[0]
+    manager = CommandScopeManager(mock_bot, compiled=snapshot, engine=engine)
+    applied = await manager.apply_profile(
+        42, "member", chat_id=chat_id, language="ru", language_code=language_code
+    )
+    assert applied.confirmed_fingerprint == expected.fingerprint
+    actual = mock_bot.set_my_commands.call_args
+    assert actual.kwargs["scope"] == scope
+    assert actual.args[0] == expected.bot_commands()
+    assert actual.kwargs.get("language_code") == expected.language_code
+    if expected.language_code is None:
+        assert "language_code" not in actual.kwargs
+
+    def no_materialization(self):
+        pytest.fail("A confirmation hit must not construct mutable command models")
+
+    monkeypatch.setattr(ResolvedPayload, "bot_commands", no_materialization)
+    unchanged = await manager.apply_profile(
+        42,
+        "member",
+        chat_id=chat_id,
+        language="ru",
+        language_code=language_code,
+        previous_fingerprint=expected.fingerprint,
+    )
+    assert unchanged.status == "unchanged"
+    assert mock_bot.set_my_commands.await_count == 1
+
+
+def test_native_borrowed_single_cache_respects_every_slot_and_failure():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile(
+        [
+            (
+                "member",
+                [("en", [("start", "English")]), ("ru", [("start", "Russian")])],
+            ),
+            ("guest", [("en", [("start", "Guest")])]),
+        ]
+    )
+    base = ("member", "en", "123", '{"chat_id":42,"type":"chat"}', "null")
+    expected = snapshot.resolve_batch([base])[0]
+    for index, replacement in enumerate(
+        ("guest", "ru", "456", '{"chat_id":43,"type":"chat"}', '"ru"')
+    ):
+        other = (*base[:index], replacement, *base[index + 1 :])
+        for request in (base, other, other, base, base):
+            assert (
+                snapshot.resolve_one(*request) == snapshot.resolve_batch([request])[0]
+            )
+    for invalid in (
+        ("unknown", *base[1:]),
+        (*base[:2], "0", *base[3:]),
+        (*base[:4], "42"),
+    ):
+        with pytest.raises(ValueError):
+            snapshot.resolve_one(*invalid)
+        assert snapshot.resolve_one(*base) == expected
+    large = (*base[:3], '{"meta":"' + "x" * 5000 + '"}', base[4])
+    assert snapshot.resolve_one(*large) == snapshot.resolve_batch([large])[0]
+    assert snapshot.resolve_one(*base) == expected

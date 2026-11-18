@@ -125,3 +125,44 @@ and threshold/sample metadata matching the enforced comparator. It reserves the
 output directory with an exclusive owner file so concurrent attempts cannot
 reuse it. Comparator process errors or contradictory reports withhold qualification
 and cannot produce a successful summary.
+
+## Controlled scheduling and observational host evidence
+
+Qualification can explicitly select a scheduling condition with
+`--cpu-affinity auto` (Linux), or fixed comma-separated CPU IDs. Auto resolves
+**once before any paired run**, selecting the lowest available physical-package,
+core and CPU tuple when topology is exposed; otherwise it chooses the first
+allowed CPU. Every Python/Rust subprocess receives the same resolved CPU set.
+Unavailable/duplicate CPU IDs, missing scheduling support and an empty available
+set fail before measurements. The parent controller's affinity is unchanged.
+This pins the measured process; it does **not** reserve a physical core, move
+Redis, isolate an SMT sibling, or exclude host/hypervisor competition.
+
+The workflow input `cpu_affinity` defaults to `none`, preserving inherited
+scheduling. A controlled experiment must explicitly select `auto` or CPU IDs,
+retain the original protocol and declare that host condition before running.
+`host-controls.json` records the request, deterministic selection and available
+CPU set. Historical unpinned failures remain evidence; a newly pinned result
+cannot erase their instability or by itself authorize publication.
+
+Each driver also writes `<package>.host.json`: observations before/after the
+whole driver of GC state/counts, process CPU/context switches/page faults, load,
+CPU affinity/frequency and available Linux CPU pressure/cgroup counters. No
+observer runs inside timed operations, and the controller does not disable GC,
+change its thresholds, alter sample counts, filter observations, or tune clocks.
+Unavailable OS counters are `null`; root cgroup counters may include other work
+and are diagnostic observations, not proof that contention was absent.
+
+The result and manifest distinguish host CPU count from effective affinity CPU
+count. Qualification compares strict `measurement_controls` across every paired
+run, including the controller source hash, actual affinity, enabled automatic GC
+and unchanged GC thresholds. A changed affinity during a driver, missing controls, incompatible control
+sets or changed controller source withhold qualification. Time-varying telemetry
+is retained separately and is not falsely required to be identical. Historical
+results without these controls remain readable but cannot qualify through the
+hardened evaluator. Exact artifact and driver-provenance checks remain intact.
+
+Cmds retains its already-collected individual latency observations alongside the
+summary. When raw observations are present, the evaluator verifies their count,
+positive finite values and exact p95 before evaluating the unchanged thresholds.
+It does not trim tails, resample, or substitute batched latency for operations.

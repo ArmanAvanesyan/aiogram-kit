@@ -116,3 +116,29 @@ def test_big_integer_runtime_digit_limit_is_not_hidden_by_memo():
                 function(value)
     finally:
         sys.set_int_max_str_digits(original)
+
+
+@pytest.mark.parametrize("count", [0, 1, 2, 3])
+def test_mapping_items_pairs_use_bounded_iterable_unpacking(count):
+    native()
+    from collections.abc import Mapping
+
+    class Pairs(Mapping):
+        def __iter__(self):
+            return iter(())
+
+        def __len__(self):
+            return 1
+
+        def __getitem__(self, key):
+            raise KeyError(key)
+
+        def items(self):
+            yield (item for item in ("key", 7, "extra")[:count])
+
+    if count == 2:
+        assert fingerprint(Pairs(), engine="rust") == fingerprint(Pairs())
+    else:
+        for engine in ("python", "rust"):
+            with pytest.raises(ValueError):
+                fingerprint(Pairs(), engine=engine)

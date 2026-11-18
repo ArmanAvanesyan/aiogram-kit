@@ -10,7 +10,14 @@ type Rows = Vec<(String, String)>;
 type Profiles = Vec<(String, Vec<(String, Rows)>)>;
 type Request = (String, String, String, String, String);
 type Requests = Vec<Request>;
-type FingerprintCache = Mutex<HashMap<Request, String>>;
+#[derive(Default)]
+struct Fingerprints {
+    requests: HashMap<Request, String>,
+    // One of at most 256 retained derived hashes. Borrowed comparisons let the
+    // single-target confirmation path avoid five String allocations per hit.
+    last: Option<(Request, String)>,
+}
+type FingerprintCache = Mutex<Fingerprints>;
 type BatchResult = Vec<String>;
 
 pub fn resolve_profile(include: &[String], exclude: &[String], known: &[String]) -> Vec<String> {
@@ -105,17 +112,38 @@ struct NativeSnapshot {
 impl NativeSnapshot {
     fn resolve_one(
         &self,
-        profile: String,
-        locale: String,
-        bot: String,
-        scope: String,
-        language: String,
+        profile: &str,
+        locale: &str,
+        bot: &str,
+        scope: &str,
+        language: &str,
     ) -> PyResult<String> {
         let mut cache = self
             .fingerprints
             .lock()
             .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
-        self.resolve((profile, locale, bot, scope, language), &mut cache)
+        if let Some((request, hash)) = &cache.last {
+            if request.0 == profile
+                && request.1 == locale
+                && request.2 == bot
+                && request.3 == scope
+                && request.4 == language
+            {
+                return Ok(hash.clone());
+            }
+        }
+        let request = (
+            profile.to_owned(),
+            locale.to_owned(),
+            bot.to_owned(),
+            scope.to_owned(),
+            language.to_owned(),
+        );
+        let hash = self.resolve(request.clone(), &mut cache.requests)?;
+        if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
+            cache.last = Some((request, hash.clone()));
+        }
+        Ok(hash)
     }
     fn resolve_batch(&self, requests: Requests) -> PyResult<BatchResult> {
         let mut results = Vec::with_capacity(requests.len());
@@ -124,7 +152,7 @@ impl NativeSnapshot {
             .lock()
             .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
         for request in requests {
-            results.push(self.resolve(request, &mut cache)?);
+            results.push(self.resolve(request, &mut cache.requests)?);
         }
         Ok(results)
     }
@@ -143,7 +171,7 @@ impl NativeSnapshot {
         let hash =
             fingerprint_encoded(bot, scope, language, encoded).map_err(PyValueError::new_err)?;
         if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
-            if cache.len() >= 256 {
+            if cache.len() >= 255 {
                 cache.clear();
             }
             cache.insert(request, hash.clone());
@@ -191,7 +219,7 @@ fn compile_py(rows: Profiles) -> PyResult<NativeSnapshot> {
     }
     Ok(NativeSnapshot {
         profiles,
-        fingerprints: Mutex::new(HashMap::new()),
+        fingerprints: Mutex::new(Fingerprints::default()),
     })
 }
 #[pyfunction]

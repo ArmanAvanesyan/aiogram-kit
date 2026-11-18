@@ -319,6 +319,7 @@ def sample(name, function, loops, counters, samples, warmups):
             individual.append(time.perf_counter_ns() - started)
     return {
         "individual_latency_ns": {
+            "values": individual,
             "count": len(individual),
             "p95": sorted(individual)[math.ceil(0.95 * len(individual)) - 1]
             if individual
@@ -370,6 +371,7 @@ async def sample_async(name, function, loops, counters, samples, warmups):
             individual.append(time.perf_counter_ns() - started)
     return {
         "individual_latency_ns": {
+            "values": individual,
             "count": len(individual),
             "p95": sorted(individual)[math.ceil(0.95 * len(individual)) - 1]
             if individual

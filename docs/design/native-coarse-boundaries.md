@@ -73,3 +73,19 @@ Native capability changes require matched, verified SDK/companion artifacts befo
 any future release. Source version numbers here identify development candidates;
 they authorize neither publication nor installing an older incompatible companion.
 Standalone Python installs require no Rust, Redis or optional peer integration.
+
+
+## Parallel follow-up
+
+The next candidate adds direct Nav Redis decoding, deferred backend-owned codecs,
+raw typed Idle release guards, and a borrowed Cmds single-target cache lookup.
+Matched CPU affinity and before/after observational telemetry control migration
+noise without changing thresholds, samples, workloads or GC policy. See the
+[predeclared experiment](https://github.com/ArmanAvanesyan/aiogram-kit/blob/perf/native-gates-followup/reports/2026-11-18-native-parallel-qualification/README.md).
+
+Durable fingerprint guarantees cover validated JSON and immutable SDK records.
+Internal generic-object helpers require stable, side-effect-free attributes;
+application dataclasses with stateful property accessors must be normalized to
+JSON first and are not valid activity/navigation parameter values. The independent
+audit records this existing generic-accessor limitation separately from validated
+backend parity.

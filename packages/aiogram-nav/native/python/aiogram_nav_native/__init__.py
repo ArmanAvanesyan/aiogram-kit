@@ -3,6 +3,8 @@
 from ._aiogram_nav_native import (
     API_VERSION,
     ENGINE_VERSION,
+    Canonicalizer,
+    InvalidJson,
     Registry,
     fingerprint_canonical,
     strict_loads,
@@ -16,6 +18,8 @@ from ._aiogram_nav_native import (
 __all__ = [
     "API_VERSION",
     "ENGINE_VERSION",
+    "Canonicalizer",
+    "InvalidJson",
     "Registry",
     "fingerprint_canonical",
     "strict_loads",

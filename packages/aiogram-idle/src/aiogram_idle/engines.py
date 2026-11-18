@@ -115,6 +115,7 @@ def native_core() -> NativeCore:
             "claim_objects",
             "renew",
             "release",
+            "release_values",
             "reconcile",
             "keys",
             "heap",

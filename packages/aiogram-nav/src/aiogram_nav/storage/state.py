@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
 from functools import lru_cache
-from typing import Literal, cast
+from typing import Literal, Protocol, cast
 
 from aiogram_coordination import ExternalSession
 
@@ -83,8 +83,55 @@ def canonicalizer() -> CanonicalCore:
     )
 
 
+class _FingerprintCall(Protocol):
+    def __call__(self, value: object) -> str: ...
+
+
+class _FreezeCall(Protocol):
+    def __call__(self, value: object, proxy: object, style: str) -> tuple[object, int] | None: ...
+
+
+class _DeferredCanonicalizer:
+    """Backend-owned codec, allocated only when pure JSON work is requested.
+
+    Redis read projections use the same memory reducer but often do not perform
+    any fingerprint/freezing work. Creating twenty metadata references and a
+    native cache for each such read is unnecessary. No native result or mutable
+    record is shared between backends, and ABI checks remain eager in the owner.
+    """
+
+    def __init__(self) -> None:
+        self._loaded: CanonicalCore | None = None
+        self.fingerprint: _FingerprintCall = self._fingerprint
+        self.freeze: _FreezeCall = self._freeze
+
+    def _core(self) -> CanonicalCore:
+        if self._loaded is None:
+            self._loaded = canonicalizer().fork()
+            # Pay the deferred dispatch once, not on each hot-path operation.
+            self.fingerprint = self._loaded.fingerprint
+            self.freeze = self._loaded.freeze
+        return self._loaded
+
+    def fork(self) -> CanonicalCore:
+        return _DeferredCanonicalizer()
+
+    def _fingerprint(self, value: object) -> str:
+        return self._core().fingerprint(value)
+
+    def _freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None:
+        return self._core().freeze(value, proxy, style)
+
+    def clear_cache(self) -> None:
+        if self._loaded is not None:
+            self._loaded.clear_cache()
+
+    def cache_stats(self) -> tuple[int, int]:
+        return self._loaded.cache_stats() if self._loaded is not None else (0, 0)
+
+
 def new_canonicalizer() -> CanonicalCore:
-    return canonicalizer().fork()
+    return _DeferredCanonicalizer()
 
 
 def fingerprint(value: object, *, engine: EngineName = "python") -> str:

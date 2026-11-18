@@ -374,7 +374,28 @@ impl Canonicalizer {
             let dict = PyDict::new(py);
             for pair in value.call_method0("items")?.try_iter()? {
                 let pair = pair?;
-                dict.set_item(pair.get_item(0)?.str()?, pair.get_item(1)?)?;
+                let (key, item) = if pair.get_type().is(py.get_type::<PyTuple>())
+                    && pair.downcast::<PyTuple>()?.len() == 2
+                {
+                    (pair.get_item(0)?, pair.get_item(1)?)
+                } else {
+                    // Mapping.items() may yield arbitrary two-item iterables.
+                    // Consume at most three items, just like Python unpacking.
+                    let mut parts = pair.try_iter()?;
+                    let key = parts.next().transpose()?.ok_or_else(|| {
+                        PyValueError::new_err("not enough values to unpack (expected 2, got 0)")
+                    })?;
+                    let item = parts.next().transpose()?.ok_or_else(|| {
+                        PyValueError::new_err("not enough values to unpack (expected 2, got 1)")
+                    })?;
+                    if parts.next().transpose()?.is_some() {
+                        return Err(PyValueError::new_err(
+                            "too many values to unpack (expected 2)",
+                        ));
+                    }
+                    (key, item)
+                };
+                dict.set_item(key.str()?, item)?;
             }
             return self.object(&dict, out, depth);
         }
