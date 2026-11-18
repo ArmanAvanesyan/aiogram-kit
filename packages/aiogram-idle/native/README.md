@@ -1,3 +1,10 @@
+# Paired 0.3.2 release candidate
+
+This candidate requires `aiogram-idle==0.3.2` when used with the SDK.
+It is unpublished. See the monorepo paired-release readiness report for exact
+artifacts, compatibility checks and publication gates. Historical findings below
+remain provenance; they do not describe the current candidate qualification.
+
 # aiogram-idle-native
 
 Optional deterministic Rust implementation for aiogram-idle 0.3.1. Maturin builds a

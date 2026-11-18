@@ -69,7 +69,7 @@ def native_core() -> NativeCore:
             NativeCore, importlib.import_module("aiogram_idle_native._aiogram_idle_native")
         )
     except (ImportError, OSError) as error:
-        raise ConfigurationError("engine='rust' requires aiogram-idle-native==0.3.1") from error
+        raise ConfigurationError("engine='rust' requires aiogram-idle-native==0.3.2") from error
     required = (
         "Canonicalizer",
         "InvalidJson",
@@ -86,7 +86,7 @@ def native_core() -> NativeCore:
         type(getattr(module, "API_VERSION", None)) is not int
         or getattr(module, "API_VERSION", None) != 1
         or type(getattr(module, "ENGINE_VERSION", None)) is not str
-        or getattr(module, "ENGINE_VERSION", None) != "0.3.1"
+        or getattr(module, "ENGINE_VERSION", None) != "0.3.2"
         or any(not callable(getattr(module, name, None)) for name in required)
     ):
         raise ConfigurationError("Incompatible aiogram-idle-native engine ABI/version")

@@ -80,8 +80,8 @@ Hot state and retained cold evidence are reported separately.
 
 `verify_native_artifacts.py --help` verifies an exact companion release directory:
 matching project/version/tag, exact wheel-platform allowlist, ABI3, distribution
-metadata, module placement and independent checksums. `publish-native.yml` is the
-reusable workflow template. Functional platform CI, clean wheel/sdist installs,
+metadata, module placement and independent checksums. The legacy `publish-native.yml` remains a template; the active
+package-specific publishers are `.github/workflows/publish-aiogram-*-native.yml`. Functional platform CI, clean wheel/sdist installs,
 independent review and measured qualification remain separate required gates.
 
 ## Render the consolidated figures
