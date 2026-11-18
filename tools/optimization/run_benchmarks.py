@@ -11,11 +11,19 @@ import hashlib
 import json
 import os
 import platform
+import runpy
 import subprocess
 import tempfile
 import time
 import uuid
 from pathlib import Path
+
+REDIS_CONTROL = runpy.run_path(
+    str(Path(__file__).with_name("redis_cpu_control.py")), run_name="benchmark_redis_control"
+)
+VALID_SAMPLING_PLAN = runpy.run_path(
+    str(Path(__file__).with_name("compare_results.py")), run_name="benchmark_control_validation"
+)["valid_sampling_plan"]
 
 PACKAGES = ("aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle")
 PROBE_COMMON = """
@@ -177,7 +185,7 @@ def measurement_controls(observations: dict, affinity: list[int] | None) -> dict
     if count != after["host_cpu_count"]:
         raise ValueError("Host CPU count changed during the driver")
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "affinity_policy": "pinned" if affinity is not None else "inherited",
         "cpu_affinity": actual,
         "host_cpu_count": count,
@@ -248,6 +256,10 @@ def main() -> int:
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--redis-url")
     parser.add_argument("--cpu-affinity", help="Fixed comma-separated available CPU IDs")
+    parser.add_argument("--sampling-plan", help="Declared fixed sampling plan JSON")
+    parser.add_argument(
+        "--redis-service-control", type=Path, help="Frozen owned Docker service declaration"
+    )
     parser.add_argument(
         "--peer-package",
         action="append",
@@ -265,7 +277,31 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=900)
     args = parser.parse_args()
     affinity = cpu_affinity(args.cpu_affinity)
-    controller_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    plan = json.loads(args.sampling_plan) if args.sampling_plan else None
+    if not VALID_SAMPLING_PLAN(plan):
+        raise ValueError("Invalid declared sampling plan")
+    service_control = (
+        json.loads(args.redis_service_control.read_text()) if args.redis_service_control else None
+    )
+    if service_control is not None and (
+        not REDIS_CONTROL["valid_control"](service_control)
+        or service_control["client_cpu_affinity"] != affinity
+    ):
+        raise ValueError("Invalid or incompatible Redis service CPU control")
+    controller_files = (Path(__file__), Path(__file__).with_name("redis_cpu_control.py"))
+
+    def controller_digest():
+        return hashlib.sha256(
+            json.dumps(
+                {
+                    path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                    for path in controller_files
+                },
+                sort_keys=True,
+            ).encode()
+        ).hexdigest()
+
+    controller_sha256 = controller_digest()
     # Resolving a venv's python symlink would select the global interpreter and
     # silently discard the installed profile this controller is meant to audit.
     executable = args.python.absolute()
@@ -372,21 +408,29 @@ def main() -> int:
                     command.extend(["--redis-url", args.redis_url])
                 row["command"] = command
                 result.unlink(missing_ok=True)
-                with (output / (package + ".log")).open("w") as log:
-                    subprocess.run(
-                        command,
-                        cwd=directory,
-                        env=environment,
-                        stdout=log,
-                        stderr=subprocess.STDOUT,
-                        check=True,
-                        timeout=args.timeout,
-                    )
+                if service_control is not None:
+                    row["service_cpu_before"] = REDIS_CONTROL["verify_service"](service_control)
+                try:
+                    with (output / (package + ".log")).open("w") as log:
+                        subprocess.run(
+                            command,
+                            cwd=directory,
+                            env=environment,
+                            stdout=log,
+                            stderr=subprocess.STDOUT,
+                            check=True,
+                            timeout=args.timeout,
+                        )
+                finally:
+                    if service_control is not None:
+                        row["service_cpu_after"] = REDIS_CONTROL["verify_service"](service_control)
                 observations = json.loads((output / (package + ".host.json")).read_text())
                 row["host_observations"] = observations
                 controls = measurement_controls(observations, affinity)
                 controls["controller_sha256"] = controller_sha256
-                if hashlib.sha256(Path(__file__).read_bytes()).hexdigest() != controller_sha256:
+                controls["sampling_plan"] = plan
+                controls["service_cpu_control"] = service_control
+                if controller_digest() != controller_sha256:
                     raise ValueError("Benchmark controller changed during measurement")
                 row["measurement_controls"] = controls
                 row["benchmark"] = json.loads(result.read_text())

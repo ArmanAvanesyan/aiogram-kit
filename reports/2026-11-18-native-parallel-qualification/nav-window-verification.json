@@ -1,0 +1,39 @@
+{
+  "scope": "functional fake-clock/transport sampling checks only; no benchmark timing or qualification",
+  "tests": 15,
+  "checks": [
+    "Ten separate prefixes/repositories/dispatchers: each150totalentries (50fixture+100measured),capacity160",
+    "All1000rawlatencies andtrafficobservationsretained;CPU10samples of100operations",
+    "Counterdenominator1000 distinct fromCPUcalls100",
+    "Noopage50 unchanged;trackage50to150;30freshCPUfixtures each100observations",
+    "Windowfailures not retried/dropped;completed+partialobservationsretained",
+    "CLIwritesfailureevidenceandnonzeroexit;defaultwindow1historical;invalidcountrejectedbeforefixture",
+    "Ruff/format/diffcheckpass"
+  ],
+  "files": [
+    {
+      "path": "benchmarks/run.py",
+      "sha256": "9a8fe50ceef8c4e4e91e8f30f3cdcd55417eaae2b5807c8c39ebfb3502380372"
+    },
+    {
+      "path": "benchmarks/redis_workload.py",
+      "sha256": "a4dcc330a72cf40892e2733fd0a25ed0577da1cb98aafd3261d5e404d667fc91"
+    },
+    {
+      "path": "tests/test_benchmark_windows.py",
+      "sha256": "f908e2e5c135be1ca192f01c2f6eed914ea5208ceb58e7c76b853ccb153acbdb"
+    },
+    {
+      "path": "docs/performance-and-engines.md",
+      "sha256": "58c596b4958d7bf5235eb8ee657ff2466fcca36cda7582c5d378cd46be6c53ac"
+    },
+    {
+      "path": "CHANGES/+benchmark-fresh-windows.misc.rst",
+      "sha256": "1eb32c4110be7240f2c86c59ea4379d879967b347da47496f1d31c7e441f2aff"
+    }
+  ],
+  "logs": [
+    "/tmp/kit-nav-agent/benchmark-windows.log",
+    "/tmp/kit-nav-agent/benchmark-windows.xml"
+  ]
+}

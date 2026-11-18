@@ -294,7 +294,27 @@ def workloads(engine: str, quick: bool):
     return items
 
 
-def sample(name, function, loops, counters, samples, warmups):
+def individual_sample_count(samples, requested=None):
+    """Keep historical full/quick defaults unless a count is declared up front."""
+    if requested is None:
+        return 100 if samples == 5 else 1000
+    if type(requested) is not int or requested <= 0:
+        raise ValueError("individual latency samples must be a positive integer")
+    return requested
+
+
+def positive_integer(value):
+    try:
+        parsed = int(value)
+    except ValueError as error:
+        raise argparse.ArgumentTypeError("must be a positive integer") from error
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("must be a positive integer")
+    return parsed
+
+
+def sample(name, function, loops, counters, samples, warmups, individual_samples=None):
+    latency_count = individual_sample_count(samples, individual_samples)
     if "fake_telegram" in name or "explicit_recompile" in name:
         loops = 1
     for _ in range(warmups):
@@ -313,7 +333,7 @@ def sample(name, function, loops, counters, samples, warmups):
         wall.append((time.perf_counter_ns() - start_wall) / loops)
         cpu.append((time.process_time_ns() - start_cpu) / loops)
     if "fake_telegram" in name or "confirmation_hit" in name:
-        for _ in range(100 if samples == 5 else 1000):
+        for _ in range(latency_count):
             started = time.perf_counter_ns()
             function()
             individual.append(time.perf_counter_ns() - started)
@@ -346,7 +366,10 @@ def sample(name, function, loops, counters, samples, warmups):
     }
 
 
-async def sample_async(name, function, loops, counters, samples, warmups):
+async def sample_async(
+    name, function, loops, counters, samples, warmups, individual_samples=None
+):
+    latency_count = individual_sample_count(samples, individual_samples)
     if "fake_telegram" in name or "explicit_recompile" in name:
         loops = 1
     for _ in range(warmups):
@@ -365,7 +388,7 @@ async def sample_async(name, function, loops, counters, samples, warmups):
         wall.append((time.perf_counter_ns() - start_wall) / loops)
         cpu.append((time.process_time_ns() - start_cpu) / loops)
     if "fake_telegram" in name or "confirmation_hit" in name:
-        for _ in range(100 if samples == 5 else 1000):
+        for _ in range(latency_count):
             started = time.perf_counter_ns()
             await function()
             individual.append(time.perf_counter_ns() - started)
@@ -398,12 +421,25 @@ async def sample_async(name, function, loops, counters, samples, warmups):
     }
 
 
-def main():
+def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", choices=["python", "rust"], default="python")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--quick", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--individual-latency-samples",
+        type=positive_integer,
+        default=None,
+        help="Individual latency observations per delivery workload (default: 1000; quick: 100)",
+    )
+    return parser.parse_args(argv)
+
+
+def main():
+    args = parse_args()
+    latency_samples = individual_sample_count(
+        5 if args.quick else 31, args.individual_latency_samples
+    )
     random.seed(SEED)
     published = version("aiogram-cmds") == "0.2.0"
     commit = "published-0.2.0"
@@ -433,6 +469,8 @@ def main():
         "seed": SEED,
         "protocol": "serial-inprocess-v2-single-loop",
         "exploratory": args.quick,
+        "individual_latency_samples_requested": latency_samples,
+        "cpu_trials": 5 if args.quick else 31,
         "notes": "CPU excludes fake network delay; wall p95 includes it only in separately named fake_telegram workloads. New compiled APIs are not baseline-comparable.",
     }
     results, pyperf_benchmarks = {}, []
@@ -444,6 +482,7 @@ def main():
             counters,
             5 if args.quick else 31,
             1 if args.quick else 5,
+            latency_samples,
         )
         if "fake_telegram" in name or "confirmation_hit" in name:
             result = asyncio.run(sample_async(*arguments))

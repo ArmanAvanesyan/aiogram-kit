@@ -30,7 +30,9 @@ def runs(engine, ratio=1):
                 "driver_sha256": "c" * 64,
             },
             "measurement_controls": {
-                "schema_version": 1,
+                "schema_version": 2,
+                "service_cpu_control": None,
+                "sampling_plan": None,
                 "affinity_policy": "pinned",
                 "cpu_affinity": [2],
                 "host_cpu_count": 8,
@@ -357,3 +359,214 @@ def test_raw_individual_samples_must_reproduce_recorded_summary(
     else:
         with pytest.raises(ValueError, match="Raw individual"):
             module.load(path)
+
+
+def strong_plan():
+    return {
+        "cpu_repeats": 30,
+        "additional_latency_windows": 10,
+        "operations_per_window": 100,
+        "individual_latency_samples": None,
+        "state_age": 50,
+    }
+
+
+def fixed_row(windows, ratio=1, *, noop=False):
+    return {
+        "cpu_ns": 100 * ratio,
+        "cpu_samples": windows,
+        "p95_ns": 100,
+        "latency_samples": 100 * windows,
+        "calls": 100,
+        "window_layout": {
+            "count": windows,
+            "operations_per_window": 100,
+            "boundaries": [
+                {
+                    "start": index * 100,
+                    "stop": (index + 1) * 100,
+                    "operations": 100,
+                    "state_age": 50,
+                    "end_state_age": 50 if noop else 150,
+                }
+                for index in range(windows)
+            ],
+        },
+    }
+
+
+def planned_runs(engine, ratio=1, *, old=False):
+    values = runs(engine, ratio)
+    for run in values:
+        run["identity"] = ("aiogram-nav", *run["identity"][1:])
+        run["measurement_controls"]["sampling_plan"] = strong_plan()
+        run["rows"] = {
+            "memory-track/50": fixed_row(10 if old else 30, ratio),
+            "redis-dispatch-noop/50": fixed_row(1 if old else 10, noop=True),
+        }
+    return values
+
+
+def test_stronger_plan_is_bound_to_actual_windows_not_only_equal_headers():
+    assert module.compare(planned_runs("python"), planned_runs("rust", 0.7), ["memory-track/50"])[
+        "qualified"
+    ]
+    result = module.compare(
+        planned_runs("python", old=True), planned_runs("rust", 0.7, old=True), ["memory-track/50"]
+    )
+    assert not result["qualified"]
+    assert any("declared plan" in failure for failure in result["failures"])
+
+
+def test_missing_or_partial_layout_cannot_satisfy_stronger_plan():
+    a, b = planned_runs("python"), planned_runs("rust", 0.7)
+    for run in a + b:
+        run["rows"]["memory-track/50"]["window_layout"] = None
+    assert not module.compare(a, b, ["memory-track/50"])["qualified"]
+
+
+def test_claiming_cmds_3000_but_collecting_1000_in_every_run_is_rejected():
+    a, b = runs("python"), runs("rust", 0.7)
+    for run in a + b:
+        run["identity"] = ("aiogram-cmds", *run["identity"][1:])
+        run["measurement_controls"]["sampling_plan"] = {
+            "cpu_repeats": 31,
+            "additional_latency_windows": None,
+            "operations_per_window": None,
+            "individual_latency_samples": 3000,
+            "state_age": None,
+        }
+        for row in run["rows"].values():
+            row["cpu_samples"] = 31
+    result = module.compare(a, b, ["core"])
+    assert not result["qualified"]
+    assert any("Individual latencies" in failure for failure in result["failures"])
+
+
+@pytest.mark.parametrize("field", ["cpu_samples", "latency_samples"])
+def test_unequal_observed_samples_cannot_be_compared(field):
+    a, b = runs("python"), runs("rust", 0.7)
+    b[0]["rows"]["pipeline"][field] += 1
+    result = module.compare(a, b, ["core"])
+    assert not result["qualified"]
+    assert any("sample counts" in failure for failure in result["failures"])
+
+
+def raw_window_row():
+    return {
+        "calls": 100,
+        "process_cpu_seconds": [0.1, 0.1],
+        "raw_latency_seconds": [0.001] * 200,
+        "update_sample_count": 200,
+        "update_p95_seconds": 0.001,
+        "latency_windows": 2,
+        "total_calls": 200,
+        "operations_per_cpu_sample": 100,
+        "latency_window_boundaries": [
+            {
+                "start": index * 100,
+                "stop": (index + 1) * 100,
+                "operations": 100,
+                "age": 50,
+                "end_age": 150,
+                "fresh_fixture": True,
+            }
+            for index in range(2)
+        ],
+        "latency_window_fixtures": ["first", "second"],
+    }
+
+
+def test_raw_window_layout_retained_and_duplicate_fixture_ids_rejected():
+    row = raw_window_row()
+    layout = module.window_layout(row)
+    assert layout["count"] == 2
+    assert layout["boundaries"][1]["start"] == 100
+    row["latency_window_fixtures"] = ["duplicate", "duplicate"]
+    with pytest.raises(ValueError, match="distinct"):
+        module.window_layout(row)
+
+
+@pytest.mark.parametrize("change", ["partial", "gap", "wrong_total", "wrong_calls", "wrong_p95"])
+def test_partial_or_incorrectly_normalized_windows_fail_closed(change):
+    row = raw_window_row()
+    if change == "partial":
+        row["latency_window_boundaries"].pop()
+    elif change == "gap":
+        row["latency_window_boundaries"][1]["start"] = 101
+    elif change == "wrong_total":
+        row["total_calls"] = 100
+    elif change == "wrong_calls":
+        row["calls"] = 200
+    else:
+        row["update_p95_seconds"] = 0.002
+    with pytest.raises(ValueError):
+        module.window_layout(row)
+
+
+def test_different_disjoint_service_control_is_still_not_a_matched_pair():
+    a, b = runs("python"), runs("rust", 0.7)
+    b[0]["measurement_controls"]["service_cpu_control"] = {
+        "schema_version": 1,
+        "mode": "docker-disjoint-logical",
+        "client_cpu_affinity": [2],
+        "service": {
+            "container_id": "a" * 64,
+            "image_id": "sha256:" + "b" * 64,
+            "pid": 123,
+            "cpuset_cpus": "3",
+            "cpu_affinity": [3],
+        },
+        "available_topology": [
+            {"cpu": 2, "package": 0, "core": 0},
+            {"cpu": 3, "package": 0, "core": 1},
+        ],
+        "physical_core_disjoint": True,
+        "physical_isolation_claimed": False,
+    }
+    result = module.compare(a, b, ["core"])
+    assert not result["qualified"]
+    assert any("Mismatched measurement controls" in failure for failure in result["failures"])
+
+
+def test_loader_preserves_the_normalized_window_layout(tmp_path):
+    item = runs("python")[0]
+    metadata = dict(
+        zip(
+            ("package", "version", "python", "os", "cpu", "cpu_count", "seed"),
+            item["identity"],
+            strict=True,
+        ),
+        engine="python",
+    )
+    row = raw_window_row()
+    row.update(workload="windowed", median_process_cpu_seconds=0.1)
+    path = tmp_path / "windows.json"
+    path.write_text(json.dumps({"metadata": metadata, "results": [row]}))
+    layout = module.load(path)["rows"]["windowed"]["window_layout"]
+    assert layout["count"] == 2
+    assert layout["boundaries"][1] == {
+        "start": 100,
+        "stop": 200,
+        "operations": 100,
+        "state_age": 50,
+        "end_state_age": 150,
+    }
+
+
+@pytest.mark.parametrize(
+    "values,count,median",
+    [
+        ([1.0, 2.0, 3.0], 3, 9.0),
+        ([1.0, 2.0, 3.0], 2, 2.0),
+        ([1.0, float("nan"), 3.0], 3, 2.0),
+        ([True, 2.0, 3.0], 3, 2.0),
+    ],
+)
+def test_raw_cpu_samples_cannot_have_a_fabricated_count_or_median(values, count, median):
+    with pytest.raises(ValueError, match="Raw CPU"):
+        module.validate_cpu_vector(values, count, median)
+
+
+def test_raw_cpu_samples_use_the_exact_existing_median_statistic():
+    module.validate_cpu_vector([0.1, 0.2, 0.3, 0.4], 4, (0.2 + 0.3) / 2)

@@ -66,6 +66,8 @@ jobs:
         env:
           NATIVE_PACKAGE: ${{ inputs.native_package }}
           NATIVE_CPU_AFFINITY: ${{ inputs.cpu_affinity }}
+          ROBUST_SAMPLING: ${{ inputs.robust_sampling }}
+          REDIS_SERVICE_CONTAINER_ID: ${{ job.services.redis.id }}
         run: |
           selection=()
           if [ "$NATIVE_PACKAGE" != all ]; then
@@ -75,12 +77,21 @@ jobs:
           if [ "$NATIVE_CPU_AFFINITY" != none ] && [ -n "$NATIVE_CPU_AFFINITY" ]; then
             affinity=(--cpu-affinity "$NATIVE_CPU_AFFINITY")
           fi
+          sampling=()
+          if [ "$ROBUST_SAMPLING" = true ]; then
+            if [ "$NATIVE_CPU_AFFINITY" = none ] || [ -z "$NATIVE_CPU_AFFINITY" ]; then
+              echo "robust_sampling requires an explicit CPU affinity condition"
+              exit 2
+            fi
+            sampling=(--cpu-samples 30 --latency-windows 10 --individual-latency-samples 3000
+                      --redis-container-id "$REDIS_SERVICE_CONTAINER_ID")
+          fi
           result=0
           python3 tools/optimization/qualify_native.py \
             --python "$RUNNER_TEMP/native-env/bin/python" \
             --redis-url redis://127.0.0.1:6379/0 \
             --protocol reports/2026-11-17-native-qualification/protocol.json \
-            --output "$RUNNER_TEMP/native-qualification" "${selection[@]}" "${affinity[@]}" || result=$?
+            --output "$RUNNER_TEMP/native-qualification" "${selection[@]}" "${affinity[@]}" "${sampling[@]}" || result=$?
           cp "$RUNNER_TEMP/native-wheels/SHA256SUMS" "$RUNNER_TEMP/native-qualification/"
           exit "$result"
       - name: Retain successes, failures and exact artifacts
@@ -112,3 +123,7 @@ jobs:
         description: CPU IDs or auto (fixed once); none retains inherited scheduling
         type: string
         default: none
+      robust_sampling:
+        description: Stronger declared samples and disjoint owned Redis CPU (requires cpu_affinity)
+        type: boolean
+        default: false

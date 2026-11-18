@@ -6,6 +6,7 @@ import inspect
 import math
 import statistics
 import time
+from collections import Counter
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -55,7 +56,7 @@ def incoming(index, text):
     )
 
 
-async def workload(url, engine, age, samples, configuration):
+async def _window(url, engine, age, samples, configuration):
     redis, metrics = client(url)
     prefix = f"benchmark-nav:{uuid4().hex}"
     bot = Bot("123456:ABC", session=NoTelegram())
@@ -109,9 +110,9 @@ async def workload(url, engine, age, samples, configuration):
             completed += 1
         for kind in ("noop", "track"):
             phase = kind
+            latency, roundtrips, sent, received = [], [], [], []
             before = await redis.info("commandstats")
             metrics.reset()
-            latency, roundtrips, sent, received = [], [], [], []
             cpu = time.process_time_ns()
             for index in range(samples):
                 previous = metrics.snapshot()
@@ -154,6 +155,9 @@ async def workload(url, engine, age, samples, configuration):
                     storage_format=repo.storage_format,
                     status="measured",
                     samples=samples,
+                    fixture_id=prefix,
+                    fixture_start_age=age,
+                    fixture_end_age=age + (samples if kind == "track" else 0),
                     fixture_boundary="whole protected handler; fixed payload and zero history growth; owned disposable prefix",
                     median_cpu_ns=cpu,
                     median_ns=statistics.median(latency),
@@ -181,6 +185,19 @@ async def workload(url, engine, age, samples, configuration):
                 error_type=type(error).__name__,
                 phase=phase,
                 completed_fixture_age=completed,
+                fixture_id=prefix,
+                completed_scenarios=result,
+                partial_scenario=(
+                    dict(
+                        scenario=f"redis-dispatch-{phase}",
+                        raw_latency_seconds=[value / 1_000_000_000 for value in latency],
+                        raw_client_round_trips=roundtrips,
+                        raw_sent_bytes=sent,
+                        raw_received_bytes=received,
+                    )
+                    if phase in ("noop", "track")
+                    else None
+                ),
             )
         ]
     finally:
@@ -192,3 +209,136 @@ async def workload(url, engine, age, samples, configuration):
             await redis.delete(*owned)
         await redis.aclose()
         await bot.session.close()
+
+
+def _pool(rows, samples):
+    """Pool complete fresh windows; counters cover total_calls, CPU batches calls."""
+    first = rows[0]
+    expected = ("workload", "scenario", "engine", "state_age", "storage_format", "fixture_boundary")
+    for row in rows:
+        if any(row[field] != first[field] for field in expected):
+            raise ValueError("Redis latency windows have mismatched workload identities")
+        if (
+            row["status"] != "measured"
+            or row["calls"] != samples
+            or row["samples"] != samples
+            or len(row["process_cpu_seconds"]) != 1
+            or row["update_sample_count"] != samples
+            or row["fixture_start_age"] != row["state_age"]
+            or row["fixture_end_age"]
+            != row["state_age"] + (samples if row["scenario"] == "redis-dispatch-track" else 0)
+            or any(
+                len(row[field]) != samples
+                for field in (
+                    "raw_latency_seconds",
+                    "raw_client_round_trips",
+                    "raw_sent_bytes",
+                    "raw_received_bytes",
+                )
+            )
+        ):
+            raise ValueError("Redis latency window is incomplete")
+    fixtures = [row["fixture_id"] for row in rows]
+    if len(set(fixtures)) != len(fixtures):
+        raise ValueError("Redis latency windows must use distinct fresh fixtures")
+    count = len(rows)
+    result = dict(first)
+    result.update(
+        latency_windows=count,
+        operations_per_cpu_sample=samples,
+        calls=samples,
+        total_calls=samples * count,
+        counter_operation_count=samples * count,
+        samples=samples,
+        update_sample_count=samples * count,
+        latency_window_fixtures=fixtures,
+        latency_window_boundaries=[
+            dict(
+                window=index,
+                start=index * samples,
+                stop=(index + 1) * samples,
+                operation_count=samples,
+                samples=samples,
+                state_age=row["fixture_start_age"],
+                end_state_age=row["fixture_end_age"],
+            )
+            for index, row in enumerate(rows)
+        ],
+    )
+    if count == 1:
+        return result
+    result.pop("fixture_id")
+    result.pop("fixture_start_age")
+    result.pop("fixture_end_age")
+    for field in (
+        "raw_latency_seconds",
+        "raw_client_round_trips",
+        "raw_sent_bytes",
+        "raw_received_bytes",
+    ):
+        result[field] = [value for row in rows for value in row[field]]
+    cpu = [row["process_cpu_seconds"][0] for row in rows]
+    result.update(
+        process_cpu_seconds=cpu,
+        median_process_cpu_seconds=statistics.median(cpu),
+        cpu_count=count,
+        median_cpu_ns=statistics.median(cpu) * 1_000_000_000 / samples,
+        update_p95_seconds=p95(result["raw_latency_seconds"]),
+        median_ns=statistics.median(result["raw_latency_seconds"]) * 1_000_000_000,
+        p95_ns=p95(result["raw_latency_seconds"]) * 1_000_000_000,
+    )
+    for source, summary in (
+        ("raw_client_round_trips", "client_round_trips"),
+        ("raw_sent_bytes", "sent_bytes"),
+        ("raw_received_bytes", "received_bytes"),
+    ):
+        result["median_" + summary] = statistics.median(result[source])
+        result["p95_" + summary] = p95(result[source])
+    result["max_client_round_trips"] = max(result["raw_client_round_trips"])
+    for field in ("client_commands", "lua_internal_commands"):
+        total = Counter()
+        for row in rows:
+            total.update(row[field])
+        result[field] = dict(total)
+    startup = [row["cold_namespace_bootstrap"] for row in rows]
+    commands = Counter()
+    for row in startup:
+        commands.update(row["commands"])
+    result["cold_namespace_bootstrap"] = {
+        field: sum(row[field] for row in startup)
+        for field in ("sent", "received", "responses", "flushes")
+    }
+    result["cold_namespace_bootstrap"]["commands"] = dict(commands)
+    result["cold_namespace_bootstrap_windows"] = startup
+    return result
+
+
+async def workload(url, engine, age, samples, configuration, *, windows=1):
+    """Run every requested fixed-age fixture once; never extend its sample count."""
+    if type(windows) is not int or windows < 1 or windows > 100:
+        raise ValueError("Redis latency windows must be within 1..100")
+    complete = []
+    groups = {}
+    expected = {f"redis-dispatch-{kind}/{age}" for kind in ("noop", "track")}
+    for index in range(windows):
+        measured = await _window(url, engine, age, samples, configuration)
+        if any(row.get("status") != "measured" for row in measured):
+            return [
+                dict(
+                    scenario="redis-dispatch",
+                    engine=engine,
+                    state_age=age,
+                    status="unavailable",
+                    latency_windows=windows,
+                    completed_latency_windows=index,
+                    failed_latency_window=index,
+                    failed_window_result=measured,
+                    completed_window_results=complete,
+                )
+            ]
+        if {row["workload"] for row in measured} != expected or len(measured) != 2:
+            raise ValueError("Redis latency window omitted or duplicated a workload")
+        complete.append(measured)
+        for row in measured:
+            groups.setdefault(row["workload"], []).append(row)
+    return [_pool(groups[name], samples) for name in sorted(expected)]

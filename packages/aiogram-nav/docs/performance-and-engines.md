@@ -217,3 +217,30 @@ The typed companion API includes `Canonicalizer` and `InvalidJson`, matching the
 existing extension capabilities. These changes still require the unchanged full
 performance qualification and platform gates. All Rust companions remain
 unpublished; a faster decoder alone is not a release qualification.
+
+
+### Fresh-window benchmark observations
+
+`benchmarks/run.py --latency-windows N` repeats Redis observations using `N`
+fresh, independently owned namespace/session fixtures; its default is **1**,
+preserving historical sampling. `--samples` remains the update count **per
+fixture**, and receipt capacity is still `age + samples + 10`. For example,
+`--ages 50 --samples 100 --latency-windows 10` records ten separate track
+windows progressing from age 50 to 150, never one conversation progressing
+to 1050. No-op observations stay at age 50 before the track phase. All captured
+latencies are pooled in original window order, without trimming or retries.
+A failed window marks the run unavailable and causes a nonzero CLI exit;
+completed windows/scenarios and captured partial observations remain diagnostic
+evidence rather than qualifying a successful subset.
+
+Rows expose `latency_windows`, exact `[start, stop)`
+`latency_window_boundaries`, unique `latency_window_fixtures`, and
+`total_calls`. `calls` and `operations_per_cpu_sample` remain the operation
+count for each entry in `process_cpu_seconds`. Aggregate Redis command/byte
+counters cover `counter_operation_count == total_calls`, not just `calls`.
+Per-update traffic arrays contain every observation. Cold bootstrap counters
+are separately itemized per fixture and summed outside measured update counts.
+Memory CPU repeats already construct fresh repositories: `--cpu-samples 30`
+with `--samples 100` still performs 30 separate 100-operation fixtures, with
+matching boundaries, not one larger state-growth trace. Gate thresholds and
+workload names are unchanged; the requested sampling plan is explicit metadata.

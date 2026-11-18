@@ -64,3 +64,10 @@ Each memory or scratch Redis reducer caches one view; dropping the reducer relea
 its derived codec immediately, without waiting for cyclic garbage collection.
 Revoked codec records also clear their engine and owner-task references, so copied
 contexts cannot retain caches or completed tasks after their scope ends.
+
+Owned job release rearms an existing native table entry rather than removing and
+re-inserting it. It still creates a fresh generation and insertion order, resets
+the claim token and lease, and uses the same heap insertion/compaction path.
+Reference traces compare every job, heap entry and counter against the former
+remove-and-schedule algorithm, including lease expiry, replacement and failures.
+The standard keyed hash table and every ownership check remain unchanged.

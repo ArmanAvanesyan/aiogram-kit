@@ -112,3 +112,19 @@ host scheduling. The package report
 `reports/2026-11-18-confirmation-tail-analysis.json` retains sample-window
 summaries and exact input hashes. This is diagnostic evidence, not a reason to
 waive a failed gate or rerun unchanged code until it passes.
+
+
+### Declared individual-latency sample counts
+
+`benchmarks/run.py --individual-latency-samples N` declares the number of
+individual observations for each delivery/confirmation workload before the run.
+The historical defaults remain 1,000 for full runs and 100 with `--quick`; an
+explicit positive integer overrides either. The driver retains every raw
+observation and records the requested and actual counts. No outliers are removed.
+
+The next qualification experiment declares 3,000 observations. This is a new
+sampling declaration, not an unchanged rerun of the failed 1,000-observation
+reports. Workloads, command counts, targets, operation semantics, five warmups
+and 31 CPU trials remain unchanged. CPU-only workloads do not gain extra loops.
+The CPU/p95/repeat-spread thresholds remain unchanged, and this sample-size
+change makes no claim that a previously failed gate now passes.

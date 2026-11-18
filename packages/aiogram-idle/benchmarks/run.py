@@ -13,7 +13,7 @@ from pathlib import Path
 from aiogram_idle import MemoryIdleBackend
 
 if __package__:
-    from .support import driver_manifest, provenance
+    from .support import driver_manifest, fresh_latency_windows, provenance
     from .workloads import (
         admission_trajectory,
         claim_workload,
@@ -24,7 +24,7 @@ if __package__:
         redis_workload,
     )
 else:
-    from support import driver_manifest, provenance
+    from support import driver_manifest, fresh_latency_windows, provenance
     from workloads import (
         admission_trajectory,
         claim_workload,
@@ -45,6 +45,12 @@ async def main():
     parser.add_argument("--ages", nargs="+", type=int)
     parser.add_argument("--samples", type=int)
     parser.add_argument("--cpu-samples", type=int)
+    parser.add_argument(
+        "--latency-windows",
+        type=int,
+        default=1,
+        help="Independent fresh fixtures for Redis and combined latency, preserving each fixture age and sample count",
+    )
     parser.add_argument("--skip-redis", action="store_true")
     parser.add_argument(
         "--combined",
@@ -86,8 +92,8 @@ async def main():
     ages = args.ages or ([1, 10, 50] if args.quick else [1, 10, 50, 500, 5000])
     samples = args.samples or (8 if args.quick else 100)
     repeats = args.cpu_samples or (1 if args.quick else 10)
-    if any(value < 1 for value in [*ages, samples, repeats]):
-        parser.error("ages/samples/cpu-samples must be positive")
+    if any(value < 1 for value in [*ages, samples, repeats, args.latency_windows]):
+        parser.error("ages/samples/cpu-samples/latency-windows must be positive")
     rows = []
     diagnostics = []
     for age in ages:
@@ -99,13 +105,25 @@ async def main():
             from .dispatcher import workload as dispatcher_workload
         else:
             from dispatcher import workload as dispatcher_workload
-        rows.append(await dispatcher_workload(args.redis_url, args.engine, samples))
+        rows.append(
+            await fresh_latency_windows(
+                lambda: dispatcher_workload(args.redis_url, args.engine, samples),
+                args.latency_windows,
+            )
+        )
     if not args.skip_admission:
         diagnostics.extend(await admission_trajectory(args.engine, ages))
         diagnostics.extend(await admission_trajectory(args.engine, ages, short_replay=True))
     for age in ages:
         if args.redis_url and not args.skip_redis:
-            rows.append(await redis_workload(args.redis_url, age, args.engine, samples))
+            rows.append(
+                await fresh_latency_windows(
+                    lambda current_age=age: redis_workload(
+                        args.redis_url, current_age, args.engine, samples
+                    ),
+                    args.latency_windows,
+                )
+            )
         if args.combined and not args.skip_combined:
             # Published combined snapshots grow quadratically; default-capacity
             # failure is reported separately, not hidden by an enormous legacy cap.
@@ -121,9 +139,23 @@ async def main():
                     }
                 )
                 continue
-            rows.append(await combined_workload(None, age, args.engine, samples))
+            rows.append(
+                await fresh_latency_windows(
+                    lambda current_age=age: combined_workload(
+                        None, current_age, args.engine, samples
+                    ),
+                    args.latency_windows,
+                )
+            )
             if args.redis_url and not args.skip_redis:
-                rows.append(await combined_workload(args.redis_url, age, args.engine, samples))
+                rows.append(
+                    await fresh_latency_windows(
+                        lambda current_age=age: combined_workload(
+                            args.redis_url, current_age, args.engine, samples
+                        ),
+                        args.latency_windows,
+                    )
+                )
     report = {
         **provenance(),
         "engine": args.engine,
@@ -137,6 +169,13 @@ async def main():
         "cpu_count": os.cpu_count(),
         "samples": samples,
         "cpu_samples": repeats,
+        "latency_windows": args.latency_windows,
+        "sampling_plan": {
+            "cpu_repeats": repeats,
+            "additional_latency_windows": args.latency_windows,
+            "operations_per_window": samples,
+            "fixture_policy": "Fresh fixed-age fixture per window; every raw observation retained; no trimming or retry",
+        },
         "results": rows,
         "diagnostics": diagnostics,
         "dependencies": {name: version(name) for name in ("aiogram", "aiogram-coordination")},

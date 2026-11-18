@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "declared before robust candidate qualification",
+  "original_protocol_path": "reports/2026-11-17-native-qualification/protocol.json",
+  "original_protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "unchanged": {
+    "cpu_ratio_limit": 0.8,
+    "p95_ratio_limit": 1.05,
+    "repeat_spread_limit": 0.1,
+    "minimum_cpu_repeats": 10,
+    "minimum_individual_latencies": 100,
+    "ABBA_order": [
+      "python-a",
+      "rust-a",
+      "rust-b",
+      "python-b"
+    ],
+    "workload_selection": "All original selected CPU and required/additional latency rows, unchanged",
+    "gc_policy": "No disable/reset/threshold adjustment, no outlier filtering"
+  },
+  "explicit_sample_revision": {
+    "reason": "Observed host queue pressure and baseline-only/sparse-tail repeat instability; stronger fixed observations, not repeated attempts selecting a winning run.",
+    "nav_idle_cpu_repeats": 30,
+    "updates_per_fresh_conversation_window": 100,
+    "redis_combined_independent_windows": 10,
+    "redis_combined_individual_latencies": 1000,
+    "cmds_individual_latencies": 3000,
+    "cmds_cpu_trials": 31,
+    "historical_defaults_preserved": true,
+    "failure_policy": "Any failed/missing/duplicate/undersampled window invalidates profile; retain all raw observations and per-window boundaries/counters.",
+    "state_age_policy": "Preserve each original helper window: tracked/activation state age50\u2192150 (indices50..149), no-op state unchanged, claims16live conversations; each new window constructs fresh fixtures.",
+    "cpu_denominator": "100operations per fresh CPU sample, separate from1000pooled latency calls across10windows"
+  },
+  "host_revision": {
+    "client_cpu": "Select once via prior auto topology policy",
+    "redis_cpu": "Separate logical CPU, prefer a different exposed core; record topology/fallback, container/image/PID and actual masks. Verify before and after each driver.",
+    "limits": "Neither affinity nor reported topology reserves physical hardware; external host/hypervisor interference remains possible."
+  },
+  "publication": "No native release, tag or publication in this task."
+}

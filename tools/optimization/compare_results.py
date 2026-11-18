@@ -11,8 +11,104 @@ import hashlib
 import json
 import math
 import re
+import runpy
 import statistics
 from pathlib import Path
+
+VALID_SERVICE_CONTROL = runpy.run_path(
+    str(Path(__file__).with_name("redis_cpu_control.py")), run_name="comparison_redis_control"
+)["valid_control"]
+
+
+def window_layout(row: dict) -> dict | None:
+    values = row.get("raw_latency_seconds")
+    if values is not None:
+        count = row.get("update_sample_count")
+        if (
+            not isinstance(values, list)
+            or type(count) is not int
+            or count != len(values)
+            or any(not positive_finite(value) for value in values)
+            or (
+                values
+                and row.get("update_p95_seconds") != sorted(values)[math.ceil(0.95 * count) - 1]
+            )
+        ):
+            raise ValueError("Raw operation latencies do not match the summary")
+    if "latency_windows" not in row and "latency_window_boundaries" not in row:
+        return None
+    windows, boundaries = row.get("latency_windows"), row.get("latency_window_boundaries")
+    calls = row.get("calls")
+    if (
+        not positive_integer(windows)
+        or not positive_integer(calls)
+        or not isinstance(boundaries, list)
+        or len(boundaries) != windows
+        or not isinstance(values, list)
+        or len(values) != calls * windows
+        or row.get("total_calls") != len(values)
+        or row.get("operations_per_cpu_sample") != calls
+        or len(row["process_cpu_seconds"]) != windows
+    ):
+        raise ValueError("Incomplete or incorrectly normalized latency windows")
+    normalized = []
+    for index, boundary in enumerate(boundaries):
+        if (
+            not isinstance(boundary, dict)
+            or type(boundary.get("start")) is not int
+            or boundary["start"] != index * calls
+            or type(boundary.get("stop")) is not int
+            or boundary["stop"] != (index + 1) * calls
+            or not any(key in boundary for key in ("operations", "operation_count"))
+            or any(
+                type(boundary[key]) is not int or boundary[key] != calls
+                for key in ("operations", "operation_count", "samples")
+                if key in boundary
+            )
+            or ("fresh_fixture" in boundary and boundary["fresh_fixture"] is not True)
+        ):
+            raise ValueError("Invalid or partial fresh latency window")
+        ages = [boundary[key] for key in ("age", "start_age", "state_age") if key in boundary]
+        ends = [boundary[key] for key in ("end_age", "end_state_age") if key in boundary]
+        if (
+            not ages
+            or not ends
+            or any(type(age) is not int or age < 0 for age in ages + ends)
+            or len(set(ages)) != 1
+            or len(set(ends)) != 1
+        ):
+            raise ValueError("Missing or contradictory fresh fixture ages")
+        normalized.append(
+            {
+                "start": boundary["start"],
+                "stop": boundary["stop"],
+                "operations": calls,
+                "state_age": ages[0],
+                "end_state_age": ends[0],
+            }
+        )
+    fixtures = row.get("latency_window_fixtures")
+    if fixtures is not None and (
+        not isinstance(fixtures, list)
+        or len(fixtures) != windows
+        or any(not isinstance(item, str) or not item for item in fixtures)
+        or len(set(fixtures)) != windows
+    ):
+        raise ValueError("Latency fixtures must be distinct for every fresh window")
+    return {"count": windows, "operations_per_window": calls, "boundaries": normalized}
+
+
+def validate_cpu_vector(values: object, count: object, median: object) -> None:
+    if (
+        not isinstance(values, list)
+        or not values
+        or type(count) is not int
+        or len(values) != count
+        or any(not positive_finite(value) for value in values)
+        or not positive_finite(median)
+        or statistics.median(values) != median
+    ):
+        raise ValueError("Raw CPU samples do not match their count or exact median")
 
 
 def load(path: Path) -> dict:
@@ -21,15 +117,25 @@ def load(path: Path) -> dict:
     rows = {}
     if isinstance(document.get("results"), list):
         for row in document["results"]:
+            validate_cpu_vector(
+                row["process_cpu_seconds"],
+                len(row["process_cpu_seconds"]),
+                row["median_process_cpu_seconds"],
+            )
             rows[row["workload"]] = {
                 "cpu_ns": row["median_process_cpu_seconds"] * 1e9,
                 "cpu_samples": len(row["process_cpu_seconds"]),
                 "p95_ns": row.get("update_p95_seconds", 0) * 1e9,
                 "latency_samples": row.get("update_sample_count", 0),
                 "calls": row["calls"],
+                "window_layout": window_layout(row),
             }
     elif isinstance(document.get("benchmarks"), dict):
         for name, row in document["benchmarks"].items():
+            if "values" in row["cpu_ns"]:
+                validate_cpu_vector(
+                    row["cpu_ns"]["values"], row["samples"], row["cpu_ns"]["median"]
+                )
             individual = row.get("individual_latency_ns", {})
             if "values" in individual:
                 values, count = individual["values"], individual.get("count")
@@ -51,6 +157,7 @@ def load(path: Path) -> dict:
                 "p95_ns": individual.get("p95") or 0,
                 "latency_samples": individual.get("count", 0),
                 "calls": row["loops"],
+                "window_layout": None,
             }
     else:
         raise TypeError(f"Benchmark result collection is missing: {path}")
@@ -107,6 +214,37 @@ def peer_artifacts(value: dict) -> bool:
     )
 
 
+def valid_sampling_plan(value: object) -> bool:
+    if value is None:
+        return True  # Exploratory calls still retain and compare observed counts.
+    if (
+        not isinstance(value, dict)
+        or set(value)
+        != {
+            "cpu_repeats",
+            "additional_latency_windows",
+            "operations_per_window",
+            "individual_latency_samples",
+            "state_age",
+        }
+        or not positive_integer(value["cpu_repeats"])
+    ):
+        return False
+    fixed = (
+        value["additional_latency_windows"],
+        value["operations_per_window"],
+        value["state_age"],
+    )
+    if any(item is not None for item in fixed):
+        return (
+            all(positive_integer(item) for item in fixed)
+            and value["individual_latency_samples"] is None
+        )
+    return value["individual_latency_samples"] is None or positive_integer(
+        value["individual_latency_samples"]
+    )
+
+
 def valid_controls(value: object) -> bool:
     if not isinstance(value, dict) or set(value) != {
         "schema_version",
@@ -118,6 +256,8 @@ def valid_controls(value: object) -> bool:
         "gc_enabled",
         "gc_thresholds",
         "controller_sha256",
+        "service_cpu_control",
+        "sampling_plan",
     }:
         return False
     cpus, count = value["cpu_affinity"], value["host_cpu_count"]
@@ -130,7 +270,7 @@ def valid_controls(value: object) -> bool:
         return False
     return (
         type(value["schema_version"]) is int
-        and value["schema_version"] == 1
+        and value["schema_version"] == 2
         and value["affinity_policy"] in ("pinned", "inherited")
         and (value["affinity_policy"] != "pinned" or cpus is not None)
         and (count is None or positive_integer(count))
@@ -149,7 +289,80 @@ def valid_controls(value: object) -> bool:
         and all(type(item) is int and item >= 0 for item in value["gc_thresholds"])
         and value["gc_thresholds"][0] > 0
         and digest(value["controller_sha256"])
+        and valid_sampling_plan(value["sampling_plan"])
+        and (
+            value["service_cpu_control"] is None
+            or (
+                VALID_SERVICE_CONTROL(value["service_cpu_control"])
+                and value["service_cpu_control"]["client_cpu_affinity"] == cpus
+            )
+        )
     )
+
+
+def planned_evidence_failures(run: dict, cpu_workloads: list[str]) -> list[str]:
+    controls = run.get("measurement_controls")
+    plan = controls.get("sampling_plan") if isinstance(controls, dict) else None
+    if not valid_sampling_plan(plan) or plan is None:
+        return []  # Explicit counts are required by the qualification controller.
+    package = run["identity"][0]
+    failures = []
+    for name, row in run["rows"].items():
+        if package == "aiogram-cmds":
+            if row["cpu_samples"] != plan["cpu_repeats"]:
+                failures.append(f"CPU samples do not satisfy the declared plan: {name}")
+            if (
+                row["latency_samples"]
+                and row["latency_samples"] != plan["individual_latency_samples"]
+            ):
+                failures.append(f"Individual latencies do not satisfy the declared plan: {name}")
+        elif package in ("aiogram-nav", "aiogram-idle"):
+            if not all(
+                positive_integer(plan[key])
+                for key in (
+                    "cpu_repeats",
+                    "additional_latency_windows",
+                    "operations_per_window",
+                    "state_age",
+                )
+            ):
+                failures.append(f"Missing fixed-window sampling plan: {name}")
+                continue
+            cpu_window = name in cpu_workloads or name == "memory-deadline-claims/16"
+            windows = plan["cpu_repeats"] if cpu_window else plan["additional_latency_windows"]
+            operations = plan["operations_per_window"]
+            layout = row.get("window_layout")
+            if (
+                not isinstance(layout, dict)
+                or layout["count"] != windows
+                or layout["operations_per_window"] != operations
+                or row["calls"] != operations
+                or row["cpu_samples"] != windows
+                or row["latency_samples"] != windows * operations
+            ):
+                failures.append(f"Fresh windows do not satisfy the declared plan: {name}")
+                continue
+            start_age = (
+                16
+                if name == "memory-deadline-claims/16"
+                else 1
+                if name == "redis-dispatcher-noop/1"
+                else plan["state_age"]
+            )
+            advancing = not ("noop" in name or name == "memory-deadline-claims/16")
+            end_age = start_age + operations if advancing else start_age
+            if any(
+                boundary["state_age"] != start_age or boundary["end_state_age"] != end_age
+                for boundary in layout["boundaries"]
+            ):
+                failures.append(f"Fresh fixture age does not satisfy the declared plan: {name}")
+        elif (
+            package == "aiogram-sentinel"
+            and name in cpu_workloads
+            and row["cpu_samples"] != plan["cpu_repeats"]
+        ):
+            failures.append(f"CPU samples do not satisfy the declared plan: {name}")
+    return failures
 
 
 def control_failures(runs: list[dict]) -> list[str]:
@@ -229,6 +442,7 @@ def compare(
         raise ValueError("Input engine selection does not match the requested groups")
     evidence, failures = [], provenance_failures(all_runs) + control_failures(all_runs)
     for item in all_runs:
+        failures.extend(planned_evidence_failures(item, workloads))
         for name, row in item["rows"].items():
             if (
                 not positive_integer(row["calls"])
@@ -264,6 +478,15 @@ def compare(
             continue
         if len({row["calls"] for row in a + b}) != 1:
             failures.append(f"Different operation counts: {name}")
+            continue
+        if len({item["cpu_samples"] for item in a + b}) != 1:
+            failures.append(f"Different CPU sample counts: {name}")
+            continue
+        if name in latency_names and len({item["latency_samples"] for item in a + b}) != 1:
+            failures.append(f"Different individual latency sample counts: {name}")
+            continue
+        if any(item.get("window_layout") != a[0].get("window_layout") for item in a + b):
+            failures.append(f"Different latency window layouts: {name}")
             continue
         row: dict[str, object] = {"workload": name}
         if name in workloads:

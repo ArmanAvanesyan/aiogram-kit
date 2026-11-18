@@ -166,3 +166,42 @@ Cmds retains its already-collected individual latency observations alongside the
 summary. When raw observations are present, the evaluator verifies their count,
 positive finite values and exact p95 before evaluating the unchanged thresholds.
 It does not trim tails, resample, or substitute batched latency for operations.
+
+### Explicit stronger-sampling experiment
+
+Historical qualifier defaults remain 10 Nav/Idle CPU repetitions, one additional
+latency window and 1,000 Cmds individual latencies. An explicitly predeclared run
+may select `--cpu-samples 30 --latency-windows 10
+--individual-latency-samples 3000`. These are **increased** sample counts; they
+supersede the earlier unchanged-count experiment only when selected explicitly.
+The original protocol still requires its unchanged minima, balanced order and
+20% CPU / 5% p95 / 10% repeat-spread limits.
+
+Nav/Idle CPU and claim samples retain 100 operations per fresh fixture; additional
+Redis and combined windows also use 100 operations each. Receipt age remains
+50→150 within each applicable fresh window, rather than growing one fixture to
+age1,050. All observations and end-exclusive window boundaries are retained;
+failed or incomplete windows cannot be skipped or retried. `calls=100` remains
+the CPU-window normalizer; `total_calls` and raw observation count report the
+pooled operations separately. Cmds retains its stateless target/configuration
+and unchanged 31 CPU trials; only its individual operation count increases.
+
+`--redis-container-id` explicitly identifies the job's owned disposable Redis.
+It requires client affinity and configures Redis once on a disjoint allowed
+logical CPU, preferring a different exposed physical core. With unavailable or
+shared topology, the logical-only fallback is recorded without an exclusive-core
+claim. No available disjoint logical CPU fails before timing. Only selected
+Docker identity/image/PID/CPU fields are inspected, never container credentials.
+Configured CPU set and actual process affinity are verified before/after every
+driver; identity or affinity changes fail rather than choosing another CPU.
+
+The workflow's `robust_sampling` input defaults to `false`. Set it to `true`
+with explicit `cpu_affinity=auto` (or IDs) to select 30/10/3,000 plus disjoint
+Redis control. `host-controls.json` and schema-two paired measurement controls
+record the selected counts and service condition. The evaluator verifies those
+requests against actual CPU vector lengths, raw latency counts, fresh-window
+bounds/ages and complete fixtures; all four equally undersampled reports cannot
+qualify merely because their headers agree. Missing/duplicate/partial windows,
+unequal observed sample counts, changed service controls and fabricated p95
+summaries withhold qualification. Historical attempts remain retained; stronger
+sampling and service pinning do not turn their failures into successes.

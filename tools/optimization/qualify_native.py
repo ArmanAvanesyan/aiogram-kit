@@ -17,9 +17,13 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-VALID_CONTROLS = runpy.run_path(
+COMPARISON = runpy.run_path(
     str(HERE / "compare_results.py"), run_name="qualification_control_validation"
-)["valid_controls"]
+)
+VALID_CONTROLS = COMPARISON["valid_controls"]
+REDIS_CONTROL = runpy.run_path(
+    str(HERE / "redis_cpu_control.py"), run_name="qualification_redis_control"
+)
 
 
 PACKAGES = frozenset({"aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"})
@@ -76,7 +80,13 @@ def own_output(output: Path) -> None:
         owner.write(str(os.getpid()) + "\n")
 
 
-def checked_comparison(report: Path, returncode: int, affinity: list[int] | None = None) -> dict:
+def checked_comparison(
+    report: Path,
+    returncode: int,
+    affinity: list[int] | None = None,
+    plan: dict | None = None,
+    service_control: dict | None = None,
+) -> dict:
     """An erroneous comparator cannot promote a partial or contradictory report."""
     if returncode not in (0, 1):
         raise RuntimeError("Comparator process failed; qualification withheld")
@@ -95,6 +105,8 @@ def checked_comparison(report: Path, returncode: int, affinity: list[int] | None
     controls = result.get("measurement_controls")
     if qualified and (
         not VALID_CONTROLS(controls)
+        or (plan is not None and controls.get("sampling_plan") != plan)
+        or controls.get("service_cpu_control") != service_control
         or (
             affinity is not None
             and (
@@ -107,13 +119,43 @@ def checked_comparison(report: Path, returncode: int, affinity: list[int] | None
     return result
 
 
-def driver_arguments(package: str) -> list[str]:
+def driver_arguments(
+    package: str,
+    cpu_samples: int = 10,
+    latency_windows: int = 1,
+    individual_latency_samples: int = 1000,
+) -> list[str]:
+    if package == "aiogram-cmds":
+        return ["--individual-latency-samples", str(individual_latency_samples)]
     if package not in ("aiogram-nav", "aiogram-idle"):
         return []
-    arguments = ["--ages", "50", "--samples", "100", "--cpu-samples", "10"]
+    arguments = [
+        "--ages",
+        "50",
+        "--samples",
+        "100",
+        "--cpu-samples",
+        str(cpu_samples),
+        "--latency-windows",
+        str(latency_windows),
+    ]
     return arguments + (
         ["--skip-registry"] if package == "aiogram-nav" else ["--combined", "--skip-admission"]
     )
+
+
+def sampling_plan(package: str, cpu: int, windows: int, individual: int) -> dict:
+    return {
+        "cpu_repeats": cpu
+        if package in ("aiogram-nav", "aiogram-idle")
+        else (31 if package == "aiogram-cmds" else 15),
+        "additional_latency_windows": windows
+        if package in ("aiogram-nav", "aiogram-idle")
+        else None,
+        "operations_per_window": 100 if package in ("aiogram-nav", "aiogram-idle") else None,
+        "individual_latency_samples": individual if package == "aiogram-cmds" else None,
+        "state_age": 50 if package in ("aiogram-nav", "aiogram-idle") else None,
+    }
 
 
 def resolve_affinity(value: str | None) -> list[int] | None:
@@ -152,6 +194,12 @@ def main() -> int:
     parser.add_argument("--redis-url", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--protocol", type=Path, required=True)
+    parser.add_argument("--cpu-samples", type=int, default=10)
+    parser.add_argument("--latency-windows", type=int, default=1)
+    parser.add_argument("--individual-latency-samples", type=int, default=1000)
+    parser.add_argument(
+        "--redis-container-id", help="Explicit owned disposable service to pin disjointly"
+    )
     parser.add_argument(
         "--cpu-affinity",
         help="Fixed CPU IDs or auto (select one available logical CPU once using topology)",
@@ -162,6 +210,12 @@ def main() -> int:
         choices=("aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"),
     )
     args = parser.parse_args()
+    if not (
+        10 <= args.cpu_samples <= 100
+        and 1 <= args.latency_windows <= 100
+        and 1000 <= args.individual_latency_samples <= 100000
+    ):
+        raise ValueError("Sampling dimensions must preserve historical minima and bounded limits")
     affinity = resolve_affinity(args.cpu_affinity)
     protocol_bytes = args.protocol.read_bytes()
     protocol = validate_protocol(json.loads(protocol_bytes))
@@ -171,8 +225,22 @@ def main() -> int:
     output = args.output.resolve()
     own_output(output)
     (output / "protocol.json").write_bytes(protocol_bytes)
+    service_control = None
+    if args.redis_container_id:
+        service_control = REDIS_CONTROL["prepare_service"](args.redis_container_id, affinity)
+        (output / "redis-service-control.json").write_text(
+            json.dumps(service_control, indent=2) + "\n"
+        )
+    plans = {
+        package: sampling_plan(
+            package, args.cpu_samples, args.latency_windows, args.individual_latency_samples
+        )
+        for package in requested
+    }
     host_controls = {
-        "schema_version": 1,
+        "schema_version": 2,
+        "sampling_plans": plans,
+        "redis_service_control": service_control,
         "affinity_request": args.cpu_affinity,
         "resolved_cpu_affinity": affinity,
         "selection_policy": (
@@ -213,9 +281,17 @@ def main() -> int:
             ]
             if affinity is not None:
                 command += ["--cpu-affinity", ",".join(map(str, affinity))]
+            command += ["--sampling-plan", json.dumps(plans[package], sort_keys=True)]
+            if service_control is not None:
+                command += ["--redis-service-control", str(output / "redis-service-control.json")]
             if package == "aiogram-idle":
                 command += ["--peer-package", "aiogram-nav"]
-            command += [f"--driver-arg={argument}" for argument in driver_arguments(package)]
+            command += [
+                f"--driver-arg={argument}"
+                for argument in driver_arguments(
+                    package, args.cpu_samples, args.latency_windows, args.individual_latency_samples
+                )
+            ]
             print(f"Starting {package} {label}", flush=True)
             with (directory / f"{label}.log").open("w") as log:
                 process = subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT)
@@ -232,7 +308,9 @@ def main() -> int:
         report = directory / "native-gate.json"
         command += ["--output", str(report)]
         comparison = subprocess.run(command, cwd=ROOT, check=False)
-        results[package] = checked_comparison(report, comparison.returncode, affinity)
+        results[package] = checked_comparison(
+            report, comparison.returncode, affinity, plans[package], service_control
+        )
     summary = {
         "protocol_sha256": hashlib.sha256(protocol_bytes).hexdigest(),
         "publication_performed": False,

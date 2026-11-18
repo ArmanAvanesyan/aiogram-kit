@@ -284,3 +284,89 @@ def test_auto_affinity_without_topology_uses_first_allowed_cpu(monkeypatch):
 
     monkeypatch.setattr(MODULE.Path, "read_text", unavailable)
     assert MODULE.resolve_affinity("auto") == [3]
+
+
+def test_stronger_sampling_flags_forward_without_changing_fixed_age_window(monkeypatch, tmp_path):
+    arguments(monkeypatch, tmp_path)
+    MODULE.sys.argv += [
+        "--cpu-samples",
+        "30",
+        "--latency-windows",
+        "10",
+        "--individual-latency-samples",
+        "3000",
+    ]
+    calls = []
+
+    def run(command, **kwargs):
+        calls.append(command)
+        if "--output" in command:
+            Path(command[command.index("--output") + 1]).write_text(
+                json.dumps(
+                    {
+                        "qualified": False,
+                        "failures": ["latency regression"],
+                    }
+                )
+            )
+        return SimpleNamespace(returncode=1 if "--output" in command else 0)
+
+    monkeypatch.setattr(MODULE.subprocess, "run", run)
+    assert MODULE.main() == 1
+    for command in calls[:4]:
+        extra = [
+            item.removeprefix("--driver-arg=")
+            for item in command
+            if item.startswith("--driver-arg=")
+        ]
+        assert extra[extra.index("--ages") + 1] == "50"
+        assert extra[extra.index("--samples") + 1] == "100"
+        assert extra[extra.index("--cpu-samples") + 1] == "30"
+        assert extra[extra.index("--latency-windows") + 1] == "10"
+        plan = json.loads(command[command.index("--sampling-plan") + 1])
+        assert plan["cpu_repeats"] == 30 and plan["additional_latency_windows"] == 10
+    declaration = json.loads((tmp_path / "results/host-controls.json").read_text())
+    assert declaration["sampling_plans"]["aiogram-idle"]["operations_per_window"] == 100
+    assert MODULE.driver_arguments("aiogram-cmds", 30, 10, 3000) == [
+        "--individual-latency-samples",
+        "3000",
+    ]
+
+
+@pytest.mark.parametrize(
+    "arguments_extra",
+    [
+        ["--cpu-samples", "9"],
+        ["--latency-windows", "0"],
+        ["--individual-latency-samples", "999"],
+    ],
+)
+def test_stronger_options_cannot_reduce_historical_sampling(monkeypatch, tmp_path, arguments_extra):
+    arguments(monkeypatch, tmp_path)
+    MODULE.sys.argv += arguments_extra
+    with pytest.raises(ValueError, match="historical minima"):
+        MODULE.main()
+    assert not (tmp_path / "results").exists()
+
+
+def test_comparator_cannot_promote_a_different_sampling_declaration(tmp_path):
+    plan = MODULE.sampling_plan("aiogram-nav", 30, 10, 3000)
+    controls = {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [2],
+        "host_cpu_count": 8,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": True,
+        "gc_thresholds": [700, 10, 10],
+        "controller_sha256": "d" * 64,
+        "service_cpu_control": None,
+        "sampling_plan": MODULE.sampling_plan("aiogram-nav", 10, 1, 1000),
+    }
+    report = tmp_path / "gate.json"
+    report.write_text(
+        json.dumps({"qualified": True, "failures": [], "measurement_controls": controls})
+    )
+    with pytest.raises(RuntimeError, match="host controls"):
+        MODULE.checked_comparison(report, 0, [2], plan)
