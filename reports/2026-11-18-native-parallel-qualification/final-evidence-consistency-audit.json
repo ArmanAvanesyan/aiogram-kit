@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "scope": "Read-only retained final performance evidence audit; no timing, source changes or publication",
+  "qualified_pairs": [
+    {
+      "label": "linux-robust",
+      "run_id": 44217592129,
+      "source_commit": "0448d0be467264e3a8420f32e13d43f4eb2de9d1",
+      "inventory_files": 103,
+      "repository_files": 94,
+      "wheel_artifacts": 9,
+      "packages": [
+        {
+          "package": "aiogram-nav",
+          "qualified": true,
+          "input_profiles": 4,
+          "gate_sha256": "3e04e843089052b8aed48402e58363f42ad0ac2e69c31371a620a775bac8976d",
+          "ratios": [
+            {
+              "workload": "memory-track/50",
+              "rust_over_python_cpu": 0.7915720182173095,
+              "rust_over_python_p95": 0.8366354613390979
+            },
+            {
+              "workload": "redis-dispatch-noop/50",
+              "rust_over_python_p95": 0.9577054288450364
+            },
+            {
+              "workload": "redis-dispatch-track/50",
+              "rust_over_python_p95": 0.9631182253704622
+            }
+          ],
+          "checks": [
+            "manifest inventory + all expected raw files",
+            "raw input SHA256",
+            "exact wheel hashes + CRC + RECORD",
+            "installed module bytes match wheel",
+            "source-pinned benchmark driver bytes",
+            "ABBA chronology",
+            "recomputed fixed-threshold qualification"
+          ]
+        },
+        {
+          "package": "aiogram-idle",
+          "qualified": true,
+          "input_profiles": 4,
+          "gate_sha256": "e9fe31f1b13e9817dfda22044620d7170f5ca8dc9e7da66ec4d55f8e1ce0b330",
+          "ratios": [
+            {
+              "workload": "memory-activate-touch/50",
+              "rust_over_python_cpu": 0.7733686621593158,
+              "rust_over_python_p95": 0.8933037322016611
+            },
+            {
+              "workload": "memory-deadline-claims/16",
+              "rust_over_python_p95": 0.9563758722481164
+            },
+            {
+              "workload": "memory-track/50",
+              "rust_over_python_p95": 0.9835142810582395
+            },
+            {
+              "workload": "redis-activate-touch/50",
+              "rust_over_python_p95": 1.0053887204788992
+            },
+            {
+              "workload": "redis-dispatcher-noop/1",
+              "rust_over_python_p95": 1.0192294066723946
+            },
+            {
+              "workload": "redis-track/50",
+              "rust_over_python_p95": 1.0101876083026253
+            }
+          ],
+          "checks": [
+            "manifest inventory + all expected raw files",
+            "raw input SHA256",
+            "exact wheel hashes + CRC + RECORD",
+            "installed module bytes match wheel",
+            "source-pinned benchmark driver bytes",
+            "ABBA chronology",
+            "recomputed fixed-threshold qualification"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "linux-sentinel-cmds",
+      "run_id": 44222753653,
+      "source_commit": "498fae6777d36716938d32baf7c9cbbfa14dd758",
+      "inventory_files": 61,
+      "repository_files": 52,
+      "wheel_artifacts": 9,
+      "packages": [
+        {
+          "package": "aiogram-sentinel",
+          "qualified": true,
+          "input_profiles": 4,
+          "gate_sha256": "b6556f477dde3cd84392c6cdd7849c208c75dafe37912b414dd4ac9b37bfa3a5",
+          "ratios": [
+            {
+              "workload": "debounce_accepted_many",
+              "rust_over_python_cpu": 0.6657013552632558
+            },
+            {
+              "workload": "middleware_fake_io",
+              "rust_over_python_p95": 0.93745825883442
+            },
+            {
+              "workload": "rate_accepted_many",
+              "rust_over_python_cpu": 0.5347478145727451
+            }
+          ],
+          "checks": [
+            "manifest inventory + all expected raw files",
+            "raw input SHA256",
+            "exact wheel hashes + CRC + RECORD",
+            "installed module bytes match wheel",
+            "source-pinned benchmark driver bytes",
+            "ABBA chronology",
+            "recomputed fixed-threshold qualification"
+          ]
+        },
+        {
+          "package": "aiogram-cmds",
+          "qualified": true,
+          "input_profiles": 4,
+          "gate_sha256": "57b835f61a875fe6aa6e9c7b4e47975b7eb21b6b73b6a4a92e01055fbe88f48f",
+          "ratios": [
+            {
+              "workload": "compiled_batch/100/10_profiles/30_targets",
+              "rust_over_python_cpu": 0.5075348651102753
+            },
+            {
+              "workload": "compiled_confirmation_hit/1",
+              "rust_over_python_p95": 0.9446763684600679
+            },
+            {
+              "workload": "compiled_confirmation_hit/10",
+              "rust_over_python_p95": 0.90400567969509
+            },
+            {
+              "workload": "compiled_confirmation_hit/100",
+              "rust_over_python_p95": 0.6399227198325597
+            },
+            {
+              "workload": "compiled_fake_telegram_1ms/1",
+              "rust_over_python_p95": 1.0031299731846794
+            },
+            {
+              "workload": "compiled_fake_telegram_1ms/10",
+              "rust_over_python_p95": 0.9749200908595721
+            },
+            {
+              "workload": "compiled_fake_telegram_1ms/100",
+              "rust_over_python_p95": 0.970062223949078
+            },
+            {
+              "workload": "confirmation_hit/1",
+              "rust_over_python_p95": 0.9972246006672768
+            },
+            {
+              "workload": "confirmation_hit/10",
+              "rust_over_python_p95": 1.0355251134167347
+            },
+            {
+              "workload": "confirmation_hit/100",
+              "rust_over_python_p95": 0.9037362566081796
+            },
+            {
+              "workload": "fake_telegram_1ms/1",
+              "rust_over_python_p95": 1.0021883861563166
+            },
+            {
+              "workload": "fake_telegram_1ms/10",
+              "rust_over_python_p95": 1.001443665964456
+            },
+            {
+              "workload": "fake_telegram_1ms/100",
+              "rust_over_python_p95": 0.9559131811696313
+            }
+          ],
+          "checks": [
+            "manifest inventory + all expected raw files",
+            "raw input SHA256",
+            "exact wheel hashes + CRC + RECORD",
+            "installed module bytes match wheel",
+            "source-pinned benchmark driver bytes",
+            "ABBA chronology",
+            "recomputed fixed-threshold qualification"
+          ]
+        }
+      ]
+    }
+  ],
+  "wheel_checks": 18,
+  "wheel_RECORD_entries_checked": 534,
+  "gzip_decoded": [
+    {
+      "path": "assembled-audits/assembled-cmds-delivery.json.gz",
+      "decoded_bytes": 5782,
+      "decoded_sha256": "d533b9c0c34c0e74b4f860f4b06d11c50958337ce78d6b763fbbe7b134ea4c3e"
+    },
+    {
+      "path": "assembled-audits/assembled-idle-release.json.gz",
+      "decoded_bytes": 71791,
+      "decoded_sha256": "25f87e03b88aa9faf3b726c8a5a39d7da072a01ebdbfe42772c992b9a0c1b68e"
+    },
+    {
+      "path": "assembled-audits/assembled-nav-parser.json.gz",
+      "decoded_bytes": 131857,
+      "decoded_sha256": "64f73035dd34fe1b804ed7d3df1ac8cede5e9d15739410843fe102c715309054"
+    },
+    {
+      "path": "cmds-delivery/cmds-delivery-audit-results.json.gz",
+      "decoded_bytes": 5718,
+      "decoded_sha256": "a2bbcbad6c5d8f9ccd983ca0b684ccda5e0ea01011fd7b0bf040a4a2c4c79fc7"
+    },
+    {
+      "path": "cmds-delivery/cmds-delivery-audit.py.gz",
+      "decoded_bytes": 3611,
+      "decoded_sha256": "b6afc16a475b5798e2ecd1d6c7e863d41979c1f667df01ababa51cb9dd3a4380"
+    },
+    {
+      "path": "cmds-followup-tests.xml.gz",
+      "decoded_bytes": 47861,
+      "decoded_sha256": "9b7cf1760d9f6e1cc75601098e987b3d79c15d7f009fa944dc1f78219940151f"
+    },
+    {
+      "path": "cmds-ordinary.xml.gz",
+      "decoded_bytes": 47325,
+      "decoded_sha256": "e4549a6eb006368c918f965b3a65404e7d2928a7c2841ce09cddff47e3125bdf"
+    },
+    {
+      "path": "combined-native.log.gz",
+      "decoded_bytes": 592,
+      "decoded_sha256": "d87d03d0dd127a99b6cabe6b30e82ffaa545faec2897084523583ab17b4d8b4e"
+    },
+    {
+      "path": "docs.log.gz",
+      "decoded_bytes": 5339,
+      "decoded_sha256": "ff2f2b40fd839788b70de5fc53d9d042bf375c07acfefc3ee7f33209ec8c3585"
+    },
+    {
+      "path": "idle-core.json.gz",
+      "decoded_bytes": 33999,
+      "decoded_sha256": "90527f155192f55ff7835e987d0359f164bc018ed6ffce78406a59b840bdca33"
+    },
+    {
+      "path": "idle-kernel-tests.log.gz",
+      "decoded_bytes": 180,
+      "decoded_sha256": "c7d940414542d850f7162f43b23654e2d88a13e9338e2fc1a7d5ff3e53f89966"
+    },
+    {
+      "path": "idle-lifetime-core.log.gz",
+      "decoded_bytes": 421,
+      "decoded_sha256": "8bf7eb8e3f5f429b3c3dae57e25a576f136adf1147a9fe8499670773a1f8f06a"
+    },
+    {
+      "path": "idle-release/idle-release-audit-results.json.gz",
+      "decoded_bytes": 71731,
+      "decoded_sha256": "7ce976a38336333ee79f59306c723855e53854beefa390d6d56912a2597e110d"
+    },
+    {
+      "path": "idle-release/idle-release-audit.py.gz",
+      "decoded_bytes": 2510,
+      "decoded_sha256": "4d9791263b0a9d7daffa532e2786a58dd5fd8a73bcd5e8a267e9e6b9e478c867"
+    },
+    {
+      "path": "idle-targeted.log.gz",
+      "decoded_bytes": 180,
+      "decoded_sha256": "b5390fea6724a41c8fb9eb32ee86c28ee07b77f65a27de05f22d3cf5a37c188b"
+    },
+    {
+      "path": "nav-native.log.gz",
+      "decoded_bytes": 260,
+      "decoded_sha256": "47b105083d347cd189becf28ef8cebd4e5ce325e786c134cbbe36f7c1b15c2c8"
+    },
+    {
+      "path": "parser-audit/kit-native-parser-audit.py.gz",
+      "decoded_bytes": 2176,
+      "decoded_sha256": "f18e6498ba4216db678a4c9eb7509fc5a60eff1d17d02bfa34a3dd467ab82493"
+    },
+    {
+      "path": "parser-audit/kit-parser-new-with-provenance.json.gz",
+      "decoded_bytes": 131773,
+      "decoded_sha256": "440663d1cfd4f5c111f1adbf8388b8d7103aafc8072c5d06c16d41f77e3f7c18"
+    },
+    {
+      "path": "parser-audit/kit-parser-old-with-provenance.json.gz",
+      "decoded_bytes": 131827,
+      "decoded_sha256": "5a48aeb299ba6cc091fa4c1224c37daa32a38ec6c2134a625d10f56b405fd0f5"
+    },
+    {
+      "path": "tool-tests.log.gz",
+      "decoded_bytes": 271,
+      "decoded_sha256": "fae6d0800e01ff44d4a3ef16c29d0ebbba3d5ce855f29a4463a9a24f4c8b8821"
+    }
+  ],
+  "gzip_original_digest_checks": 10,
+  "limitations": [
+    "Measured-host/workload qualification only; not native publication or platform release qualification",
+    "Nav/Idle source0448 and Sentinel/Cmds source498 are distinct retained qualifying candidates; earlier failed candidates remain retained"
+  ]
+}

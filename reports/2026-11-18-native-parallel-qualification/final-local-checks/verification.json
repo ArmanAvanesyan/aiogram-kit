@@ -1,0 +1,19 @@
+{
+  "runtime_candidate": "498fae6 (Sentinel/Cmds), 0448d0b (Nav/Idle)",
+  "checks": {
+    "root_integration": "61 passed",
+    "strict_docs": "passed",
+    "root_lint_format": "passed"
+  },
+  "logs": [
+    {
+      "path": "final-integration.log",
+      "sha256": "374ddfdf75ce7198a1c30ca882acb6e02a265b0f470165044c23a5b6ee75b09b"
+    },
+    {
+      "path": "final-docs.log",
+      "sha256": "a9c91a4462790dec69862bcc27ba993d7b3a09cc941bc03ae7a99db254afca62"
+    }
+  ],
+  "publication_performed": false
+}

@@ -1,0 +1,108 @@
+
+[33m │  [1mMaterial for MkDocs reaches end of life on May 5, 2027.[0m
+[33m │[0m  Critical fixes and security updates continue until that date.
+[33m │[0m
+[33m │[0m  Zensical is its maintained successor, built by the same team.
+[33m │[0m  Try it alongside MkDocs with your existing mkdocs.yml:
+[33m │[0m  [36m[4mhttps://zensical.org/docs/compatibility/mkdocs/migration/[0m
+
+[90m  To disable this warning, set NO_MKDOCS_2_WARNING=1.[0m
+
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /Users/armanavanesyan/oss/own/aiogram-kit/site
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - legacy-links.md
+  - design/application-migration-guide.md
+  - design/consumer-integration-roadmap.md
+  - design/library-release-verification.md
+  - design/native-coarse-boundaries.md
+  - design/optimization-rust-implementation.md
+  - design/performance-and-retention-review.md
+  - libraries/aiogram-coordination/docs/releasing.md
+  - libraries/aiogram-coordination/docs/api.md
+  - libraries/aiogram-coordination/docs/redis.md
+  - libraries/aiogram-coordination/docs/index.md
+  - libraries/aiogram-coordination/docs/isolation.md
+  - libraries/aiogram-coordination/docs/sessions.md
+  - libraries/aiogram-sentinel/docs/ARCHITECTURE.md
+  - libraries/aiogram-sentinel/docs/releasing.md
+  - libraries/aiogram-sentinel/docs/native-engine.md
+  - libraries/aiogram-sentinel/docs/troubleshooting.md
+  - libraries/aiogram-sentinel/docs/quickstart.md
+  - libraries/aiogram-sentinel/docs/faq.md
+  - libraries/aiogram-sentinel/docs/application-integration.md
+  - libraries/aiogram-sentinel/docs/TESTING.md
+  - libraries/aiogram-sentinel/docs/performance.md
+  - libraries/aiogram-sentinel/docs/release.md
+  - libraries/aiogram-sentinel/docs/migration-1.2.md
+  - libraries/aiogram-sentinel/docs/ROADMAP.md
+  - libraries/aiogram-sentinel/docs/index.md
+  - libraries/aiogram-sentinel/docs/configuration.md
+  - libraries/aiogram-sentinel/docs/error-handling.md
+  - libraries/aiogram-sentinel/docs/installation.md
+  - libraries/aiogram-sentinel/docs/api/storage.md
+  - libraries/aiogram-sentinel/docs/api/keys-scopes.md
+  - libraries/aiogram-sentinel/docs/api/core.md
+  - libraries/aiogram-sentinel/docs/api/policy-registry.md
+  - libraries/aiogram-sentinel/docs/tutorials/advanced-configuration.md
+  - libraries/aiogram-sentinel/docs/tutorials/policy-patterns.md
+  - libraries/aiogram-sentinel/docs/tutorials/basic-protection.md
+  - libraries/aiogram-sentinel/docs/tutorials/redis-storage.md
+  - libraries/aiogram-cmds/docs/deployment-guide.md
+  - libraries/aiogram-cmds/docs/command-registration-guide.md
+  - libraries/aiogram-cmds/docs/i18n.md
+  - libraries/aiogram-cmds/docs/ARCHITECTURE.md
+  - libraries/aiogram-cmds/docs/releasing.md
+  - libraries/aiogram-cmds/docs/troubleshooting.md
+  - libraries/aiogram-cmds/docs/quickstart.md
+  - libraries/aiogram-cmds/docs/faq.md
+  - libraries/aiogram-cmds/docs/TESTING.md
+  - libraries/aiogram-cmds/docs/performance.md
+  - libraries/aiogram-cmds/docs/verification.md
+  - libraries/aiogram-cmds/docs/release.md
+  - libraries/aiogram-cmds/docs/ROADMAP.md
+  - libraries/aiogram-cmds/docs/index.md
+  - libraries/aiogram-cmds/docs/configuration.md
+  - libraries/aiogram-cmds/docs/compiled-profiles.md
+  - libraries/aiogram-cmds/docs/migration-0.2.md
+  - libraries/aiogram-cmds/docs/installation.md
+  - libraries/aiogram-cmds/docs/api/translator.md
+  - libraries/aiogram-cmds/docs/api/configuration.md
+  - libraries/aiogram-cmds/docs/api/core.md
+  - libraries/aiogram-cmds/docs/tutorials/basic-setup.md
+  - libraries/aiogram-cmds/docs/tutorials/i18n-integration.md
+  - libraries/aiogram-cmds/docs/tutorials/dynamic-commands.md
+  - libraries/aiogram-cmds/docs/tutorials/advanced-profiles.md
+  - libraries/aiogram-nav/docs/storage.md
+  - libraries/aiogram-nav/docs/public-api.md
+  - libraries/aiogram-nav/docs/releasing.md
+  - libraries/aiogram-nav/docs/redis.md
+  - libraries/aiogram-nav/docs/concepts.md
+  - libraries/aiogram-nav/docs/quickstart.md
+  - libraries/aiogram-nav/docs/application-integration.md
+  - libraries/aiogram-nav/docs/migration.md
+  - libraries/aiogram-nav/docs/memory-audit.md
+  - libraries/aiogram-nav/docs/verification.md
+  - libraries/aiogram-nav/docs/index.md
+  - libraries/aiogram-nav/docs/redis-audit.md
+  - libraries/aiogram-nav/docs/idle-integration.md
+  - libraries/aiogram-nav/docs/performance-and-engines.md
+  - libraries/aiogram-nav/docs/security.md
+  - libraries/aiogram-idle/docs/architecture.md
+  - libraries/aiogram-idle/docs/releasing.md
+  - libraries/aiogram-idle/docs/api.md
+  - libraries/aiogram-idle/docs/redis.md
+  - libraries/aiogram-idle/docs/quickstart.md
+  - libraries/aiogram-idle/docs/application-integration.md
+  - libraries/aiogram-idle/docs/navigation.md
+  - libraries/aiogram-idle/docs/testing.md
+  - libraries/aiogram-idle/docs/audit.md
+  - libraries/aiogram-idle/docs/recovery.md
+  - libraries/aiogram-idle/docs/verification.md
+  - libraries/aiogram-idle/docs/migration-0.3.md
+  - libraries/aiogram-idle/docs/index.md
+  - libraries/aiogram-idle/docs/redis-audit.md
+  - libraries/aiogram-idle/docs/migration-0.2.md
+  - libraries/aiogram-idle/docs/standalone.md
+  - libraries/aiogram-idle/docs/installation.md
+INFO    -  Documentation built in 5.59 seconds

@@ -1,0 +1,12 @@
+Cmds final read-only verification
+379 installed-wheel unit/integration tests passed; zero errors, failures or skips.
+Strict Pyright passed (exit0). Package-locked Ruff0.14.0 lint and format passed (exit0). Whitespace check passed.
+Tested local base wheel and qualified Linux base wheel are identical (SHA256 below); all20 SDK Python/typing files match current source and installed files byte-for-byte.
+Current runtime source also matches qualified sourcecommit498fae6; checkout da1a686 additionally includes CI/test-scaffolding fixes.
+No performance workload was timed/rerun for this verification. No source changes or publishing were performed.
+{
+  "checkout_commit": "da1a686d54baf08d841ab287007d2f95b8370ca6",
+  "qualification_source_commit": "498fae6777d36716938d32baf7c9cbbfa14dd758",
+  "base_wheel_sha256": "667738983953896e3ef0758986c8dba80019bb9d766cd6e88e14180b01652d57",
+  "xml_sha256": "0d6d26181fa16f4f3ba850a30eb6ebbd400568d66fe0239c9f1cb47bafe6d4d6"
+}
