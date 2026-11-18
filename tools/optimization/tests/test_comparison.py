@@ -570,3 +570,107 @@ def test_raw_cpu_samples_cannot_have_a_fabricated_count_or_median(values, count,
 
 def test_raw_cpu_samples_use_the_exact_existing_median_statistic():
     module.validate_cpu_vector([0.1, 0.2, 0.3, 0.4], 4, (0.2 + 0.3) / 2)
+
+
+def sentinel_plan(windows=10):
+    return {
+        "cpu_repeats": 15,
+        "cpu_calls_per_sample": 50000,
+        "latency_phase": "separate-sentinel-phase",
+        "additional_latency_windows": windows,
+        "operations_per_window": 1000,
+        "individual_latency_samples": 1000 * windows,
+        "state_age": None,
+    }
+
+
+def sentinel_runs(engine, ratio=1, *, observed_windows=10):
+    values = runs(engine, ratio)
+    for item in values:
+        item["identity"] = ("aiogram-sentinel", *item["identity"][1:])
+        item["measurement_controls"]["sampling_plan"] = sentinel_plan()
+        item["rows"] = {
+            "rate_accepted_many": {
+                "cpu_ns": 100 * ratio,
+                "cpu_samples": 15,
+                "p95_ns": 0,
+                "latency_samples": 0,
+                "calls": 50000,
+            },
+            "middleware_fake_io": {
+                "cpu_ns": 100,
+                "cpu_samples": 15,
+                "p95_ns": 100,
+                "latency_samples": 1000 * observed_windows,
+                "calls": 50000,
+                "window_layout": {
+                    "phase": "separate-from-cpu-batches",
+                    "count": observed_windows,
+                    "operations_per_window": 1000,
+                    "boundaries": [
+                        {
+                            "start": index * 1000,
+                            "stop": (index + 1) * 1000,
+                            "operations": 1000,
+                            "state_age": 0,
+                            "end_state_age": 1000,
+                        }
+                        for index in range(observed_windows)
+                    ],
+                },
+            },
+        }
+    return values
+
+
+def test_sentinel_cpu_and_latency_phases_have_distinct_preserved_denominators():
+    assert module.compare(
+        sentinel_runs("python"), sentinel_runs("rust", 0.7), ["rate_accepted_many"]
+    )["qualified"]
+    a, b = sentinel_runs("python"), sentinel_runs("rust", 0.7)
+    for run in a + b:
+        run["rows"]["middleware_fake_io"]["calls"] = 1000
+    assert not module.compare(a, b, ["rate_accepted_many"])["qualified"]
+
+
+def test_all_four_sentinel_reports_cannot_claim_ten_windows_with_only_one():
+    result = module.compare(
+        sentinel_runs("python", observed_windows=1),
+        sentinel_runs("rust", 0.7, observed_windows=1),
+        ["rate_accepted_many"],
+    )
+    assert not result["qualified"]
+    assert any("Separate Sentinel latency phase" in failure for failure in result["failures"])
+
+
+def test_separate_sentinel_layout_does_not_tie_cpu_fifteen_to_latency_ten():
+    row = {
+        "calls": 50000,
+        "process_cpu_seconds": [0.5] * 15,
+        "median_process_cpu_seconds": 0.5,
+        "operations_per_cpu_sample": 50000,
+        "raw_latency_seconds": [0.001] * 10000,
+        "update_sample_count": 10000,
+        "update_p95_seconds": 0.001,
+        "latency_windows": 10,
+        "latency_measurement_phase": "separate-from-cpu-batches",
+        "operations_per_latency_window": 1000,
+        "total_latency_calls": 10000,
+        "latency_window_boundaries": [
+            {
+                "start": index * 1000,
+                "stop": (index + 1) * 1000,
+                "operation_count": 1000,
+                "state_age": 0,
+                "end_state_age": 1000,
+            }
+            for index in range(10)
+        ],
+        "latency_window_fixtures": [f"fixture-{index}" for index in range(10)],
+    }
+    layout = module.window_layout(row)
+    assert layout["count"] == 10 and layout["operations_per_window"] == 1000
+    assert layout["phase"] == "separate-from-cpu-batches"
+    row["latency_measurement_phase"] = "cpu-windows"
+    with pytest.raises(ValueError, match="normalized"):
+        module.window_layout(row)

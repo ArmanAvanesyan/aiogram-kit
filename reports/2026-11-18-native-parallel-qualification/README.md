@@ -104,3 +104,53 @@ claims. Root evaluator tests passed193 with1platform skip (Linux-only affinity
 case onmacOS), with the same result from the owning agent onPython3.10/3.12/3.14.
 Independent review verified actual-count/age binding and fail-closed service
 controls. The stronger candidate remains unqualified until its own run finishes.
+
+
+## First stronger-observation result: 0448d0b
+
+[Run 44217592129](https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44217592129)
+is retained under `linux-robust/`, with disjoint verified client/Redis affinities
+and every raw window. Nav and Idle pass all CPU, individual-p95 and repeatability
+checks. Nav CPU ratio0.791572; Idle0.773369. Idle claim p95 is0.956376, versus
+its original roughly1.39 regression. The independent native job-rearm optimization
+therefore meets the claim gate without relaxing it.
+
+Cmds CPU ratio0.501540 and all compiled/other latency rows pass, but live
+confirmation/1 p95 ratio1.069504 and repeat spread fail. Its medians differ by
+about1.6%; native-a has transient clusters, and available aggregate observations
+do not establish their cause. A manager-owned validated engine binding is being
+implemented to remove remaining repeated live-selection work, preserving public
+engine reassignment and direct-API validation.
+
+Sentinel CPU ratios0.488333/0.655300 and latency ratio0.721864 pass, but reference
+repeatability fails: Python p9516.761→10.553microseconds versus native10.034→9.683.
+The original1000-observation middleware phase spans onlyabout10–13milliseconds.
+The next explicit declaration adds10fresh1000-operation Sentinel latency windows
+while retaining its separate15×50000 CPU phase. No extra warmup or GC change
+is introduced; cold samples and tails remain in every raw vector.
+
+No package is published. Independent package qualification evidence is retained
+for the exact Nav/Idle0448d0b artifacts; they are not resampled merely to replace
+failed historical measurements. Remaining qualification focuses on Cmds/Sentinel.
+
+
+## Final Sentinel/Cmds supplement
+
+`sentinel-cmds-experiment-declaration.json` supplements the stronger protocol before
+timing. Nav/Idle qualified artifacts remain unchanged. The Cmds live manager now
+binds a validated engine/module pair at construction or validated reassignment;
+failed reassignment is atomic, and public direct APIs keep eager ABI checks.
+Configuration, translators, menus and confirmations are not implicitly cached.
+379 installed-wheel tests passed before integration.
+
+Sentinel adds10fresh1000-operation middleware latency fixtures. The existing
+15×50000 CPU phase stays separate, with its own denominator and data. Every cold
+observation and tail is retained; there is no new warmup, sleep, GC policy or
+selection. Both old1000-observation and new10000-observation raw results remain
+available. The latest helper/evaluator tests passed209 with1Linux-only platform
+skip on each localPython3.10/3.12/3.14; separate Sentinel sampler tests passed2.
+Independent review found no new effect, freshness or denominator blocker.
+
+The same source update fixes Nav artifact-test helper staging and Cmds package
+formatting, with preserved-input workflow-generator tests so regeneration cannot
+restore the omission. Installed SDK tests still run without copying SDK source.

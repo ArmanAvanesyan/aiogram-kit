@@ -12,7 +12,9 @@ import pytest
 def driver(monkeypatch):
     path = Path(__file__).parents[2] / "benchmarks" / "run.py"
     if not path.is_file():
-        pytest.skip("Source-only benchmark driver is absent from this SDK artifact profile")
+        pytest.skip(
+            "Source-only benchmark driver is absent from this SDK artifact profile"
+        )
     for dependency in ("orjson", "psutil", "pyperf"):
         pytest.importorskip(dependency)
     spec = importlib.util.spec_from_file_location("cmds_sampling_driver", path)

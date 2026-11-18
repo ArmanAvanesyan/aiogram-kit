@@ -89,3 +89,40 @@ def test_cmds_timing_probes_report_results_without_an_unused_benchmark_plugin():
         s for s in job["steps"] if s.get("uses", "").startswith("actions/upload-artifact@")
     )
     assert upload["with"]["path"] == "distribution/reports/performance-results.xml"
+
+
+def test_nav_artifact_tests_stage_benchmark_helpers_without_sdk_source():
+    package = ROOT / "packages/aiogram-nav"
+    generated = module.port(package, package / ".github/workflows/ci.yml")
+    artifact_scripts = [
+        step["run"]
+        for job in generated["jobs"].values()
+        for step in job["steps"]
+        if "cp -R tests examples tools" in step.get("run", "")
+    ]
+    assert len(artifact_scripts) == 2
+    for script in artifact_scripts:
+        assert "cp -R tests examples tools benchmarks" in script
+        assert "cp -R src" not in script
+        assert "uv pip install" in script
+        assert "-m pytest" in script
+
+
+def test_cmds_benchmark_tools_are_installed_after_clean_sdk_verification():
+    package = ROOT / "packages/aiogram-cmds"
+    result = module.port(package, package / ".github/workflows/ci.yml")
+    scripts = [
+        step["run"]
+        for job in result["jobs"].values()
+        for step in job["steps"]
+        if step.get("name") == "Verify independent wheel and sdist without optional packages"
+    ]
+    assert len(scripts) == 1
+    script = scripts[0]
+    assert "cp -R tests examples benchmarks" in script
+    assert "cp -R src" not in script
+    assert script.index('find_spec("redis") is None') < script.index("orjson psutil pyperf")
+    assert script.index("examples/application_profiles.py --dry-run") < script.index(
+        "orjson psutil pyperf"
+    )
+    assert "-m pytest tests/unit/test_benchmark_sampling.py" in script

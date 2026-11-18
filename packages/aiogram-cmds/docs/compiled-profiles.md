@@ -128,3 +128,29 @@ reports. Workloads, command counts, targets, operation semantics, five warmups
 and 31 CPU trials remain unchanged. CPU-only workloads do not gain extra loops.
 The CPU/p95/repeat-spread thresholds remain unchanged, and this sample-size
 change makes no claim that a previously failed gate now passes.
+
+
+### Manager engine binding
+
+A live `CommandScopeManager` binds its validated engine/module selection during
+construction and captures that immutable selection when an operation begins.
+It delegates to the resolved live executor without repeating the same engine
+lookup for each menu. Configuration and translators are still read on every
+operation; no menu, authorization decision or successful confirmation is cached.
+Direct public `apply_profile` and `payload_fingerprint` calls keep their own
+eager ABI validation before translator callbacks or delivery effects.
+
+Explicit `manager.engine = "python"` / `"rust"` changes remain supported. Assignment
+validates the complete new selection before publishing it atomically. An invalid
+engine or missing/incompatible companion now fails at assignment, leaving the
+previous selection active. A selection change during a translator callback affects
+subsequent operations, not the already captured selection of the current one.
+Compiled snapshots are not changed or retranslated by assigning an engine.
+
+The 3,000-observation run 44217592129 still failed one-command dynamic latency
+and repeatability. Its Rust-a raw vector contains clustered tails largely absent
+in Rust-b, while median differences are smaller. The package report
+`reports/2026-11-18-manager-binding-tail-analysis.json` retains every 100-sample
+window and source hashes. Host/GC causality is not established, and the failed
+measurements are not discarded. The binding change removes actual lookup work;
+its performance still requires a new unchanged-gate qualification run.

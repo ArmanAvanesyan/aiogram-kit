@@ -125,6 +125,8 @@ def driver_arguments(
     latency_windows: int = 1,
     individual_latency_samples: int = 1000,
 ) -> list[str]:
+    if package == "aiogram-sentinel":
+        return ["--latency-windows", str(latency_windows)]
     if package == "aiogram-cmds":
         return ["--individual-latency-samples", str(individual_latency_samples)]
     if package not in ("aiogram-nav", "aiogram-idle"):
@@ -145,6 +147,16 @@ def driver_arguments(
 
 
 def sampling_plan(package: str, cpu: int, windows: int, individual: int) -> dict:
+    if package == "aiogram-sentinel":
+        return {
+            "cpu_repeats": 15,
+            "cpu_calls_per_sample": 50000,
+            "latency_phase": "separate-sentinel-phase",
+            "additional_latency_windows": windows,
+            "operations_per_window": 1000,
+            "individual_latency_samples": 1000 * windows,
+            "state_age": None,
+        }
     return {
         "cpu_repeats": cpu
         if package in ("aiogram-nav", "aiogram-idle")

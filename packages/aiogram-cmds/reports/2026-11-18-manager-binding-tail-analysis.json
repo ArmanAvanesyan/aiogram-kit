@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "source_commit": "0448d0be467264e3a8420f32e13d43f4eb2de9d1",
+  "workflow_run": 44217592129,
+  "source_evidence_directory": "reports/2026-11-18-native-parallel-qualification/linux-robust/native-qualification/aiogram-cmds",
+  "scope": "Descriptive evidence only, not new timing, outlier selection or a threshold waiver.",
+  "observations": [
+    "All four profiles contain 3000 raw observations. Every 100-sample window is retained here.",
+    "The Rust-a run has tail clusters in windows 200-399 and 2500-2699 that are largely absent in Rust-b; all samples continue to count toward the failed p95/repeat-spread gates.",
+    "Across profiles dynamic one-command medians differ by about 1-2.5%, smaller than the failed aggregate p95 ratio 1.06950. This suggests but does not prove host/GC-phase contributions to the tails.",
+    "Whole-driver before/after GC totals cannot identify a specific sample pause. Zero generation-two collections is not evidence that lower-generation GC or scheduling caused no pauses.",
+    "The next code candidate removes the real redundant per-operation engine lookup for live managers, binding only an immutable engine/module selection at construction or explicit reassignment. It does not cache live menus, translators, configuration, delivery outcomes or confirmations."
+  ],
+  "profiles": [
+    {
+      "label": "python-a",
+      "source_file": "python-a/aiogram-cmds.json",
+      "sha256": "073c2ea256696c85d6d4760643e42c7ca483c91ee60a4614ce64ec1126ac7dde",
+      "count": 3000,
+      "p50_ns": 15887.0,
+      "p95_ns": 16807,
+      "p99_ns": 22974,
+      "all_100_sample_windows": [
+        {
+          "start": 0,
+          "p50_ns": 15986.0,
+          "p95_ns": 16779
+        },
+        {
+          "start": 100,
+          "p50_ns": 15920.0,
+          "p95_ns": 18000
+        },
+        {
+          "start": 200,
+          "p50_ns": 15901.0,
+          "p95_ns": 17944
+        },
+        {
+          "start": 300,
+          "p50_ns": 15828.0,
+          "p95_ns": 16156
+        },
+        {
+          "start": 400,
+          "p50_ns": 15958.0,
+          "p95_ns": 17650
+        },
+        {
+          "start": 500,
+          "p50_ns": 15906.0,
+          "p95_ns": 18198
+        },
+        {
+          "start": 600,
+          "p50_ns": 15903.5,
+          "p95_ns": 17167
+        },
+        {
+          "start": 700,
+          "p50_ns": 15872.5,
+          "p95_ns": 16341
+        },
+        {
+          "start": 800,
+          "p50_ns": 15865.0,
+          "p95_ns": 17080
+        },
+        {
+          "start": 900,
+          "p50_ns": 15818.0,
+          "p95_ns": 16663
+        },
+        {
+          "start": 1000,
+          "p50_ns": 15846.0,
+          "p95_ns": 17118
+        },
+        {
+          "start": 1100,
+          "p50_ns": 15981.0,
+          "p95_ns": 16498
+        },
+        {
+          "start": 1200,
+          "p50_ns": 16015.0,
+          "p95_ns": 16284
+        },
+        {
+          "start": 1300,
+          "p50_ns": 15919.5,
+          "p95_ns": 16346
+        },
+        {
+          "start": 1400,
+          "p50_ns": 15848.5,
+          "p95_ns": 16927
+        },
+        {
+          "start": 1500,
+          "p50_ns": 15869.5,
+          "p95_ns": 16661
+        },
+        {
+          "start": 1600,
+          "p50_ns": 15889.5,
+          "p95_ns": 16466
+        },
+        {
+          "start": 1700,
+          "p50_ns": 15841.0,
+          "p95_ns": 16192
+        },
+        {
+          "start": 1800,
+          "p50_ns": 15875.5,
+          "p95_ns": 16826
+        },
+        {
+          "start": 1900,
+          "p50_ns": 15853.5,
+          "p95_ns": 16525
+        },
+        {
+          "start": 2000,
+          "p50_ns": 15883.0,
+          "p95_ns": 17027
+        },
+        {
+          "start": 2100,
+          "p50_ns": 15858.0,
+          "p95_ns": 16393
+        },
+        {
+          "start": 2200,
+          "p50_ns": 15869.0,
+          "p95_ns": 16189
+        },
+        {
+          "start": 2300,
+          "p50_ns": 15862.5,
+          "p95_ns": 16521
+        },
+        {
+          "start": 2400,
+          "p50_ns": 15905.5,
+          "p95_ns": 16624
+        },
+        {
+          "start": 2500,
+          "p50_ns": 15901.0,
+          "p95_ns": 16313
+        },
+        {
+          "start": 2600,
+          "p50_ns": 15892.5,
+          "p95_ns": 16262
+        },
+        {
+          "start": 2700,
+          "p50_ns": 15863.0,
+          "p95_ns": 16131
+        },
+        {
+          "start": 2800,
+          "p50_ns": 15909.0,
+          "p95_ns": 16538
+        },
+        {
+          "start": 2900,
+          "p50_ns": 15909.0,
+          "p95_ns": 16796
+        }
+      ],
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 203,
+          "objects_collected": 101
+        },
+        {
+          "generation": 1,
+          "collections": 18,
+          "objects_collected": 79
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ]
+    },
+    {
+      "label": "rust-a",
+      "source_file": "rust-a/aiogram-cmds.json",
+      "sha256": "dafd70f8861df47ce1a7c7b3c8f3817ed3cdc7f47836ba925f5c93f800fc02ea",
+      "count": 3000,
+      "p50_ns": 16292.0,
+      "p95_ns": 19259,
+      "p99_ns": 31423,
+      "all_100_sample_windows": [
+        {
+          "start": 0,
+          "p50_ns": 16384.5,
+          "p95_ns": 18291
+        },
+        {
+          "start": 100,
+          "p50_ns": 16294.5,
+          "p95_ns": 16844
+        },
+        {
+          "start": 200,
+          "p50_ns": 17454.0,
+          "p95_ns": 33290
+        },
+        {
+          "start": 300,
+          "p50_ns": 16366.5,
+          "p95_ns": 24850
+        },
+        {
+          "start": 400,
+          "p50_ns": 16213.5,
+          "p95_ns": 16634
+        },
+        {
+          "start": 500,
+          "p50_ns": 16240.5,
+          "p95_ns": 16711
+        },
+        {
+          "start": 600,
+          "p50_ns": 16253.0,
+          "p95_ns": 17422
+        },
+        {
+          "start": 700,
+          "p50_ns": 16235.0,
+          "p95_ns": 16518
+        },
+        {
+          "start": 800,
+          "p50_ns": 16269.0,
+          "p95_ns": 17380
+        },
+        {
+          "start": 900,
+          "p50_ns": 16223.5,
+          "p95_ns": 16694
+        },
+        {
+          "start": 1000,
+          "p50_ns": 16257.0,
+          "p95_ns": 16583
+        },
+        {
+          "start": 1100,
+          "p50_ns": 16256.5,
+          "p95_ns": 16721
+        },
+        {
+          "start": 1200,
+          "p50_ns": 16226.0,
+          "p95_ns": 16623
+        },
+        {
+          "start": 1300,
+          "p50_ns": 16267.5,
+          "p95_ns": 16732
+        },
+        {
+          "start": 1400,
+          "p50_ns": 16294.5,
+          "p95_ns": 16644
+        },
+        {
+          "start": 1500,
+          "p50_ns": 16271.5,
+          "p95_ns": 16558
+        },
+        {
+          "start": 1600,
+          "p50_ns": 16265.0,
+          "p95_ns": 16684
+        },
+        {
+          "start": 1700,
+          "p50_ns": 16275.5,
+          "p95_ns": 16661
+        },
+        {
+          "start": 1800,
+          "p50_ns": 16265.5,
+          "p95_ns": 17081
+        },
+        {
+          "start": 1900,
+          "p50_ns": 16266.5,
+          "p95_ns": 16484
+        },
+        {
+          "start": 2000,
+          "p50_ns": 16265.5,
+          "p95_ns": 16793
+        },
+        {
+          "start": 2100,
+          "p50_ns": 16298.0,
+          "p95_ns": 21421
+        },
+        {
+          "start": 2200,
+          "p50_ns": 16279.0,
+          "p95_ns": 16777
+        },
+        {
+          "start": 2300,
+          "p50_ns": 16339.5,
+          "p95_ns": 17194
+        },
+        {
+          "start": 2400,
+          "p50_ns": 16296.5,
+          "p95_ns": 16783
+        },
+        {
+          "start": 2500,
+          "p50_ns": 16377.5,
+          "p95_ns": 29009
+        },
+        {
+          "start": 2600,
+          "p50_ns": 16937.5,
+          "p95_ns": 33222
+        },
+        {
+          "start": 2700,
+          "p50_ns": 16341.5,
+          "p95_ns": 17149
+        },
+        {
+          "start": 2800,
+          "p50_ns": 16350.5,
+          "p95_ns": 17910
+        },
+        {
+          "start": 2900,
+          "p50_ns": 16373.5,
+          "p95_ns": 18955
+        }
+      ],
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 258,
+          "objects_collected": 89
+        },
+        {
+          "generation": 1,
+          "collections": 23,
+          "objects_collected": 101
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ]
+    },
+    {
+      "label": "rust-b",
+      "source_file": "rust-b/aiogram-cmds.json",
+      "sha256": "b431e09ae903adb1f80c8af338d5cc1337d8a93c015e74899361e42eabae1139",
+      "count": 3000,
+      "p50_ns": 16053.0,
+      "p95_ns": 16871,
+      "p99_ns": 22596,
+      "all_100_sample_windows": [
+        {
+          "start": 0,
+          "p50_ns": 16104.5,
+          "p95_ns": 17255
+        },
+        {
+          "start": 100,
+          "p50_ns": 16147.5,
+          "p95_ns": 16787
+        },
+        {
+          "start": 200,
+          "p50_ns": 16075.0,
+          "p95_ns": 16380
+        },
+        {
+          "start": 300,
+          "p50_ns": 16087.5,
+          "p95_ns": 17307
+        },
+        {
+          "start": 400,
+          "p50_ns": 16056.0,
+          "p95_ns": 17418
+        },
+        {
+          "start": 500,
+          "p50_ns": 16064.0,
+          "p95_ns": 16337
+        },
+        {
+          "start": 600,
+          "p50_ns": 16081.5,
+          "p95_ns": 17405
+        },
+        {
+          "start": 700,
+          "p50_ns": 16035.0,
+          "p95_ns": 16928
+        },
+        {
+          "start": 800,
+          "p50_ns": 16057.5,
+          "p95_ns": 16834
+        },
+        {
+          "start": 900,
+          "p50_ns": 16011.5,
+          "p95_ns": 16656
+        },
+        {
+          "start": 1000,
+          "p50_ns": 15985.0,
+          "p95_ns": 16888
+        },
+        {
+          "start": 1100,
+          "p50_ns": 16038.0,
+          "p95_ns": 16722
+        },
+        {
+          "start": 1200,
+          "p50_ns": 16081.5,
+          "p95_ns": 17945
+        },
+        {
+          "start": 1300,
+          "p50_ns": 16060.0,
+          "p95_ns": 16447
+        },
+        {
+          "start": 1400,
+          "p50_ns": 15964.5,
+          "p95_ns": 16564
+        },
+        {
+          "start": 1500,
+          "p50_ns": 15980.5,
+          "p95_ns": 16522
+        },
+        {
+          "start": 1600,
+          "p50_ns": 16008.0,
+          "p95_ns": 16321
+        },
+        {
+          "start": 1700,
+          "p50_ns": 16014.5,
+          "p95_ns": 16327
+        },
+        {
+          "start": 1800,
+          "p50_ns": 16027.0,
+          "p95_ns": 17125
+        },
+        {
+          "start": 1900,
+          "p50_ns": 16003.5,
+          "p95_ns": 16235
+        },
+        {
+          "start": 2000,
+          "p50_ns": 16079.5,
+          "p95_ns": 16557
+        },
+        {
+          "start": 2100,
+          "p50_ns": 16063.5,
+          "p95_ns": 16788
+        },
+        {
+          "start": 2200,
+          "p50_ns": 16141.5,
+          "p95_ns": 17210
+        },
+        {
+          "start": 2300,
+          "p50_ns": 16132.5,
+          "p95_ns": 17051
+        },
+        {
+          "start": 2400,
+          "p50_ns": 16014.5,
+          "p95_ns": 16435
+        },
+        {
+          "start": 2500,
+          "p50_ns": 16033.5,
+          "p95_ns": 16665
+        },
+        {
+          "start": 2600,
+          "p50_ns": 16027.5,
+          "p95_ns": 16749
+        },
+        {
+          "start": 2700,
+          "p50_ns": 16019.0,
+          "p95_ns": 16479
+        },
+        {
+          "start": 2800,
+          "p50_ns": 16129.0,
+          "p95_ns": 17268
+        },
+        {
+          "start": 2900,
+          "p50_ns": 16111.5,
+          "p95_ns": 16532
+        }
+      ],
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 258,
+          "objects_collected": 89
+        },
+        {
+          "generation": 1,
+          "collections": 23,
+          "objects_collected": 101
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ]
+    },
+    {
+      "label": "python-b",
+      "source_file": "python-b/aiogram-cmds.json",
+      "sha256": "a0add21fe26ed6c7d7de3c393666dcfdbe6a50eff7c2cabf77c64d233df6a7c8",
+      "count": 3000,
+      "p50_ns": 15959.0,
+      "p95_ns": 16975,
+      "p99_ns": 23303,
+      "all_100_sample_windows": [
+        {
+          "start": 0,
+          "p50_ns": 16071.0,
+          "p95_ns": 17670
+        },
+        {
+          "start": 100,
+          "p50_ns": 16059.5,
+          "p95_ns": 18056
+        },
+        {
+          "start": 200,
+          "p50_ns": 15990.0,
+          "p95_ns": 16649
+        },
+        {
+          "start": 300,
+          "p50_ns": 15980.0,
+          "p95_ns": 17098
+        },
+        {
+          "start": 400,
+          "p50_ns": 16094.0,
+          "p95_ns": 17056
+        },
+        {
+          "start": 500,
+          "p50_ns": 16144.5,
+          "p95_ns": 18085
+        },
+        {
+          "start": 600,
+          "p50_ns": 16073.5,
+          "p95_ns": 17308
+        },
+        {
+          "start": 700,
+          "p50_ns": 15917.0,
+          "p95_ns": 17245
+        },
+        {
+          "start": 800,
+          "p50_ns": 15940.0,
+          "p95_ns": 17067
+        },
+        {
+          "start": 900,
+          "p50_ns": 15954.0,
+          "p95_ns": 16708
+        },
+        {
+          "start": 1000,
+          "p50_ns": 15945.5,
+          "p95_ns": 16392
+        },
+        {
+          "start": 1100,
+          "p50_ns": 15959.5,
+          "p95_ns": 16258
+        },
+        {
+          "start": 1200,
+          "p50_ns": 15944.0,
+          "p95_ns": 17265
+        },
+        {
+          "start": 1300,
+          "p50_ns": 15953.0,
+          "p95_ns": 16694
+        },
+        {
+          "start": 1400,
+          "p50_ns": 15956.0,
+          "p95_ns": 16267
+        },
+        {
+          "start": 1500,
+          "p50_ns": 15897.5,
+          "p95_ns": 16664
+        },
+        {
+          "start": 1600,
+          "p50_ns": 15939.0,
+          "p95_ns": 16189
+        },
+        {
+          "start": 1700,
+          "p50_ns": 15984.0,
+          "p95_ns": 16997
+        },
+        {
+          "start": 1800,
+          "p50_ns": 15905.0,
+          "p95_ns": 17010
+        },
+        {
+          "start": 1900,
+          "p50_ns": 15954.0,
+          "p95_ns": 16444
+        },
+        {
+          "start": 2000,
+          "p50_ns": 15916.5,
+          "p95_ns": 16445
+        },
+        {
+          "start": 2100,
+          "p50_ns": 15895.0,
+          "p95_ns": 16655
+        },
+        {
+          "start": 2200,
+          "p50_ns": 15909.0,
+          "p95_ns": 16235
+        },
+        {
+          "start": 2300,
+          "p50_ns": 15940.5,
+          "p95_ns": 16740
+        },
+        {
+          "start": 2400,
+          "p50_ns": 15961.5,
+          "p95_ns": 16390
+        },
+        {
+          "start": 2500,
+          "p50_ns": 15925.5,
+          "p95_ns": 16296
+        },
+        {
+          "start": 2600,
+          "p50_ns": 15913.0,
+          "p95_ns": 16478
+        },
+        {
+          "start": 2700,
+          "p50_ns": 15897.5,
+          "p95_ns": 16644
+        },
+        {
+          "start": 2800,
+          "p50_ns": 15969.0,
+          "p95_ns": 17420
+        },
+        {
+          "start": 2900,
+          "p50_ns": 15913.5,
+          "p95_ns": 17077
+        }
+      ],
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 204,
+          "objects_collected": 79
+        },
+        {
+          "generation": 1,
+          "collections": 18,
+          "objects_collected": 101
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ]
+    }
+  ]
+}

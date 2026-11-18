@@ -110,6 +110,28 @@ def port(package: pathlib.Path, source: pathlib.Path) -> dict:
                 continue
             if "run" in step:
                 step["run"] = step["run"].replace("uv run --frozen", "uv run --no-sync")
+                if package.name == "aiogram-nav":
+                    # Artifact tests intentionally run without SDK source. Their
+                    # deterministic benchmark tests also need source-only helpers.
+                    step["run"] = step["run"].replace(
+                        "cp -R tests examples tools ", "cp -R tests examples tools benchmarks "
+                    )
+                if (
+                    package.name == "aiogram-cmds"
+                    and step.get("name")
+                    == "Verify independent wheel and sdist without optional packages"
+                ):
+                    step["run"] = (
+                        step["run"]
+                        .replace("cp -R tests examples ", "cp -R tests examples benchmarks ")
+                        .replace(
+                            "\ndone\n",
+                            "\n  # Verify source benchmark tooling only after the clean SDK profile passes.\n"
+                            '  uv pip install --python "$target/env/bin/python" orjson psutil pyperf\n'
+                            '  (cd "$target" && "$target/env/bin/python" -m pytest '
+                            "tests/unit/test_benchmark_sampling.py)\ndone\n",
+                        )
+                    )
                 if (
                     package.name == "aiogram-cmds"
                     and job_name == "pypy-tests"

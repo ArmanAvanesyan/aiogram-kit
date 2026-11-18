@@ -205,3 +205,20 @@ qualify merely because their headers agree. Missing/duplicate/partial windows,
 unequal observed sample counts, changed service controls and fabricated p95
 summaries withhold qualification. Historical attempts remain retained; stronger
 sampling and service pinning do not turn their failures into successes.
+
+### Sentinel's independent latency phase
+
+For a newly declared run, `--latency-windows 10` now also requests ten fresh Sentinel
+middleware fixtures of **1,000 operations each**. Its default remains one. The
+original full Sentinel CPU phase stays **15 × 50,000** operations; the latency
+phase is explicitly separate, so its ten windows must not be confused with the
+fifteen CPU samples or use a 1,000-call CPU normalizer. The observed-plan validator
+binds both phases independently, checking the complete 10,000-observation vector,
+distinct fixtures, 0→1,000 state windows and unchanged CPU dimensions. All first
+observations and tails remain; an incomplete or failed fixture fails the run.
+There is no new warmup, sleep, GC change, adaptive count or winning-window filter.
+
+The workflow choice `native_package=sentinel-cmds` qualifies just those two
+independent projects and labels its artifact accordingly. It does not rerun or
+claim new measurements for already-qualified Nav/Idle artifacts. Existing reports
+remain retained with their original controller/source hashes and conditions.

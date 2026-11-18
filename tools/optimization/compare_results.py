@@ -21,7 +21,7 @@ VALID_SERVICE_CONTROL = runpy.run_path(
 
 
 def window_layout(row: dict) -> dict | None:
-    values = row.get("raw_latency_seconds")
+    values = row.get("raw_latency_seconds", row.get("update_latency_seconds"))
     if values is not None:
         count = row.get("update_sample_count")
         if (
@@ -38,7 +38,13 @@ def window_layout(row: dict) -> dict | None:
     if "latency_windows" not in row and "latency_window_boundaries" not in row:
         return None
     windows, boundaries = row.get("latency_windows"), row.get("latency_window_boundaries")
-    calls = row.get("calls")
+    phase = row.get("latency_measurement_phase", "cpu-windows")
+    separate = phase == "separate-from-cpu-batches"
+    if phase not in ("cpu-windows", "separate-from-cpu-batches"):
+        raise ValueError("Unknown latency measurement phase")
+    calls = row.get("operations_per_latency_window") if separate else row.get("calls")
+    cpu_calls = row.get("calls")
+    total = row.get("total_latency_calls") if separate else row.get("total_calls")
     if (
         not positive_integer(windows)
         or not positive_integer(calls)
@@ -46,9 +52,9 @@ def window_layout(row: dict) -> dict | None:
         or len(boundaries) != windows
         or not isinstance(values, list)
         or len(values) != calls * windows
-        or row.get("total_calls") != len(values)
-        or row.get("operations_per_cpu_sample") != calls
-        or len(row["process_cpu_seconds"]) != windows
+        or total != len(values)
+        or row.get("operations_per_cpu_sample") != cpu_calls
+        or (not separate and len(row["process_cpu_seconds"]) != windows)
     ):
         raise ValueError("Incomplete or incorrectly normalized latency windows")
     normalized = []
@@ -95,7 +101,12 @@ def window_layout(row: dict) -> dict | None:
         or len(set(fixtures)) != windows
     ):
         raise ValueError("Latency fixtures must be distinct for every fresh window")
-    return {"count": windows, "operations_per_window": calls, "boundaries": normalized}
+    return {
+        "phase": phase,
+        "count": windows,
+        "operations_per_window": calls,
+        "boundaries": normalized,
+    }
 
 
 def validate_cpu_vector(values: object, count: object, median: object) -> None:
@@ -217,18 +228,29 @@ def peer_artifacts(value: dict) -> bool:
 def valid_sampling_plan(value: object) -> bool:
     if value is None:
         return True  # Exploratory calls still retain and compare observed counts.
-    if (
-        not isinstance(value, dict)
-        or set(value)
-        != {
-            "cpu_repeats",
-            "additional_latency_windows",
-            "operations_per_window",
-            "individual_latency_samples",
-            "state_age",
-        }
-        or not positive_integer(value["cpu_repeats"])
-    ):
+    base = {
+        "cpu_repeats",
+        "additional_latency_windows",
+        "operations_per_window",
+        "individual_latency_samples",
+        "state_age",
+    }
+    if not isinstance(value, dict) or not positive_integer(value.get("cpu_repeats")):
+        return False
+    if set(value) == base | {"latency_phase", "cpu_calls_per_sample"}:
+        return (
+            value["latency_phase"] == "separate-sentinel-phase"
+            and value["cpu_repeats"] == 15
+            and positive_integer(value["cpu_calls_per_sample"])
+            and value["cpu_calls_per_sample"] == 50000
+            and positive_integer(value["operations_per_window"])
+            and value["operations_per_window"] == 1000
+            and value["state_age"] is None
+            and positive_integer(value["additional_latency_windows"])
+            and type(value["individual_latency_samples"]) is int
+            and value["individual_latency_samples"] == 1000 * value["additional_latency_windows"]
+        )
+    if set(value) != base:
         return False
     fixed = (
         value["additional_latency_windows"],
@@ -334,6 +356,7 @@ def planned_evidence_failures(run: dict, cpu_workloads: list[str]) -> list[str]:
             layout = row.get("window_layout")
             if (
                 not isinstance(layout, dict)
+                or layout.get("phase", "cpu-windows") != "cpu-windows"
                 or layout["count"] != windows
                 or layout["operations_per_window"] != operations
                 or row["calls"] != operations
@@ -356,12 +379,31 @@ def planned_evidence_failures(run: dict, cpu_workloads: list[str]) -> list[str]:
                 for boundary in layout["boundaries"]
             ):
                 failures.append(f"Fresh fixture age does not satisfy the declared plan: {name}")
-        elif (
-            package == "aiogram-sentinel"
-            and name in cpu_workloads
-            and row["cpu_samples"] != plan["cpu_repeats"]
-        ):
-            failures.append(f"CPU samples do not satisfy the declared plan: {name}")
+        elif package == "aiogram-sentinel":
+            if row["cpu_samples"] != plan["cpu_repeats"]:
+                failures.append(f"CPU samples do not satisfy the declared plan: {name}")
+            if name in cpu_workloads and row["calls"] != plan.get("cpu_calls_per_sample", 50000):
+                failures.append(f"CPU batch calls do not satisfy the declared plan: {name}")
+            if (
+                name == "middleware_fake_io"
+                and plan.get("latency_phase") == "separate-sentinel-phase"
+            ):
+                layout = row.get("window_layout")
+                if (
+                    not isinstance(layout, dict)
+                    or layout.get("phase") != "separate-from-cpu-batches"
+                    or layout["count"] != plan["additional_latency_windows"]
+                    or layout["operations_per_window"] != 1000
+                    or row["calls"] != plan["cpu_calls_per_sample"]
+                    or row["latency_samples"] != plan["individual_latency_samples"]
+                    or any(
+                        boundary["state_age"] != 0 or boundary["end_state_age"] != 1000
+                        for boundary in layout["boundaries"]
+                    )
+                ):
+                    failures.append(
+                        f"Separate Sentinel latency phase does not satisfy the declared plan: {name}"
+                    )
     return failures
 
 

@@ -41,9 +41,9 @@ jobs:
       shell: bash
       run: "for artifact in dist/*.whl dist/*.tar.gz; do\n  target=$(mktemp -d)\n  uv venv --python 3.12 \"$target/env\"\n\
         \  uv pip install --python \"$target/env/bin/python\" \"$artifact\" pytest pytest-asyncio hypothesis\n  cp -R tests\
-        \ examples tools \"$target/\"\n  cp pyproject.toml \"$target/\"\n  cd \"$target\"\n  \"$target/env/bin/python\" tools/check_install.py\n\
-        \  \"$target/env/bin/python\" tools/check_version.py\n  \"$target/env/bin/python\" -m pytest -q\n  cd \"$GITHUB_WORKSPACE/distribution\"\
-        \ndone\n"
+        \ examples tools benchmarks \"$target/\"\n  cp pyproject.toml \"$target/\"\n  cd \"$target\"\n  \"$target/env/bin/python\"\
+        \ tools/check_install.py\n  \"$target/env/bin/python\" tools/check_version.py\n  \"$target/env/bin/python\" -m pytest\
+        \ -q\n  cd \"$GITHUB_WORKSPACE/distribution\"\ndone\n"
     - uses: actions/upload-artifact@v4
       with:
         name: distributions
@@ -159,7 +159,7 @@ jobs:
       shell: bash
       run: "uv build\nfor artifact in dist/*.whl dist/*.tar.gz; do\n  target=$(mktemp -d)\n  uv venv --python 3.12 \"$target/env\"\
         \n  uv pip install --python \"$target/env/bin/python\" \"${artifact}[redis]\" pytest pytest-asyncio hypothesis\n \
-        \ cp -R tests examples tools \"$target/\"\n  cp pyproject.toml \"$target/\"\n  cd \"$target\"\n  \"$target/env/bin/python\"\
+        \ cp -R tests examples tools benchmarks \"$target/\"\n  cp pyproject.toml \"$target/\"\n  cd \"$target\"\n  \"$target/env/bin/python\"\
         \ tools/check_install.py --redis\n  \"$target/env/bin/python\" -m pytest -q\n  cd \"$GITHUB_WORKSPACE/distribution\"\
         \ndone\n"
     - if: always()

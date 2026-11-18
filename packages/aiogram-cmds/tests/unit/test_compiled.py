@@ -474,11 +474,12 @@ def test_native_borrowed_single_cache_respects_every_slot_and_failure():
 
 
 @pytest.mark.parametrize("engine", ["python", "rust"])
-async def test_live_small_menu_uses_one_eager_engine_check_and_fresh_values(
+async def test_live_manager_binds_engine_once_and_keeps_fresh_values(
     mock_bot, engine, monkeypatch
 ):
     import aiogram_cmds.delivery as delivery
     import aiogram_cmds.dynamic as dynamic
+    import aiogram_cmds.manager as managers
 
     if engine == "rust":
         pytest.importorskip("_aiogram_cmds_native")
@@ -490,21 +491,23 @@ async def test_live_small_menu_uses_one_eager_engine_check_and_fresh_values(
         state["calls"] += 1
         return state["text"]
 
-    manager = CommandScopeManager(
-        mock_bot, config=config, translator=translator, engine=engine
-    )
     checks = []
-    original = dynamic.native_engine
+    original = managers.native_engine
 
     def checked(value):
         checks.append(value)
         return original(value)
 
-    monkeypatch.setattr(dynamic, "native_engine", checked)
+    monkeypatch.setattr(managers, "native_engine", checked)
+    manager = CommandScopeManager(
+        mock_bot, config=config, translator=translator, engine=engine
+    )
+    assert checks == [engine]
 
     def duplicate_check(value):
-        pytest.fail("Live delivery must reuse its eager engine validation")
+        pytest.fail("Live manager must reuse its validated engine binding")
 
+    monkeypatch.setattr(dynamic, "native_engine", duplicate_check)
     monkeypatch.setattr(delivery, "native_engine", duplicate_check)
     first = await manager.apply_profile(42, "member", language="ru", language_code=None)
     state["text"] = "Second"
@@ -517,7 +520,7 @@ async def test_live_small_menu_uses_one_eager_engine_check_and_fresh_values(
         language_code=None,
         previous_fingerprint=first.confirmed_fingerprint,
     )
-    assert checks == [engine, engine]
+    assert checks == [engine]
     assert state["calls"] == 3
     assert second.status == "applied"
     assert first.confirmed_fingerprint != second.confirmed_fingerprint
@@ -550,8 +553,9 @@ async def test_live_native_abi_failure_is_eager_even_for_small_menu(
     mock_bot.set_my_commands.assert_not_called()
 
 
+@pytest.mark.parametrize("api", ["direct", "manager"])
 async def test_live_large_native_failure_is_not_retried_in_python(
-    mock_bot, monkeypatch
+    mock_bot, monkeypatch, api
 ):
     import aiogram_cmds.dynamic as dynamic
 
@@ -572,8 +576,91 @@ async def test_live_large_native_failure_is_not_retried_in_python(
 
     monkeypatch.setattr(native, "fingerprint", fail)
     with pytest.raises(RuntimeError, match="unknown native failure"):
-        await dynamic.apply_profile(
-            mock_bot, config, user_id=42, profile="member", engine="rust"
-        )
+        if api == "direct":
+            await dynamic.apply_profile(
+                mock_bot, config, user_id=42, profile="member", engine="rust"
+            )
+        else:
+            manager = CommandScopeManager(mock_bot, config=config, engine="rust")
+            await manager.apply_profile(42, "member")
     assert len(calls) == 1
     mock_bot.set_my_commands.assert_not_called()
+
+
+async def test_live_manager_valid_engine_changes_keep_hashes_and_module_selection(
+    mock_bot, monkeypatch
+):
+    native = pytest.importorskip("_aiogram_cmds_native")
+    config = CmdsConfig(
+        commands={
+            f"cmd{index}": CommandDef(descriptions={"en": "Original"})
+            for index in range(11)
+        },
+        profiles={"member": ProfileDef(include=[f"cmd{index}" for index in range(11)])},
+    )
+    mock_bot.id = 123
+    manager = CommandScopeManager(mock_bot, config=config, engine="python")
+    original = native.fingerprint
+    calls = []
+
+    def tracked(*args):
+        calls.append(args)
+        return original(*args)
+
+    monkeypatch.setattr(native, "fingerprint", tracked)
+    first = await manager.apply_profile(42, "member", language_code=None)
+    assert calls == []
+    manager.engine = "rust"
+    assert manager.engine == "rust"
+    second = await manager.apply_profile(
+        42,
+        "member",
+        language_code=None,
+        previous_fingerprint=first.confirmed_fingerprint,
+    )
+    assert second.status == "unchanged" and len(calls) == 1
+    manager.engine = "python"
+    assert manager.engine == "python"
+    third = await manager.apply_profile(
+        42,
+        "member",
+        language_code=None,
+        previous_fingerprint=first.confirmed_fingerprint,
+    )
+    assert third.status == "unchanged" and len(calls) == 1
+    assert mock_bot.set_my_commands.await_count == 1
+
+
+async def test_live_manager_failed_engine_change_is_atomic_and_before_callbacks(
+    mock_bot, monkeypatch
+):
+    import aiogram_cmds.manager as managers
+
+    mock_bot.id = 123
+    calls = []
+
+    def translator(key, **kwargs):
+        calls.append(key)
+        return "Description"
+
+    manager = CommandScopeManager(
+        mock_bot, config=sample(), translator=translator, engine="python"
+    )
+    original = managers.native_engine
+
+    def missing(value):
+        if value == "rust":
+            raise NativeEngineError("missing companion")
+        return original(value)
+
+    monkeypatch.setattr(managers, "native_engine", missing)
+    with pytest.raises(NativeEngineError, match="missing companion"):
+        manager.engine = "rust"
+    assert manager.engine == "python"
+    with pytest.raises(ValueError, match="engine"):
+        manager.engine = "invalid"
+    assert manager.engine == "python"
+    assert calls == []
+    mock_bot.set_my_commands.assert_not_called()
+    assert (await manager.apply_profile(42, "member")).status == "applied"
+    assert len(calls) == 2

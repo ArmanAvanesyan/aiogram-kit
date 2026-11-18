@@ -17,7 +17,7 @@ from .delivery import (
     resolved_fingerprint,
     validate_fingerprint,
 )
-from .engines import Engine, native_engine
+from .engines import Engine, NativeModule, native_engine
 from .registry import CommandRegistry
 from .translator import Translator
 
@@ -77,6 +77,36 @@ async def apply_profile(
     requests never confirm a fingerprint, including ambiguous transport errors.
     """
     module = native_engine(engine)
+    return await resolved_profile(
+        bot,
+        cfg,
+        translator=translator,
+        user_id=user_id,
+        profile=profile,
+        chat_id=chat_id,
+        language=language,
+        language_code=language_code,
+        previous_fingerprint=previous_fingerprint,
+        best_effort=best_effort,
+        module=module,
+    )
+
+
+async def resolved_profile(
+    bot: Bot,
+    cfg: CmdsConfig,
+    *,
+    translator: Translator | None = None,
+    user_id: int,
+    profile: str,
+    chat_id: int | None = None,
+    language: str = "en",
+    language_code: str | None | LanguageCode = UNSET,
+    previous_fingerprint: str | None = None,
+    best_effort: bool = False,
+    module: NativeModule | None,
+) -> CommandApplyResult:
+    """Internal live executor after explicit engine/ABI selection, never a cache."""
     if type(best_effort) is not bool:
         raise TypeError("best_effort must be a boolean")
     validate_fingerprint(previous_fingerprint)

@@ -370,3 +370,17 @@ def test_comparator_cannot_promote_a_different_sampling_declaration(tmp_path):
     )
     with pytest.raises(RuntimeError, match="host controls"):
         MODULE.checked_comparison(report, 0, [2], plan)
+
+
+def test_sentinel_plan_preserves_original_cpu_phase_and_requests_ten_fresh_windows():
+    assert MODULE.driver_arguments("aiogram-sentinel", 30, 10, 3000) == [
+        "--latency-windows",
+        "10",
+    ]
+    plan = MODULE.sampling_plan("aiogram-sentinel", 30, 10, 3000)
+    assert plan["cpu_repeats"] == 15 and plan["cpu_calls_per_sample"] == 50000
+    assert plan["additional_latency_windows"] == 10
+    assert plan["operations_per_window"] == 1000
+    assert plan["individual_latency_samples"] == 10000
+    assert plan["latency_phase"] == "separate-sentinel-phase"
+    assert MODULE.driver_arguments("aiogram-sentinel") == ["--latency-windows", "1"]

@@ -5,3 +5,5 @@ Avoid a single-target batch and SDK scope JSON round-trip during compiled delive
 Reuse the eager engine validation inside live delivery and avoid duplicate native-selection work for small resolved menus. Retain unchanged public fingerprint validation and unknown-native-failure propagation.
 
 Allow an up-front individual-latency sample count for benchmark evidence while preserving historical full/quick defaults, CPU work and all raw observations.
+
+Bind the validated engine/module selection once for live manager operations. Valid explicit engine changes remain supported; invalid changes now fail atomically at assignment instead of the next operation. Public direct APIs retain eager validation, and live configuration, translators and confirmations remain uncached.

@@ -70,7 +70,9 @@ jobs:
           REDIS_SERVICE_CONTAINER_ID: ${{ job.services.redis.id }}
         run: |
           selection=()
-          if [ "$NATIVE_PACKAGE" != all ]; then
+          if [ "$NATIVE_PACKAGE" = sentinel-cmds ]; then
+            selection=(--package aiogram-sentinel --package aiogram-cmds)
+          elif [ "$NATIVE_PACKAGE" != all ]; then
             selection=(--package "$NATIVE_PACKAGE")
           fi
           affinity=()
@@ -118,7 +120,7 @@ jobs:
         description: Run native performance qualification (never publishes)
         type: choice
         default: none
-        options: [none, all, aiogram-sentinel, aiogram-cmds, aiogram-nav, aiogram-idle]
+        options: [none, all, sentinel-cmds, aiogram-sentinel, aiogram-cmds, aiogram-nav, aiogram-idle]
       cpu_affinity:
         description: CPU IDs or auto (fixed once); none retains inherited scheduling
         type: string
