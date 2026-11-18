@@ -191,3 +191,15 @@ async def test_reentrant_lock_and_python_override_do_not_leak_codec():
 
         await asyncio.create_task(child())
     assert selected() is None
+
+
+def test_cached_sdk_record_is_not_accepted_as_json():
+    pytest.importorskip("aiogram_idle_native")
+    from aiogram_idle import IdleConversationKey
+    from aiogram_idle.storage.receipts import new_canonicalizer
+
+    core = new_canonicalizer()
+    key = IdleConversationKey("test", 1, 42, 42)
+    core.fingerprint(key)
+    assert core.cache_stats()[0] > 0
+    assert core.freeze(key, MappingProxyType, "idle") is None

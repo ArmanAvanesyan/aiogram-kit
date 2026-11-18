@@ -192,3 +192,15 @@ async def test_scoped_lock_cancellation_and_foreign_release():
         assert lock.locked()
     assert selected() is None
     assert not lock.locked()
+
+
+def test_cached_sdk_record_is_not_accepted_as_json():
+    pytest.importorskip("aiogram_nav_native")
+    from aiogram_nav import ConversationKey
+    from aiogram_nav.storage.state import new_canonicalizer
+
+    core = new_canonicalizer()
+    key = ConversationKey("test", 1, 42, 42)
+    core.fingerprint(key)
+    assert core.cache_stats()[0] > 0
+    assert core.freeze(key, MappingProxyType, "nav") is None
