@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "release_source_commit": "1bd593c",
+  "release_manifest_sha256": "d8ba1a950c71cdc82062f0b920cc98ee5c903390e59a829fea4e4931538963fa",
+  "purpose": "First qualification of the actual CI release binaries, not host-rebuilt substitutes.",
+  "packages": [
+    "aiogram-sentinel",
+    "aiogram-cmds",
+    "aiogram-nav",
+    "aiogram-idle"
+  ],
+  "selection": "Exact independently hashed glibc x86_64 wheel from each reviewed seven-platform set; SDK wheel hash must match before installation.",
+  "sampling": "Existing robust preset, fixed state-age windows, complete raw observations; unchanged GC and ABBA order.",
+  "thresholds": {
+    "max_cpu_ratio": 0.8,
+    "max_individual_p95_ratio": 1.05,
+    "max_repeat_spread": 0.1
+  },
+  "repeat_policy": "One declared shipping-artifact run; no favorable resampling or excluded tails.",
+  "prior_host_build_run": {
+    "run_id": 44231208251,
+    "reason_not_shipping_evidence": "Its host-built companion wheels are not the published matrix binaries.",
+    "results": {
+      "sentinel": "repeatability failure",
+      "cmds": "repeatability failure",
+      "nav": "pass",
+      "idle": "pass"
+    },
+    "retention": "Complete original raw samples, logs, manifests and artifact hashes retained separately."
+  },
+  "publication_performed": false
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "package": "aiogram-idle",
+    "profile": "public-memory-lifecycle-wheel",
+    "exit_code": 0,
+    "script_sha256": "81adb482f29af940713dc8ca5d56766773a4c9a281910a989bc3f8b30474f79c",
+    "output": "Idle standalone Python memory lifecycle: passed\n"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "public-memory-lifecycle-wheel",
+    "exit_code": 0,
+    "script_sha256": "b68d88b5337d9e126f782de95d35580a4b7279ca339ad7c15177f83e1fe989c3",
+    "output": "Nav standalone Python memory lifecycle: passed\n"
+  }
+]

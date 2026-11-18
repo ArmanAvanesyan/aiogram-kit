@@ -80,8 +80,8 @@ Hot state and retained cold evidence are reported separately.
 
 `verify_native_artifacts.py --help` verifies an exact companion release directory:
 matching project/version/tag, exact wheel-platform allowlist, ABI3, distribution
-metadata, module placement and independent checksums. `publish-native.yml` is the
-reusable workflow template. Functional platform CI, clean wheel/sdist installs,
+metadata, module placement and independent checksums. The legacy `publish-native.yml` remains a template; the active
+package-specific publishers are `.github/workflows/publish-aiogram-*-native.yml`. Functional platform CI, clean wheel/sdist installs,
 independent review and measured qualification remain separate required gates.
 
 ## Render the consolidated figures
@@ -222,3 +222,19 @@ The workflow choice `native_package=sentinel-cmds` qualifies just those two
 independent projects and labels its artifact accordingly. It does not rerun or
 claim new measurements for already-qualified Nav/Idle artifacts. Existing reports
 remain retained with their original controller/source hashes and conditions.
+
+## Exact release qualification and publication guard
+
+`prepare_release_qualification.py` validates a separately hashed, versioned
+manifest under reports. It binds package source hashes, completed platform CI,
+artifact/run ownership, exact files and all seven native targets before staging
+the glibc x86_64 release wheel. It supports independent package subsets; it does
+not rebuild native code or publish. The manual qualification workflow accepts
+`release_manifest_path` and `release_manifest_sha256` for this mode.
+
+`verify_release_readiness.py` rechecks the exact native set and SDK/native source,
+verifies raw evidence hashes and recomputes the unchanged performance gate. Native
+publishers invoke it before and after artifact handoff, bound to immutable source
+SHA and their own versioned report. An unqualified companion cannot reach the
+upload job merely by supplying a valid checksum. Python SDK publication remains
+independent of the optional companion's gate.

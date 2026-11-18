@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "scope": "Before/after driver only; no instrumentation inside measured operations",
+  "before": {
+    "cpu_affinity": [
+      0
+    ],
+    "host_cpu_count": 4,
+    "gc_enabled": true,
+    "gc_thresholds": [
+      700,
+      10,
+      10
+    ],
+    "gc_counts": [
+      552,
+      8,
+      1
+    ],
+    "gc_collections": [
+      {
+        "collections": 382,
+        "collected": 1239,
+        "uncollectable": 0
+      },
+      {
+        "collections": 34,
+        "collected": 101,
+        "uncollectable": 0
+      },
+      {
+        "collections": 3,
+        "collected": 206,
+        "uncollectable": 0
+      }
+    ],
+    "load_average": [
+      1.09228515625,
+      0.74853515625,
+      0.38720703125
+    ],
+    "process_usage": {
+      "ru_utime": 1.8584239999999999,
+      "ru_stime": 0.27191499999999996,
+      "ru_nvcsw": 0,
+      "ru_nivcsw": 13,
+      "ru_minflt": 54458,
+      "ru_majflt": 0
+    },
+    "linux_cpu": {
+      "cgroup_cpu_stat": "usage_usec 400032000\nuser_usec 343810000\nsystem_usec 56222000\nnice_usec 75000\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+      "cgroup_cpu_max": null,
+      "cgroup_cpuset": "0-3\n",
+      "cpu_pressure": "some avg10=0.13 avg60=0.72 avg300=1.29 total=9683107\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\n"
+    },
+    "cpu_frequency_khz": {
+      "0": null
+    }
+  },
+  "after": {
+    "cpu_affinity": [
+      0
+    ],
+    "host_cpu_count": 4,
+    "gc_enabled": true,
+    "gc_thresholds": [
+      700,
+      10,
+      10
+    ],
+    "gc_counts": [
+      177,
+      5,
+      84
+    ],
+    "gc_collections": [
+      {
+        "collections": 1817,
+        "collected": 719144,
+        "uncollectable": 0
+      },
+      {
+        "collections": 154,
+        "collected": 63556,
+        "uncollectable": 0
+      },
+      {
+        "collections": 34,
+        "collected": 34162,
+        "uncollectable": 0
+      }
+    ],
+    "load_average": [
+      1.05029296875,
+      0.85205078125,
+      0.4677734375
+    ],
+    "process_usage": {
+      "ru_utime": 97.113771,
+      "ru_stime": 2.048805,
+      "ru_nvcsw": 47457,
+      "ru_nivcsw": 2351,
+      "ru_minflt": 61374,
+      "ru_majflt": 0
+    },
+    "linux_cpu": {
+      "cgroup_cpu_stat": "usage_usec 511664000\nuser_usec 444465000\nsystem_usec 67199000\nnice_usec 75000\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0\n",
+      "cgroup_cpu_max": null,
+      "cgroup_cpuset": "0-3\n",
+      "cpu_pressure": "some avg10=0.00 avg60=0.17 avg300=0.91 total=10108430\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\n"
+    },
+    "cpu_frequency_khz": {
+      "0": null
+    }
+  }
+}

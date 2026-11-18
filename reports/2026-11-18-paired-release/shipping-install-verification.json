@@ -1,0 +1,114 @@
+[
+  {
+    "package": "aiogram-sentinel",
+    "profile": "-ci-native-only",
+    "result": "pass",
+    "artifact": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "c2f0c82b01fb1d6b805e4311de3995e79df6fcccc11ca9aa02dee9919d5dd624"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "-ci-paired",
+    "result": "pass",
+    "artifact": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "c2f0c82b01fb1d6b805e4311de3995e79df6fcccc11ca9aa02dee9919d5dd624"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "-ci-source",
+    "result": "pass",
+    "artifact": "aiogram_sentinel_native-1.3.2.tar.gz",
+    "sha256": "c524871e592c6403c05939751b03665d195a0534e6eaa0352f71f4f74b0a0ffe"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "final-sdk-source-archive",
+    "result": "pass",
+    "artifact": "aiogram_sentinel-1.3.2.tar.gz",
+    "sha256": "f479595402b55912fb5496612914caa93c4f616fc9361cc328964e9d5d8db218"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "-ci-native-only",
+    "result": "pass",
+    "artifact": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "fe0f6e94c101b72a7411e67e692dd63860f3db317d03f69404e1fd17564e9357"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "-ci-paired",
+    "result": "pass",
+    "artifact": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "fe0f6e94c101b72a7411e67e692dd63860f3db317d03f69404e1fd17564e9357"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "-ci-source",
+    "result": "pass",
+    "artifact": "aiogram_cmds_native-0.3.2.tar.gz",
+    "sha256": "0a95c5342edb311fb8842df0c626039deb9a5ae5a788bb02b6db8a9044f55fa6"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "final-sdk-source-archive",
+    "result": "pass",
+    "artifact": "aiogram_cmds-0.3.2.tar.gz",
+    "sha256": "6ec428b9f717789184e39d9a537b5809a3b49fe3bd1cd1edfc017a4e2f3d04f2"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "-ci-native-only",
+    "result": "pass",
+    "artifact": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "943475457e27f367177d64580b94074886f50dc191aff49588f49a0ad3dcabca"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "-ci-paired",
+    "result": "pass",
+    "artifact": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "943475457e27f367177d64580b94074886f50dc191aff49588f49a0ad3dcabca"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "-ci-source",
+    "result": "pass",
+    "artifact": "aiogram_nav_native-0.3.2.tar.gz",
+    "sha256": "aa44ce8f766dc8db715337b9021440f0ae38b20c7d1c34101ad7f95e55a61c4c"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "final-sdk-source-archive",
+    "result": "pass",
+    "artifact": "aiogram_nav-0.3.2.tar.gz",
+    "sha256": "dbb0dfe07a897edde9c6e1f7e6539c494024f8ff8860f885fc9e4cf3c37c0dd6"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "-ci-native-only",
+    "result": "pass",
+    "artifact": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "359ee1226a5c16f26f60644c4e8c010b0a408096cd4368fb9567ad017805f829"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "-ci-paired",
+    "result": "pass",
+    "artifact": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "359ee1226a5c16f26f60644c4e8c010b0a408096cd4368fb9567ad017805f829"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "-ci-source",
+    "result": "pass",
+    "artifact": "aiogram_idle_native-0.3.2.tar.gz",
+    "sha256": "d91e2757797ab18a264da917823a19d041984012e7561fc86f148597697ac0e6"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "final-sdk-source-archive",
+    "result": "pass",
+    "artifact": "aiogram_idle-0.3.2.tar.gz",
+    "sha256": "9f51efd4cc42165e054e017a9844cf804a1693a46180a6f9b10b1ccb42d948e3"
+  }
+]

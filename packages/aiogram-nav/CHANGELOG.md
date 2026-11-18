@@ -2,6 +2,17 @@
 
 <!-- towncrier release notes start -->
 
+## [0.3.2] - 2026-11-18
+
+### Native companion and performance
+
+- Prepare the independently installed, exactly matching `aiogram-nav-native==0.3.2` ABI 1 companion. Python remains the default; no mandatory native dependency or native extra is added.
+- Strict direct native JSON decoding, bounded backend-owned codecs and cycle-free task scopes preserve callback ownership and recovery; fix native history replacement parity.
+- Preserve standalone installs and existing optional Redis/navigation integrations.
+- Release candidates are not published by CI; publication requires exact artifact, platform and performance qualification and separate approval.
+
+
+
 ## [0.3.1] - 2026-11-11
 
 ### Maintenance

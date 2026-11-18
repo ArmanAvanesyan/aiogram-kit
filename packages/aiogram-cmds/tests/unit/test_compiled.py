@@ -223,7 +223,7 @@ def test_reject_incompatible_abi(monkeypatch):
             return 100
 
         def version(self):
-            return "0.3.1"
+            return "0.3.2"
 
     monkeypatch.setattr(engines, "import_module", lambda name: Bad())
     with pytest.raises(NativeEngineError, match="ABI"):
@@ -305,7 +305,7 @@ def test_malformed_matching_native_rejected_before_callbacks(
 
     import aiogram_cmds.engines as engines
 
-    module = SimpleNamespace(abi_version=lambda: abi, version=lambda: "0.3.1")
+    module = SimpleNamespace(abi_version=lambda: abi, version=lambda: "0.3.2")
     monkeypatch.setattr(engines, "import_module", lambda name: module)
 
     def translator(key, **kwargs):

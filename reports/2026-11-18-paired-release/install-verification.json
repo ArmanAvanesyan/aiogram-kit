@@ -1,0 +1,134 @@
+[
+  {
+    "package": "aiogram-sentinel",
+    "profile": "standalone-wheel",
+    "result": "pass",
+    "version": "1.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-sentinel-wheel/lib/python3.12/site-packages/aiogram_sentinel/__init__.py"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "standalone-sdist",
+    "result": "pass",
+    "version": "1.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-sentinel-sdist/lib/python3.12/site-packages/aiogram_sentinel/__init__.py"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "native-only",
+    "result": "pass",
+    "version": "1.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-sentinel-native-only/lib/python3.12/site-packages/_aiogram_sentinel_native/__init__.py"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "paired-and-previous-version-rejection",
+    "result": "pass",
+    "version": "1.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-sentinel-paired/lib/python3.12/site-packages/aiogram_sentinel/__init__.py"
+  },
+  {
+    "package": "aiogram-sentinel",
+    "profile": "native-source-rebuild-install",
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "standalone-wheel",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-cmds-wheel/lib/python3.12/site-packages/aiogram_cmds/__init__.py"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "standalone-sdist",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-cmds-sdist/lib/python3.12/site-packages/aiogram_cmds/__init__.py"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "native-only",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-cmds-native-only/lib/python3.12/site-packages/_aiogram_cmds_native/__init__.py"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "paired-and-previous-version-rejection",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-cmds-paired/lib/python3.12/site-packages/aiogram_cmds/__init__.py"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "native-source-rebuild-install",
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "standalone-wheel",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-nav-wheel/lib/python3.12/site-packages/aiogram_nav/__init__.py"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "standalone-sdist",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-nav-sdist/lib/python3.12/site-packages/aiogram_nav/__init__.py"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "native-only",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-nav-native-only/lib/python3.12/site-packages/aiogram_nav_native/__init__.py"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "paired-and-previous-version-rejection",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-nav-paired/lib/python3.12/site-packages/aiogram_nav/__init__.py"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "native-source-rebuild-install",
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "standalone-wheel",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-idle-wheel/lib/python3.12/site-packages/aiogram_idle/__init__.py"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "standalone-sdist",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-idle-sdist/lib/python3.12/site-packages/aiogram_idle/__init__.py"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "native-only",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-idle-native-only/lib/python3.12/site-packages/aiogram_idle_native/__init__.py"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "paired-and-previous-version-rejection",
+    "result": "pass",
+    "version": "0.3.2",
+    "module": "/tmp/kit-paired-release-20261118/installs/aiogram-idle-paired/lib/python3.12/site-packages/aiogram_idle/__init__.py"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "native-source-rebuild-install",
+    "result": "pass"
+  }
+]

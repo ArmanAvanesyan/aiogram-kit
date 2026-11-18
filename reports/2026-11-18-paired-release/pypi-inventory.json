@@ -1,0 +1,63 @@
+{
+  "checked_at_utc": "2026-11-18T04:02:45.888898+00:00",
+  "projects": [
+    {
+      "project": "aiogram-sentinel",
+      "url": "https://pypi.org/pypi/aiogram-sentinel/json",
+      "http_status": 200,
+      "latest": "1.3.1",
+      "candidate": "1.3.2",
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-sentinel-native",
+      "url": "https://pypi.org/pypi/aiogram-sentinel-native/json",
+      "http_status": 404,
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-cmds",
+      "url": "https://pypi.org/pypi/aiogram-cmds/json",
+      "http_status": 200,
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-cmds-native",
+      "url": "https://pypi.org/pypi/aiogram-cmds-native/json",
+      "http_status": 404,
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-nav",
+      "url": "https://pypi.org/pypi/aiogram-nav/json",
+      "http_status": 200,
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-nav-native",
+      "url": "https://pypi.org/pypi/aiogram-nav-native/json",
+      "http_status": 404,
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-idle",
+      "url": "https://pypi.org/pypi/aiogram-idle/json",
+      "http_status": 200,
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_already_published": false
+    },
+    {
+      "project": "aiogram-idle-native",
+      "url": "https://pypi.org/pypi/aiogram-idle-native/json",
+      "http_status": 404,
+      "candidate_already_published": false
+    }
+  ],
+  "publisher_settings_authenticated": false,
+  "publishing_performed": false
+}

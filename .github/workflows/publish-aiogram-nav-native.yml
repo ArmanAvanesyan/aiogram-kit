@@ -1,0 +1,74 @@
+name: Publish verified aiogram-nav-native
+permissions:
+  contents: read
+concurrency:
+  group: publish-aiogram-nav-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'aiogram-nav-native-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact_id: ${{ steps.artifacts.outputs.artifact-id }}
+    steps:
+    - &id001
+      uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+        ref: ${{ github.sha }}
+    - &id002
+      uses: astral-sh/setup-uv@v7
+      with:
+        python-version: '3.12'
+    - name: Download exact reviewed native release
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: gh release download "$GITHUB_REF_NAME" --pattern "*.whl" --pattern "*.tar.gz" --pattern SHA256SUMS --dir
+        verified-input
+    - name: Enforce exact artifact, platform and recomputed performance qualification
+      env: &id003
+        MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
+      run: python tools/optimization/verify_release_readiness.py --package aiogram-nav --report reports/2026-11-18-paired-release
+        --directory verified-input --tag "$GITHUB_REF_NAME" --manifest-sha256 "$MANIFEST_SHA256"
+    - run: uvx twine check verified-input/*.whl verified-input/*.tar.gz
+    - run: uvx abi3audit --strict verified-input/*.whl
+    - uses: actions/upload-artifact@v6
+      id: artifacts
+      with:
+        name: verified-aiogram-nav-native
+        path: verified-input/
+        if-no-files-found: error
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+    - *id001
+    - *id002
+    - uses: actions/download-artifact@v7
+      with:
+        artifact-ids: ${{ needs.verify.outputs.artifact_id }}
+        path: verified-input
+        merge-multiple: true
+    - name: Recheck qualification and stage only reviewed artifacts
+      env: *id003
+      run: "python tools/optimization/verify_release_readiness.py --package aiogram-nav --report reports/2026-11-18-paired-release\
+        \ --directory verified-input --tag \"$GITHUB_REF_NAME\" --manifest-sha256 \"$MANIFEST_SHA256\"\npython -\
+        \ <<'PYTHON'\nfrom pathlib import Path\nimport shutil\nsource = Path(\"verified-input\")\ntarget = Path(\"\
+        publish-dist\")\ntarget.mkdir()\nfor line in (source / \"SHA256SUMS\").read_text().splitlines():\n    _,\
+        \ filename = line.split()\n    shutil.copyfile(source / filename, target / filename)\nPYTHON\n"
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: publish-dist/
+'on':
+  workflow_dispatch:
+    inputs:
+      manifest_sha256:
+        description: SHA256 of independently reviewed SHA256SUMS
+        required: true
+        type: string
