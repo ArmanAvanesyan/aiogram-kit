@@ -264,3 +264,128 @@ def test_deferred_codecs_fork_once_and_never_share_derived_data(monkeypatch):
     assert len(created) == 2
     first.clear_cache()
     assert second.cache_stats() == (1, 1)
+
+
+@pytest.mark.parametrize("initialized", [False, True])
+def test_deferred_codec_disposal_never_requires_cycle_collection(initialized):
+    import gc
+    import weakref
+
+    from aiogram_nav.storage.state import new_canonicalizer
+
+    if initialized:
+        pytest.importorskip("aiogram_nav_native")
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+        core = new_canonicalizer()
+        assert "fingerprint" not in vars(core)
+        assert "freeze" not in vars(core)
+        if initialized:
+            core.fingerprint({"value": 1})
+            # Initialized hot calls still go directly to native bound methods.
+            assert vars(core)["fingerprint"].__self__ is core._loaded
+            assert vars(core)["freeze"].__self__ is core._loaded
+        reference = weakref.ref(core)
+        del core
+        assert reference() is None
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.asyncio
+async def test_read_only_projection_codec_drops_immediately_without_gc():
+    import gc
+    import weakref
+
+    from aiogram_nav import ConversationKey, MemoryNavigationRepository, NavigationConfig
+
+    pytest.importorskip("aiogram_nav_native")
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+        repository = MemoryNavigationRepository(config=NavigationConfig(engine="rust"))
+        reference = weakref.ref(repository.json_processor.core)
+        assert await repository.load(ConversationKey("read-only", 1, 42, 42)) is None
+        await repository.close()
+        del repository
+        assert reference() is None
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.asyncio
+async def test_revoked_copied_context_drops_codec_and_completed_owner_without_gc():
+    import gc
+    import weakref
+
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+
+        async def create_revoked_context():
+            engine = JsonEngine(Dummy(), ValueError)
+            scope = begin(engine)
+            copied = copy_context()
+            engine_reference = weakref.ref(engine)
+            owner_reference = weakref.ref(asyncio.current_task())
+            end(*scope)
+            return copied, engine_reference, owner_reference, scope[1]
+
+        task = asyncio.create_task(create_revoked_context())
+        copied, engine_reference, owner_reference, record = await task
+        del task
+        # Let asyncio discard the completed task's ready/await callbacks; do not
+        # collect cycles while the copied Context remains deliberately alive.
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert copied.run(selected) is None
+        assert record.engine is record.owner is None
+        assert engine_reference() is None
+        assert owner_reference() is None
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.asyncio
+async def test_scope_revocation_clears_only_inner_references_and_restores_outer():
+    outer_engine = JsonEngine(Dummy(), ValueError)
+    outer = begin(outer_engine)
+    try:
+        inner_engine = JsonEngine(Dummy(), ValueError)
+        inner = begin(inner_engine)
+        copied = copy_context()
+        end(*inner)
+        assert inner[1].engine is inner[1].owner is None
+        assert selected() is outer_engine
+        assert copied.run(selected) is None
+        assert outer[1].engine is outer_engine
+        assert outer[1].owner is asyncio.current_task()
+    finally:
+        end(*outer)
+    assert outer[1].engine is outer[1].owner is None
+
+
+@pytest.mark.asyncio
+async def test_copied_context_revocation_keeps_actual_backend_lock_owner():
+    from aiogram_nav._json_scope import JsonLock
+
+    lock = JsonLock(JsonEngine(Dummy(), ValueError))
+    await lock.acquire()
+    copied = copy_context()
+    copied.run(end, *lock.scope)
+    assert selected() is copied.run(selected) is None
+    assert lock.scope[1].owner is lock.scope[1].engine is None
+
+    async def foreign():
+        with pytest.raises(RuntimeError, match="owning task"):
+            lock.release()
+
+    await asyncio.create_task(foreign())
+    assert lock.locked()
+    lock.release()
+    assert not lock.locked()
+    assert lock._owner is None

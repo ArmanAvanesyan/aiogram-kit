@@ -8,7 +8,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
 from functools import lru_cache
-from typing import Literal, Protocol, cast
+from typing import Literal, cast
 
 from aiogram_coordination import ExternalSession
 
@@ -83,14 +83,6 @@ def canonicalizer() -> CanonicalCore:
     )
 
 
-class _FingerprintCall(Protocol):
-    def __call__(self, value: object) -> str: ...
-
-
-class _FreezeCall(Protocol):
-    def __call__(self, value: object, proxy: object, style: str) -> tuple[object, int] | None: ...
-
-
 class _DeferredCanonicalizer:
     """Backend-owned codec, allocated only when pure JSON work is requested.
 
@@ -102,24 +94,24 @@ class _DeferredCanonicalizer:
 
     def __init__(self) -> None:
         self._loaded: CanonicalCore | None = None
-        self.fingerprint: _FingerprintCall = self._fingerprint
-        self.freeze: _FreezeCall = self._freeze
 
     def _core(self) -> CanonicalCore:
         if self._loaded is None:
             self._loaded = canonicalizer().fork()
-            # Pay the deferred dispatch once, not on each hot-path operation.
-            self.fingerprint = self._loaded.fingerprint
-            self.freeze = self._loaded.freeze
+            # Cold dispatch lives on the class, never as self-bound methods in
+            # the instance: unused read projections must not form GC cycles.
+            # Native bound methods retain only this backend's core, not self.
+            object.__setattr__(self, "fingerprint", self._loaded.fingerprint)
+            object.__setattr__(self, "freeze", self._loaded.freeze)
         return self._loaded
 
     def fork(self) -> CanonicalCore:
         return _DeferredCanonicalizer()
 
-    def _fingerprint(self, value: object) -> str:
+    def fingerprint(self, value: object) -> str:
         return self._core().fingerprint(value)
 
-    def _freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None:
+    def freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None:
         return self._core().freeze(value, proxy, style)
 
     def clear_cache(self) -> None:

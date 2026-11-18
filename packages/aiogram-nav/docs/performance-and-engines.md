@@ -205,7 +205,12 @@ that do no JSON freezing/fingerprinting allocate no native derived-data cache.
 The first pure-data operation creates that backend's own fork; no cache, mutable
 record or authorization result is shared across backends. Capability checks still
 happen eagerly before mutation, and unused/reused codecs keep the same bounded
-cache and task-ownership rules. Generic mapping canonicalization unpacks exactly
+cache and task-ownership rules. Cold dispatch is cycle-free: dropping an unused
+projection releases its codec immediately, even with cyclic GC disabled. After
+first use, calls bind directly to native methods without retaining the wrapper.
+Revoking a codec context clears its codec and task references even in long-lived
+context copies. Actual lock ownership is fenced independently until release.
+Generic mapping canonicalization unpacks exactly
 two iterable values from each `items()` pair, matching Python's reference path.
 
 The typed companion API includes `Canonicalizer` and `InvalidJson`, matching the

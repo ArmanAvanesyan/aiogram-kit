@@ -58,3 +58,9 @@ The packaged typed surface includes the exact engine version, `Canonicalizer`,
 `InvalidJson`, coarse claim projection and raw release method. It imports no SDK,
 Redis or navigation package. Current timing evidence is retained in the
 [coarse-boundary qualification report](../../../reports/2026-11-18-native-coarse-qualification/README.md).
+
+Queue-only scopes share the backend lock without a lock/view reference cycle.
+Each memory or scratch Redis reducer caches one view; dropping the reducer releases
+its derived codec immediately, without waiting for cyclic garbage collection.
+Revoked codec records also clear their engine and owner-task references, so copied
+contexts cannot retain caches or completed tasks after their scope ends.

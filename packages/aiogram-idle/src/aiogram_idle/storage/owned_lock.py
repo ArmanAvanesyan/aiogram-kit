@@ -18,7 +18,12 @@ class OwnedLock(asyncio.Lock):
         self._depth = 0
         self._processor = processor
         self._json_scope: tuple[Token[JsonRecord | None], JsonRecord] | None = None
-        self.queue = _QueueScope(self)
+
+    @property
+    def queue(self) -> _QueueScope:
+        # The backend caches one view. Keeping it on the lock would create
+        # lock -> view -> lock and retain native codecs until cyclic GC runs.
+        return _QueueScope(self)
 
     async def acquire(self, *, codec: bool = True) -> Literal[True]:
         task = asyncio.current_task()

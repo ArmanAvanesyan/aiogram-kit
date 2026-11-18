@@ -40,6 +40,8 @@ def begin(engine: JsonEngine | None) -> tuple[Token[JsonRecord | None], JsonReco
 
 def end(token: Token[JsonRecord | None], record: JsonRecord) -> None:
     record.active = False
+    record.engine = None
+    record.owner = None
     try:
         _SCOPE.reset(token)
     except ValueError:
@@ -69,20 +71,23 @@ class JsonLock(asyncio.Lock):
         super().__init__()
         self.processor = processor
         self.scope: tuple[Token[JsonRecord | None], JsonRecord] | None = None
+        self._owner: asyncio.Task[object] | None = None
 
     async def acquire(self) -> Literal[True]:
         await super().acquire()
         try:
             self.scope = begin(self.processor)
+            self._owner = self.scope[1].owner
         except BaseException:
             super().release()
             raise
         return True
 
     def release(self) -> None:
-        if self.scope is None or self.scope[1].owner is not asyncio.current_task():
+        if self.scope is None or self._owner is not asyncio.current_task():
             raise RuntimeError("Backend codec scope requires its owning task")
         scope, self.scope = self.scope, None
+        self._owner = None
         end(*scope)
         super().release()
 

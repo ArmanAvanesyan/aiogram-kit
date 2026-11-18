@@ -230,3 +230,159 @@ async def test_queue_only_scope_keeps_lock_ownership_without_codec():
             assert selected() is None
         assert selected() is engine
     assert selected() is None
+
+
+def test_queue_view_lifetime_does_not_form_a_lock_cycle():
+    import gc
+    import weakref
+
+    from aiogram_idle.storage.owned_lock import OwnedLock
+
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+        lock = OwnedLock()
+        view = lock.queue
+        lock_ref, view_ref = weakref.ref(lock), weakref.ref(view)
+        del lock
+        assert lock_ref() is not None  # An outstanding view owns its lock.
+        del view
+        assert view_ref() is None
+        assert lock_ref() is None
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.parametrize("engine", ["python", "rust"])
+@pytest.mark.parametrize("kind", ["memory", "redis-reducer"])
+def test_backend_and_cached_queue_view_release_without_cyclic_gc(engine, kind):
+    import gc
+    import weakref
+
+    from aiogram_idle import IdleConfig, IdleConversationKey, MemoryIdleBackend
+
+    if engine == "rust":
+        pytest.importorskip("aiogram_idle_native")
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+        if kind == "memory":
+            backend = MemoryIdleBackend(config=IdleConfig(engine=engine))
+        else:
+            from aiogram_idle.storage.redis_engine import Engine
+
+            backend = Engine(
+                key=IdleConversationKey("lifetime", 1, 42, 42),
+                raw="",
+                job="",
+                manifest=None,
+                now=1,
+                config=IdleConfig(engine=engine),
+                created_at=1,
+            )
+        refs = [weakref.ref(backend), weakref.ref(backend._lock), weakref.ref(backend._queue_lock)]
+        if backend.json_processor is not None:
+            key = IdleConversationKey("lifetime", 1, 42, 42)
+            backend.json_processor.core.fingerprint(key)
+            assert backend.json_processor.core.cache_stats()[0] > 0
+            refs += [weakref.ref(backend.json_processor), weakref.ref(key)]
+            del key
+        del backend
+        assert all(reference() is None for reference in refs)
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.asyncio
+async def test_queue_only_waiter_cancellation_does_not_release_owner():
+    from aiogram_idle.storage.owned_lock import OwnedLock
+
+    engine = JsonEngine(Dummy(), ValueError)
+    lock = OwnedLock(processor=engine)
+    view = lock.queue
+    async with lock:
+
+        async def waiter():
+            async with view:
+                raise AssertionError("cancelled waiter must not acquire ownership")
+
+        waiting = asyncio.create_task(waiter())
+        await asyncio.sleep(0)
+        assert not waiting.done()
+        waiting.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await waiting
+        assert lock.locked()
+        assert selected() is engine
+        async with view:
+            assert selected() is engine
+    assert not lock.locked()
+    async with view:
+        assert lock.locked()
+        assert selected() is None
+
+
+@pytest.mark.asyncio
+async def test_revoked_copied_scope_releases_codec_and_finished_task_without_gc():
+    import gc
+    import weakref
+
+    enabled = gc.isenabled()
+    gc.disable()
+    try:
+
+        async def capture():
+            core = Dummy()
+            engine = JsonEngine(core, ValueError)
+            refs = weakref.ref(core), weakref.ref(engine), weakref.ref(asyncio.current_task())
+            scope = begin(engine)
+            copied = copy_context()
+            end(*scope)
+            return copied, refs
+
+        task = asyncio.create_task(capture())
+        copied, refs = await task
+        del task
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert copied.run(selected) is None
+        assert all(reference() is None for reference in refs)
+    finally:
+        if enabled:
+            gc.enable()
+
+
+@pytest.mark.asyncio
+async def test_scope_revocation_clears_payload_and_restores_outer_scope():
+    outer_engine, inner_engine = JsonEngine(Dummy(), ValueError), JsonEngine(Dummy(), ValueError)
+    outer = begin(outer_engine)
+    try:
+        inner = begin(inner_engine)
+        copied = copy_context()
+        assert selected() is inner_engine
+        end(*inner)
+        assert inner[1].active is False
+        assert inner[1].engine is inner[1].owner is None
+        assert selected() is outer_engine
+        assert copied.run(selected) is None
+    finally:
+        end(*outer)
+    assert outer[1].engine is outer[1].owner is None
+    assert selected() is None
+
+
+@pytest.mark.asyncio
+async def test_cross_context_revocation_releases_payload_even_if_reset_is_not_possible():
+    engine = JsonEngine(Dummy(), ValueError)
+    scope = begin(engine)
+    copied = copy_context()
+    try:
+        copied.run(end, *scope)
+        assert selected() is copied.run(selected) is None
+        assert scope[1].active is False
+        assert scope[1].engine is scope[1].owner is None
+    finally:
+        end(*scope)
+    assert selected() is None

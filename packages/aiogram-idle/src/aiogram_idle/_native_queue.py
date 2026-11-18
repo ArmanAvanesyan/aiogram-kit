@@ -12,6 +12,7 @@ from typing import Protocol, TypeVar, cast, overload
 from ._wire import wire as _wire
 from .errors import OwnershipLost
 from .models import IdleConversationKey, RuntimeSnapshot
+from .storage.component_transaction import component_deadline
 from .storage.queue import DeadlineQueue
 from .storage.state import Claim, Job
 
@@ -222,8 +223,6 @@ class RustDeadlineQueue(DeadlineQueue):
         self.core.push(_key(key))
 
     def schedule(self, record: RuntimeSnapshot, *, preserve: Claim | None = None) -> None:
-        from .storage.component_transaction import component_deadline
-
         key, packed = record.key, _key(record.key)
         deadline = component_deadline(record)
         self._owned(
@@ -291,8 +290,6 @@ class RustDeadlineQueue(DeadlineQueue):
     def release(
         self, claim: Claim, record: RuntimeSnapshot, *, now: float, retry_at: float | None = None
     ) -> None:
-        from .storage.component_transaction import component_deadline
-
         deadline = retry_at if retry_at is not None else component_deadline(record)
         packed = _key(claim.key)
         try:
@@ -310,8 +307,6 @@ class RustDeadlineQueue(DeadlineQueue):
             self.keys.pop(packed, None)
 
     def reconcile(self, records: Sequence[RuntimeSnapshot], *, limit: int) -> int:
-        from .storage.component_transaction import component_deadline
-
         candidates: list[tuple[str, str, str, float]] = []
         selected: dict[str, IdleConversationKey] = {}
         for record in records[:limit]:

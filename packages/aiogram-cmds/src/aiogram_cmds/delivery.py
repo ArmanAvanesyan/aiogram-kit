@@ -11,7 +11,7 @@ from typing import Literal, cast
 
 from aiogram.types import BotCommand
 
-from .engines import Engine, native_engine
+from .engines import Engine, NativeModule, native_engine
 
 
 class LanguageCode(Enum):
@@ -51,14 +51,29 @@ def payload_fingerprint(
     if type(bot_id) is not int or bot_id <= 0:
         raise ValueError("A positive bot identity is required for fingerprints")
     module = native_engine(engine)
-    # Small one-shot payloads cost less in CPython's C-backed JSON/hash modules
-    # than converting their rows across the extension boundary. Selection is
-    # deterministic, not a fallback after a native error or application effect.
-    if module is not None and (
+    if module is not None and not (
         len(commands) > 10
         or not isinstance(cast(object, scope), dict)
         or not (language_code is None or isinstance(cast(object, language_code), str))
     ):
+        module = None
+    return resolved_fingerprint(bot_id, scope, language_code, commands, module=module)
+
+
+def resolved_fingerprint(
+    bot_id: int,
+    scope: dict[str, object],
+    language_code: str | None,
+    commands: list[BotCommand],
+    *,
+    module: NativeModule | None,
+) -> str:
+    """Internal boundary after identity, engine and input-shape selection.
+
+    Small payloads deterministically select CPython before this boundary. Unknown
+    native errors propagate; they never cause a fallback after an attempted call.
+    """
+    if module is not None:
         return module.fingerprint(
             str(bot_id),
             json.dumps(

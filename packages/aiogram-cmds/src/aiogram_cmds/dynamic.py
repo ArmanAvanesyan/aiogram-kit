@@ -14,7 +14,7 @@ from .delivery import (
     CommandApplyResult,
     LanguageCode,
     menu_slot,
-    payload_fingerprint,
+    resolved_fingerprint,
     validate_fingerprint,
 )
 from .engines import Engine, native_engine
@@ -76,7 +76,7 @@ async def apply_profile(
     There is no internal cache or distributed deduplication. Failed and cancelled
     requests never confirm a fingerprint, including ambiguous transport errors.
     """
-    native_engine(engine)
+    module = native_engine(engine)
     if type(best_effort) is not bool:
         raise TypeError("best_effort must be a boolean")
     validate_fingerprint(previous_fingerprint)
@@ -98,8 +98,18 @@ async def apply_profile(
             else BotCommandScopeChatMember(chat_id=chat_id, user_id=user_id)
         )
         slot = menu_slot(language, language_code, per_language=cfg.per_language)
-        fingerprint = payload_fingerprint(
-            bot.id, scope.model_dump(exclude_none=True), slot, commands, engine=engine
+        bot_id = bot.id
+        if type(bot_id) is not int or bot_id <= 0:
+            raise ValueError("A positive bot identity is required for fingerprints")
+        # Aiogram just validated this scope; menu_slot validated the language.
+        # For small live menus, CPython hashes the resolved values directly.
+        # Do not repeat the public engine check or marshal a tiny native call.
+        fingerprint = resolved_fingerprint(
+            bot_id,
+            scope.model_dump(exclude_none=True),
+            slot,
+            commands,
+            module=module if module is not None and len(commands) > 10 else None,
         )
         if previous_fingerprint == fingerprint:
             return CommandApplyResult("unchanged", fingerprint, fingerprint)

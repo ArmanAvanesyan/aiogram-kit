@@ -39,6 +39,10 @@ def begin(engine: JsonEngine | None) -> tuple[Token[JsonRecord | None], JsonReco
 
 def end(token: Token[JsonRecord | None], record: JsonRecord) -> None:
     record.active = False
+    # Copied contexts may outlive the operation. Revocation must also release
+    # the codec cache and owner task rather than merely make them inaccessible.
+    record.engine = None
+    record.owner = None
     try:
         _SCOPE.reset(token)
     except ValueError:

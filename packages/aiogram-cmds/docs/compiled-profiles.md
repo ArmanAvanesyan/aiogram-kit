@@ -91,3 +91,24 @@ The original serial ABBA native gate failed (selected compiled batch CPU was
 native tags and a dependency extra are withheld. Buildable source is retained;
 the Python 0.3.0 package can release independently. Supplemental compiled manager
 workloads retain the original failed gate and include deferred SDK construction.
+
+
+### Live tiny menus and retained qualification diagnostics
+
+Live delivery validates the selected engine and ABI once before translator
+callbacks. Its internal fingerprint boundary reuses that validation; menus with
+at most ten freshly rendered commands use CPython's JSON/SHA implementation
+without an additional native boundary. Larger live menus retain the explicit
+native path, and an unexpected native failure is never retried in Python. The
+standalone public fingerprint function retains its own eager validation.
+No configuration, translator output or confirmation is cached by live delivery.
+
+The controlled follow-up run 44210106073 still failed qualification. The
+compiled-confirmation/10 repeat-spread failure was in the Python baseline
+(14,487 ns versus 15,950 ns, about 10.10%); Rust was 13,896 ns versus 13,845 ns
+(about 0.37%). Before/after driver telemetry recorded no generation-two
+collections, but cannot attribute particular tails to lower-generation GC or
+host scheduling. The package report
+`reports/2026-11-18-confirmation-tail-analysis.json` retains sample-window
+summaries and exact input hashes. This is diagnostic evidence, not a reason to
+waive a failed gate or rerun unchanged code until it passes.
