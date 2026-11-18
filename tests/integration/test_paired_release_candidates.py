@@ -42,3 +42,11 @@ def test_paired_metadata_and_manual_native_publisher(short):
     download = next(s for s in publish["steps"] if "download-artifact@" in s.get("uses", ""))
     assert download["with"]["artifact-ids"] == "${{ needs.verify.outputs.artifact_id }}"
     assert publish["steps"][-1]["with"]["packages-dir"] == "publish-dist/"
+
+
+def test_sentinel_musl_check_uses_installed_metadata_instead_of_stale_release():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/aiogram-sentinel-native.yml").read_text())
+    steps = workflow["jobs"]["wheels"]["steps"]
+    command = next(s["run"] for s in steps if "n.capabilities()" in s.get("run", ""))
+    assert 'version("aiogram-sentinel-native")' in command
+    assert '1, "1.3.' not in command

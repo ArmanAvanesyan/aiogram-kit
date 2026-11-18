@@ -49,7 +49,7 @@ snapshot once. Native ABI/version mismatches and missing modules raise
 `NativeEngineError` before effects; the library never silently falls back after
 an explicit request. Rust receives resolved strings, never translators, async
 callbacks, Telegram clients or application business logic. The supported native
-ABI is 1 and candidate companion version is 0.3.1. Snapshot capabilities include
+ABI is 1 and candidate companion version is 0.3.2. Snapshot capabilities include
 `resolve_one` and `resolve_batch`; incomplete companions are rejected before
 translation or delivery effects.
 
