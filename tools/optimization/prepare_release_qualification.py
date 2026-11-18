@@ -32,7 +32,10 @@ def read_manifest(path: Path, expected: str, root: Path) -> dict:
     require(not path.is_symlink() and digest(path) == expected, "Release manifest changed")
     data = json.loads(path.read_text())
     require(data["repository"] == REPOSITORY, "Unexpected release repository")
-    require(set(data["packages"]) == PACKAGES, "Expected exactly four release pairs")
+    require(
+        bool(data["packages"]) and set(data["packages"]) <= PACKAGES,
+        "Unknown or empty release pair selection",
+    )
     for package, entry in data["packages"].items():
         require(bool(entry["source_files"]), "Release source inventory is empty")
         require(re.fullmatch(r"\d+\.\d+\.\d+", entry["version"]) is not None, "Invalid version")
@@ -150,6 +153,10 @@ def main() -> None:
     parser.add_argument("--reviewed", type=Path, required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
+    require(
+        args.manifest.resolve().is_relative_to(root / "reports"),
+        "Release manifest must be retained under reports",
+    )
     data = read_manifest(args.manifest, args.manifest_sha256, root)
     stage(data, root, args.output, args.reviewed)
     shutil.copyfile(args.manifest, args.reviewed / "release-manifest.json")

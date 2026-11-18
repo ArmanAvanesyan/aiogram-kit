@@ -1,0 +1,98 @@
+{
+  "checked_at_utc": "2026-11-18T04:28:59.757540+00:00",
+  "publishing_performed": false,
+  "checks": [
+    {
+      "package": "aiogram-sentinel",
+      "version": "1.3.2",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/env/bin/python",
+        "tools/optimization/verify_release_readiness.py",
+        "--package",
+        "aiogram-sentinel",
+        "--tag",
+        "aiogram-sentinel-native-v1.3.2",
+        "--report",
+        "reports/2026-11-18-paired-release",
+        "--directory",
+        "/tmp/kit-paired-release-20261118/reviewed-release-artifacts/aiogram-sentinel-native",
+        "--manifest-sha256",
+        "f17b55a16006b255bf536cb8788597bc665412ab8c1127dc831a9a7e891b810b"
+      ],
+      "expected": "allow",
+      "exit_code": 0,
+      "result": "pass",
+      "stdout": "{\n  \"package\": \"aiogram-sentinel-native\",\n  \"version\": \"1.3.2\",\n  \"qualified\": true,\n  \"manifest_sha256\": \"f17b55a16006b255bf536cb8788597bc665412ab8c1127dc831a9a7e891b810b\"\n}\n",
+      "hold_reason": null
+    },
+    {
+      "package": "aiogram-cmds",
+      "version": "0.3.2",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/env/bin/python",
+        "tools/optimization/verify_release_readiness.py",
+        "--package",
+        "aiogram-cmds",
+        "--tag",
+        "aiogram-cmds-native-v0.3.2",
+        "--report",
+        "reports/2026-11-18-paired-release",
+        "--directory",
+        "/tmp/kit-paired-release-20261118/reviewed-release-artifacts/aiogram-cmds-native",
+        "--manifest-sha256",
+        "1c808eaf928ed4e7311ebc1d4eb932ee400c4af042d343712ef39aff180d404d"
+      ],
+      "expected": "hold",
+      "exit_code": 1,
+      "result": "pass",
+      "stdout": "",
+      "hold_reason": "Native release is held by performance qualification"
+    },
+    {
+      "package": "aiogram-nav",
+      "version": "0.3.2",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/env/bin/python",
+        "tools/optimization/verify_release_readiness.py",
+        "--package",
+        "aiogram-nav",
+        "--tag",
+        "aiogram-nav-native-v0.3.2",
+        "--report",
+        "reports/2026-11-18-paired-release",
+        "--directory",
+        "/tmp/kit-paired-release-20261118/reviewed-release-artifacts/aiogram-nav-native",
+        "--manifest-sha256",
+        "44ed367daadcd357539b0972f6086fc4b0c1d385fa1fb184625bb5c52b0c6a27"
+      ],
+      "expected": "allow",
+      "exit_code": 0,
+      "result": "pass",
+      "stdout": "{\n  \"package\": \"aiogram-nav-native\",\n  \"version\": \"0.3.2\",\n  \"qualified\": true,\n  \"manifest_sha256\": \"44ed367daadcd357539b0972f6086fc4b0c1d385fa1fb184625bb5c52b0c6a27\"\n}\n",
+      "hold_reason": null
+    },
+    {
+      "package": "aiogram-idle",
+      "version": "0.3.2",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/env/bin/python",
+        "tools/optimization/verify_release_readiness.py",
+        "--package",
+        "aiogram-idle",
+        "--tag",
+        "aiogram-idle-native-v0.3.2",
+        "--report",
+        "reports/2026-11-18-paired-release",
+        "--directory",
+        "/tmp/kit-paired-release-20261118/reviewed-release-artifacts/aiogram-idle-native",
+        "--manifest-sha256",
+        "296cb16e7b5194c8d7e1306bfac168979c953e34c0279650f58e8033e3ebaa85"
+      ],
+      "expected": "hold",
+      "exit_code": 1,
+      "result": "pass",
+      "stdout": "",
+      "hold_reason": "Native release is held by performance qualification"
+    }
+  ]
+}

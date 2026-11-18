@@ -1,11 +1,4 @@
 name: Publish verified aiogram-cmds-native
-'on':
-  workflow_dispatch:
-    inputs:
-      manifest_sha256:
-        description: SHA256 of independently reviewed SHA256SUMS
-        required: true
-        type: string
 permissions:
   contents: read
 concurrency:
@@ -23,6 +16,7 @@ jobs:
       uses: actions/checkout@v6
       with:
         persist-credentials: false
+        ref: ${{ github.sha }}
     - &id002
       uses: astral-sh/setup-uv@v7
       with:
@@ -32,12 +26,11 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: gh release download "$GITHUB_REF_NAME" --pattern "*.whl" --pattern "*.tar.gz" --pattern SHA256SUMS --dir
         verified-input
-    - name: Verify identity, matrix and independent manifest
+    - name: Enforce exact artifact, platform and recomputed performance qualification
       env: &id003
         MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
-      run: python tools/optimization/verify_native_artifacts.py --root-project packages/aiogram-cmds/pyproject.toml
-        --native-project packages/aiogram-cmds/native/pyproject.toml --directory verified-input --tag "$GITHUB_REF_NAME"
-        --manifest-sha256 "$MANIFEST_SHA256"
+      run: python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-18-paired-release
+        --directory verified-input --tag "$GITHUB_REF_NAME" --manifest-sha256 "$MANIFEST_SHA256"
     - run: uvx twine check verified-input/*.whl verified-input/*.tar.gz
     - run: uvx abi3audit --strict verified-input/*.whl
     - uses: actions/upload-artifact@v6
@@ -62,14 +55,20 @@ jobs:
         artifact-ids: ${{ needs.verify.outputs.artifact_id }}
         path: verified-input
         merge-multiple: true
-    - name: Reverify exact handoff and stage only reviewed artifacts
+    - name: Recheck qualification and stage only reviewed artifacts
       env: *id003
-      run: "python tools/optimization/verify_native_artifacts.py --root-project packages/aiogram-cmds/pyproject.toml\
-        \ --native-project packages/aiogram-cmds/native/pyproject.toml --directory verified-input --tag \"$GITHUB_REF_NAME\"\
-        \ --manifest-sha256 \"$MANIFEST_SHA256\"\npython - <<'PYTHON'\nfrom pathlib import Path\nimport shutil\n\
-        source = Path(\"verified-input\")\ntarget = Path(\"publish-dist\")\ntarget.mkdir()\nfor line in (source\
-        \ / \"SHA256SUMS\").read_text().splitlines():\n    _, filename = line.split()\n    shutil.copyfile(source\
-        \ / filename, target / filename)\nPYTHON\n"
+      run: "python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-18-paired-release\
+        \ --directory verified-input --tag \"$GITHUB_REF_NAME\" --manifest-sha256 \"$MANIFEST_SHA256\"\npython -\
+        \ <<'PYTHON'\nfrom pathlib import Path\nimport shutil\nsource = Path(\"verified-input\")\ntarget = Path(\"\
+        publish-dist\")\ntarget.mkdir()\nfor line in (source / \"SHA256SUMS\").read_text().splitlines():\n    _,\
+        \ filename = line.split()\n    shutil.copyfile(source / filename, target / filename)\nPYTHON\n"
     - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: publish-dist/
+'on':
+  workflow_dispatch:
+    inputs:
+      manifest_sha256:
+        description: SHA256 of independently reviewed SHA256SUMS
+        required: true
+        type: string

@@ -36,7 +36,7 @@
   {
     "package": "aiogram-idle",
     "directory": "/tmp/kit-paired-release-20261118/release-artifacts/aiogram-idle",
-    "manifest_sha256": "0c6a16b04c323ebc11ca6401e6c49f6e3df7099a7873b40cb6813a872cdd609e",
+    "manifest_sha256": "f911be2bf7dea2cf33db90f26f160c70807301181ea7b50d730164e265eac230",
     "files": [
       {
         "filename": "aiogram_idle-0.3.2-py3-none-any.whl",
@@ -45,7 +45,7 @@
       },
       {
         "filename": "aiogram_idle-0.3.2.tar.gz",
-        "sha256": "31c2476c84342eb0eafde72993118724fcae45236dcda14ac22aec0bd2327a3f",
+        "sha256": "9f51efd4cc42165e054e017a9844cf804a1693a46180a6f9b10b1ccb42d948e3",
         "bytes": 576088
       }
     ]
@@ -104,7 +104,7 @@
   {
     "package": "aiogram-sentinel",
     "directory": "/tmp/kit-paired-release-20261118/release-artifacts/aiogram-sentinel",
-    "manifest_sha256": "daf3a807808718aa7e017a0928ae489812c744bea151c9f7767ca3af9e85ff57",
+    "manifest_sha256": "1ae648673ff46f505daee94203f726a7ecfcc0f79b0c83b19581a46d67b82e20",
     "files": [
       {
         "filename": "aiogram_sentinel-1.3.2-py3-none-any.whl",
@@ -113,8 +113,8 @@
       },
       {
         "filename": "aiogram_sentinel-1.3.2.tar.gz",
-        "sha256": "4f7402885c643697c9256f46cee34af1c25eb6aefc4ae8febc7adc80c0e26d15",
-        "bytes": 360641
+        "sha256": "f479595402b55912fb5496612914caa93c4f616fc9361cc328964e9d5d8db218",
+        "bytes": 360650
       }
     ]
   },

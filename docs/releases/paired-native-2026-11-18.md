@@ -55,7 +55,9 @@ Upload only the exact reviewed SDK wheel/sdist or native seven-wheel/sdist set
 and their `SHA256SUMS` to the corresponding GitHub release. Review the checksum
 manifest digest independently. Manual package-specific publishing workflows
 recheck identity, tag, full native platform coverage and checksums after artifact
-handoff; publishing jobs never rebuild. Native workflows are
+handoff; publishing jobs never rebuild. They re-evaluate retained raw performance evidence
+and enforce exact SDK/native hashes before and after immutable handoff; the
+Cmds and Idle candidates are held by their measured performance gates. Native workflows are
 `publish-aiogram-<package>-native.yml`, bound to environment `pypi`.
 
 Four native PyPI project Trusted Publishers need verification against

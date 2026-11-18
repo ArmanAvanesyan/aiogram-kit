@@ -35,8 +35,12 @@ def test_paired_metadata_and_manual_native_publisher(short):
     assert publish["permissions"] == {"contents": "read", "id-token": "write"}
     for job in (verify, publish):
         commands = "\n".join(step.get("run", "") for step in job["steps"])
-        assert "verify_native_artifacts.py" in commands
-        assert f"packages/{package}/pyproject.toml" in commands
+        assert "verify_release_readiness.py" in commands
+        assert f"--package {package}" in commands
+        assert "--report reports/2026-11-18-paired-release" in commands
+        for step in job["steps"]:
+            if step.get("uses", "").startswith("actions/checkout@"):
+                assert step["with"]["ref"] == "${{ github.sha }}"
         assert '--manifest-sha256 "$MANIFEST_SHA256"' in commands
         assert "maturin build" not in commands and "uv build" not in commands
     download = next(s for s in publish["steps"] if "download-artifact@" in s.get("uses", ""))

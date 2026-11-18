@@ -53,13 +53,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_MANIFEST_SHA256: ${{ inputs.release_manifest_sha256 }}
+          RELEASE_MANIFEST_PATH: ${{ inputs.release_manifest_path }}
         run: |
           for package in coordination sentinel cmds nav idle; do
             uv build --package "aiogram-$package" --wheel --out-dir "$RUNNER_TEMP/native-wheels"
           done
           if [ -n "$RELEASE_MANIFEST_SHA256" ]; then
             python tools/optimization/prepare_release_qualification.py \
-              --manifest reports/2026-11-18-paired-release/ci-artifact-manifest.json \
+              --manifest "$RELEASE_MANIFEST_PATH" \
               --manifest-sha256 "$RELEASE_MANIFEST_SHA256" \
               --output "$RUNNER_TEMP/native-wheels" --reviewed "$RUNNER_TEMP/reviewed-native"
           else
@@ -147,3 +148,7 @@ jobs:
         description: Optional reviewed release manifest digest; downloads exact CI wheels instead of rebuilding companions
         type: string
         default: ''
+      release_manifest_path:
+        description: Versioned report manifest under reports (supports independently qualified package sets)
+        type: string
+        default: reports/2026-11-18-paired-release/ci-artifact-manifest.json

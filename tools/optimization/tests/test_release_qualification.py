@@ -65,7 +65,7 @@ def test_manifest_rejects_substitutions(module, tmp_path, change, manifest):
     if change == "source":
         entry["source_files"][next(iter(entry["source_files"]))] = "0" * 64
     elif change == "package":
-        del data["packages"]["aiogram-idle"]
+        data["packages"]["unrelated"] = data["packages"].pop("aiogram-idle")
     elif change == "sdk_path":
         entry["sdk"]["filename"] = "/outside.whl"
     elif change == "duplicate_id":
@@ -174,3 +174,11 @@ def test_extract_refuses_broken_symlink(module, tmp_path):
             target,
         )
     assert not outside.exists()
+
+
+def test_independent_single_package_release_is_supported(module, manifest):
+    path, root = manifest
+    data = json.loads(path.read_text())
+    data["packages"] = {"aiogram-nav": data["packages"]["aiogram-nav"]}
+    path.write_text(json.dumps(data))
+    assert set(module.read_manifest(path, module.digest(path), root)["packages"]) == {"aiogram-nav"}
