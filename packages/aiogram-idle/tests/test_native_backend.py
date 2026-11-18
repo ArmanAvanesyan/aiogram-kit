@@ -90,11 +90,11 @@ def test_coarse_claim_projection_validates_tokens_before_mutation():
     core = native_core().DeadlineCore()
     key = IdleConversationKey("native", 1, 42, 42)
     core.schedule("job", '"native"', "1", 10)
-    with pytest.raises(ValueError, match="URL-safe"):
-        core.claim_objects(1, 5, 10, ['bad"token'], None, None, {"job": key}, Claim)
+    with pytest.raises(ValueError, match="sufficient"):
+        core.claim_objects(1, 5, 10, [], None, None, {"job": key}, Claim)
     assert core.get("job")[3] is None
-    claims = core.claim_objects(1, 5, 10, ["safe_token-1"], None, None, {"job": key}, Claim)
-    assert claims == [Claim(key, "safe_token-1", 1, 15, 10)]
+    claims = core.claim_objects(1, 5, 10, ['opaque"\udfff'], None, None, {"job": key}, Claim)
+    assert claims == [Claim(key, 'opaque"\udfff', 1, 15, 10)]
     assert core.claim_objects(1, 5, 10, ["next"], None, None, {"job": key}, Claim) == []
     replacement = core.claim_objects(1, 5, 15, ["replacement"], None, None, {"job": key}, Claim)
     assert replacement[0].token == "replacement"
