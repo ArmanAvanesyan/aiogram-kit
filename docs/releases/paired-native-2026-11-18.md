@@ -33,7 +33,10 @@ standalone and combined navigation/activity tests remain required.
 The unchanged performance protocol requires CPU Rust/Python <=0.80, individual
 p95 <=1.05 and repeat spread <=10%. Historical qualified development artifacts
 are provenance, not substitutes for qualifying the final versioned candidates.
-Every failed run and complete raw observation is retained.
+Every failed run and complete raw observation is retained. Shipping qualification
+uses the checksum-bound platform CI binaries through
+`tools/optimization/prepare_release_qualification.py`; it never substitutes a
+host-rebuilt companion.
 
 The release evidence is recorded in `reports/2026-11-18-paired-release/`. The
 artifact directories themselves are retained outside Git with SHA256 manifests.
