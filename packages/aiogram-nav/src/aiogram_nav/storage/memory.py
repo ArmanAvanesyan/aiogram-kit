@@ -215,7 +215,11 @@ class MemoryNavigationRepository(MemoryAdoption, MemoryTokens, MemorySessions):
         coordination_scope: object | None = None,
     ) -> PreparedAction:
         owned_params = freeze_object(intent.params, max_bytes=self.config.max_params_bytes)
-        if self.json_processor is not None and type(intent) is NavigationIntent:
+        if (
+            self.json_processor is not None
+            and type(intent) is NavigationIntent
+            and intent.params is not owned_params
+        ):
             # The backend owns this detached immutable plan; reuse only trees
             # created by its own codec, never a caller's mappingproxy backing.
             intent = replace(intent, params=owned_params)

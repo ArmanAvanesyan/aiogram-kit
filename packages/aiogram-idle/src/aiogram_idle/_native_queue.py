@@ -292,11 +292,12 @@ class RustDeadlineQueue(DeadlineQueue):
 
         deadline = retry_at if retry_at is not None else component_deadline(record)
         packed = _key(claim.key)
-        self._owned(
-            lambda: self.core.release(
+        try:
+            self.core.release(
                 packed, _wire(claim.token), format(claim.generation, "x"), now, deadline
             )
-        )
+        except self.native.OwnershipLost as error:
+            raise OwnershipLost("The deadline claim has expired or was replaced") from error
         if deadline is None:
             self.keys.pop(packed, None)
 

@@ -54,7 +54,11 @@ authoritative configuration and format-manifest checks still run for updates.
 Idle additionally projects admitted deadline claims to SDK objects in one native
 call. Python supplies cryptographically random tokens and holds the existing
 backend lock; Rust makes scheduling/lease decisions. Claim ownership, expiry,
-renewal, reconciliation and crash recovery retain the same rules. Both companions
+renewal, reconciliation and crash recovery retain the same rules. Queue-only work
+acquires the same task-owned lock without creating an unused JSON codec scope;
+reentrancy and suppression of a foreign backend codec are tested. Lease validation
+borrows native jobs rather than cloning them. Nav retains an already-owned immutable
+intent instead of copying it a second time. Both companions
 use portable thin LTO and one code-generation unit, without host-specific flags.
 
 ## Verification and publication hold
@@ -63,7 +67,7 @@ The fixed protocol remains CPU ratio <= 0.80, individual p95 ratio <= 1.05 and
 repeat spread <= 10%, balanced Python/Rust/Rust/Python order. Failed runs are
 retained, never replaced with a selected successful repeat. Installed wheel hashes,
 source commit and benchmark-driver provenance accompany each qualification.
-See [retained qualification](../../reports/2026-11-18-native-coarse-qualification/README.md).
+See [retained qualification](https://github.com/ArmanAvanesyan/aiogram-kit/blob/perf/native-gates-followup/reports/2026-11-18-native-coarse-qualification/README.md).
 
 Native capability changes require matched, verified SDK/companion artifacts before
 any future release. Source version numbers here identify development candidates;

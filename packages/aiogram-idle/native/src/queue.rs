@@ -189,6 +189,15 @@ impl Queue {
         generation: BigUint,
         now: f64,
     ) -> Result<Job, &'static str> {
+        self.check_ref(key, token, generation, now).cloned()
+    }
+    fn check_ref(
+        &self,
+        key: &str,
+        token: &str,
+        generation: BigUint,
+        now: f64,
+    ) -> Result<&Job, &'static str> {
         finite(&[now])?;
         match self.jobs.get(key) {
             Some(job)
@@ -196,7 +205,7 @@ impl Queue {
                     && job.token.as_deref() == Some(token)
                     && job.lease > now =>
             {
-                Ok(job.clone())
+                Ok(job)
             }
             _ => Err("ownership"),
         }
@@ -262,7 +271,7 @@ impl Queue {
         if lease_seconds <= 0.0 {
             return Err("lease must be positive");
         }
-        self.check(key, token, generation.clone(), now)?;
+        self.check_ref(key, token, generation.clone(), now)?;
         let job = self.jobs.get_mut(key).unwrap();
         job.lease = now + lease_seconds;
         job.eligible = job.lease;
@@ -287,7 +296,8 @@ impl Queue {
         if let Some(value) = deadline {
             finite(&[value])?;
         }
-        let job = self.check(key, token, generation.clone(), now)?;
+        self.check_ref(key, token, generation, now)?;
+        let job = self.jobs.remove(key).ok_or("ownership")?;
         self.schedule(key.to_owned(), job.namespace, job.bot, deadline, None)
     }
     pub fn reconcile(

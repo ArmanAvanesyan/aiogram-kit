@@ -203,3 +203,30 @@ def test_cached_sdk_record_is_not_accepted_as_json():
     core.fingerprint(key)
     assert core.cache_stats()[0] > 0
     assert core.freeze(key, MappingProxyType, "idle") is None
+
+
+@pytest.mark.asyncio
+async def test_queue_only_scope_keeps_lock_ownership_without_codec():
+    from aiogram_idle.storage.owned_lock import OwnedLock
+
+    engine = JsonEngine(Dummy(), ValueError)
+    lock = OwnedLock(processor=engine)
+    async with lock.queue:
+        assert lock.locked()
+        assert selected() is None
+        async with lock.queue:
+            assert selected() is None
+
+        async def child():
+            with pytest.raises(RuntimeError, match="owning task"):
+                lock.release()
+
+        await asyncio.create_task(child())
+    assert not lock.locked()
+    async with lock:
+        async with lock.queue:
+            assert selected() is engine
+        async with OwnedLock(processor=engine).queue:
+            assert selected() is None
+        assert selected() is engine
+    assert selected() is None

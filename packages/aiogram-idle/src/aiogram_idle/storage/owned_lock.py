@@ -18,8 +18,9 @@ class OwnedLock(asyncio.Lock):
         self._depth = 0
         self._processor = processor
         self._json_scope: tuple[Token[JsonRecord | None], JsonRecord] | None = None
+        self.queue = _QueueScope(self)
 
-    async def acquire(self) -> Literal[True]:
+    async def acquire(self, *, codec: bool = True) -> Literal[True]:
         task = asyncio.current_task()
         if task is not None and self._owner is task:
             self._depth += 1
@@ -27,8 +28,8 @@ class OwnedLock(asyncio.Lock):
         await super().acquire()
         self._owner, self._depth = task, 1
         try:
-            if self._processor is not None or active():
-                self._json_scope = begin(self._processor)
+            if (codec and self._processor is not None) or active():
+                self._json_scope = begin(self._processor if codec else None)
         except BaseException:
             self._owner, self._depth = None, 0
             super().release()
@@ -45,3 +46,16 @@ class OwnedLock(asyncio.Lock):
             if scope is not None:
                 end(*scope)
             super().release()
+
+
+class _QueueScope:
+    """Same task-owned lock, without an unused data codec for queue-only work."""
+
+    def __init__(self, lock: OwnedLock) -> None:
+        self.lock = lock
+
+    async def __aenter__(self) -> None:
+        await self.lock.acquire(codec=False)
+
+    async def __aexit__(self, *exc: object) -> None:
+        self.lock.release()

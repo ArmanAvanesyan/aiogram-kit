@@ -1,0 +1,153 @@
+{
+  "platform": "macOS x86_64",
+  "python": "3.12.13",
+  "aiogram": "3.32.0",
+  "redis": "isolated Redis 7 noeviction; redis-py 7.4.1",
+  "artifact_directory": "/tmp/kit-native-coarse-20261118/final-wheels",
+  "checks": [
+    {
+      "name": "nav ordinary suite",
+      "passed": 493,
+      "source": "bdafaa1 (before subsequent native-only changes)",
+      "junit_sha256": "2fd687913d5a834e58a9a7bced9cd6d85e9be82db9fb4e920f55f1fe75791464"
+    },
+    {
+      "name": "idle ordinary suite",
+      "passed": 805,
+      "source": "bdafaa1 (before subsequent native-only changes)",
+      "junit_sha256": "f8e6ae6807fd449bf8efc34753064bff70a3341445d295583c8b83e94a21f3e3"
+    },
+    {
+      "name": "cmds ordinary suite",
+      "passed": 313,
+      "source": "bdafaa1 (before subsequent native-only changes)",
+      "junit_sha256": "2055e4dc4b3378b67a53b89786d3c7011ee48aad4bad9fe68c8de3dc60112eee"
+    },
+    {
+      "name": "Idle Rust format-three core corpus with real Redis",
+      "passed": 343,
+      "manifest": "native-core-profile-final.json",
+      "source": "1e8794d"
+    },
+    {
+      "name": "Idle+Nav Rust combined corpus with real Redis",
+      "passed": 127,
+      "manifest": "native-combined-profile-final.json",
+      "source": "1e8794d"
+    },
+    {
+      "name": "Nav Rust Redis recovery/dispatcher",
+      "passed": 12,
+      "source": "1e8794d"
+    },
+    {
+      "name": "Nav native canonical and JSON regression corpus",
+      "passed": 42,
+      "source": "1e8794d"
+    },
+    {
+      "name": "Idle native canonical and JSON regression corpus",
+      "passed": 43,
+      "source": "1e8794d"
+    },
+    {
+      "name": "Nav and Idle cache DTO rejection regression",
+      "passed": 1,
+      "per_package": true,
+      "source": "03d4636"
+    },
+    {
+      "name": "Idle coarse claim invalid-token and lease recovery regression",
+      "passed": 1,
+      "source": "test added after 03d4636"
+    },
+    {
+      "name": "Strict Pyright",
+      "packages": [
+        "aiogram-cmds",
+        "aiogram-nav",
+        "aiogram-idle"
+      ],
+      "errors": 0
+    },
+    {
+      "name": "Rust unit tests",
+      "idle": 8,
+      "nav": 5,
+      "failed": 0
+    },
+    {
+      "name": "Clippy all targets with warnings denied",
+      "packages": [
+        "aiogram-cmds",
+        "aiogram-nav",
+        "aiogram-idle"
+      ],
+      "result": "pass"
+    },
+    {
+      "name": "ABI3 strict audit",
+      "packages": [
+        "aiogram-nav-native",
+        "aiogram-idle-native"
+      ],
+      "platform": "macOS x86_64",
+      "result": "pass"
+    },
+    {
+      "name": "Standalone installed Python wheels",
+      "packages": [
+        "aiogram-nav",
+        "aiogram-idle"
+      ],
+      "redis_installed": false,
+      "native_companion_installed": false,
+      "optional_peer_installed": false,
+      "result": "pass"
+    },
+    {
+      "name": "Strict MkDocs build",
+      "result": "pass",
+      "note": "after correcting source-report link"
+    }
+  ],
+  "artifacts": [
+    {
+      "filename": ".gitignore",
+      "sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"
+    },
+    {
+      "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+      "sha256": "4c256bcc1e3f6683aa87819af3aa3279672c2381b68a2ab718aa762f40c5603a"
+    },
+    {
+      "filename": "aiogram_cmds-0.3.1.tar.gz",
+      "sha256": "b7b0eefb55f575fd21cd81d5fbc80328d4c9506cc6d5d28f6b82d0a1e952f772"
+    },
+    {
+      "filename": "aiogram_idle-0.3.1-py3-none-any.whl",
+      "sha256": "9edecb6a0071d337ea01505472547739119e23c678aa07a045a2251bf3bc70b9"
+    },
+    {
+      "filename": "aiogram_idle-0.3.1.tar.gz",
+      "sha256": "aa97a8097010f12319592a6cbf95e23328ea76d346a67d0db39f19f28da4a7eb"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "9d1dadcb198e839b002a01748e2e1151e708082ca4e494433e172875146542e1"
+    },
+    {
+      "filename": "aiogram_nav-0.3.1-py3-none-any.whl",
+      "sha256": "90b3f27bbe95df21e9723c304371e10e57d5ee5f5b9b0487cf362d6cbd4264c2"
+    },
+    {
+      "filename": "aiogram_nav-0.3.1.tar.gz",
+      "sha256": "3073e0bf50311ed8997896971c049a5a341fd7fb53685536b6f2684ae0e8b43c"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "7ace3841035bc1fbcdc59339d942d8f3f6619b5ee442bc7f5f2216ad4fea53a6"
+    }
+  ],
+  "scope": "Local functional evidence; Linux qualification and full platform CI remain separate."
+}

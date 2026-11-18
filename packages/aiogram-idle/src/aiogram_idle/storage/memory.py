@@ -89,7 +89,9 @@ class MemoryIdleBackend(
             if self.config.engine == "rust"
             else None
         )
-        self._lock: asyncio.Lock = OwnedLock(processor=self.json_processor)
+        owned_lock = OwnedLock(processor=self.json_processor)
+        self._lock: asyncio.Lock = owned_lock
+        self._queue_lock = owned_lock.queue
         self.coordinator: Coordinator = MemoryCoordinator()
         self._records: dict[IdleConversationKey, RuntimeSnapshot] = {}
         self._canonical_migrations: dict[tuple[IdleConversationKey, str], MigrationStage] = {}
@@ -427,7 +429,7 @@ class MemoryIdleBackend(
             or lease_seconds <= 0
         ):
             raise ValueError("Claim capacity and lease must be positive")
-        async with self._lock:
+        async with self._queue_lock:
             return self._queue.claim(
                 limit=limit,
                 lease_seconds=lease_seconds,
@@ -439,15 +441,15 @@ class MemoryIdleBackend(
     async def renew_claim(self, claim: Claim, *, lease_seconds: float) -> Claim:
         if not math.isfinite(lease_seconds) or lease_seconds <= 0:
             raise ValueError("Lease must be positive")
-        async with self._lock:
+        async with self._queue_lock:
             return self._queue.renew(claim, now=self._now(), lease_seconds=lease_seconds)
 
     async def validate_claim(self, claim: Claim) -> None:
-        async with self._lock:
+        async with self._queue_lock:
             self._queue.check(claim, self._now())
 
     async def release_claim(self, claim: Claim, *, retry_at: float | None = None) -> None:
-        async with self._lock:
+        async with self._queue_lock:
             self._queue.release(
                 claim, self._get(claim.key, live=False), now=self._now(), retry_at=retry_at
             )
