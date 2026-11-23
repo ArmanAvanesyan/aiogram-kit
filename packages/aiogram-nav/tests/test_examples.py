@@ -34,7 +34,13 @@ from examples.demo import DraftFlow, build_demo, parse_args
 ROOT = Path(__file__).resolve().parents[1]
 NOW = datetime(2026, 11, 10, tzinfo=timezone.utc)
 ACTOR = User(id=42, is_bot=False, first_name="Example")
-BOT_USER = User(id=123456, is_bot=True, first_name="Navigation", username="navigation_demo_bot")
+BOT_USER = User(
+    id=123456,
+    is_bot=True,
+    first_name="Navigation",
+    username="navigation_demo_bot",
+    active_usernames=[],
+)
 
 
 def incoming(text, message_id=10):
