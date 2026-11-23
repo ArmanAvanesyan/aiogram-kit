@@ -82,18 +82,18 @@ def test_cli_compares_committed_contents_and_keeps_source_guard(tmp_path):
     git("add", ".")
     git("commit", "-qm", "development dependency update")
     command = [sys.executable, str(ROOT / "tools/check_news.py"), "--base", base]
-    result = subprocess.run(command, cwd=tmp_path, text=True, capture_output=True)
+    result = subprocess.run(command, check=False, cwd=tmp_path, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
     source = project.parent / "src/public.py"
     source.parent.mkdir()
     source.write_text("public_change = True\n")
     git("add", ".")
     git("commit", "-qm", "public change")
-    result = subprocess.run(command, cwd=tmp_path, text=True, capture_output=True)
+    result = subprocess.run(command, check=False, cwd=tmp_path, text=True, capture_output=True)
     assert result.returncode != 0 and "example" in result.stderr
     fragment = project.parent / "CHANGES/1.misc.rst"
     fragment.parent.mkdir()
     fragment.write_text("Document the public change.\n")
     git("add", ".")
     git("commit", "-qm", "news")
-    assert subprocess.run(command, cwd=tmp_path, capture_output=True).returncode == 0
+    assert subprocess.run(command, check=False, cwd=tmp_path, capture_output=True).returncode == 0
