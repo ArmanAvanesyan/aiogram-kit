@@ -1,5 +1,10 @@
 # Paired release preparation — unpublished
 
+For the main/SDK artifact refresh after PRs #69 and #89, see the
+[November 24 follow-up](../2026-11-24-paired-release-refresh/README.md). This
+original report preserves historical qualification; its recorded passes are
+not a waiver of the follow-up's current source-provenance holds.
+
 Candidates: Sentinel SDK/native 1.3.2; Cmds, Nav and Idle SDK/native 0.3.2.
 No package, tag, GitHub release or PyPI publisher is created by this preparation.
 The changes are on PR #88. Python remains the default; no native runtime
