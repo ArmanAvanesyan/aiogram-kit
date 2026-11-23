@@ -41,6 +41,13 @@ borrowed lifetime signature failed to compile and was corrected by retaining
 Python string objects for the duration of borrowing. No failed prototype is
 shipping or being counted as a successful benchmark.
 
+A second direct-model prototype used interned attribute keys and borrowed
+strings. Its isolated CPU cost was near the borrowed-tuple boundary, but full
+dynamic delivery did not show a reliable latency benefit. It too was removed;
+the raw dynamic observations and diagnostic script are retained. These probes
+observed no GC collections, so no GC attribution is asserted. Neither prototype
+was submitted as shipping qualification or used to replace a failed gate.
+
 Local tests include **853 Idle tests with real Redis 7**, the native queue/domain
 vectors, the command/native parity and error corpus, and strict Rust Clippy/tests.
 An initial sandboxed test invocation could not open loopback sockets; the full
