@@ -7,6 +7,7 @@ from collections.abc import Collection, Iterable, Mapping
 from types import MappingProxyType
 from typing import cast
 
+from ._json_scope import JsonEngine
 from .engine import EngineName, NativeRegistry, native_core, require_engine
 from .errors import ConfigurationError, InvalidParameters, NodeNotFound
 from .json import JsonObject, freeze_object
@@ -145,16 +146,7 @@ class NavigationRegistry:
     def validate_params(
         self, node_id: str, params: Mapping[str, object] | None = None
     ) -> JsonObject:
-        node = self.get(node_id)
-        frozen = freeze_object({} if params is None else params)
-        if node.validator is None:
-            return frozen
-        try:
-            return freeze_object(node.validator(frozen))
-        except InvalidParameters:
-            raise
-        except Exception as exc:
-            raise InvalidParameters("Node parameter validation failed") from exc
+        return _parameter_values(self, node_id, params, None)
 
     def validate(self, renderers: Collection[str] | None = None) -> None:
         if self._native is not None or self._validated:
@@ -233,3 +225,32 @@ class NavigationRegistry:
             (node.id, node.parent, node.renderer, node.back_to, node.cancel_to)
             for node in self._nodes.values()
         )
+
+
+def parameter_values(
+    registry: NavigationRegistry,
+    node_id: str,
+    params: Mapping[str, object] | None,
+    processor: JsonEngine | None,
+) -> JsonObject:
+    if processor is None or type(registry) is not NavigationRegistry:
+        return registry.validate_params(node_id, params)
+    return _parameter_values(registry, node_id, params, processor)
+
+
+def _parameter_values(
+    registry: NavigationRegistry,
+    node_id: str,
+    params: Mapping[str, object] | None,
+    _processor: JsonEngine | None,
+) -> JsonObject:
+    node = registry.get(node_id)
+    frozen = freeze_object({} if params is None else params, _processor=_processor)
+    if node.validator is None:
+        return frozen
+    try:
+        return freeze_object(node.validator(frozen), _processor=_processor)
+    except InvalidParameters:
+        raise
+    except Exception as exc:
+        raise InvalidParameters("Node parameter validation failed") from exc

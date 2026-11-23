@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 from importlib import import_module
 from typing import Literal, Protocol, cast
 
@@ -16,6 +17,10 @@ class NativeEngineError(RuntimeError):
 
 
 class NativeSnapshot(Protocol):
+    def resolve_one(
+        self, profile: str, locale: str, bot: str, scope: str, language: str
+    ) -> str: ...
+
     def resolve_batch(self, requests: NativeRequests) -> list[str]: ...
 
 
@@ -41,6 +46,12 @@ def native_engine(engine: Engine = "python") -> NativeModule | None:
         raise ValueError("engine must be 'python' or 'rust'")
     if engine == "python":
         return None
+    return _load_native()
+
+
+@lru_cache(maxsize=1)
+def _load_native() -> NativeModule:
+    """Validate the immutable loaded extension once, before any effects."""
     try:
         module = cast(NativeModule, import_module("_aiogram_cmds_native"))
     except (ImportError, OSError) as error:
@@ -60,6 +71,13 @@ def native_engine(engine: Engine = "python") -> NativeModule | None:
         ):
             raise NativeEngineError(
                 "aiogram-cmds-native ABI/version is incompatible with this base package"
+            )
+        snapshot = module.compile([])
+        if not callable(getattr(snapshot, "resolve_one", None)) or not callable(
+            getattr(snapshot, "resolve_batch", None)
+        ):
+            raise NativeEngineError(
+                "aiogram-cmds-native snapshot capabilities are incomplete"
             )
     except (AttributeError, TypeError, ValueError) as error:
         raise NativeEngineError(

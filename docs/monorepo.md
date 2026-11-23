@@ -28,8 +28,10 @@ existing benchmark and platform gates pass; base migration releases do not enabl
 locations and Kit working-copy hashes. Original commit IDs remain unchanged. Historical Git
 checkouts retain their original layout; migration commits introduce the package directories.
 Git history does not contain GitHub issues, PRs, projects, releases or assets. These have a
-separate inventory and cutover checklist. Repositories remain unarchived until every required
-gate passes. Do not reuse the old Sentinel repository name after the final rename.
+separate inventory and cutover checklist. The five retiring repositories were archived on
+2026-11-17 after the preservation and release gates passed. The six obsolete publisher bindings
+were removed; each package publishes only through its matching monorepo workflow.
+See the migration status report for verified evidence. Do not reuse the old Sentinel repository name.
 
 The migration patch changes native identity versions without changing their ABI or kernel behavior.
 Applications opting into source-built native engines must rebuild the matching companion.
@@ -51,3 +53,27 @@ pip install 'git+https://github.com/ArmanAvanesyan/aiogram-kit.git@aiogram-nav-v
 An unqualified install from the repository root is not a library installation. Historical
 Git tags retain their original layouts. Update floating Sentinel Git URLs and CI checkout
 commands to select the new subdirectory; GitHub's repository redirect does not add it.
+
+## Ongoing verification
+
+Main runs the complete package and shared-tool matrix. Documentation deploys automatically
+from main; PR builds have no deployment permissions. Independent publishers recheck the
+reviewed manifest after downloading the producer's immutable Actions artifact, before
+copying only the two verified distributions into the publishing directory.
+
+Check or regenerate the shared publisher handoff with:
+
+```sh
+uv run --no-sync python tools/publish_handoff.py
+uv run --no-sync python tools/publish_handoff.py --write
+```
+
+From a full clone with the canonical origin, verify original ancestry, protected working
+files and advertised history refs with:
+
+```sh
+uv run --no-sync python tools/verify_migration.py --historical-objects --remote-refs
+```
+
+The [post-cutover review](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/reports/monorepo-migration/review-2026-11-17.md)
+records the review findings and release/preservation evidence.

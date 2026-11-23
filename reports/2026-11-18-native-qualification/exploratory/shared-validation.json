@@ -1,0 +1,28 @@
+{
+  "qualification": false,
+  "method": "same interpreter, reference function from main versus installed candidate; valid ordinary integer interval; no native engine involved",
+  "results": {
+    "before": {
+      "calls_per_repeat": 200000,
+      "cpu_seconds": [
+        0.11020500000000011,
+        0.11222200000000004,
+        0.10710199999999981,
+        0.10591799999999996,
+        0.10728500000000007
+      ],
+      "median_cpu_seconds": 0.10728500000000007
+    },
+    "after": {
+      "calls_per_repeat": 200000,
+      "cpu_seconds": [
+        0.024275999999999964,
+        0.024172000000000082,
+        0.026413999999999938,
+        0.025560000000000027,
+        0.026496999999999993
+      ],
+      "median_cpu_seconds": 0.025560000000000027
+    }
+  }
+}

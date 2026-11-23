@@ -1,0 +1,44 @@
+Diagnostic cProfile overhead is included; this is not qualification timing.
+         3980238 function calls (3770219 primitive calls) in 2.316 seconds
+
+   Ordered by: cumulative time
+   List reduced from 474 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    2.415    2.415 runners.py:160(run)
+        3    0.000    0.000    2.415    0.805 base_events.py:655(run_until_complete)
+        3    0.000    0.000    2.415    0.805 base_events.py:631(run_forever)
+        1    0.000    0.000    2.415    2.415 runners.py:86(run)
+        6    0.000    0.000    2.415    0.402 base_events.py:1922(_run_once)
+        6    0.000    0.000    2.414    0.402 events.py:86(_run)
+        6    0.000    0.000    2.414    0.402 {method 'run' of '_contextvars.Context' objects}
+        1    0.007    0.007    2.414    2.414 run.py:48(workload)
+     1500    0.002    0.000    2.380    0.002 context.py:170(track)
+     1500    0.006    0.000    2.377    0.002 navigation.py:342(track)
+     1500    0.032    0.000    2.368    0.002 adoption.py:27(track)
+     1500    0.017    0.000    1.639    0.001 adoption.py:56(adopt_render)
+     1500    0.005    0.000    0.792    0.001 memory.py:375(_commit_locked)
+     1500    0.028    0.000    0.747    0.000 completion.py:36(complete)
+    11980    0.008    0.000    0.685    0.000 memory.py:93(_fingerprint)
+    11980    0.027    0.000    0.677    0.000 state.py:56(fingerprint)
+113860/14980    0.212    0.000    0.547    0.000 state.py:25(_canonical)
+    10500    0.035    0.000    0.545    0.000 json.py:67(freeze_object)
+     3000    0.029    0.000    0.443    0.000 memory.py:299(_checkpoint_locked)
+973291/973290    0.209    0.000    0.360    0.000 {built-in method builtins.isinstance}
+     1500    0.017    0.000    0.354    0.000 memory.py:201(_prepare_locked)
+65940/12000    0.146    0.000    0.251    0.000 json.py:20(freeze_json)
+     1500    0.018    0.000    0.244    0.000 transition.py:12(transition)
+    25491    0.054    0.000    0.239    0.000 __init__.py:183(dumps)
+    21000    0.023    0.000    0.229    0.000 memory.py:43(normalize_key)
+    25491    0.043    0.000    0.175    0.000 encoder.py:183(encode)
+    10500    0.018    0.000    0.168    0.000 memory.py:66(scope_matches)
+196291/196290    0.053    0.000    0.149    0.000 <frozen abc>:117(__instancecheck__)
+     1500    0.008    0.000    0.142    0.000 models.py:193(__post_init__)
+     1500    0.009    0.000    0.139    0.000 actions.py:323(cleanup_committed)
+64440/10500    0.055    0.000    0.134    0.000 json.py:59(thaw_json)
+    21000    0.046    0.000    0.128    0.000 identity.py:46(coordination_key)
+     4500    0.032    0.000    0.120    0.000 dataclasses.py:1540(replace)
+    25491    0.116    0.000    0.116    0.000 encoder.py:205(iterencode)
+     3000    0.014    0.000    0.112    0.000 memory.py:100(hold)
+
+

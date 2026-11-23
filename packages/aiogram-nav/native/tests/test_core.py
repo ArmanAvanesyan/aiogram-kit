@@ -306,3 +306,172 @@ def test_registry_graph_property_against_reference():
             assert graph.cancel_target(node["id"]) == "n0"
 
     check()
+
+
+@pytest.mark.parametrize(
+    "mode,pop,limit",
+    [
+        (mode, pop, limit)
+        for mode in ("push", "pop", "clear", "none")
+        for pop in (0, 1, 3)
+        for limit in (0, 1, 3)
+    ],
+)
+def test_object_transition_matches_json_boundary(mode, pop, limit):
+    entries = ({"node": "a", "params": {"value": [1, 2]}}, {"node": "b"})
+    current = {"node": "c", "params": {"large": 2**200}}
+    expected = json.loads(
+        native.transition_history(json.dumps(entries), json.dumps(current), mode, limit, pop, True)
+    )
+    actual, state = native.transition_values(
+        entries, current, mode, limit, pop, True, (str(2**200), "4", "5", "6"), True, "10"
+    )
+    assert actual == expected
+    assert tuple(map(int, state)) == (2**200 + 1, 5, 10, 10)
+    assert entries == ({"node": "a", "params": {"value": [1, 2]}}, {"node": "b"})
+    # The native boundary borrows opaque objects, without JSON reconstruction.
+    for entry in actual:
+        assert any(entry is item for item in (*entries, current))
+
+
+def test_object_transition_first_entry_and_rejections():
+    assert native.transition_values((), None, "none", 0, 0, True, None, False, "10") == (
+        [],
+        ("1", "1", "10", "10"),
+    )
+    for kwargs in (
+        {"mode": "invalid"},
+        {"limit": 1001},
+        {"pop": 1001},
+        {"now": "-1"},
+        {"previous": ("-1", "1", "1", "1")},
+    ):
+        args = dict(
+            history=(),
+            current=None,
+            mode="none",
+            limit=1,
+            pop=1,
+            changed=False,
+            previous=("1", "1", "1", "1"),
+            accepted=False,
+            now="10",
+        )
+        args.update(kwargs)
+        with pytest.raises(ValueError):
+            native.transition_values(**args)
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        "0",
+        "-0",
+        "0.0",
+        "-0.0",
+        "1e-999",
+        "-1e-999",
+        "1.7976931348623157e308",
+        "2.2250738585072014e-308",
+        "4.9406564584124654e-324",
+        "9007199254740993.0",
+        "18446744073709551616",
+        "-9223372036854775809",
+        "1" + "0" * 1000,
+        '{"z":true,"a":[null,false,{},[],"Հայերեն😀"]}',
+        ' \r\n {"escaped\\u0020key":"\\ud83d\\ude00"}\t ',
+    ],
+)
+def test_direct_strict_materialization_preserves_scalar_semantics(raw):
+    import json
+    import math
+
+    expected = json.loads(raw)
+    actual = native.strict_loads(raw)
+    assert actual == expected
+    assert type(actual) is type(expected)
+    if isinstance(expected, float) and expected == 0:
+        assert math.copysign(1, actual) == math.copysign(1, expected)
+    if isinstance(expected, dict):
+        assert list(actual) == list(expected)
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        "",
+        " ",
+        "+1",
+        "00",
+        "-00",
+        "01",
+        ".1",
+        "1.",
+        "-.1",
+        "1e",
+        "1e+",
+        "1e-",
+        "1e999",
+        "-1e999",
+        "NaN",
+        "Infinity",
+        "truefalse",
+        "null0",
+        "[0,]",
+        '{"a":0,}',
+        '{"a":0,"\\u0061":1}',
+        '"\\ud800"',
+        '"\\udfff"',
+        '"\\x20"',
+        '"a\nb"',
+        '{"a" 0}',
+        "[1 2]",
+        '{"a":}',
+        "[",
+        "{",
+        '"unterminated',
+    ],
+)
+def test_direct_strict_materialization_retains_existing_rejection_policy(raw):
+    with pytest.raises(ValueError):
+        native.validate_json(raw)
+    with pytest.raises(ValueError):
+        native.strict_loads(raw)
+
+
+def test_direct_integer_decode_observes_python_digit_limit():
+    import sys
+
+    if not hasattr(sys, "set_int_max_str_digits"):
+        pytest.skip("Runtime integer digit limit unavailable")
+    old = sys.get_int_max_str_digits()
+    raw = "9" * 1000
+    try:
+        sys.set_int_max_str_digits(640)
+        with pytest.raises(ValueError):
+            native.strict_loads(raw)
+        sys.set_int_max_str_digits(0)
+        assert native.strict_loads(raw) == int(raw)
+    finally:
+        sys.set_int_max_str_digits(old)
+
+
+def test_public_coarse_codec_exports_match_extension_and_typed_api():
+    import aiogram_nav_native as public
+
+    assert public.Canonicalizer is native.Canonicalizer
+    assert public.InvalidJson is native.InvalidJson
+    assert issubclass(public.InvalidJson, ValueError)
+    for method in ("fork", "fingerprint", "freeze", "clear_cache", "cache_stats"):
+        assert callable(getattr(public.Canonicalizer, method))
+
+
+def test_replace_history_mode_preserves_stack_and_applies_bound():
+    import json
+
+    assert json.loads(native.transition_history("[1,2]", "3", "replace", 1)) == [2]
+    entries, state = native.transition_values(
+        (1, 2), 3, "replace", 1, 1, True, ("1", "1", "100", "100"), True, "200"
+    )
+    assert entries == [2]
+    assert state == ("2", "2", "200", "200")

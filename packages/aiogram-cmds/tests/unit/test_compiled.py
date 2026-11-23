@@ -19,8 +19,17 @@ from aiogram_cmds import (
     build_profile_batch,
     compile_config,
 )
-from aiogram_cmds.delivery import payload_fingerprint
+from aiogram_cmds.delivery import UNSET, payload_fingerprint
 from aiogram_cmds.engines import native_engine
+
+
+@pytest.fixture(autouse=True)
+def reset_native_module_cache():
+    from aiogram_cmds.engines import _load_native
+
+    _load_native.cache_clear()
+    yield
+    _load_native.cache_clear()
 
 
 def sample():
@@ -149,32 +158,46 @@ async def test_compiled_manager_confirmations_and_partial_batches(mock_bot, engi
     assert partial.failed_target and partial.error
 
 
-async def test_live_translator_is_never_implicitly_cached(mock_bot):
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_live_translator_is_never_implicitly_cached(mock_bot, engine):
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
     state = {"calls": 0}
 
     def translator(key, **kwargs):
         state["calls"] += 1
         return f"Call {state['calls']}"
 
-    manager = CommandScopeManager(mock_bot, config=sample(), translator=translator)
+    manager = CommandScopeManager(
+        mock_bot, config=sample(), translator=translator, engine=engine
+    )
     await manager.update_profile(42, "member")
     await manager.update_profile(42, "member")
     assert state["calls"] == 4
 
 
-async def test_compiled_cancellation_propagates_and_no_false_confirmation(mock_bot):
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_compiled_cancellation_propagates_and_no_false_confirmation(
+    mock_bot, engine
+):
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
     mock_bot.id = 123
     mock_bot.set_my_commands.side_effect = asyncio.CancelledError
     manager = CommandScopeManager(
         mock_bot,
-        compiled=compile_config(sample(), config_revision="1"),
+        compiled=compile_config(sample(), config_revision="1", engine=engine),
         best_effort=True,
+        engine=engine,
     )
     with pytest.raises(asyncio.CancelledError):
         await manager.apply_profile(42, "member")
     mock_bot.set_my_commands.side_effect = None
     mock_bot.set_my_commands.return_value = None
     assert (await manager.apply_profile(42, "member")).confirmed_fingerprint is None
+    mock_bot.set_my_commands.return_value = True
+    assert (await manager.apply_profile(42, "member")).status == "applied"
+    assert mock_bot.set_my_commands.await_count == 3
 
 
 def test_engine_configuration_is_explicit_and_before_effects(monkeypatch, mock_bot):
@@ -308,3 +331,336 @@ def test_native_dynamic_loader_failure_is_normalized(monkeypatch):
     monkeypatch.setattr(engines, "import_module", broken)
     with pytest.raises(NativeEngineError):
         native_engine("rust")
+
+
+def test_native_fingerprint_cache_preserves_scope_and_snapshot_identity():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile([("p", [("en", [("start", "First")])])])
+    other = native.compile([("p", [("en", [("start", "Second")])])])
+    requests = [("p", "en", "1", '{"type":"default"}', "null")]
+    expected = snapshot.resolve_batch(requests)
+    assert snapshot.resolve_batch(requests * 300) == expected * 300
+    assert other.resolve_batch(requests) != expected
+    # Exercise capacity flush and oversized uncached inputs, then replay the first key.
+    for index in range(300):
+        snapshot.resolve_batch(
+            [("p", "en", str(index + 1), '{"type":"default"}', "null")]
+        )
+    assert snapshot.resolve_batch(requests) == expected
+    large = [("p", "en", "1", '{"type":"' + "a" * 5000 + '"}', "null")]
+    assert snapshot.resolve_batch(large) == snapshot.resolve_batch(large)
+    with pytest.raises(ValueError):
+        snapshot.resolve_batch([("missing", "en", "1", "{}", "null")])
+
+
+def test_native_module_is_validated_once_before_repeated_operations(monkeypatch):
+    import aiogram_cmds.engines as engines
+
+    real = pytest.importorskip("_aiogram_cmds_native")
+    calls = []
+
+    def load(name):
+        calls.append(name)
+        return real
+
+    monkeypatch.setattr(engines, "import_module", load)
+    assert engines.native_engine("rust") is real
+    assert engines.native_engine("rust") is real
+    assert calls == ["_aiogram_cmds_native"]
+    with pytest.raises(ValueError):
+        engines.native_engine("invalid")
+
+
+def test_native_single_resolution_matches_batch_and_slot_boundaries():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile([("p", [("en", [("start", "First")])])])
+    for scope in ('{"type":"chat","chat_id":1}', '{"type":"chat","chat_id":2}'):
+        for language in ("null", '"hy"'):
+            request = ("p", "en", "123", scope, language)
+            assert (
+                snapshot.resolve_one(*request) == snapshot.resolve_batch([request])[0]
+            )
+    with pytest.raises(ValueError):
+        snapshot.resolve_one("missing", "en", "123", "{}", "null")
+
+
+@pytest.mark.parametrize("engine", ["python", "rust"])
+@pytest.mark.parametrize("chat_id", [None, -10042])
+@pytest.mark.parametrize("language_code", [None, "", "hy", UNSET])
+@pytest.mark.parametrize("per_language", [True, False])
+async def test_single_delivery_preserves_batch_scope_hash_and_confirmation(
+    mock_bot, engine, chat_id, language_code, per_language, monkeypatch
+):
+    from aiogram.types import BotCommandScopeChat, BotCommandScopeChatMember
+
+    from aiogram_cmds.compiled import ResolvedPayload
+
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
+    mock_bot.id = 123
+    config = sample()
+    config.per_language = per_language
+    snapshot = compile_config(config, config_revision="single", engine=engine)
+    scope = (
+        BotCommandScopeChat(chat_id=42)
+        if chat_id is None
+        else BotCommandScopeChatMember(chat_id=chat_id, user_id=42)
+    )
+    expected = build_profile_batch(
+        snapshot,
+        [ProfileRequest("member", "ru", 123, scope.model_dump_json(), language_code)],
+        engine=engine,
+    )[0]
+    manager = CommandScopeManager(mock_bot, compiled=snapshot, engine=engine)
+    applied = await manager.apply_profile(
+        42, "member", chat_id=chat_id, language="ru", language_code=language_code
+    )
+    assert applied.confirmed_fingerprint == expected.fingerprint
+    actual = mock_bot.set_my_commands.call_args
+    assert actual.kwargs["scope"] == scope
+    assert actual.args[0] == expected.bot_commands()
+    assert actual.kwargs.get("language_code") == expected.language_code
+    if expected.language_code is None:
+        assert "language_code" not in actual.kwargs
+
+    def no_materialization(self):
+        pytest.fail("A confirmation hit must not construct mutable command models")
+
+    monkeypatch.setattr(ResolvedPayload, "bot_commands", no_materialization)
+    unchanged = await manager.apply_profile(
+        42,
+        "member",
+        chat_id=chat_id,
+        language="ru",
+        language_code=language_code,
+        previous_fingerprint=expected.fingerprint,
+    )
+    assert unchanged.status == "unchanged"
+    assert mock_bot.set_my_commands.await_count == 1
+
+
+def test_native_borrowed_single_cache_respects_every_slot_and_failure():
+    native = pytest.importorskip("_aiogram_cmds_native")
+    snapshot = native.compile(
+        [
+            (
+                "member",
+                [("en", [("start", "English")]), ("ru", [("start", "Russian")])],
+            ),
+            ("guest", [("en", [("start", "Guest")])]),
+        ]
+    )
+    base = ("member", "en", "123", '{"chat_id":42,"type":"chat"}', "null")
+    expected = snapshot.resolve_batch([base])[0]
+    for index, replacement in enumerate(
+        ("guest", "ru", "456", '{"chat_id":43,"type":"chat"}', '"ru"')
+    ):
+        other = (*base[:index], replacement, *base[index + 1 :])
+        for request in (base, other, other, base, base):
+            assert (
+                snapshot.resolve_one(*request) == snapshot.resolve_batch([request])[0]
+            )
+    for invalid in (
+        ("unknown", *base[1:]),
+        (*base[:2], "0", *base[3:]),
+        (*base[:4], "42"),
+    ):
+        with pytest.raises(ValueError):
+            snapshot.resolve_one(*invalid)
+        assert snapshot.resolve_one(*base) == expected
+    large = (*base[:3], '{"meta":"' + "x" * 5000 + '"}', base[4])
+    assert snapshot.resolve_one(*large) == snapshot.resolve_batch([large])[0]
+    assert snapshot.resolve_one(*base) == expected
+
+
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_live_manager_binds_engine_once_and_keeps_fresh_values(
+    mock_bot, engine, monkeypatch
+):
+    import aiogram_cmds.delivery as delivery
+    import aiogram_cmds.dynamic as dynamic
+    import aiogram_cmds.manager as managers
+
+    if engine == "rust":
+        pytest.importorskip("_aiogram_cmds_native")
+    mock_bot.id = 123
+    config = sample()
+    state = {"text": "First", "calls": 0}
+
+    def translator(key, **kwargs):
+        state["calls"] += 1
+        return state["text"]
+
+    checks = []
+    original = managers.native_engine
+
+    def checked(value):
+        checks.append(value)
+        return original(value)
+
+    monkeypatch.setattr(managers, "native_engine", checked)
+    manager = CommandScopeManager(
+        mock_bot, config=config, translator=translator, engine=engine
+    )
+    assert checks == [engine]
+
+    def duplicate_check(value):
+        pytest.fail("Live manager must reuse its validated engine binding")
+
+    monkeypatch.setattr(dynamic, "native_engine", duplicate_check)
+    monkeypatch.setattr(delivery, "native_engine", duplicate_check)
+    first = await manager.apply_profile(42, "member", language="ru", language_code=None)
+    state["text"] = "Second"
+    config.profiles["member"].include = ["help"]
+    config.profiles["member"].exclude.clear()
+    second = await manager.apply_profile(
+        42,
+        "member",
+        language="ru",
+        language_code=None,
+        previous_fingerprint=first.confirmed_fingerprint,
+    )
+    assert checks == [engine]
+    assert state["calls"] == 3
+    assert second.status == "applied"
+    assert first.confirmed_fingerprint != second.confirmed_fingerprint
+    assert mock_bot.set_my_commands.await_count == 2
+    assert mock_bot.set_my_commands.call_args.args[0][0].description == "Second"
+
+
+async def test_live_native_abi_failure_is_eager_even_for_small_menu(
+    mock_bot, monkeypatch
+):
+    import aiogram_cmds.dynamic as dynamic
+
+    def incompatible(engine):
+        raise NativeEngineError("incompatible")
+
+    def no_callbacks(key, **kwargs):
+        pytest.fail("ABI failures must precede translator callbacks")
+
+    monkeypatch.setattr(dynamic, "native_engine", incompatible)
+    with pytest.raises(NativeEngineError, match="incompatible"):
+        await dynamic.apply_profile(
+            mock_bot,
+            sample(),
+            user_id=42,
+            profile="member",
+            translator=no_callbacks,
+            engine="rust",
+            best_effort=True,
+        )
+    mock_bot.set_my_commands.assert_not_called()
+
+
+@pytest.mark.parametrize("api", ["direct", "manager"])
+async def test_live_large_native_failure_is_not_retried_in_python(
+    mock_bot, monkeypatch, api
+):
+    import aiogram_cmds.dynamic as dynamic
+
+    native = pytest.importorskip("_aiogram_cmds_native")
+    config = CmdsConfig(
+        commands={
+            f"cmd{index}": CommandDef(descriptions={"en": "Description"})
+            for index in range(11)
+        },
+        profiles={"member": ProfileDef(include=[f"cmd{index}" for index in range(11)])},
+    )
+    mock_bot.id = 123
+    calls = []
+
+    def fail(*args):
+        calls.append(args)
+        raise RuntimeError("unknown native failure")
+
+    monkeypatch.setattr(native, "fingerprint", fail)
+    with pytest.raises(RuntimeError, match="unknown native failure"):
+        if api == "direct":
+            await dynamic.apply_profile(
+                mock_bot, config, user_id=42, profile="member", engine="rust"
+            )
+        else:
+            manager = CommandScopeManager(mock_bot, config=config, engine="rust")
+            await manager.apply_profile(42, "member")
+    assert len(calls) == 1
+    mock_bot.set_my_commands.assert_not_called()
+
+
+async def test_live_manager_valid_engine_changes_keep_hashes_and_module_selection(
+    mock_bot, monkeypatch
+):
+    native = pytest.importorskip("_aiogram_cmds_native")
+    config = CmdsConfig(
+        commands={
+            f"cmd{index}": CommandDef(descriptions={"en": "Original"})
+            for index in range(11)
+        },
+        profiles={"member": ProfileDef(include=[f"cmd{index}" for index in range(11)])},
+    )
+    mock_bot.id = 123
+    manager = CommandScopeManager(mock_bot, config=config, engine="python")
+    original = native.fingerprint
+    calls = []
+
+    def tracked(*args):
+        calls.append(args)
+        return original(*args)
+
+    monkeypatch.setattr(native, "fingerprint", tracked)
+    first = await manager.apply_profile(42, "member", language_code=None)
+    assert calls == []
+    manager.engine = "rust"
+    assert manager.engine == "rust"
+    second = await manager.apply_profile(
+        42,
+        "member",
+        language_code=None,
+        previous_fingerprint=first.confirmed_fingerprint,
+    )
+    assert second.status == "unchanged" and len(calls) == 1
+    manager.engine = "python"
+    assert manager.engine == "python"
+    third = await manager.apply_profile(
+        42,
+        "member",
+        language_code=None,
+        previous_fingerprint=first.confirmed_fingerprint,
+    )
+    assert third.status == "unchanged" and len(calls) == 1
+    assert mock_bot.set_my_commands.await_count == 1
+
+
+async def test_live_manager_failed_engine_change_is_atomic_and_before_callbacks(
+    mock_bot, monkeypatch
+):
+    import aiogram_cmds.manager as managers
+
+    mock_bot.id = 123
+    calls = []
+
+    def translator(key, **kwargs):
+        calls.append(key)
+        return "Description"
+
+    manager = CommandScopeManager(
+        mock_bot, config=sample(), translator=translator, engine="python"
+    )
+    original = managers.native_engine
+
+    def missing(value):
+        if value == "rust":
+            raise NativeEngineError("missing companion")
+        return original(value)
+
+    monkeypatch.setattr(managers, "native_engine", missing)
+    with pytest.raises(NativeEngineError, match="missing companion"):
+        manager.engine = "rust"
+    assert manager.engine == "python"
+    with pytest.raises(ValueError, match="engine"):
+        manager.engine = "invalid"
+    assert manager.engine == "python"
+    assert calls == []
+    mock_bot.set_my_commands.assert_not_called()
+    assert (await manager.apply_profile(42, "member")).status == "applied"
+    assert len(calls) == 2

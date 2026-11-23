@@ -10,6 +10,7 @@ from dataclasses import replace
 from datetime import datetime
 from typing import TYPE_CHECKING, cast
 
+from .._json_scope import JsonEngine
 from ..clock import Clock, SystemClock
 from ..config import IdleConfig
 from ..coordinator import MemoryCoordinator
@@ -45,7 +46,7 @@ from .format import StorageFormats
 from .fused_activity import FusedActivities
 from .owned_lock import OwnedLock
 from .queue import DeadlineQueue
-from .receipts import Receipts, fingerprint, lookup_operation
+from .receipts import Receipts, fingerprint, lookup_operation, new_canonicalizer
 from .retention import ensure_activity_mutable, may_prune
 from .session_bindings import SessionBindings
 from .state import Claim, ControlToken, OperationLookup
@@ -76,14 +77,21 @@ class MemoryIdleBackend(
         if type(storage_format) is not int or storage_format not in (1, 3):
             raise ConfigurationError("Fresh memory storage_format must be 1 or 3")
         self.config = config or IdleConfig()
-        from ..engines import make_queue, require_engine
+        from ..engines import make_queue, native_core, require_engine
 
         require_engine(self.config.engine)
         self.clock = clock or SystemClock()
         self._created_at = self.clock.now()
         self._storage_format = storage_format
         self._activation_operation: str | None = None
-        self._lock: asyncio.Lock = OwnedLock()
+        self.json_processor: JsonEngine | None = (
+            JsonEngine(new_canonicalizer(), native_core().InvalidJson)
+            if self.config.engine == "rust"
+            else None
+        )
+        owned_lock = OwnedLock(processor=self.json_processor)
+        self._lock: asyncio.Lock = owned_lock
+        self._queue_lock = owned_lock.queue
         self.coordinator: Coordinator = MemoryCoordinator()
         self._records: dict[IdleConversationKey, RuntimeSnapshot] = {}
         self._canonical_migrations: dict[tuple[IdleConversationKey, str], MigrationStage] = {}
@@ -421,7 +429,7 @@ class MemoryIdleBackend(
             or lease_seconds <= 0
         ):
             raise ValueError("Claim capacity and lease must be positive")
-        async with self._lock:
+        async with self._queue_lock:
             return self._queue.claim(
                 limit=limit,
                 lease_seconds=lease_seconds,
@@ -433,15 +441,15 @@ class MemoryIdleBackend(
     async def renew_claim(self, claim: Claim, *, lease_seconds: float) -> Claim:
         if not math.isfinite(lease_seconds) or lease_seconds <= 0:
             raise ValueError("Lease must be positive")
-        async with self._lock:
+        async with self._queue_lock:
             return self._queue.renew(claim, now=self._now(), lease_seconds=lease_seconds)
 
     async def validate_claim(self, claim: Claim) -> None:
-        async with self._lock:
+        async with self._queue_lock:
             self._queue.check(claim, self._now())
 
     async def release_claim(self, claim: Claim, *, retry_at: float | None = None) -> None:
-        async with self._lock:
+        async with self._queue_lock:
             self._queue.release(
                 claim, self._get(claim.key, live=False), now=self._now(), retry_at=retry_at
             )
@@ -589,6 +597,8 @@ class MemoryIdleBackend(
 
     async def close(self) -> None:
         """A caller-owned memory backend retains state until it is discarded."""
+        if self.json_processor is not None:
+            self.json_processor.core.clear_cache()
 
     async def frozen_policy(self, key: IdleConversationKey) -> Policy:
         async with self._lock:

@@ -1,0 +1,1 @@
+Add opt-in fixed-age Redis latency windows with complete pooled observations, explicit fixture boundaries and correct per-window CPU versus total-counter denominators. Defaults retain one window; failed windows cannot qualify a selected successful subset. No runtime or gate-threshold changes.

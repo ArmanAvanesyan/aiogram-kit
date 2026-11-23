@@ -32,6 +32,11 @@ from aiogram_sentinel.policy import PolicyRegistry
 from aiogram_sentinel.scopes import KeyBuilder
 from aiogram_sentinel.storage.memory import MemoryDebounce, MemoryRateLimiter
 
+if __package__:
+    from .latency_windows import LatencyWindowFailure, collect_latency_windows
+else:
+    from latency_windows import LatencyWindowFailure, collect_latency_windows
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -39,10 +44,18 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--quick", action="store_true")
     parser.add_argument(
+        "--latency-windows",
+        type=int,
+        default=1,
+        help="Fresh independent 1000-operation middleware latency fixtures (CPU phase unchanged)",
+    )
+    parser.add_argument(
         "--redis-url",
         help="Dedicated disposable Redis database; only unique benchmark keys are deleted",
     )
     args = parser.parse_args()
+    if not 1 <= args.latency_windows <= 100:
+        parser.error("latency-windows must be an integer in 1..100")
     supported = "engine" in inspect.signature(MemoryRateLimiter).parameters
     if not supported and args.engine != "python":
         parser.error("installed baseline has no Rust engine")
@@ -50,7 +63,7 @@ def main() -> None:
     count, repeats, warmups = (5000, 5, 2) if args.quick else (50000, 15, 5)
     results = []
 
-    async def sample(kind: str, latencies: list[float] | None = None) -> None:
+    async def sample(kind: str, latencies: list[float] | None = None) -> dict | None:
         if kind.startswith("redis_"):
             from redis.asyncio import Redis
 
@@ -79,6 +92,9 @@ def main() -> None:
             await debounce.seen("hot", 3600, "fingerprint")
         keys = [f"user:{index}" for index in range(1000)]
         if kind == "middleware_fake_io":
+            # This ID belongs to the fresh rate/resolver/event fixture creation,
+            # not to an aggregator that could relabel an already-used backend.
+            fixture_id = uuid4().hex if latencies is not None else None
             cfg = SentinelConfig(throttling_default_max=1000000)
             resolver = PolicyResolverMiddleware(PolicyRegistry(), cfg)
             throttle = ThrottlingMiddleware(rate, cfg, KeyBuilder("bench"))
@@ -102,7 +118,9 @@ def main() -> None:
                 await resolver(limited, event, {})
                 if latencies is not None:
                     latencies.append(time.perf_counter() - start)
-            return
+            if latencies is not None:
+                return {"fixture_id": fixture_id, "state_age": 0, "end_state_age": 1000}
+            return None
         if kind == "rate_concurrent":
             await asyncio.gather(
                 *(rate.allow(keys[i % 1000], 1000000, 3600) for i in range(count))
@@ -152,13 +170,31 @@ def main() -> None:
             }
         )
         if kind == "middleware_fake_io":
-            latencies: list[float] = []
-            asyncio.run(sample(kind, latencies))
-            results[-1]["update_latency_seconds"] = latencies
-            results[-1]["update_p95_seconds"] = sorted(latencies)[
-                math.ceil(len(latencies) * 0.95) - 1
-            ]
-            results[-1]["update_sample_count"] = len(latencies)
+            try:
+                latency = collect_latency_windows(
+                    lambda values, _kind=kind: asyncio.run(sample(_kind, values)),
+                    args.latency_windows,
+                )
+            except LatencyWindowFailure as error:
+                args.output.parent.mkdir(parents=True, exist_ok=True)
+                args.output.write_text(
+                    json.dumps(
+                        {
+                            "package": "aiogram-sentinel",
+                            "engine": args.engine,
+                            "qualification": False,
+                            "status": "failed-latency-window",
+                            "results": results,
+                            "partial_latency": error.partial,
+                        },
+                        indent=2,
+                    )
+                    + "\n"
+                )
+                raise
+            results[-1].update(latency)
+            # CPU trials still time 50,000 calls each; latency windows time 1,000.
+            results[-1]["operations_per_cpu_sample"] = results[-1]["calls"]
     try:
         commit = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], text=True
@@ -181,6 +217,8 @@ def main() -> None:
         "cpu_count": os.cpu_count(),
         "seed": 137,
         "qualification": False,
+        "individual_latency_windows": args.latency_windows,
+        "individual_latency_operations_per_window": 1000,
         "results": results,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

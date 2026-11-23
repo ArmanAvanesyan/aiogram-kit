@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import TYPE_CHECKING
 
+from ._json_scope import construct
 from .actions import cleanup_committed, complete, prepare
 from .effects import normalize_render
 from .errors import ConfigurationError, SessionExpired
@@ -18,6 +19,7 @@ from .models import (
     RenderRequest,
     RenderResult,
 )
+from .registry import parameter_values
 from .storage.base import AtomicAdoptionRepository
 
 if TYPE_CHECKING:
@@ -62,7 +64,7 @@ async def track(
             return (await complete(nav, prepared, rendered)).snapshot
         authority = await nav.authorize_session(key)
         node = nav.registry.get(node_id)
-        validated = nav.registry.validate_params(node.id, params)
+        validated = parameter_values(nav.registry, node.id, params, nav.json_processor)
         await nav.allowed(key, node, validated, source)
         rendered = normalize_render(rendered)
         current = await nav.repository.load(key)
@@ -74,7 +76,9 @@ async def track(
             or fresh.absolute_expires_at != authority.absolute_expires_at
         ):
             raise SessionExpired("Application session changed during render adoption guards")
-        intent = NavigationIntent(
+        intent = construct(
+            nav.json_processor,
+            NavigationIntent,
             operation_id,
             node.id,
             validated,
@@ -93,7 +97,9 @@ async def track(
         if result.duplicate:
             await nav.authorize_session(key, result.snapshot.session_id)
             return result.snapshot
-        request = RenderRequest(
+        request = construct(
+            nav.json_processor,
+            RenderRequest,
             key,
             operation_id,
             node,

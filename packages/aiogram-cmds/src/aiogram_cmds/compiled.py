@@ -15,7 +15,14 @@ from .builder import validate_name
 from .builders_configured import build_from_config
 from .customize import CmdsConfig
 from .delivery import UNSET, LanguageCode, menu_slot
-from .engines import Engine, NativeRows, NativeSnapshot, Rows, native_engine
+from .engines import (
+    Engine,
+    NativeModule,
+    NativeRows,
+    NativeSnapshot,
+    Rows,
+    native_engine,
+)
 from .registry import CommandRegistry
 from .scopes import ScopeObject, scope_object, sorted_scopes
 from .translator import Translator
@@ -243,6 +250,34 @@ def compile_config(
     return snapshot.bind(engine)
 
 
+def resolved_payload(
+    compiled: CompiledCommands,
+    *,
+    profile: str,
+    language: str,
+    bot_id: int,
+    canonical_scope: str,
+    language_code: str | None | LanguageCode,
+    module: NativeModule | None,
+) -> ResolvedPayload:
+    """Resolve one already validated SDK target without batch scaffolding."""
+    if type(bot_id) is not int or bot_id <= 0:
+        raise ValueError("A positive bot identity is required for fingerprints")
+    slot = menu_slot(language, language_code, per_language=compiled.per_language)
+    rows = compiled.rows(profile, language)
+    language_json = json.dumps(slot, ensure_ascii=False)
+    if module is None:
+        commands = compiled.encoded[profile][language]
+        value = f'{{"bot_id":{bot_id},"commands":{commands},"language_code":{language_json},"scope":{canonical_scope}}}'
+        digest = hashlib.sha256(value.encode()).hexdigest()
+    else:
+        native = compiled.native or module.compile(compiled.native_rows())
+        digest = native.resolve_one(
+            profile, language, str(bot_id), canonical_scope, language_json
+        )
+    return ResolvedPayload(rows, digest, canonical_scope, slot)
+
+
 def build_profile_batch(
     compiled: CompiledCommands,
     requests: Sequence[ProfileRequest],
@@ -284,6 +319,16 @@ def build_profile_batch(
             results.append(ResolvedPayload(rows, digest, canonical, slot))
         return tuple(results)
     native = compiled.native or module.compile(compiled.native_rows())
+    if len(prepared) == 1:
+        request, rows, _, canonical, slot = prepared[0]
+        digest = native.resolve_one(
+            request.profile,
+            request.language,
+            str(request.bot_id),
+            canonical,
+            json.dumps(slot, ensure_ascii=False),
+        )
+        return (ResolvedPayload(rows, digest, canonical, slot),)
     hashes = native.resolve_batch(
         [
             (

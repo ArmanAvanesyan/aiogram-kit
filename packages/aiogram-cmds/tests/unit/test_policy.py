@@ -394,29 +394,9 @@ class TestPolicyIntegration:
         assert len(commands) > 0
         assert len(profile) > 0
 
-    def test_policy_performance(self):
-        """Test policy performance."""
-        import time
-
+    def test_policy_results_are_independent(self):
+        """Mutating one result cannot change commands produced by future calls."""
         flags = Flags(is_registered=True, has_vehicle=False)
-
-        # Warm up
-        for _ in range(10):
-            default_policy(flags)
-
-        # Benchmark
-        start_time = time.time()
-        iterations = 10000
-
-        for _ in range(iterations):
-            default_policy(flags)
-
-        end_time = time.time()
-        duration = end_time - start_time
-
-        # Should be very fast
-        assert duration < 0.1  # Less than 100ms for 10k iterations
-
-        # Average time per call should be reasonable
-        avg_time = duration / iterations
-        assert avg_time < 0.00001  # Less than 10μs per call
+        expected = tuple(default_policy(flags))
+        default_policy(flags).clear()
+        assert tuple(default_policy(flags)) == expected

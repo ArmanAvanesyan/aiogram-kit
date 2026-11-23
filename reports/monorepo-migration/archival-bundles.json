@@ -1,0 +1,44 @@
+[
+  {
+    "repository": "aiogram-kit",
+    "bundle": "aiogram-kit.bundle",
+    "sha256": "ece8b15b9cc495794664efa7f19a605885364b71ea258eae14568283696ff7f2",
+    "refs": 158,
+    "verified": true
+  },
+  {
+    "repository": "aiogram-kit-legacy",
+    "bundle": "aiogram-kit-legacy.bundle",
+    "sha256": "0d1c04fa8c8a56b5b8950bcd47cfab0c7549d658157219653408547b2524005f",
+    "refs": 8,
+    "verified": true
+  },
+  {
+    "repository": "aiogram-coordination",
+    "bundle": "aiogram-coordination.bundle",
+    "sha256": "c353a7e1584ca135bdb1098721fb68fa97ecb631f3d2d33d9b48d2ee9a55d0c8",
+    "refs": 2,
+    "verified": true
+  },
+  {
+    "repository": "aiogram-cmds",
+    "bundle": "aiogram-cmds.bundle",
+    "sha256": "bee4b99fa5d285b13f79c8b00bb3b3e8b195a122b4a239939fd838f577b35b74",
+    "refs": 31,
+    "verified": true
+  },
+  {
+    "repository": "aiogram-nav",
+    "bundle": "aiogram-nav.bundle",
+    "sha256": "34ec00e98db56e9347f96b72111e3fb74f30efa04c29b9895a7aa3a2931e891b",
+    "refs": 8,
+    "verified": true
+  },
+  {
+    "repository": "aiogram-idle",
+    "bundle": "aiogram-idle.bundle",
+    "sha256": "f8e33c9e93269de6d101d25d6258ee6de3ac2d33173426c80a120ecf27f25b92",
+    "refs": 11,
+    "verified": true
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+    "sha256": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "dbb077d918ca2dfd1f1698dbdd37df08bfa03f40ca051aa70136b1123ea9c41c"
+  },
+  {
+    "filename": "aiogram_coordination-0.1.1-py3-none-any.whl",
+    "sha256": "e3968449faee82324774f7b9cde8608b842923913e097d362955be5d468c1f68"
+  },
+  {
+    "filename": "aiogram_idle-0.3.1-py3-none-any.whl",
+    "sha256": "32fb92397ae7a6f89ace423cd7e9d556c4080130857700f101a87c94844f006e"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "828dc601555dae3028e5bcef8e4b54ac03afe37cb39f40d8048c133b6ded9659"
+  },
+  {
+    "filename": "aiogram_nav-0.3.1-py3-none-any.whl",
+    "sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "b99dd782e4fb8fdc2bd6b9b0c1cedf70864ebd5c6f76c853d4f88bd9a158e257"
+  },
+  {
+    "filename": "aiogram_sentinel-1.3.1-py3-none-any.whl",
+    "sha256": "c97a7fefb617bd27a413a1c624581976b70807f7000caac1d2d4cdd42779ce5d"
+  },
+  {
+    "filename": "aiogram_sentinel_native-1.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+    "sha256": "8ad772ac1d94a20520c2b3fc11468dd2513464045227586f9aa93914b9bac54c"
+  }
+]

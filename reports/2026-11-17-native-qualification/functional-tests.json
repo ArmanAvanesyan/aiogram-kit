@@ -1,0 +1,26 @@
+{
+  "sentinel": {
+    "tests": 395,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cmds": {
+    "tests": 322,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "nav": {
+    "tests": 452,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "idle": {
+    "tests": 743,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

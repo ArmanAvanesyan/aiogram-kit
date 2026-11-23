@@ -2,11 +2,18 @@
 
 from __future__ import annotations
 
+import json
+
 from aiogram import Bot
 from aiogram.types import BotCommandScopeChat, BotCommandScopeChatMember
 
-from .compiled import CompiledCommands, ProfileRequest, build_profile_batch
-from .delivery import UNSET, CommandApplyResult, LanguageCode
+from .compiled import CompiledCommands, resolved_payload
+from .delivery import (
+    UNSET,
+    CommandApplyResult,
+    LanguageCode,
+    validate_fingerprint,
+)
 from .engines import Engine, native_engine
 
 
@@ -23,11 +30,9 @@ async def apply_compiled_profile(
     best_effort: bool = False,
     engine: Engine = "python",
 ) -> CommandApplyResult:
-    native_engine(engine)
+    module = native_engine(engine)
     if type(best_effort) is not bool:
         raise TypeError("best_effort must be a boolean")
-    from .delivery import validate_fingerprint
-
     validate_fingerprint(previous_fingerprint)
     fingerprint = None
     try:
@@ -36,10 +41,23 @@ async def apply_compiled_profile(
             if chat_id is None
             else BotCommandScopeChatMember(chat_id=chat_id, user_id=user_id)
         )
-        request = ProfileRequest(
-            profile, language, bot.id, scope.model_dump_json(), language_code
+        # The scope was just validated by aiogram. Serializing its JSON-mode
+        # values directly avoids dump -> parse -> dump and a one-item batch.
+        canonical_scope = json.dumps(
+            scope.model_dump(mode="json"),
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
         )
-        payload = build_profile_batch(compiled, [request], engine=engine)[0]
+        payload = resolved_payload(
+            compiled,
+            profile=profile,
+            language=language,
+            bot_id=bot.id,
+            canonical_scope=canonical_scope,
+            language_code=language_code,
+            module=module,
+        )
         fingerprint = payload.fingerprint
         if previous_fingerprint == fingerprint:
             return CommandApplyResult("unchanged", fingerprint, fingerprint)

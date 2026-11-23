@@ -1,0 +1,1 @@
+Fuse optional native JSON freezing and canonical fingerprints with bounded backend-owned immutable-data memoization; preserve task ownership and Python fallback semantics. Native distributions remain unpublished pending full qualification.

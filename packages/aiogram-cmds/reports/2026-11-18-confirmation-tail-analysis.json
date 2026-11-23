@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "source_commit": "f4567d1e23fa591d27873f5c594bc5f2c4064668",
+  "workflow_run": 44210106073,
+  "source_evidence_directory": "reports/2026-11-18-native-parallel-qualification/linux-initial/native-qualification/aiogram-cmds",
+  "purpose": "Descriptive analysis of retained failed qualification, not a new timing run or threshold waiver.",
+  "compiled_confirmation_10_repeat_spread": {
+    "python": 0.1009870918754745,
+    "rust": 0.0036836403033586596
+  },
+  "observations": [
+    "The compiled confirmation/10 repeat-spread failure is in the Python baseline (14487 ns versus 15950 ns), not Rust (13896 ns versus 13845 ns).",
+    "Before/after driver telemetry records zero generation-two collections in every profile, with identical per-engine lower-generation collection totals. This does not attribute individual sample tails to GC or rule out lower-generation collection pauses.",
+    "One-command dynamic delivery already resolves profiles in Python. Redundant eager engine validation and small-payload native selection checks were the remaining avoidable extension overhead.",
+    "All failed gates remain failures. These observations do not justify dropping samples, changing workloads, weakening thresholds or resampling an unchanged candidate."
+  ],
+  "profiles": [
+    {
+      "label": "python-a",
+      "source_file": "python-a/aiogram-cmds.json",
+      "sha256": "e0699918b4a45067648c80ad237ea834afc545eab52d48f9acf6a945aa18a5ec",
+      "workloads": {
+        "compiled_confirmation_hit/10": {
+          "count": 1000,
+          "p50_ns": 13565.0,
+          "p95_ns": 14487,
+          "p99_ns": 26338,
+          "windows_of_100": [
+            {
+              "p50_ns": 13595.5,
+              "p95_ns": 14397
+            },
+            {
+              "p50_ns": 13555.0,
+              "p95_ns": 17543
+            },
+            {
+              "p50_ns": 13635.5,
+              "p95_ns": 14487
+            },
+            {
+              "p50_ns": 13645.5,
+              "p95_ns": 14587
+            },
+            {
+              "p50_ns": 13580.0,
+              "p95_ns": 13856
+            },
+            {
+              "p50_ns": 13595.0,
+              "p95_ns": 17102
+            },
+            {
+              "p50_ns": 13596.0,
+              "p95_ns": 14237
+            },
+            {
+              "p50_ns": 13515.5,
+              "p95_ns": 13745
+            },
+            {
+              "p50_ns": 13475.0,
+              "p95_ns": 14216
+            },
+            {
+              "p50_ns": 13530.5,
+              "p95_ns": 14216
+            }
+          ]
+        },
+        "confirmation_hit/1": {
+          "count": 1000,
+          "p50_ns": 17457.5,
+          "p95_ns": 20929,
+          "p99_ns": 33172,
+          "windows_of_100": [
+            {
+              "p50_ns": 17552.5,
+              "p95_ns": 23764
+            },
+            {
+              "p50_ns": 17442.5,
+              "p95_ns": 20448
+            },
+            {
+              "p50_ns": 17332.0,
+              "p95_ns": 17813
+            },
+            {
+              "p50_ns": 17392.5,
+              "p95_ns": 20949
+            },
+            {
+              "p50_ns": 17503.0,
+              "p95_ns": 20929
+            },
+            {
+              "p50_ns": 17422.0,
+              "p95_ns": 20598
+            },
+            {
+              "p50_ns": 17577.5,
+              "p95_ns": 18805
+            },
+            {
+              "p50_ns": 17477.5,
+              "p95_ns": 21731
+            },
+            {
+              "p50_ns": 17467.5,
+              "p95_ns": 18304
+            },
+            {
+              "p50_ns": 17452.5,
+              "p95_ns": 21170
+            }
+          ]
+        }
+      },
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 204,
+          "objects_collected": 53
+        },
+        {
+          "generation": 1,
+          "collections": 18,
+          "objects_collected": 110
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ],
+      "involuntary_context_switch_delta": 29
+    },
+    {
+      "label": "rust-a",
+      "source_file": "rust-a/aiogram-cmds.json",
+      "sha256": "5cc4da88da6878bb85a946fab5a275b7fcccc304618c994db8e4c1297176dc07",
+      "workloads": {
+        "compiled_confirmation_hit/10": {
+          "count": 1000,
+          "p50_ns": 12283.0,
+          "p95_ns": 13896,
+          "p99_ns": 27350,
+          "windows_of_100": [
+            {
+              "p50_ns": 12338.0,
+              "p95_ns": 13465
+            },
+            {
+              "p50_ns": 12247.5,
+              "p95_ns": 14186
+            },
+            {
+              "p50_ns": 12262.5,
+              "p95_ns": 15358
+            },
+            {
+              "p50_ns": 12308.0,
+              "p95_ns": 14056
+            },
+            {
+              "p50_ns": 12208.0,
+              "p95_ns": 13104
+            },
+            {
+              "p50_ns": 12273.0,
+              "p95_ns": 13034
+            },
+            {
+              "p50_ns": 12293.0,
+              "p95_ns": 13626
+            },
+            {
+              "p50_ns": 12218.0,
+              "p95_ns": 12714
+            },
+            {
+              "p50_ns": 12348.0,
+              "p95_ns": 13195
+            },
+            {
+              "p50_ns": 12343.0,
+              "p95_ns": 14327
+            }
+          ]
+        },
+        "confirmation_hit/1": {
+          "count": 1000,
+          "p50_ns": 17933.0,
+          "p95_ns": 21359,
+          "p99_ns": 33442,
+          "windows_of_100": [
+            {
+              "p50_ns": 18274.0,
+              "p95_ns": 23814
+            },
+            {
+              "p50_ns": 18024.0,
+              "p95_ns": 21359
+            },
+            {
+              "p50_ns": 18159.0,
+              "p95_ns": 19927
+            },
+            {
+              "p50_ns": 18069.0,
+              "p95_ns": 21400
+            },
+            {
+              "p50_ns": 17888.0,
+              "p95_ns": 21690
+            },
+            {
+              "p50_ns": 17813.0,
+              "p95_ns": 20538
+            },
+            {
+              "p50_ns": 17873.0,
+              "p95_ns": 19466
+            },
+            {
+              "p50_ns": 17863.0,
+              "p95_ns": 22542
+            },
+            {
+              "p50_ns": 17737.5,
+              "p95_ns": 22001
+            },
+            {
+              "p50_ns": 17833.0,
+              "p95_ns": 19256
+            }
+          ]
+        }
+      },
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 258,
+          "objects_collected": 63
+        },
+        {
+          "generation": 1,
+          "collections": 23,
+          "objects_collected": 110
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ],
+      "involuntary_context_switch_delta": 22
+    },
+    {
+      "label": "rust-b",
+      "source_file": "rust-b/aiogram-cmds.json",
+      "sha256": "e2624adb444e4a996cb11d898a02c71909fe0a1d80e617e133e89b7839c7b6ba",
+      "workloads": {
+        "compiled_confirmation_hit/10": {
+          "count": 1000,
+          "p50_ns": 12753.0,
+          "p95_ns": 13845,
+          "p99_ns": 26570,
+          "windows_of_100": [
+            {
+              "p50_ns": 12734.0,
+              "p95_ns": 13174
+            },
+            {
+              "p50_ns": 12818.5,
+              "p95_ns": 14687
+            },
+            {
+              "p50_ns": 12764.0,
+              "p95_ns": 13725
+            },
+            {
+              "p50_ns": 12734.0,
+              "p95_ns": 13686
+            },
+            {
+              "p50_ns": 12789.0,
+              "p95_ns": 13324
+            },
+            {
+              "p50_ns": 12718.0,
+              "p95_ns": 13065
+            },
+            {
+              "p50_ns": 12759.0,
+              "p95_ns": 13405
+            },
+            {
+              "p50_ns": 12778.5,
+              "p95_ns": 14587
+            },
+            {
+              "p50_ns": 12678.5,
+              "p95_ns": 13686
+            },
+            {
+              "p50_ns": 12748.5,
+              "p95_ns": 14698
+            }
+          ]
+        },
+        "confirmation_hit/1": {
+          "count": 1000,
+          "p50_ns": 18735.0,
+          "p95_ns": 22341,
+          "p99_ns": 43622,
+          "windows_of_100": [
+            {
+              "p50_ns": 18765.0,
+              "p95_ns": 23353
+            },
+            {
+              "p50_ns": 19126.0,
+              "p95_ns": 33372
+            },
+            {
+              "p50_ns": 18574.0,
+              "p95_ns": 20748
+            },
+            {
+              "p50_ns": 18630.0,
+              "p95_ns": 20669
+            },
+            {
+              "p50_ns": 18554.0,
+              "p95_ns": 20438
+            },
+            {
+              "p50_ns": 18645.0,
+              "p95_ns": 19416
+            },
+            {
+              "p50_ns": 18699.0,
+              "p95_ns": 20979
+            },
+            {
+              "p50_ns": 18665.0,
+              "p95_ns": 19856
+            },
+            {
+              "p50_ns": 18815.5,
+              "p95_ns": 26259
+            },
+            {
+              "p50_ns": 18885.5,
+              "p95_ns": 20378
+            }
+          ]
+        }
+      },
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 258,
+          "objects_collected": 63
+        },
+        {
+          "generation": 1,
+          "collections": 23,
+          "objects_collected": 110
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ],
+      "involuntary_context_switch_delta": 51
+    },
+    {
+      "label": "python-b",
+      "source_file": "python-b/aiogram-cmds.json",
+      "sha256": "0e349cf6b77196ce63f9f26df70424ef3272d81f22ab1319c2109e2f0d3c92bb",
+      "workloads": {
+        "compiled_confirmation_hit/10": {
+          "count": 1000,
+          "p50_ns": 13906.0,
+          "p95_ns": 15950,
+          "p99_ns": 30827,
+          "windows_of_100": [
+            {
+              "p50_ns": 13876.0,
+              "p95_ns": 16360
+            },
+            {
+              "p50_ns": 13896.0,
+              "p95_ns": 15839
+            },
+            {
+              "p50_ns": 13896.0,
+              "p95_ns": 19016
+            },
+            {
+              "p50_ns": 13931.0,
+              "p95_ns": 18975
+            },
+            {
+              "p50_ns": 13941.0,
+              "p95_ns": 17352
+            },
+            {
+              "p50_ns": 13881.0,
+              "p95_ns": 14387
+            },
+            {
+              "p50_ns": 13856.0,
+              "p95_ns": 14747
+            },
+            {
+              "p50_ns": 13870.5,
+              "p95_ns": 15399
+            },
+            {
+              "p50_ns": 13986.0,
+              "p95_ns": 14858
+            },
+            {
+              "p50_ns": 13991.0,
+              "p95_ns": 16230
+            }
+          ]
+        },
+        "confirmation_hit/1": {
+          "count": 1000,
+          "p50_ns": 18013.0,
+          "p95_ns": 19847,
+          "p99_ns": 34734,
+          "windows_of_100": [
+            {
+              "p50_ns": 18098.5,
+              "p95_ns": 20198
+            },
+            {
+              "p50_ns": 18133.5,
+              "p95_ns": 18775
+            },
+            {
+              "p50_ns": 18073.5,
+              "p95_ns": 19767
+            },
+            {
+              "p50_ns": 18013.0,
+              "p95_ns": 19967
+            },
+            {
+              "p50_ns": 17868.5,
+              "p95_ns": 18805
+            },
+            {
+              "p50_ns": 17808.0,
+              "p95_ns": 22582
+            },
+            {
+              "p50_ns": 18099.0,
+              "p95_ns": 19847
+            },
+            {
+              "p50_ns": 17963.5,
+              "p95_ns": 19958
+            },
+            {
+              "p50_ns": 18044.0,
+              "p95_ns": 18845
+            },
+            {
+              "p50_ns": 18039.0,
+              "p95_ns": 19206
+            }
+          ]
+        }
+      },
+      "driver_gc_collection_deltas": [
+        {
+          "generation": 0,
+          "collections": 204,
+          "objects_collected": 53
+        },
+        {
+          "generation": 1,
+          "collections": 18,
+          "objects_collected": 110
+        },
+        {
+          "generation": 2,
+          "collections": 0,
+          "objects_collected": 0
+        }
+      ],
+      "involuntary_context_switch_delta": 26
+    }
+  ]
+}

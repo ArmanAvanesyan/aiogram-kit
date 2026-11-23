@@ -3,23 +3,29 @@
 from ._aiogram_nav_native import (
     API_VERSION,
     ENGINE_VERSION,
+    Canonicalizer,
+    InvalidJson,
     Registry,
     fingerprint_canonical,
     strict_loads,
     token_matches,
     transition_history,
     transition_state,
+    transition_values,
     validate_json,
 )
 
 __all__ = [
     "API_VERSION",
     "ENGINE_VERSION",
+    "Canonicalizer",
+    "InvalidJson",
     "Registry",
     "fingerprint_canonical",
     "strict_loads",
     "token_matches",
     "transition_history",
     "transition_state",
+    "transition_values",
     "validate_json",
 ]

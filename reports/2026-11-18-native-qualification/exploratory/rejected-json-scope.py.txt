@@ -1,0 +1,43 @@
+"""Task-owned selection for pure JSON work inside backend mutations only."""
+
+from __future__ import annotations
+
+import asyncio
+from contextvars import ContextVar, Token
+from dataclasses import dataclass
+from typing import Literal
+
+
+@dataclass
+class JsonScope:
+    owner: asyncio.Task[object] | None
+    engine: Literal["python", "rust"]
+    active: bool = True
+
+
+_SCOPE: ContextVar[JsonScope | None] = ContextVar("idle_json_scope", default=None)
+
+
+def begin(engine: Literal["python", "rust"]) -> tuple[Token[JsonScope | None], JsonScope]:
+    scope = JsonScope(asyncio.current_task(), engine)
+    return _SCOPE.set(scope), scope
+
+
+def end(token: Token[JsonScope | None], scope: JsonScope) -> None:
+    scope.active = False
+    try:
+        _SCOPE.reset(token)
+    except ValueError:
+        # A copied context cannot reset its parent's token. Shared active state
+        # nevertheless revokes selection in every inherited/copied context.
+        pass
+
+
+def selected() -> Literal["python", "rust"]:
+    scope = _SCOPE.get()
+    if scope is None or not scope.active or scope.engine == "python":
+        return "python"
+    try:
+        return "rust" if scope.owner is asyncio.current_task() else "python"
+    except RuntimeError:
+        return "python"

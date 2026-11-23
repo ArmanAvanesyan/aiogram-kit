@@ -328,3 +328,223 @@ def test_native_queue_views_do_not_delay_core_release_until_gc():
     finally:
         if enabled:
             gc.enable()
+
+
+@NATIVE
+def test_schedule_and_release_need_no_second_native_snapshot():
+    from aiogram_idle._native_queue import RustDeadlineQueue
+
+    queue = RustDeadlineQueue()
+    original = queue.core
+
+    class NoSnapshots:
+        def __getattr__(self, name):
+            return getattr(original, name)
+
+        def __len__(self):
+            return len(original)
+
+        def get(self, key):
+            raise AssertionError("redundant native snapshot")
+
+    queue.core = NoSnapshots()
+    key = IdleConversationKey("test", 1, 42, 42)
+    queue.schedule(record(key, 5))
+    assert list(queue.keys.values()) == [key]
+    claim = queue.claim(limit=1, lease_seconds=10, now=5)[0]
+    # A preserved owned job remains present even when no new deadline is supplied.
+    queue.schedule(record(key, None), preserve=claim)
+    assert list(queue.keys.values()) == [key]
+    queue.release(claim, record(key, None), now=6, retry_at=8)
+    assert list(queue.keys.values()) == [key]
+    claim = queue.claim(limit=1, lease_seconds=10, now=8)[0]
+    queue.release(claim, record(key, None), now=9)
+    assert not queue.keys
+    queue.schedule(record(key, 10))
+    queue.schedule(record(key, None))
+    assert not queue.keys
+
+
+@NATIVE
+@pytest.mark.parametrize(
+    "token", ["ordinary-token", 'quote"slash\\', "line\n", "Հայերեն🙂", "token-\udfff", ""]
+)
+@pytest.mark.parametrize("sequence", [0, 10**100])
+def test_release_values_keeps_full_guard_and_lossless_transport(token, sequence):
+    queue = native_core().DeadlineCore()
+    queue.sequence = format(sequence, "x")
+    queue.schedule("key", '"scope"', "1", 1)
+    encoded = json.dumps(token, ensure_ascii=True)
+    claim = queue.claim(1, 10, 2, [encoded])[0]
+    generation = int(claim[2], 16)
+    before = queue.get("key")
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", token, generation + 1, 3, 20)
+    assert queue.get("key") == before
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", token + "foreign", generation, 3, 20)
+    assert queue.get("key") == before
+    queue.release_values("key", token, generation, 3, 20)
+    assert queue.get("key")[1:4] == (20, 20, None)
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", token, generation, 3, 20)
+
+
+@NATIVE
+@pytest.mark.parametrize("generation", [0, -1])
+def test_release_values_invalid_generation_is_atomic(generation):
+    queue = native_core().DeadlineCore()
+    queue.schedule("key", '"scope"', "1", 1)
+    queue.claim(1, 10, 2, ['"token"'])
+    before = queue.get("key")
+    with pytest.raises(ValueError):
+        queue.release_values("key", "token", generation, 3, 20)
+    assert queue.get("key") == before
+
+
+@NATIVE
+def test_release_values_honors_integer_subclass_format_and_expiry():
+    calls = []
+
+    class Revision(int):
+        def __format__(self, spec):
+            calls.append(spec)
+            return super().__format__(spec)
+
+    queue = native_core().DeadlineCore()
+    queue.schedule("key", '"scope"', "1", 1)
+    queue.claim(1, 10, 2, ['"token"'])
+    before = queue.get("key")
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", "token", Revision(1), 12, 20)
+    assert calls == ["x"]
+    assert queue.get("key") == before
+    queue.release_values("key", "token", Revision(1), 3, 20)
+    assert calls == ["x", "x"]
+
+
+@NATIVE
+def test_release_values_format_uses_type_special_method_lookup():
+    class Revision(int):
+        def __format__(self, spec):
+            return super().__format__(spec)
+
+        def __getattribute__(self, name):
+            if name == "__format__":
+                return lambda spec: "wrong"
+            return super().__getattribute__(name)
+
+    queue = native_core().DeadlineCore()
+    queue.schedule("key", '"scope"', "1", 1)
+    queue.claim(1, 10, 2, ['"token"'])
+    queue.release_values("key", "token", Revision(1), 3, 20)
+    assert queue.get("key")[1:4] == (20, 20, None)
+
+
+@NATIVE
+@pytest.mark.parametrize("deadline", [float("nan"), float("inf"), -float("inf")])
+def test_release_values_invalid_deadline_does_not_consume_claim(deadline):
+    queue = native_core().DeadlineCore()
+    queue.schedule("key", '"scope"', "1", 1)
+    queue.claim(1, 10, 2, ['"token"'])
+    before = queue.get("key")
+    with pytest.raises(ValueError):
+        queue.release_values("key", "token", 1, 3, deadline)
+    assert queue.get("key") == before
+    queue.release_values("key", "token", 1, 3, None)
+    assert queue.get("key") is None
+
+
+@NATIVE
+def test_release_values_missing_replaced_and_expired_claims_are_fenced():
+    queue = native_core().DeadlineCore()
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("missing", "token", 1, 3, None)
+    queue.schedule("key", '"scope"', "1", 1)
+    queue.claim(1, 10, 2, ['"token"'])
+    before = queue.get("key")
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", "token", 1, 12, None)
+    assert queue.get("key") == before
+    queue.schedule("key", '"scope"', "1", 1)
+    replacement = queue.claim(1, 10, 3, ['"replacement"'])[0]
+    before = queue.get("key")
+    with pytest.raises(native_core().OwnershipLost):
+        queue.release_values("key", "token", 1, 4, None)
+    assert queue.get("key") == before
+    queue.release_values("key", "replacement", int(replacement[2], 16), 4, None)
+    assert queue.get("key") is None
+
+
+@NATIVE
+@pytest.mark.parametrize("generation", [True, 1])
+def test_queue_release_scalar_subclasses_keep_original_format_path(generation):
+    class Revision(int):
+        def __format__(self, spec):
+            return "1"
+
+    class Token(str):
+        def __str__(self):
+            return "foreign"
+
+    for revision in (generation, Revision(999)):
+        key = IdleConversationKey("scope", 1, 42, 42)
+        queue = make_queue("rust")
+        queue.schedule(record(key, 1))
+        with patch("secrets.token_urlsafe", return_value="token"):
+            claimed = queue.claim(limit=1, lease_seconds=10, now=2)[0]
+        fabricated = Claim(key, Token("token"), revision, claimed.lease_until, claimed.deadline)
+        queue.release(fabricated, record(key, 1), now=3, retry_at=20)
+        assert queue.jobs[key].deadline == 20
+
+
+@NATIVE
+def test_raw_release_capability_required_before_engine_selection(monkeypatch):
+    original = native_core()
+    native_core.cache_clear()
+
+    class MissingRelease:
+        def __init__(self):
+            self.core = original.DeadlineCore()
+
+        def __getattr__(self, name):
+            if name == "release_values":
+                raise AttributeError(name)
+            return getattr(self.core, name)
+
+    fake = SimpleNamespace(**vars(original))
+    fake.DeadlineCore = MissingRelease
+    monkeypatch.setattr("aiogram_idle.engines.importlib.import_module", lambda _: fake)
+    try:
+        with pytest.raises(ConfigurationError, match="ABI/version"):
+            require_engine("rust")
+    finally:
+        native_core.cache_clear()
+
+
+@NATIVE
+def test_raw_release_unknown_error_is_not_retried_after_mutation():
+    key = IdleConversationKey("scope", 1, 42, 42)
+    queue = make_queue("rust")
+    queue.schedule(record(key, 1))
+    claimed = queue.claim(limit=1, lease_seconds=10, now=2)[0]
+    original = queue.core
+    calls = []
+
+    class FailedAfterWrite:
+        def __getattr__(self, name):
+            return getattr(original, name)
+
+        def release_values(self, *args):
+            calls.append("release")
+            original.release_values(*args)
+            raise RuntimeError("unknown after release")
+
+        def release(self, *args):
+            raise AssertionError("legacy release must not retry a native error")
+
+    queue.core = FailedAfterWrite()
+    with pytest.raises(RuntimeError, match="unknown after release"):
+        queue.release(claimed, record(key, 1), now=3, retry_at=20)
+    assert calls == ["release"]
+    assert queue.jobs[key].deadline == 20

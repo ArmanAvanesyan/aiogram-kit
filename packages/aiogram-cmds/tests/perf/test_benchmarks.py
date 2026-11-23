@@ -11,6 +11,7 @@ import pytest
 
 from aiogram_cmds import CommandScopeManager, setup_commands_auto
 from aiogram_cmds.customize import CmdsConfig, CommandDef, ProfileDef, ScopeDef
+from aiogram_cmds.policy import Flags, default_policy
 
 
 class TestPerformanceBenchmarks:
@@ -366,3 +367,18 @@ class TestScalabilityLimits:
         setup_time = time.time() - start_time
 
         assert setup_time < 3.0  # Should complete in reasonable time
+
+
+@pytest.mark.perf
+def test_policy_performance():
+    """Keep the legacy wall-time budget outside coverage-instrumented unit tests."""
+    flags = Flags(is_registered=True, has_vehicle=False)
+    for _ in range(10):
+        default_policy(flags)
+    iterations = 10000
+    start = time.perf_counter()
+    for _ in range(iterations):
+        default_policy(flags)
+    duration = time.perf_counter() - start
+    assert duration < 0.1
+    assert duration / iterations < 0.00001

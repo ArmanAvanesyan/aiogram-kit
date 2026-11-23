@@ -2,11 +2,8 @@
 
 from __future__ import annotations
 
-import json
 from collections.abc import Callable
-from typing import cast
 
-from ..codec import decode_value, encode_value
 from ..config import NavigationConfig
 from ..engine import native_core
 from ..models import HistoryEntry, NavigationMutation, NavigationSnapshot, PreparedAction
@@ -48,33 +45,30 @@ def transition(
             last_activity_at=now if accepted or old is None else old.last_activity_at,
         )
         return history, state
-    else:
-        core = native_core()
-        previous = (
-            None
-            if old is None
-            else json.dumps(
-                dict(
-                    node_id=old.node_id,
-                    nav_revision=old.nav_revision,
-                    activity_revision=old.activity_revision,
-                    entered_at=old.entered_at,
-                    last_activity_at=old.last_activity_at,
-                )
-            )
+    core = native_core()
+    changed = old is None or old.node_id != prepared.node_id or params_changed
+    entries, values = core.transition_values(
+        old.history if old else (),
+        HistoryEntry(old.node_id, old.params) if old and changed and mode == "push" else None,
+        mode,
+        limit,
+        getattr(prepared.intent, "history_pop", 1),
+        changed,
+        (
+            str(old.nav_revision),
+            str(old.activity_revision),
+            str(old.entered_at),
+            str(old.last_activity_at),
         )
-        state = json.loads(
-            core.transition_state(previous, prepared.node_id, params_changed, accepted, str(now))
+        if old
+        else None,
+        accepted,
+        str(now),
+    )
+    return tuple(entries), dict(
+        zip(
+            ("nav_revision", "activity_revision", "entered_at", "last_activity_at"),
+            map(int, values),
+            strict=True,
         )
-        previous_history = old.history if old else ()
-        current_entry = encode_value(HistoryEntry(old.node_id, old.params)) if old else None
-        raw_history = core.transition_history(
-            json.dumps([encode_value(item) for item in previous_history]),
-            json.dumps(current_entry) if current_entry is not None else None,
-            mode,
-            limit,
-            getattr(prepared.intent, "history_pop", 1),
-            old is not None and (old.node_id != prepared.node_id or params_changed),
-        )
-        history = tuple(cast(HistoryEntry, decode_value(item)) for item in json.loads(raw_history))
-    return history, state
+    )

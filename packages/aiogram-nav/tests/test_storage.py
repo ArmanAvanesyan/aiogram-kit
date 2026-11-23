@@ -416,3 +416,16 @@ async def test_partial_or_foreign_chat_view_cannot_be_adopted():
                 mutation=NavigationMutation("render", prepared.session_id, rendered),
             )
     assert await repo.load(KEY) is None
+
+
+@pytest.mark.parametrize("engine", ["python", "rust"])
+async def test_replace_history_keeps_stack_without_pushing_previous_screen(engine):
+    if engine == "rust":
+        pytest.importorskip("aiogram_nav_native")
+    repo = repository(engine=engine)
+    await enter(repo, "root", "root")
+    await enter(repo, "other", "other")
+    _, result = await enter(repo, "replacement", "replace", history="replace")
+    assert result.snapshot.node_id == "replacement"
+    assert result.snapshot.nav_revision == 3
+    assert [item.node_id for item in result.snapshot.history] == ["root"]

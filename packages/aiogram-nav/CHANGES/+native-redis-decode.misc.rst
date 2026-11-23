@@ -1,0 +1,1 @@
+Materialize strict JSON directly in the native read boundary, defer unused backend codec forks, retain generic Mapping iterable-unpack parity, and synchronize companion typed exports. Redis ownership, formats, fingerprints and task isolation remain unchanged; native publication remains gated.

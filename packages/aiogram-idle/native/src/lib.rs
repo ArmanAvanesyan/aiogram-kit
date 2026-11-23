@@ -1,4 +1,5 @@
 //! Optional deterministic core. Application code owns time, random IDs, I/O and locks.
+mod canonical;
 pub mod core;
 pub mod queue;
 use num_bigint::BigUint;
@@ -26,6 +27,51 @@ fn integer(raw: &str, zero: bool) -> PyResult<BigUint> {
     }
     BigUint::parse_bytes(raw.as_bytes(), 16).ok_or_else(|| invalid("invalid integer"))
 }
+/// Preserve the SDK's ASCII JSON wire representation without round-tripping
+/// ordinary opaque strings through Python. Exceptional strings keep CPython's
+/// encoder, including its lossless handling of surrogate code points.
+fn wire_string(value: &Bound<'_, pyo3::types::PyString>) -> PyResult<String> {
+    if let Ok(text) = value.to_str() {
+        if text
+            .bytes()
+            .all(|c| (0x20..0x7f).contains(&c) && c != b'"' && c != b'\\')
+        {
+            return Ok(format!("\"{text}\""));
+        }
+    }
+    value
+        .py()
+        .import("json.encoder")?
+        .getattr("encode_basestring_ascii")?
+        .call1((value,))?
+        .extract::<String>()
+}
+
+fn generation_value(value: &Bound<'_, pyo3::types::PyInt>) -> PyResult<BigUint> {
+    // Only exact built-in integers may bypass __format__; subclasses keep the
+    // same customization/error behavior as the Python adapter's format(x, "x").
+    if value
+        .get_type()
+        .is(value.py().get_type::<pyo3::types::PyInt>())
+    {
+        if let Ok(number) = value.extract::<u64>() {
+            if number == 0 {
+                return Err(invalid(
+                    "expected canonical nonnegative hexadecimal integer",
+                ));
+            }
+            return Ok(BigUint::from(number));
+        }
+    }
+    let encoded = value
+        .py()
+        .import("builtins")?
+        .getattr("format")?
+        .call1((value, "x"))?
+        .extract::<String>()?;
+    integer(&encoded, false)
+}
+
 fn domain(error: &str) -> PyErr {
     if error == "ownership" {
         OwnershipLost::new_err("deadline claim expired or replaced")
@@ -253,6 +299,44 @@ impl DeadlineCore {
             .map(|values| values.into_iter().map(claim).collect())
             .map_err(domain)
     }
+    /// Materialize SDK claims in the same boundary as lease admission.
+    /// Random tokens are still supplied by Python; no randomness or I/O moves here.
+    #[allow(clippy::too_many_arguments)]
+    fn claim_objects(
+        &mut self,
+        py: Python<'_>,
+        limit: usize,
+        lease_seconds: f64,
+        now: f64,
+        tokens: Vec<Py<pyo3::types::PyString>>,
+        namespace: Option<&str>,
+        bot_id: Option<&str>,
+        keys: &Bound<'_, pyo3::types::PyDict>,
+        factory: &Bound<'_, PyAny>,
+    ) -> PyResult<Vec<Py<PyAny>>> {
+        let encoded = tokens
+            .iter()
+            .map(|token| wire_string(token.bind(py)))
+            .collect::<PyResult<Vec<_>>>()?;
+        let values = self
+            .state
+            .claim(limit, lease_seconds, now, &encoded, namespace, bot_id)
+            .map_err(domain)?;
+        let int_type = py.get_type::<pyo3::types::PyInt>();
+        values
+            .into_iter()
+            .enumerate()
+            .map(|(index, (key, _, generation, lease, deadline))| {
+                let identity = keys
+                    .get_item(&key)?
+                    .ok_or_else(|| invalid("missing deadline identity"))?;
+                let number = int_type.call1((generation.to_str_radix(16), 16))?;
+                Ok(factory
+                    .call1((identity, tokens[index].bind(py), number, lease, deadline))?
+                    .unbind())
+            })
+            .collect()
+    }
     fn renew(
         &mut self,
         key: &str,
@@ -279,6 +363,23 @@ impl DeadlineCore {
             .release(key, token, integer(generation, false)?, now, deadline)
             .map_err(domain)
     }
+    /// Transport a release guard in SDK scalar form. Ownership is still checked
+    /// against the authoritative native job; this never caches authorization.
+    #[pyo3(signature=(key, token, generation, now, deadline=None))]
+    fn release_values(
+        &mut self,
+        key: &str,
+        token: &Bound<'_, pyo3::types::PyString>,
+        generation: &Bound<'_, pyo3::types::PyInt>,
+        now: f64,
+        deadline: Option<f64>,
+    ) -> PyResult<()> {
+        let token = wire_string(token)?;
+        let generation = generation_value(generation)?;
+        self.state
+            .release(key, &token, generation, now, deadline)
+            .map_err(domain)
+    }
     fn reconcile(
         &mut self,
         candidates: Vec<(String, String, String, f64)>,
@@ -298,6 +399,11 @@ fn _aiogram_idle_native(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(activity_guard, module)?)?;
     module.add_function(wrap_pyfunction!(session_guard, module)?)?;
     module.add_function(wrap_pyfunction!(claim_guard, module)?)?;
+    module.add_class::<canonical::Canonicalizer>()?;
+    module.add(
+        "InvalidJson",
+        module.py().get_type::<canonical::InvalidJson>(),
+    )?;
     module.add_class::<DeadlineCore>()?;
     Ok(())
 }

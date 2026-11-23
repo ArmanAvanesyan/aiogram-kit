@@ -128,7 +128,13 @@ jobs:
     - uses: astral-sh/setup-uv@v7
       with:
         cache-dependency-glob: distribution/uv.lock
-    - run: uv sync --frozen --all-extras --all-groups --python pypy3.10
+    - run: 'uv export --frozen --all-extras --all-groups --no-hashes --no-emit-project --prune pydantic --prune hypothesis
+        --output-file "$RUNNER_TEMP/cmds-pypy-constraints.txt"
+
+        uv venv --python pypy3.10
+
+        uv pip install --constraint "$RUNNER_TEMP/cmds-pypy-constraints.txt" ''.[redis]'' ''pydantic>=2.12,<2.13'' pytest
+        pytest-asyncio pytest-mock pytest-cov ''hypothesis==6.140.3'' babel'
     - run: uv run --no-sync pytest tests/unit tests/integration
     defaults:
       run:
@@ -162,7 +168,7 @@ jobs:
       if: '!cancelled()'
       run: 'mkdir -p reports/security
 
-        uv run --no-sync pip-audit --skip-editable --format json --output reports/security/pip-audit-report.json
+        uv run --no-sync pip-audit --timeout 60 --skip-editable --format json --output reports/security/pip-audit-report.json
 
         '
     - uses: actions/upload-artifact@v6
@@ -208,15 +214,21 @@ jobs:
     - run: uv run --no-sync twine check dist/*
     - name: Verify independent wheel and sdist without optional packages
       shell: bash
-      run: "for artifact in dist/*.whl dist/*.tar.gz; do\n  target=$(mktemp -d)\n  uv venv \"$target/env\" --python '${{ matrix.python\
-        \ }}'\n  uv pip install --python \"$target/env/bin/python\" \"$artifact\" '${{ matrix.aiogram }}' pytest '${{ matrix.asyncio\
-        \ }}' pytest-mock babel tomli hypothesis\n  uv pip check --python \"$target/env/bin/python\"\n  cp -R tests examples\
-        \ \"$target/\"\n  cp pyproject.toml \"$target/\"\n  (cd \"$target\" && \"$target/env/bin/python\" -I -c 'from importlib.metadata\
-        \ import version; from importlib.resources import files; import importlib.util; import aiogram_cmds; assert aiogram_cmds.__version__\
-        \ == version(\"aiogram-cmds\"); assert files(\"aiogram_cmds\").joinpath(\"py.typed\").is_file(); assert importlib.util.find_spec(\"\
-        redis\") is None; assert importlib.util.find_spec(\"aiogram_idle\") is None; assert importlib.util.find_spec(\"aiogram_nav\"\
-        ) is None')\n  (cd \"$target\" && \"$target/env/bin/python\" -m pytest tests/unit tests/integration)\n  (cd \"$target\"\
-        \ && \"$target/env/bin/python\" examples/application_profiles.py --dry-run)\ndone\n"
+      run: |
+        for artifact in dist/*.whl dist/*.tar.gz; do
+          target=$(mktemp -d)
+          uv venv "$target/env" --python '${{ matrix.python }}'
+          uv pip install --python "$target/env/bin/python" "$artifact" '${{ matrix.aiogram }}' pytest '${{ matrix.asyncio }}' pytest-mock babel tomli hypothesis
+          uv pip check --python "$target/env/bin/python"
+          cp -R tests examples benchmarks "$target/"
+          cp pyproject.toml "$target/"
+          (cd "$target" && "$target/env/bin/python" -I -c 'from importlib.metadata import version; from importlib.resources import files; import importlib.util; import aiogram_cmds; assert aiogram_cmds.__version__ == version("aiogram-cmds"); assert files("aiogram_cmds").joinpath("py.typed").is_file(); assert importlib.util.find_spec("redis") is None; assert importlib.util.find_spec("aiogram_idle") is None; assert importlib.util.find_spec("aiogram_nav") is None')
+          (cd "$target" && "$target/env/bin/python" -m pytest tests/unit tests/integration)
+          (cd "$target" && "$target/env/bin/python" examples/application_profiles.py --dry-run)
+          # Verify source benchmark tooling only after the clean SDK profile passes.
+          uv pip install --python "$target/env/bin/python" orjson psutil pyperf
+          (cd "$target" && "$target/env/bin/python" -m pytest tests/unit/test_benchmark_sampling.py)
+        done
     - uses: actions/upload-artifact@v6
       with:
         name: distributions-${{ matrix.python }}
@@ -275,12 +287,12 @@ jobs:
         python-version: '3.12'
         cache-dependency-glob: distribution/uv.lock
     - run: uv sync --frozen --all-extras --all-groups
-    - run: uv run --no-sync pytest tests/perf --benchmark-json=reports/benchmark-results.json
+    - run: uv run --no-sync pytest tests/perf --junitxml=reports/performance-results.xml
     - uses: actions/upload-artifact@v6
       if: always()
       with:
         name: performance-results
-        path: distribution/reports/benchmark-results.json
+        path: distribution/reports/performance-results.xml
         if-no-files-found: warn
     defaults:
       run:

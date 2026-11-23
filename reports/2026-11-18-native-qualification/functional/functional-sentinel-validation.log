@@ -1,0 +1,11 @@
+..................................ssss.................................. [ 18%]
+........................................................................ [ 37%]
+........................................................................ [ 56%]
+........................................................................ [ 75%]
+........................................................................ [ 93%]
+........................                                                 [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_redis_backends.py:8: Set TEST_REDIS_URL to run real Redis tests
+SKIPPED [1] tests/integration/test_redis_backends.py:24: Set TEST_REDIS_URL to run real Redis tests
+SKIPPED [1] tests/integration/test_redis_backends.py:32: Set TEST_REDIS_URL to run real Redis tests
+SKIPPED [1] tests/integration/test_redis_backends.py:42: Set TEST_REDIS_URL to run real Redis tests

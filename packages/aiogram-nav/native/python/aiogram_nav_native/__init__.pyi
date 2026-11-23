@@ -3,6 +3,25 @@ from typing import Any
 API_VERSION: int
 ENGINE_VERSION: str
 
+class InvalidJson(ValueError): ...
+
+class Canonicalizer:
+    def __init__(
+        self,
+        enum_type: object,
+        mapping_type: object,
+        fields: object,
+        datetime_type: object = ...,
+        view_type: object = ...,
+        render_type: object = ...,
+        immutable_types: object = ...,
+    ) -> None: ...
+    def fork(self) -> Canonicalizer: ...
+    def fingerprint(self, value: object) -> str: ...
+    def freeze(self, value: object, proxy: object, style: str) -> tuple[object, int] | None: ...
+    def clear_cache(self) -> None: ...
+    def cache_stats(self) -> tuple[int, int]: ...
+
 class Registry:
     def __init__(self, raw: str) -> None: ...
     def ancestors(self, id: str) -> list[str]: ...
@@ -38,3 +57,14 @@ def token_matches(
     expires_at: str,
     now_ms: str,
 ) -> bool: ...
+def transition_values(
+    history: tuple[Any, ...],
+    current: Any | None,
+    mode: str,
+    limit: int,
+    pop: int,
+    changed: bool,
+    previous: tuple[str, str, str, str] | None,
+    accepted: bool,
+    now: str,
+) -> tuple[list[Any], tuple[str, str, str, str]]: ...

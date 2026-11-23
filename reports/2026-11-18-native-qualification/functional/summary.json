@@ -1,0 +1,79 @@
+[
+  {
+    "suite": "final-sentinel",
+    "tests": 397,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-cmds",
+    "tests": 312,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-idle",
+    "tests": 763,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-nav",
+    "tests": 452,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-sentinel-lto",
+    "tests": 384,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-sentinel-text",
+    "tests": 384,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "functional-sentinel-validation",
+    "tests": 384,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 4
+  },
+  {
+    "suite": "functional-sentinel",
+    "tests": 383,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "native-python",
+    "tests": 90,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "perf-cmds",
+    "tests": 11,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  {
+    "suite": "perf-sentinel",
+    "tests": 13,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  }
+]

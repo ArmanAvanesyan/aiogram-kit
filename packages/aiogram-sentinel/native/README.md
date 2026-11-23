@@ -6,7 +6,12 @@ evaluating `engine="rust"`; the default Python engine does not require it.
 Rust performs no asynchronous I/O or application callbacks. Its memory state is
 local to the process; Redis remains authoritative for distributed deployments.
 
-Publication is withheld for 1.3.1 after the CPU qualification gate failed. The
-core remains available from source, with no native release or base `[native]`
-extra. See [the measured decision](BENCHMARKS.md); functional compatibility
+Publication remains withheld. Earlier candidates failed CPU qualification; the
+follow-up linked below records the latest per-gate outcome. The core remains
+available from source, with no native release or base `[native]` extra. See
+[the original measured decision](BENCHMARKS.md); functional compatibility alone
 does not imply a performance improvement.
+
+The [18 November qualification follow-up](../../../reports/2026-11-18-native-qualification/README.md)
+retains all repeated-run outcomes, rejected experiments and current release blockers.
+No companion is published by the qualification workflow.

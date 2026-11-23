@@ -4,6 +4,11 @@ site_url: https://armanavanesyan.github.io/aiogram-kit/
 repo_url: https://github.com/ArmanAvanesyan/aiogram-kit
 repo_name: ArmanAvanesyan/aiogram-kit
 
+validation:
+  links:
+    anchors: warn
+    unrecognized_links: warn
+
 theme:
   name: material
   palette:

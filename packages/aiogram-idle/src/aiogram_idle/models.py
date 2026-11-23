@@ -12,6 +12,7 @@ from enum import Enum
 from types import MappingProxyType
 from typing import TYPE_CHECKING, TypeAlias, cast
 
+from ._json_scope import selected as json_engine
 from .errors import ConfigurationError, UnsupportedContext
 
 if TYPE_CHECKING:
@@ -51,6 +52,18 @@ def _revision(value: int) -> None:
 
 def freeze_json(value: object, *, max_bytes: int = 16_384) -> JsonValue:
     """Validate finite bounded JSON and detach nested mutable caller structures."""
+
+    processor = json_engine()
+    if processor is not None:
+        try:
+            result = processor.core.freeze(value, MappingProxyType, "idle")
+        except processor.invalid as error:
+            raise ConfigurationError(str(error)) from error
+        if result is not None:
+            frozen, size = result
+            if size > max_bytes:
+                raise ConfigurationError("JSON value exceeds size limit")
+            return cast(JsonValue, frozen)
 
     def freeze(item: object, depth: int) -> JsonValue:
         if depth > 32:

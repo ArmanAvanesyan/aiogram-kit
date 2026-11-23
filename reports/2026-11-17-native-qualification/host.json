@@ -1,0 +1,9 @@
+{
+  "recorded_at": "2026-11-17T08:50:46.980887+00:00",
+  "platform": "macOS-15.8.1-x86_64-i386-64bit-Mach-O",
+  "rust": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "source_base_commit": "f626bc5273e5adc7d5092cf26ed175b7bd79452f",
+  "redis_image_digest": "redis@sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+  "redis_client": "7.4.1",
+  "order": "serial; no parallel builds/tests"
+}

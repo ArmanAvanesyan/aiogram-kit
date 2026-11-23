@@ -1,0 +1,49 @@
+{
+  "scope": "Idle lifetime and narrow release-import follow-up; no timing/commits/push",
+  "prior_observations": {
+    "gc_disabled_ownedlock_and_codec_retained_after_backend_disposal": true,
+    "released_after_explicit_gc_collect": true,
+    "revoked_copied_context_retained_core_engine_and_completed_task": true
+  },
+  "fixes": [
+    "OwnedLock.queue property, view cached only byMemoryBackend; no lock->view backref",
+    "JsonRecord engine/owner references cleared atrevocation before reset",
+    "Native queue adapter pure component_deadline imported once, matching baseline queue"
+  ],
+  "checks": [
+    {
+      "name": "Native engine/backend/canonical/json/lifetime regression corpus",
+      "passed": 116,
+      "failed": 0,
+      "evidence": "tool stdout, not redirected"
+    },
+    {
+      "name": "Real-Redis Rust format3 core corpus",
+      "passed": 344,
+      "failed": 0,
+      "log": "/tmp/idle-lifetime-core.log",
+      "manifest": "/tmp/idle-lifetime-core-profile.json"
+    },
+    {
+      "name": "Strict SDK Pyright",
+      "errors": 0,
+      "evidence": "tool stdout"
+    },
+    {
+      "name": "Ruff and diff whitespace",
+      "result": "pass",
+      "evidence": "tool stdout"
+    }
+  ],
+  "sdk_wheel": {
+    "path": "/tmp/idle-native-finish-wheels/aiogram_idle-0.3.1-py3-none-any.whl",
+    "sha256": "419f19ec1017ec87abc7acd8730b303e6daff0c26786cb24982fa8637a0ac8aa"
+  },
+  "native_wheel": "unchanged from /tmp/idle-native-finish-verification.json; root reassembles exact candidate",
+  "source_hashes": {
+    "packages/aiogram-idle/src/aiogram_idle/_json_scope.py": "9ff68b44c5f71c2241b6571c90f05ef7f9e258c2f47e241f1bf41982d6d92ebd",
+    "packages/aiogram-idle/src/aiogram_idle/_native_queue.py": "7d268e1067a5df9e52b0db18a580b55a8d8e185a68db135928f0685b40b2430a",
+    "packages/aiogram-idle/src/aiogram_idle/storage/owned_lock.py": "6082ffd4047c334dcb988593d5806d42f46e5594c29fd052e641d52dec0ee66a",
+    "packages/aiogram-idle/tests/test_native_json_stage.py": "f52bad5d70d5ebfe61491225f9a1756084f6febd281ad1b927d8fb4f83d54d61"
+  }
+}

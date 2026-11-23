@@ -1,13 +1,23 @@
 //! CPU-only native boundaries. Python resolves all translator callbacks first.
-use pyo3::exceptions::PyValueError;
+use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
+use std::sync::Mutex;
 
 type Rows = Vec<(String, String)>;
 type Profiles = Vec<(String, Vec<(String, Rows)>)>;
-type Requests = Vec<(String, String, String, String, String)>;
+type Request = (String, String, String, String, String);
+type Requests = Vec<Request>;
+#[derive(Default)]
+struct Fingerprints {
+    requests: HashMap<Request, String>,
+    // One of at most 256 retained derived hashes. Borrowed comparisons let the
+    // single-target confirmation path avoid five String allocations per hit.
+    last: Option<(Request, String)>,
+}
+type FingerprintCache = Mutex<Fingerprints>;
 type BatchResult = Vec<String>;
 
 pub fn resolve_profile(include: &[String], exclude: &[String], known: &[String]) -> Vec<String> {
@@ -79,28 +89,94 @@ pub fn fingerprint_encoded(
     let value = format!(
         "{{\"bot_id\":{bot},\"commands\":{commands},\"language_code\":{language},\"scope\":{scope}}}"
     );
-    Ok(format!("{:x}", Sha256::digest(value.as_bytes())))
+    Ok({
+        const HEX: &[u8; 16] = b"0123456789abcdef";
+        let digest = Sha256::digest(value.as_bytes());
+        let mut encoded = String::with_capacity(64);
+        for byte in digest {
+            encoded.push(HEX[(byte >> 4) as usize] as char);
+            encoded.push(HEX[(byte & 15) as usize] as char);
+        }
+        encoded
+    })
 }
 
 #[pyclass(frozen)]
 struct NativeSnapshot {
     profiles: HashMap<(String, String), (Rows, String)>,
+    // Snapshot-local cache; no confirmation, delivery or business state is cached.
+    fingerprints: FingerprintCache,
 }
 
 #[pymethods]
 impl NativeSnapshot {
+    fn resolve_one(
+        &self,
+        profile: &str,
+        locale: &str,
+        bot: &str,
+        scope: &str,
+        language: &str,
+    ) -> PyResult<String> {
+        let mut cache = self
+            .fingerprints
+            .lock()
+            .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
+        if let Some((request, hash)) = &cache.last {
+            if request.0 == profile
+                && request.1 == locale
+                && request.2 == bot
+                && request.3 == scope
+                && request.4 == language
+            {
+                return Ok(hash.clone());
+            }
+        }
+        let request = (
+            profile.to_owned(),
+            locale.to_owned(),
+            bot.to_owned(),
+            scope.to_owned(),
+            language.to_owned(),
+        );
+        let hash = self.resolve(request.clone(), &mut cache.requests)?;
+        if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
+            cache.last = Some((request, hash.clone()));
+        }
+        Ok(hash)
+    }
     fn resolve_batch(&self, requests: Requests) -> PyResult<BatchResult> {
         let mut results = Vec::with_capacity(requests.len());
-        for (profile, locale, bot, scope, language) in requests {
-            let (_rows, encoded) = self
-                .profiles
-                .get(&(profile, locale))
-                .ok_or_else(|| PyValueError::new_err("Unknown compiled profile/locale"))?;
-            let hash = fingerprint_encoded(&bot, &scope, &language, encoded)
-                .map_err(PyValueError::new_err)?;
-            results.push(hash);
+        let mut cache = self
+            .fingerprints
+            .lock()
+            .map_err(|_| PyRuntimeError::new_err("Fingerprint cache poisoned"))?;
+        for request in requests {
+            results.push(self.resolve(request, &mut cache.requests)?);
         }
         Ok(results)
+    }
+}
+
+impl NativeSnapshot {
+    fn resolve(&self, request: Request, cache: &mut HashMap<Request, String>) -> PyResult<String> {
+        if let Some(hash) = cache.get(&request) {
+            return Ok(hash.clone());
+        }
+        let (profile, locale, bot, scope, language) = &request;
+        let (_, encoded) = self
+            .profiles
+            .get(&(profile.clone(), locale.clone()))
+            .ok_or_else(|| PyValueError::new_err("Unknown compiled profile/locale"))?;
+        let hash =
+            fingerprint_encoded(bot, scope, language, encoded).map_err(PyValueError::new_err)?;
+        if profile.len() + locale.len() + bot.len() + scope.len() + language.len() <= 4096 {
+            if cache.len() >= 255 {
+                cache.clear();
+            }
+            cache.insert(request, hash.clone());
+        }
+        Ok(hash)
     }
 }
 
@@ -141,7 +217,10 @@ fn compile_py(rows: Profiles) -> PyResult<NativeSnapshot> {
             }
         }
     }
-    Ok(NativeSnapshot { profiles })
+    Ok(NativeSnapshot {
+        profiles,
+        fingerprints: Mutex::new(Fingerprints::default()),
+    })
 }
 #[pyfunction]
 fn abi_version() -> u32 {

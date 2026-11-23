@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-11-18T02:38:46.649536+00:00",
+  "verification_checkout_commit": "da1a686d54baf08d841ab287007d2f95b8370ca6",
+  "qualification_source_commit": "498fae6777d36716938d32baf7c9cbbfa14dd758",
+  "scope": "Read-only functional/artifact verification; no performance timing, source edits or publishing.",
+  "source_files_sha256": {
+    "packages/aiogram-cmds/src/aiogram_cmds/__init__.py": "7830cb8c2e6907f0af13d736f8534d98bed72293428ebfc1936b07decc6a8f69",
+    "packages/aiogram-cmds/src/aiogram_cmds/apply.py": "0e849a51444c9e751dbef74aaa99d30314dcd9f6c21de191db65cbdd58d15ae1",
+    "packages/aiogram-cmds/src/aiogram_cmds/auto_setup.py": "0ba5f4d284b4fc2c960d88c8f9fc9b75029c63c7e58b79273339a6199704c8b8",
+    "packages/aiogram-cmds/src/aiogram_cmds/builder.py": "66508986973618f15c7e6aea0b3eda51f8203308e60745f8955531279072c2c2",
+    "packages/aiogram-cmds/src/aiogram_cmds/builders_configured.py": "b2286d86ef571ba5f08f723ecacb4b47e0c443939eb4c3915c199c4ee78a99cb",
+    "packages/aiogram-cmds/src/aiogram_cmds/compiled.py": "25fdaa1257993d3c5aa5194f1b64c5a542248085f136910938eb32e1f31e9954",
+    "packages/aiogram-cmds/src/aiogram_cmds/compiled_delivery.py": "5df0ecd5270b3dfbd2c5be91274b5793a6e430523ca4a085c4150c5469aae86d",
+    "packages/aiogram-cmds/src/aiogram_cmds/customize.py": "4f69c20403a27aa74d6321f0fe33ad44d81fa487a74f8cd8b13051c79bec61fa",
+    "packages/aiogram-cmds/src/aiogram_cmds/delivery.py": "f9686a80c5a5b4644db3178fdf49f5f7fdbd36108f76ba059846668be497ac02",
+    "packages/aiogram-cmds/src/aiogram_cmds/dynamic.py": "e64f65beb4c5774c2a47920435432bfdce2c2de5f95b6a2027b9d8f5aaffdb14",
+    "packages/aiogram-cmds/src/aiogram_cmds/engines.py": "985d2a9fd68b5af5826964e964341948eff4b79279e6f7fe63a77c457e9236cf",
+    "packages/aiogram-cmds/src/aiogram_cmds/manager.py": "5477483b4ad868ac1aa57acdb934bd41a90925fb0204790265cc30b3bd6eaa3a",
+    "packages/aiogram-cmds/src/aiogram_cmds/policy.py": "131ebcfafb58a2752a6dd0b5a74d065d23d24e81d6e614cb177b34d6c9ebd1cd",
+    "packages/aiogram-cmds/src/aiogram_cmds/registry.py": "03528a470a32e1478217fd2f782b069c0e88192dfb614246b432513d94c598d3",
+    "packages/aiogram-cmds/src/aiogram_cmds/scopes.py": "ff9b62a4ff9ef602fdbd574a3843a89d8aedb8a1a85fbed538e43d28842bea17",
+    "packages/aiogram-cmds/src/aiogram_cmds/setters.py": "87239082b6fbe0c77c56a8ccd9ecdeeb76f798aec1d4020ccc135f0aca569c51",
+    "packages/aiogram-cmds/src/aiogram_cmds/settings.py": "2bc37b90841c1ebde5c0aea70495bf4cdc31ecc61bbb6e9f8b4a769cee9b4040",
+    "packages/aiogram-cmds/src/aiogram_cmds/translator.py": "b2d4edb05373caac4c760a76a1ad0067aa7ce8912c174b745bd35f8c89f2af32",
+    "packages/aiogram-cmds/src/aiogram_cmds/version.py": "815784a6a042cc560fa0077ec4d69ac2e47e36aeeafb6d00df35ec883302da5f",
+    "packages/aiogram-cmds/src/aiogram_cmds/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "packages/aiogram-cmds/native/src/lib.rs": "8dc2203a6f48a49bd2c08161ad3ac40c69093ea686f08837acad655eb8f840c3",
+    "packages/aiogram-cmds/native/Cargo.toml": "ef7d7c6ad319f2d18f2203a9752facfccf4bd30bbf1d6fbccc9c7ec2ca349e87",
+    "packages/aiogram-cmds/native/Cargo.lock": "00100de5d85644747dd6753a2d0bb162e70d71ad5caddbf389947d57051fcd1e",
+    "packages/aiogram-cmds/native/pyproject.toml": "287064fbcd45026f3da5acbbd5d7383260969983c20ca4f81ce0345b6400d134",
+    "packages/aiogram-cmds/pyproject.toml": "a65269daa1331be4830a6f84a64114f74b837e052df98aad9e54d30ddc21df46",
+    "packages/aiogram-cmds/tests/unit/test_compiled.py": "f052066bf0e4eaf686818226b76d1d32a9ae6a86ba83c2903ce662223c4da3be",
+    "packages/aiogram-cmds/tests/unit/test_benchmark_sampling.py": "103ca0466c07b750ba59fb54d7dd0b264810356f74502ef657b31c29cf23eda6"
+  },
+  "runtime_sources_identical_to_qualification_commit": true,
+  "artifacts": {
+    "tested_base": {
+      "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+      "sha256": "667738983953896e3ef0758986c8dba80019bb9d766cd6e88e14180b01652d57"
+    },
+    "qualified_base": {
+      "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+      "sha256": "667738983953896e3ef0758986c8dba80019bb9d766cd6e88e14180b01652d57"
+    },
+    "qualified_native": {
+      "filename": "aiogram_cmds_native-0.3.1-cp310-abi3-manylinux_2_34_x86_64.whl",
+      "sha256": "0a64910064b98b75c2ab526fd11ce558f53cc2ab78da3d6d735ea1d41d51d0dc"
+    }
+  },
+  "sdk_wheel_source_matching_files": [
+    "aiogram_cmds/__init__.py",
+    "aiogram_cmds/apply.py",
+    "aiogram_cmds/auto_setup.py",
+    "aiogram_cmds/builder.py",
+    "aiogram_cmds/builders_configured.py",
+    "aiogram_cmds/compiled.py",
+    "aiogram_cmds/compiled_delivery.py",
+    "aiogram_cmds/customize.py",
+    "aiogram_cmds/delivery.py",
+    "aiogram_cmds/dynamic.py",
+    "aiogram_cmds/engines.py",
+    "aiogram_cmds/manager.py",
+    "aiogram_cmds/policy.py",
+    "aiogram_cmds/py.typed",
+    "aiogram_cmds/registry.py",
+    "aiogram_cmds/scopes.py",
+    "aiogram_cmds/setters.py",
+    "aiogram_cmds/settings.py",
+    "aiogram_cmds/translator.py",
+    "aiogram_cmds/version.py"
+  ],
+  "installed_base_matches_current_source": true,
+  "tested_base_identical_to_qualified_base": true,
+  "checks": [
+    {
+      "name": "Installed wheel unit/integration tests (no tests/perf)",
+      "result": "pass",
+      "tests": 379,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "xml_sha256": "0d6d26181fa16f4f3ba850a30eb6ebbd400568d66fe0239c9f1cb47bafe6d4d6"
+    },
+    {
+      "name": "Strict Pyright with package project",
+      "result": "pass",
+      "exit_code": 0
+    },
+    {
+      "name": "Package-locked Ruff0.14.0 check . from package cwd",
+      "result": "pass",
+      "exit_code": 0
+    },
+    {
+      "name": "Package-locked Ruff0.14.0 format --check . from package cwd",
+      "result": "pass",
+      "exit_code": 0
+    },
+    {
+      "name": "git diff --check -- packages/aiogram-cmds",
+      "result": "pass",
+      "exit_code": 0
+    }
+  ],
+  "qualified_run": {
+    "workflow_run": 44222753653,
+    "gate_report_sha256": "57b835f61a875fe6aa6e9c7b4e47975b7eb21b6b73b6a4a92e01055fbe88f48f",
+    "qualified": true,
+    "failures": [],
+    "comparisons": [
+      {
+        "workload": "compiled_batch/100/10_profiles/30_targets",
+        "rust_over_python_cpu": 0.5075348651102753
+      },
+      {
+        "workload": "compiled_confirmation_hit/1",
+        "rust_over_python_p95": 0.9446763684600679
+      },
+      {
+        "workload": "compiled_confirmation_hit/10",
+        "rust_over_python_p95": 0.90400567969509
+      },
+      {
+        "workload": "compiled_confirmation_hit/100",
+        "rust_over_python_p95": 0.6399227198325597
+      },
+      {
+        "workload": "compiled_fake_telegram_1ms/1",
+        "rust_over_python_p95": 1.0031299731846794
+      },
+      {
+        "workload": "compiled_fake_telegram_1ms/10",
+        "rust_over_python_p95": 0.9749200908595721
+      },
+      {
+        "workload": "compiled_fake_telegram_1ms/100",
+        "rust_over_python_p95": 0.970062223949078
+      },
+      {
+        "workload": "confirmation_hit/1",
+        "rust_over_python_p95": 0.9972246006672768
+      },
+      {
+        "workload": "confirmation_hit/10",
+        "rust_over_python_p95": 1.0355251134167347
+      },
+      {
+        "workload": "confirmation_hit/100",
+        "rust_over_python_p95": 0.9037362566081796
+      },
+      {
+        "workload": "fake_telegram_1ms/1",
+        "rust_over_python_p95": 1.0021883861563166
+      },
+      {
+        "workload": "fake_telegram_1ms/10",
+        "rust_over_python_p95": 1.001443665964456
+      },
+      {
+        "workload": "fake_telegram_1ms/100",
+        "rust_over_python_p95": 0.9559131811696313
+      }
+    ]
+  },
+  "log": "cmds-final-verification.log",
+  "log_sha256": "43e63778a23f859cd30595ba862f5979acc0741203e854f22325b3b3dd7ac5d1",
+  "limitations": [
+    "Local functional checks use macOS x86_64/Python3.12; retained measured qualification uses Linux artifacts.",
+    "Measured-host performance success does not authorize publication or replace final platform CI/release review."
+  ]
+}

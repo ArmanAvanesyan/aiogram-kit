@@ -1,0 +1,76 @@
+{
+  "captured_at_utc": "2026-11-17T22:34:57.508442+00:00",
+  "checks": [
+    {
+      "conclusion": "success",
+      "name": "aiogram-sentinel: CI",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-idle: CI",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-nav: CI",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-coordination: CI",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-idle: Optional navigation integration",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Unified documentation",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Workspace preservation and release verification",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Shared optimization evidence tools",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Kit marker distribution artifacts",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-cmds: Native candidate",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-cmds: CI",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-idle: Native companion verification",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-nav: Native companion verification",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "aiogram-sentinel: Native wheels",
+      "status": "completed"
+    }
+  ],
+  "head_sha": "b4c0e00aebc023f5472e72738a42eaccb652c365"
+}

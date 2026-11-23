@@ -19,12 +19,14 @@ if __package__:
         command_summary,
         counted_redis_type,
         measured_row,
+        window_boundaries,
     )
 else:
     from support import (
         command_summary,
         counted_redis_type,
         measured_row,
+        window_boundaries,
     )
 
 from aiogram_coordination import ExternalSession
@@ -229,6 +231,10 @@ async def memory_workload(age, engine, samples, repeats):
         cpu,
         latencies,
         fixture_boundary="fixed 256-byte-class draft; one absolute session; nine touches per activation; retained replay age..age+samples",
+        total_calls=samples * repeats,
+        operations_per_cpu_sample=samples,
+        latency_windows=repeats,
+        latency_window_boundaries=window_boundaries(age, samples, repeats),
         application_authority_calls=authority_calls,
         application_authority_transport="in-process immutable read, no I/O",
         client_round_trips=0,
@@ -278,6 +284,10 @@ async def claim_workload(engine, samples, repeats):
         cpu,
         latencies,
         fixture_boundary="16 live private conversations, batches of eight due claims/release; clock and entropy remain in Python",
+        total_calls=samples * repeats,
+        operations_per_cpu_sample=samples,
+        latency_windows=repeats,
+        latency_window_boundaries=window_boundaries(16, samples, repeats, advancing=False),
         client_round_trips=0,
         lua_calls=0,
     )

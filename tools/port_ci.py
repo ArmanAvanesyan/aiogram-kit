@@ -59,7 +59,7 @@ def port(package: pathlib.Path, source: pathlib.Path) -> dict:
         ]
     else:
         data["on"]["push"]["tags"] = [f"{package.name}-v*"]
-    for job in data["jobs"].values():
+    for job_name, job in data["jobs"].items():
         if "github.event_name == 'schedule'" in job.get("if", ""):
             job["if"] = "github.ref == 'refs/heads/main' || " + job["if"]
         original_steps = job.get("steps", [])
@@ -110,6 +110,58 @@ def port(package: pathlib.Path, source: pathlib.Path) -> dict:
                 continue
             if "run" in step:
                 step["run"] = step["run"].replace("uv run --frozen", "uv run --no-sync")
+                if job_name == "security" and "--timeout" not in step["run"]:
+                    # Dependency advisory lookups can exceed pip-audit's 15s
+                    # socket default on shared runners. Bound them explicitly;
+                    # scanner failures and vulnerability exit codes still fail CI.
+                    step["run"] = re.sub(
+                        r"(?<!\S)pip-audit(?=\s|$)", "pip-audit --timeout 60", step["run"]
+                    )
+                if package.name == "aiogram-nav":
+                    # Artifact tests intentionally run without SDK source. Their
+                    # deterministic benchmark tests also need source-only helpers.
+                    step["run"] = step["run"].replace(
+                        "cp -R tests examples tools ", "cp -R tests examples tools benchmarks "
+                    )
+                if (
+                    package.name == "aiogram-cmds"
+                    and step.get("name")
+                    == "Verify independent wheel and sdist without optional packages"
+                ):
+                    step["run"] = (
+                        step["run"]
+                        .replace("cp -R tests examples ", "cp -R tests examples benchmarks ")
+                        .replace(
+                            "\ndone\n",
+                            "\n  # Verify source benchmark tooling only after the clean SDK profile passes.\n"
+                            '  uv pip install --python "$target/env/bin/python" orjson psutil pyperf\n'
+                            '  (cd "$target" && "$target/env/bin/python" -m pytest '
+                            "tests/unit/test_benchmark_sampling.py)\ndone\n",
+                        )
+                    )
+                if (
+                    package.name == "aiogram-cmds"
+                    and job_name == "pypy-tests"
+                    and "uv sync" in step["run"]
+                ):
+                    # PyPy 3.10 needs the supported Pydantic 2.12 line: current
+                    # Pydantic-core and publishing tools require newer PyPy.
+                    # Keep other test/runtime dependencies locked and exercise the
+                    # same public dependency range, without changing package bounds.
+                    step["run"] = (
+                        "uv export --frozen --all-extras --all-groups --no-hashes --no-emit-project "
+                        '--prune pydantic --prune hypothesis --output-file "$RUNNER_TEMP/cmds-pypy-constraints.txt"\n'
+                        "uv venv --python pypy3.10\n"
+                        'uv pip install --constraint "$RUNNER_TEMP/cmds-pypy-constraints.txt" '
+                        "'.[redis]' 'pydantic>=2.12,<2.13' "
+                        "pytest pytest-asyncio pytest-mock pytest-cov 'hypothesis==6.140.3' babel"
+                    )
+                if package.name == "aiogram-cmds" and job_name == "performance":
+                    # These tests use timing probes, not the pytest-benchmark fixture.
+                    step["run"] = step["run"].replace(
+                        "--benchmark-json=reports/benchmark-results.json",
+                        "--junitxml=reports/performance-results.xml",
+                    )
                 step["run"] = re.sub(
                     r"\$(?:GITHUB_WORKSPACE|\{GITHUB_WORKSPACE\})(?!/"
                     + re.escape(destination)
@@ -120,6 +172,10 @@ def port(package: pathlib.Path, source: pathlib.Path) -> dict:
                 if "working-directory" in step:
                     step["working-directory"] = staged_path(step["working-directory"], destination)
             options = step.get("with", {})
+            if package.name == "aiogram-cmds" and job_name == "performance" and "path" in options:
+                options["path"] = options["path"].replace(
+                    "benchmark-results.json", "performance-results.xml"
+                )
             if (
                 action.startswith(
                     ("actions/upload-artifact@", "actions/download-artifact@", "actions/cache@")

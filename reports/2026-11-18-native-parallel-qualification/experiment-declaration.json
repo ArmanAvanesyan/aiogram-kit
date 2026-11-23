@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "status": "declared before candidate qualification",
+  "protocol_path": "reports/2026-11-17-native-qualification/protocol.json",
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "gate_changes": false,
+  "workload_changes": false,
+  "sample_changes": false,
+  "gc_policy_changes": false,
+  "order": [
+    "python-a",
+    "rust-a",
+    "rust-b",
+    "python-b"
+  ],
+  "host_control": {
+    "cpu_affinity": "auto",
+    "selection": "Select once from permitted CPUs by lowest physical-package/core/CPU tuple where topology is available, otherwise first permitted CPU. Record actual selection.",
+    "application": "Apply identical selected affinity to every measured child; fail closed on unsupported/invalid/mismatched controls.",
+    "limitations": "CPU affinity does not reserve a physical core or isolate Redis/background activity.",
+    "telemetry": "Capture pre/post process, GC and cgroup/host observations outside measured scopes; retain exact helper/controller hashes."
+  },
+  "artifact_policy": "Build all SDK/companion wheels before timing; install outside workspace, freeze source/artifacts and stop local benchmark/test interference.",
+  "prior_attempt_policy": "All prior failures remain immutable evidence; host-control changes do not retroactively qualify old builds or erase instability.",
+  "publication": "All four Rust companions remain unpublished; no native tags/releases/publication in this task."
+}

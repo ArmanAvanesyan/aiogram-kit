@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-17",
+  "projects": [
+    {
+      "package": "aiogram-idle",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-idle.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    },
+    {
+      "package": "aiogram-nav",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-nav.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    },
+    {
+      "package": "aiogram-coordination",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-coordination.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    },
+    {
+      "package": "aiogram-sentinel",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-sentinel.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    },
+    {
+      "package": "aiogram-cmds",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-cmds.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    },
+    {
+      "package": "aiogram-kit",
+      "repository": "ArmanAvanesyan/aiogram-kit",
+      "workflow": "publish-aiogram-kit.yml",
+      "environment": "pypi",
+      "legacy_binding_removed": true,
+      "sole_binding_verified": true
+    }
+  ]
+}

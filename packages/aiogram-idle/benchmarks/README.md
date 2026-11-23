@@ -71,3 +71,29 @@ The shared evaluator reads only `results`: every row there has measured CPU
 batches, their median and a call count. Non-timing evidence (event-loop lag,
 admission outcomes and explicitly unavailable cases) lives in top-level
 `diagnostics`. Comparison identity uses the deterministic input seed `0`.
+
+## Predeclared fresh-window qualification
+
+The controller also accepts `--latency-windows N` (default `1`, retaining the
+historical fixture count). This repeats each Redis and optional combined helper
+on independent backends/runtimes. Each window retains the same requested age,
+capacity and operation count: at age 50 with 100 samples, every window warms from
+0 to 50 and measures 50 through 149. Ten windows are **not** one conversation
+growing through 1,000 timed updates. Dispatcher no-op windows likewise create a
+fresh dispatcher/backend and keep their original fixed current-view fixture.
+
+All observations are pooled without trimming, replacement, GC changes or retries.
+Window failures fail the profile. `latency_window_boundaries` records end-exclusive
+raw offsets, fixture start/end age and operation count. `calls` and
+`operations_per_cpu_sample` describe the 100 operations in each CPU batch;
+`total_calls` describes all pooled operations and is the denominator for aggregate
+transport counts. Raw CPU samples remain separate per window. Command, FSM and
+callback counters are summed; every storage diagnostic is retained, with a labeled
+conservative maximum for the aggregate storage summary.
+
+Existing memory and deadline-claim presets continue using fresh `--cpu-samples`
+fixtures and now record the same explicit window metadata. Thus an explicitly
+predeclared run with `--cpu-samples 30 --latency-windows 10 --samples 100` has
+30 fresh memory/claim windows and 10 fresh Redis/combined windows, not a change to
+the measured operation or its parameters. The external protocol still decides
+qualification; increasing the declared evidence does not weaken any gate.

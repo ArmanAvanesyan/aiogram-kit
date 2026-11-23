@@ -1,0 +1,774 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-11-18T02:39:00.470842+00:00",
+  "scope": "Final installed standalone Python smoke; no source, benchmark, publishing or Redis changes",
+  "qualified_runtime_commit": "0448d0be467264e3a8420f32e13d43f4eb2de9d1",
+  "checked_repository_commit": "da1a686d54baf08d841ab287007d2f95b8370ca6",
+  "qualified_runtime_unchanged_check": {
+    "command": [
+      "git",
+      "diff",
+      "--quiet",
+      "0448d0be467264e3a8420f32e13d43f4eb2de9d1",
+      "--",
+      "packages/aiogram-idle/src",
+      "packages/aiogram-nav/src"
+    ],
+    "working_directory": "/Users/armanavanesyan/oss/own/aiogram-kit",
+    "exit_code": 0
+  },
+  "environment_policy": "Inspected and reused existing isolated standalone environments; no installs or dependency mutations",
+  "result": "pass",
+  "results": [
+    {
+      "package": "aiogram-idle",
+      "version": "0.3.1",
+      "python": "3.12.13 (main, Apr 14 2026, 14:36:32) [Clang 22.1.3 ]",
+      "executable": "/tmp/kit-native-parallel-20261118/standalone-idle/bin/python",
+      "module_file": "/tmp/kit-native-parallel-20261118/standalone-idle/lib/python3.12/site-packages/aiogram_idle/__init__.py",
+      "direct_url": {
+        "url": "file:///tmp/kit-native-parallel-20261118/lifetime-wheels/aiogram_idle-0.3.1-py3-none-any.whl",
+        "archive_info": {}
+      },
+      "installed_versions": {
+        "certifi": "2026.10.23",
+        "yarl": "1.25.1",
+        "pydantic": "2.14.3",
+        "propcache": "0.5.4",
+        "aiofiles": "25.1.0",
+        "aiohappyeyeballs": "2.7.1",
+        "pydantic_core": "2.50.4",
+        "aiogram-idle": "0.3.1",
+        "typing-inspection": "0.4.5",
+        "magic-filter": "1.0.12",
+        "frozenlist": "1.8.0",
+        "aiosignal": "1.4.0",
+        "aiogram": "3.32.0",
+        "annotated-types": "0.8.0",
+        "aiohttp": "3.14.5",
+        "attrs": "26.1.0",
+        "multidict": "7.2.1",
+        "aiogram-coordination": "0.1.1",
+        "typing_extensions": "4.16.0",
+        "idna": "3.20"
+      },
+      "absent_modules": {
+        "aiogram_nav": true,
+        "redis": true,
+        "aiogram_idle_native": true,
+        "aiogram_nav_native": true,
+        "aiogram_sentinel_native": true,
+        "_aiogram_cmds_native": true
+      },
+      "checks": [
+        "default Python engine and disabled creation",
+        "immutable detached draft",
+        "session absolute expiry preserved",
+        "guarded activity touch and replay",
+        "expired claim recovery and stale owner fencing",
+        "guarded clear"
+      ],
+      "runtime_files_match_current_source": true,
+      "runtime_files": [
+        {
+          "path": "aiogram_idle/__init__.py",
+          "sha256": "395256dcde0a9cb1816c36ebed15f17af0d6f21b81313604d2ce9a6deef99892"
+        },
+        {
+          "path": "aiogram_idle/_json_scope.py",
+          "sha256": "9ff68b44c5f71c2241b6571c90f05ef7f9e258c2f47e241f1bf41982d6d92ebd"
+        },
+        {
+          "path": "aiogram_idle/_native_queue.py",
+          "sha256": "7d268e1067a5df9e52b0db18a580b55a8d8e185a68db135928f0685b40b2430a"
+        },
+        {
+          "path": "aiogram_idle/_wire.py",
+          "sha256": "46add833e9e75fb925cd84934d90d763c3e7576c29a54e721ec7a77cd0e89a55"
+        },
+        {
+          "path": "aiogram_idle/activity.py",
+          "sha256": "5fb79e594d18163a982b00b69ccd45e7a9795d85894360552eb2e52887bb2550"
+        },
+        {
+          "path": "aiogram_idle/clock.py",
+          "sha256": "5493359d41d80809439445051f856972f479afea274c7241b136555f4518a5b0"
+        },
+        {
+          "path": "aiogram_idle/compat.py",
+          "sha256": "2ad93b8bd33a8902b8b84455cb68a59a3550b38462c2b0c1d54158cffc023c9d"
+        },
+        {
+          "path": "aiogram_idle/config.py",
+          "sha256": "b28fcbe54e8e24f08ece9576ce99098035666c75bb714471aa063412f29c6541"
+        },
+        {
+          "path": "aiogram_idle/controls.py",
+          "sha256": "e343a0b467654c08c5ba4d030a577b25a7f29acacd855d553fe20c6e558e17ec"
+        },
+        {
+          "path": "aiogram_idle/coordinator.py",
+          "sha256": "6765c1cc60e9b6ae081d4afe903f447d19aa07d25b01a23c717970550a2b3340"
+        },
+        {
+          "path": "aiogram_idle/effect_scope.py",
+          "sha256": "8800a1119c78f26957d76d1b288737205bf3fda10881d621fbd7f0c0422fc884"
+        },
+        {
+          "path": "aiogram_idle/effects.py",
+          "sha256": "ee04da8a15052c5eebfb0383d491ee0dd079200136cc43b73221d04779e05549"
+        },
+        {
+          "path": "aiogram_idle/engines.py",
+          "sha256": "6dacf94ef656ada221499b237b6ea1729c15c3652cb726d24daa2e5e136fc2df"
+        },
+        {
+          "path": "aiogram_idle/errors.py",
+          "sha256": "7132d097ba57a05e55b17e0e6afd238833dff8867e769a65279e8061fc151f86"
+        },
+        {
+          "path": "aiogram_idle/events.py",
+          "sha256": "1061ff1e47eec92f56351f49fe1cd6ec014cd3ebbb95201faa6349087c5fb145"
+        },
+        {
+          "path": "aiogram_idle/failures.py",
+          "sha256": "caf272b72ce3ce24a3254ffbfffab680ab9d53d6951860847e6953b5519e2f90"
+        },
+        {
+          "path": "aiogram_idle/integration.py",
+          "sha256": "b9790a7d65005633196d0088ce59c23529eecf55d669d998d367c79503f59dcf"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/__init__.py",
+          "sha256": "0f21c7758a487f9fb8354637f516936b6179af5da579d5c0c09552744b9b78f1"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/adapters.py",
+          "sha256": "035c3513f9f3a0e9357eeee3ebf18d6584c3a017dd21cd96d90bc0646a0a8eb6"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/canonical.py",
+          "sha256": "c6b861b37da514c0a439add4c64bba0cc13ea1c199f37bb7c70a7c7a9ece844a"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/canonical_completion.py",
+          "sha256": "3ba195631157134e9bbb85dee0d40d0b99094192a4f1eb95b21db4225a07dddc"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/canonical_effects.py",
+          "sha256": "c4175b83872269f9074596b7c240f7ce59c81169183986fe19adc21f24ac597f"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/canonical_migration.py",
+          "sha256": "3089f9d3b8c437f1b5803fd40853f263942a4ade21750609b56edda40418b739"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/codec.py",
+          "sha256": "8c8feff3bb0d8c7d1f80721be05f1f533260e1beedf685c9c30b18e3f44305f9"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/effects.py",
+          "sha256": "a21676628ed438d27d4591430cc1e875e8b141fec1a7158984acdba873bf2854"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/engine.py",
+          "sha256": "d4e83c4bb72e4626aeb4ae7dddad813a2cdd7d3dc2a4df2089d9f00faa425f4e"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/errors.py",
+          "sha256": "a54a2b01519acabd6176853d1cad41e90c96e9f5d147657a6b6c4a1298a60948"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/installation.py",
+          "sha256": "71ae37e9f2ff0548356a45bb56bdf3d555fcad915c0942824fafca770163b379"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/integration.py",
+          "sha256": "471ce15481bd928380e348bffd800460fbe1bc4208f7104b15cd1fbed7436f4d"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/lifecycle.py",
+          "sha256": "803b8c5973490f359bf591735a7a9736140bf6b6fed4a6784586ead59714153c"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/mapping.py",
+          "sha256": "6d3688fa664e972e88dccb98e0ebc7c69e81d873d01e60720bd9a29568b7c95e"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/overlay.py",
+          "sha256": "ae6c418c729f09c7e64aec722a1bbc39595f8b420aad1f936e517c263c94e916"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/policies.py",
+          "sha256": "08085b0ffc90d39d13ab23540a3ce5dfe84509708f6834bef70c1b3c8c322434"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/presentation.py",
+          "sha256": "69609f4311d2760593d344c65f42119f0423cb898c09cde7f0b51e0852362313"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/receipts.py",
+          "sha256": "b218bb62a8bc242e67a705b4d2c98fa70bf5e257c7568b9207aa7bacae1e3a66"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/recovery.py",
+          "sha256": "5770ad4b0572ff0e1dfa208a708b613fb6b5ab8a94aff79694ed2a2242a7b700"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/repository.py",
+          "sha256": "fd4fd9b42e57f11b318349e10832535c22a3154cf6139678e532b5f80725e29e"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/sessions.py",
+          "sha256": "ec8668f36a6aca88006508877743a6202efa9d336ccaa76c435ad60c23057620"
+        },
+        {
+          "path": "aiogram_idle/integrations/nav/staging.py",
+          "sha256": "9e009bcd1c201166d4e700059581d3c58f5e24f333e0141bc8269a5d0c23f251"
+        },
+        {
+          "path": "aiogram_idle/machine.py",
+          "sha256": "70d80a76c9854618ce7af163979e2f6d887a5a3ec73fdbe9d7dd0e2017ca2ffa"
+        },
+        {
+          "path": "aiogram_idle/models.py",
+          "sha256": "3ef7532aca8484ab5d801ebb7c227ff2a061cc52ad4caa11c92775a4cfddcb86"
+        },
+        {
+          "path": "aiogram_idle/observation.py",
+          "sha256": "7375232b6a1d30e7b39d91740edfcd05c4c50ccaa30b4029e1cfdb6b90681981"
+        },
+        {
+          "path": "aiogram_idle/policies.py",
+          "sha256": "c5a9e923465bc0ec7cf148a09e70d834b958d66d4b85659b2da43900f458e8b8"
+        },
+        {
+          "path": "aiogram_idle/presentation.py",
+          "sha256": "093c24e419783109fbc0da183a635d69e48d7ba5ad7227c667b26fbd162a656d"
+        },
+        {
+          "path": "aiogram_idle/protocols.py",
+          "sha256": "c9e1948d9b8d4fe0466e5f32b81fc9f09204aa7f7d531f3cead1be1c3c7f874d"
+        },
+        {
+          "path": "aiogram_idle/py.typed",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "aiogram_idle/questions.py",
+          "sha256": "ab735920a03b34986772f34bcc56f1a5416b385a33c04590f7e509c9dcd4e77a"
+        },
+        {
+          "path": "aiogram_idle/receipts.py",
+          "sha256": "45aa9425b060e6218afa07845a756266655bb72d428b58de1c425a838220f65f"
+        },
+        {
+          "path": "aiogram_idle/registration.py",
+          "sha256": "d583336b33855604a9768f27c9569c0d1b958e8e421ccc486c12f7fac2842f71"
+        },
+        {
+          "path": "aiogram_idle/runtime.py",
+          "sha256": "575be06dd699099c5bb8b39f640970ba3ebfab6c5a1dc1d99dd4ced0b467f0a1"
+        },
+        {
+          "path": "aiogram_idle/sessions.py",
+          "sha256": "f053cb28582728bf5e1d7b21f8c2497c601de3eb3c6e9b2bc4fe0f056c8368a9"
+        },
+        {
+          "path": "aiogram_idle/storage/__init__.py",
+          "sha256": "07fdad9a779b77ab3908aea4a83bd98246f211a0ac62703142eaf61fee2e2dff"
+        },
+        {
+          "path": "aiogram_idle/storage/activation.py",
+          "sha256": "75a9de7dc7086d54fd181fe0360252ac8e9fe75a872c3807194dc830f1983c5e"
+        },
+        {
+          "path": "aiogram_idle/storage/base.py",
+          "sha256": "0ea8f88f637994857a55408a45afd7029df7cf3d27dcdd0e0990cb7a30c254b3"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical.py",
+          "sha256": "69c5d6074f0eea08371a6fc4f0b693b774006306d666a14f44c18455d0721183"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_gc.py",
+          "sha256": "29a0653e41e4a3577d1b363d9ea415a4db2b61ba7f3673ee9de01b1247f29772"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_memory_migration.py",
+          "sha256": "9889fe85e0c85393ed8ca5018c0555bb43b330308a29971d8218277119b61e0d"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_migration.py",
+          "sha256": "9608d0d11cfebfcf4b53a56faba9695ac2a228818b28ac5167f4be9be9e56176"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_migration_scripts.py",
+          "sha256": "90cc16c38263f72f4f440818ae9eb9483590a33ad690ce15f0b391be34c57443"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_redis.py",
+          "sha256": "62c9c2ad6c10205b502b811782dd2ae6a3a01f473e194d8e55548d607c034034"
+        },
+        {
+          "path": "aiogram_idle/storage/canonical_scripts.py",
+          "sha256": "2ddcfb157344aff927ae42e2474b86c044f6a457471a5e479a9add7d5b01083a"
+        },
+        {
+          "path": "aiogram_idle/storage/codec.py",
+          "sha256": "c76db551080f6845871445ecd1ef14d32c0dd4f24f2517854fccd9e96244b412"
+        },
+        {
+          "path": "aiogram_idle/storage/cold.py",
+          "sha256": "ba2406b8bff5d3a31a4fad3d2edca3b557910733d6923be15513aa8d55aa5705"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_backup.py",
+          "sha256": "70061dd2cab567fd7b84263b54748bf399cb75bb3885d5d1148546eae1aead4b"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_gc.py",
+          "sha256": "cf4ec734529fbbb0fa7fd8d7478fd3f976233263d918cf7f1dc0be38d656b18c"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_migration.py",
+          "sha256": "f9f4868c38106642db2851222c52a3cee006660cd5ab45a81bfa6a1d95a9d487"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_migration_gc.py",
+          "sha256": "55712b9387e0aac55c0d8b0fe5e3571363d64f4650d24b3dc16fbcbd399df88d"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_migration_scripts.py",
+          "sha256": "8a615a6079aa70b50a87d6944c66fc494c14b8f2ffea3029e550290726e3a4db"
+        },
+        {
+          "path": "aiogram_idle/storage/cold_scripts.py",
+          "sha256": "7278e300dcfa9a433f0b95bbcdf567d59ef39c2c0679f805785a77e7711b384b"
+        },
+        {
+          "path": "aiogram_idle/storage/component_transaction.py",
+          "sha256": "5a53b6d29fe6b131c268cf0740294d02ca3d274a531b63f1e5150a057ef4c133"
+        },
+        {
+          "path": "aiogram_idle/storage/control_tokens.py",
+          "sha256": "d4f165e195b2b80a17099e0d40f46e11173a11c47eff7132f283982c05b0fcad"
+        },
+        {
+          "path": "aiogram_idle/storage/coordination.py",
+          "sha256": "ac552093ec5e1bae26c601b0ad303e172a738e7db6132baee902df00aa7ca323"
+        },
+        {
+          "path": "aiogram_idle/storage/deployment.py",
+          "sha256": "b289038bd78ea44db12c9113af8c7e0bdbaf54769167eeca527f4f29eb4408c1"
+        },
+        {
+          "path": "aiogram_idle/storage/format.py",
+          "sha256": "431d36ecc7bf35ad48625a79b30bdb28ff0f20d00c033377acacabd88598341a"
+        },
+        {
+          "path": "aiogram_idle/storage/fused_activity.py",
+          "sha256": "a932de6e7967c22a98e1d4486ff58d5c96272d0c43c382a07d8ab4bd218dc791"
+        },
+        {
+          "path": "aiogram_idle/storage/memory.py",
+          "sha256": "482cdebe1e6a81aa2caf462bfab92c78857f30d8658a0366b648884fa3b5d741"
+        },
+        {
+          "path": "aiogram_idle/storage/owned_lock.py",
+          "sha256": "6082ffd4047c334dcb988593d5806d42f46e5594c29fd052e641d52dec0ee66a"
+        },
+        {
+          "path": "aiogram_idle/storage/queue.py",
+          "sha256": "db16f54ace7d671c4dbe99bf9392811731aabe7af29f1ba55df332fac6c6c235"
+        },
+        {
+          "path": "aiogram_idle/storage/receipts.py",
+          "sha256": "d5b17076421fc0bca2b0ec0317eb2fc5f91e83312c8466da311e00ccfd7c30f1"
+        },
+        {
+          "path": "aiogram_idle/storage/redis.py",
+          "sha256": "2a2e988052ed517cda937853bd70e2b173bad43b47082a9fc7c89b93a97b6a3a"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_admin.py",
+          "sha256": "dc23793503aa083516897a8e048444abbd725d4feab56523481fbfb5bc1d610a"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_coordinator.py",
+          "sha256": "c98a9c2026088e0c0d0b96195f23239c1549e484a4b0d16ed37719c104b535cf"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_engine.py",
+          "sha256": "1dbb6884bc2333c34f1777356628bfa72d2aff909f76ec5d5e74582d338a4c81"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_jobs.py",
+          "sha256": "2a3bcbff12fc2e6e6cf465ca63b0afc868b2d65513ea82fa806f2b19dff399af"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_quarantine.py",
+          "sha256": "8248620279c9d987fa19b3040e8ba2b839abc2a326f618124b9bf579888fc8de"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_scripts.py",
+          "sha256": "44cb6fbd59c3ab341ad79942c41e9b224bb9c45bba2b6de4cadd1f657f1e529d"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_store.py",
+          "sha256": "2dad083b2cc06ea3d9890e096c2236609e429c8a022d52e1f4bef0e6bf9abc0f"
+        },
+        {
+          "path": "aiogram_idle/storage/redis_transport.py",
+          "sha256": "a7341994b561589059e403c61edebd60b7c07ff4abbf4276bb48dd54f376385d"
+        },
+        {
+          "path": "aiogram_idle/storage/retention.py",
+          "sha256": "2022b4b1eef6e9a8d3de977d9413ffd6dc2de67ed5f1dca71336438eae1314ae"
+        },
+        {
+          "path": "aiogram_idle/storage/session_bindings.py",
+          "sha256": "3e59c55e3325991e22d0b2a831b643844085d68378c40c07a19bc7aefe6e8dc7"
+        },
+        {
+          "path": "aiogram_idle/storage/state.py",
+          "sha256": "806ad28ac6f92ab4d19d3e2b29ce9113114f5cb13486dd8419f07e42be894a14"
+        },
+        {
+          "path": "aiogram_idle/storage/wire_json.py",
+          "sha256": "85f38eb64a376697da7a250891e4db4e4bf4ea1160b6dbe74f85ae2f94c71d00"
+        },
+        {
+          "path": "aiogram_idle/worker.py",
+          "sha256": "895397715f1b7305a244662ac115556ea995c9b6762f6d85f9e4cf330350f638"
+        }
+      ],
+      "result": "pass",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/standalone-idle/bin/python",
+        "-I",
+        "/tmp/standalone-final-idle.py"
+      ],
+      "working_directory": "/tmp",
+      "script_sha256": "81adb482f29af940713dc8ca5d56766773a4c9a281910a989bc3f8b30474f79c",
+      "script": "import asyncio, importlib.metadata as metadata, importlib.util, hashlib, json, pathlib, sys\nimport aiogram_idle as sdk\nfrom aiogram_idle import IdleConfig, IdleConversationKey, ManualClock, MemoryIdleBackend, OwnershipLost, PromptPolicy\n\nasync def smoke():\n    assert IdleConfig().engine == 'python' and not IdleConfig().enabled\n    clock = ManualClock(1000)\n    backend = MemoryIdleBackend(clock=clock, config=IdleConfig(enabled=True), storage_format=3)\n    key = IdleConversationKey('standalone', 1, 42, 42)\n    try:\n        session = await backend.open_session(key, lifetime_seconds=1000, operation_id='session')\n        source = {'draft': [1]}\n        activity = await backend.enter(key, 'form', policy_id='draft', policy=PromptPolicy(1, 2), adapter_key='form', params=source, session_id=session.session_id, expires_at=session.expires_at, operation_id='enter', enabled=True)\n        source['draft'].append(2)\n        assert activity.params['draft'] == (1,)\n        touched = await backend.touch(key, expected=activity.guard, operation_id='touch', enabled=True)\n        assert touched.expires_at == session.expires_at\n        assert await backend.touch(key, expected=activity.guard, operation_id='touch', enabled=True) == touched\n        clock.advance(2)\n        first = (await backend.claim_due(limit=1, lease_seconds=1))[0]\n        clock.advance(1)\n        second = (await backend.claim_due(limit=1, lease_seconds=1))[0]\n        assert first.token != second.token\n        try:\n            await backend.release_claim(first, retry_at=clock.now() + 3)\n        except OwnershipLost:\n            pass\n        else:\n            raise AssertionError('expired claim accepted')\n        await backend.release_claim(second, retry_at=clock.now() + 3)\n        await backend.clear(key, expected=touched.guard, operation_id='clear', reason='cancel')\n        assert (await backend.load(key)).activity is None\n        return ['default Python engine and disabled creation', 'immutable detached draft', 'session absolute expiry preserved', 'guarded activity touch and replay', 'expired claim recovery and stale owner fencing', 'guarded clear']\n    finally:\n        await backend.close()\n\nchecks = asyncio.run(smoke())\nabsent = ('aiogram_nav', 'redis', 'aiogram_idle_native', 'aiogram_nav_native', 'aiogram_sentinel_native', '_aiogram_cmds_native')\nassert all(importlib.util.find_spec(name) is None for name in absent)\nassert not any(name.startswith('aiogram_nav') or name.startswith('redis') or name.startswith('aiogram_idle_native') for name in sys.modules)\ndist = metadata.distribution('aiogram-idle')\nassert sdk.__version__ == dist.version\nroot = pathlib.Path('/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-idle/src')\nfiles = []\nfor rel in dist.files:\n    if str(rel).startswith('aiogram_idle/') and str(rel).endswith(('.py', '.pyi', 'py.typed')):\n        installed = pathlib.Path(dist.locate_file(rel)); source = root / rel\n        assert installed.read_bytes() == source.read_bytes(), str(rel)\n        files.append({'path': str(rel), 'sha256': hashlib.sha256(installed.read_bytes()).hexdigest()})\nresult = {'package': 'aiogram-idle', 'version': dist.version, 'python': sys.version, 'executable': sys.executable, 'module_file': sdk.__file__, 'direct_url': json.loads(dist.read_text('direct_url.json')), 'installed_versions': {d.metadata['Name']: d.version for d in metadata.distributions()}, 'absent_modules': {name: True for name in absent}, 'checks': checks, 'runtime_files_match_current_source': True, 'runtime_files': files, 'result': 'pass'}\npathlib.Path('/tmp/standalone-final-idle-result.json').write_text(json.dumps(result, indent=2) + '\\n')\nprint('Idle standalone Python memory lifecycle: passed')\n",
+      "exit_code": 0,
+      "referenced_local_wheel": {
+        "path": "/tmp/kit-native-parallel-20261118/lifetime-wheels/aiogram_idle-0.3.1-py3-none-any.whl",
+        "sha256": "419f19ec1017ec87abc7acd8730b303e6daff0c26786cb24982fa8637a0ac8aa",
+        "note": "Existing environment inspected before reuse; every installed runtime file independently compared byte-for-byte to unchanged qualified source."
+      }
+    },
+    {
+      "package": "aiogram-nav",
+      "version": "0.3.1",
+      "python": "3.12.13 (main, Apr 14 2026, 14:36:32) [Clang 22.1.3 ]",
+      "executable": "/tmp/kit-native-parallel-20261118/standalone-nav/bin/python",
+      "module_file": "/tmp/kit-native-parallel-20261118/standalone-nav/lib/python3.12/site-packages/aiogram_nav/__init__.py",
+      "direct_url": {
+        "url": "file:///tmp/kit-native-parallel-20261118/lifetime-wheels/aiogram_nav-0.3.1-py3-none-any.whl",
+        "archive_info": {}
+      },
+      "installed_versions": {
+        "aiogram-nav": "0.3.1",
+        "certifi": "2026.10.23",
+        "yarl": "1.25.1",
+        "pydantic": "2.14.3",
+        "propcache": "0.5.4",
+        "aiofiles": "25.1.0",
+        "aiohappyeyeballs": "2.7.1",
+        "pydantic_core": "2.50.4",
+        "typing-inspection": "0.4.5",
+        "magic-filter": "1.0.12",
+        "frozenlist": "1.8.0",
+        "aiosignal": "1.4.0",
+        "aiogram": "3.32.0",
+        "annotated-types": "0.8.0",
+        "aiohttp": "3.14.5",
+        "attrs": "26.1.0",
+        "multidict": "7.2.1",
+        "aiogram-coordination": "0.1.1",
+        "typing_extensions": "4.16.0",
+        "idna": "3.20"
+      },
+      "absent_modules": {
+        "aiogram_idle": true,
+        "redis": true,
+        "aiogram_idle_native": true,
+        "aiogram_nav_native": true,
+        "aiogram_sentinel_native": true,
+        "_aiogram_cmds_native": true
+      },
+      "checks": [
+        "default Python engine",
+        "standalone prepare/commit",
+        "immutable detached parameters",
+        "navigation history",
+        "completion replay before stale version check",
+        "stale version fencing"
+      ],
+      "runtime_files_match_current_source": true,
+      "runtime_files": [
+        {
+          "path": "aiogram_nav/__init__.py",
+          "sha256": "27f7ff914a17c33525dc0eba36962b703d1bb05468ceb835a89576f1416bf0cf"
+        },
+        {
+          "path": "aiogram_nav/_json_scope.py",
+          "sha256": "cd06bd722bdb530b01c29d7de14c92ba1d0895584011cc47b87dcacbfb135df8"
+        },
+        {
+          "path": "aiogram_nav/actions.py",
+          "sha256": "9613099d5024f7a14e6c63c84b681f00ebc317fb28aa25667951bbd6a5a12aa7"
+        },
+        {
+          "path": "aiogram_nav/adoption.py",
+          "sha256": "23834bf4c30b9da0013a529e952d2ee68ff935ad1d301912720998526413aefa"
+        },
+        {
+          "path": "aiogram_nav/bindings_router.py",
+          "sha256": "5c20bc0292470c87b65c15a0f6092fc43446453b2526f52a1a9271e2bd2ad7dc"
+        },
+        {
+          "path": "aiogram_nav/clock.py",
+          "sha256": "9e05954481e11e0ce38922b8082e3003095cbcd3c1736218f80c4bbad8cf1ed8"
+        },
+        {
+          "path": "aiogram_nav/codec.py",
+          "sha256": "0b313d7008b9be5f00c61971c87d2fb53d3f2769869da5321bd026581c7485b1"
+        },
+        {
+          "path": "aiogram_nav/config.py",
+          "sha256": "8d11a3db9d7e74076afb9adab0e90b75a95637764a2f90824b4db41a29dd72dc"
+        },
+        {
+          "path": "aiogram_nav/context.py",
+          "sha256": "abbeb8d48a8ece078a78808e00972122b59a14551969fbaccab15a0f4545764d"
+        },
+        {
+          "path": "aiogram_nav/effects.py",
+          "sha256": "51ae837ffa4b6027089c63b25289737851e7f0c1dc7a88fc4480ff4998ffa1bb"
+        },
+        {
+          "path": "aiogram_nav/engine.py",
+          "sha256": "d02cb1d9b3732d659080cbf4dfc4d830cd6943f5cbd2e3e0e9eb3eb3f0e18cc2"
+        },
+        {
+          "path": "aiogram_nav/errors.py",
+          "sha256": "f07f1891be33d4cf388222782c67296e7fd9b6195961a2b081f12972564655cc"
+        },
+        {
+          "path": "aiogram_nav/events.py",
+          "sha256": "43f6db25e7ea9783dd9b986b011854ce264931073b5ee7a088e4a8b91e57f029"
+        },
+        {
+          "path": "aiogram_nav/fsm_validation.py",
+          "sha256": "14e2c6d3500827532090447af6ab70874c7c918f4b1a7072e92234cbd0f62188"
+        },
+        {
+          "path": "aiogram_nav/identity.py",
+          "sha256": "0b4381fdd06dcd6145461671e68cdb3cc356e25697eb5cf4cdf0433949acc197"
+        },
+        {
+          "path": "aiogram_nav/inputs/__init__.py",
+          "sha256": "9f98b31d431a3bc453121eefae84e3dacdd599275c665212ba431e43a2d5ae3a"
+        },
+        {
+          "path": "aiogram_nav/inputs/bindings.py",
+          "sha256": "848b3128dfe6fdf9651a1729a0067c5b1310b3091164bd0ffc086e071acd14e1"
+        },
+        {
+          "path": "aiogram_nav/inputs/callbacks.py",
+          "sha256": "e0e865b3f7a5b8f9e4d1cc6c2867684ab1f717a961da28eda52121957b502ed0"
+        },
+        {
+          "path": "aiogram_nav/inputs/commands.py",
+          "sha256": "175c583f76633bf0a22bc6e67af72439d257321e614e3e5c74adb852c20b7f86"
+        },
+        {
+          "path": "aiogram_nav/inputs/inline.py",
+          "sha256": "e430691c127421eb1ff290cc9c657e3d7e9b06543dffdabd76618ff596ac61fe"
+        },
+        {
+          "path": "aiogram_nav/inputs/reply.py",
+          "sha256": "0d3860aee5d25684a9d97c63fc82095ab79fbffa1a6888fc595819038a2f8fd6"
+        },
+        {
+          "path": "aiogram_nav/inputs/tokens.py",
+          "sha256": "53b47bba24ba08eacfdb9c908539fde715fb6dd8ca60b4de0ed95097d448f4b8"
+        },
+        {
+          "path": "aiogram_nav/integration.py",
+          "sha256": "62f0be77fb5ad980b33b93d04ad3851b1a742a09ccb532f2f61a5d05109b6f69"
+        },
+        {
+          "path": "aiogram_nav/isolation.py",
+          "sha256": "c6b6052d3d75cf0d9731fdf55d73bf2e8a9026c7c5bf5b604fe6ae3434a5e390"
+        },
+        {
+          "path": "aiogram_nav/json.py",
+          "sha256": "7d49607c8fa8f900c044eb4d3626b9f826e82bd595bf02ac8cd5c5df4fe68d7a"
+        },
+        {
+          "path": "aiogram_nav/models.py",
+          "sha256": "4e61c8fa66499e94a297b052520a8e09684f54e26c144b0474e852e33793cf1a"
+        },
+        {
+          "path": "aiogram_nav/navigation.py",
+          "sha256": "d2a48d2cd2591ef00578fd10258a710317d4423aba7184a7d47b5b3605f6eb29"
+        },
+        {
+          "path": "aiogram_nav/protocols.py",
+          "sha256": "a3a43915f3c5f10c7b4a5f8345d5c9133525c9a41557df4d6a1cbb9b9532adb0"
+        },
+        {
+          "path": "aiogram_nav/py.typed",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "aiogram_nav/recovery.py",
+          "sha256": "757943f86e79cb5d91ddb3891eac196098f612e6abc6b207e8f8705b997ecfb5"
+        },
+        {
+          "path": "aiogram_nav/registry.py",
+          "sha256": "931261fde3809bb6ebc84f1c2dcea9a823ad5d5767db7a50c3b647a8e5a8a232"
+        },
+        {
+          "path": "aiogram_nav/rejections.py",
+          "sha256": "bd06850a01ae525c80c890eb3dd62fe4c303d412b9c11e5df15a1b38488848fa"
+        },
+        {
+          "path": "aiogram_nav/rendering/__init__.py",
+          "sha256": "38a220fe718cf994650900bc574ba7b0441f37a5c2390fc9681fe9a7bb35aa5a"
+        },
+        {
+          "path": "aiogram_nav/rendering/application.py",
+          "sha256": "a1765e6648d5d13083005f85706e4c60a744efad81949faa62c393921cc0e2ee"
+        },
+        {
+          "path": "aiogram_nav/rendering/base.py",
+          "sha256": "ba4990cbed560af1e2a25e899ce2b8a52607921236b6683cfbb57bf843d06113"
+        },
+        {
+          "path": "aiogram_nav/rendering/cleanup.py",
+          "sha256": "322fe14bbbcbe6e72705a6f2e962f67b50663aacf3e3c4cd3e1180dd25eeff39"
+        },
+        {
+          "path": "aiogram_nav/rendering/delivery.py",
+          "sha256": "ad59b01aed5b24400799a069a02e0126b681f762fc243f81b74507654fec83b2"
+        },
+        {
+          "path": "aiogram_nav/rendering/text.py",
+          "sha256": "9f4aae7df0507d01f284d2c81e67995103aec8d7f684c42610feef30cc749127"
+        },
+        {
+          "path": "aiogram_nav/sessions.py",
+          "sha256": "8b64c4d7e7293a31dca33cb4a91059bf864284c772da2b1045aca62dab39f6be"
+        },
+        {
+          "path": "aiogram_nav/storage/__init__.py",
+          "sha256": "6937097d6eaaebc8b2cde7879487bc4eef6ddd370b4566bb2b1addf25edff5df"
+        },
+        {
+          "path": "aiogram_nav/storage/adoption.py",
+          "sha256": "681ca14cd670b3b7fb1ebab3274e3a3097a6ea6d49a866fe9a1cd457fb7d3a32"
+        },
+        {
+          "path": "aiogram_nav/storage/base.py",
+          "sha256": "fc485150f2590f857957950d153538e047876324117d15f3455133b87345ce52"
+        },
+        {
+          "path": "aiogram_nav/storage/completion.py",
+          "sha256": "22262701f6a5166d55b5e2e51535aa24ccc53535e03a7fc6ad1ed9d0d4589e8d"
+        },
+        {
+          "path": "aiogram_nav/storage/deployment.py",
+          "sha256": "258e07bca7f1f040186efa5b94809647547448b1aeb2412816f7a37dbdc6e134"
+        },
+        {
+          "path": "aiogram_nav/storage/ledger.py",
+          "sha256": "37026e3aa9d31e0e9fa3b22a5e3981aa30243c74224fd88ed5d219523b38f586"
+        },
+        {
+          "path": "aiogram_nav/storage/ledger_reducer.py",
+          "sha256": "5439650dcac9e196cad223798c3b3472356299b43e978b12859fd28742a964e5"
+        },
+        {
+          "path": "aiogram_nav/storage/ledger_scripts.py",
+          "sha256": "2c629dfefb13c87fd49255bd2fbfa72b83b3c00bbfd3060b28056eac07d7ea79"
+        },
+        {
+          "path": "aiogram_nav/storage/memory.py",
+          "sha256": "e863ec90ce9d6f40ce64aa4d1f3c31748b15a27e6007967a504756222359ef1e"
+        },
+        {
+          "path": "aiogram_nav/storage/redis.py",
+          "sha256": "2ad2e8cd8adada1af3f5ac40812276e566b954dae440664804a5be7f963244ad"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_codec.py",
+          "sha256": "2eaac320c58e8965baf1a20f0165c743ac48e5ca8325674a2ef8e9e29a36b75d"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_coordinator.py",
+          "sha256": "41b78c750aa95f8e72b79d7994f066c1484a08f087c8da83f37c68ad1597430c"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_ledger.py",
+          "sha256": "8319823c21d3321aac1dfd50236bfe87420d221dc048e80ab2ca5ca0baf95820"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_migration.py",
+          "sha256": "7b7efca4fd21812ff5d9b0641da8c9ec16c1479762823abe7eed07a32284cff8"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_scripts.py",
+          "sha256": "c63933781ae75ac205261968989fbf6bb2b5b42efadcadf3869e49895204571b"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_store.py",
+          "sha256": "96d9c73262e09df0954114012c50f88bc675765c6dd09ea2a64fbf79870524ce"
+        },
+        {
+          "path": "aiogram_nav/storage/redis_transport.py",
+          "sha256": "18d902752d1ff66b1c9217f0c923cc8a70873cff135f8e151e99cadcbf720570"
+        },
+        {
+          "path": "aiogram_nav/storage/sessions.py",
+          "sha256": "bbe1f26140ad8434437628a1a9f8a8549adc1d16485893cb55134491c85fc15d"
+        },
+        {
+          "path": "aiogram_nav/storage/state.py",
+          "sha256": "715ece5de4e24b9ae66ea4ccfb82c3eed4145af72ba0ef94395543c6d651f991"
+        },
+        {
+          "path": "aiogram_nav/storage/tokens.py",
+          "sha256": "ef70e0bbd06be2a72ef21afbee235246ad6af8a206336978d69491858baf7796"
+        },
+        {
+          "path": "aiogram_nav/storage/transition.py",
+          "sha256": "7fdcf6ff05fb8526a1755490879b199cfe47b6254e137e4b2e9e5a7d29b00fb0"
+        },
+        {
+          "path": "aiogram_nav/version.py",
+          "sha256": "7de74a10ed38eb89212887449386e8148155b48f80483afaadb3e122d6851b6b"
+        }
+      ],
+      "result": "pass",
+      "command": [
+        "/tmp/kit-native-parallel-20261118/standalone-nav/bin/python",
+        "-I",
+        "/tmp/standalone-final-nav.py"
+      ],
+      "working_directory": "/tmp",
+      "script_sha256": "b68d88b5337d9e126f782de95d35580a4b7279ca339ad7c15177f83e1fe989c3",
+      "script": "import asyncio, importlib.metadata as metadata, importlib.util, hashlib, json, pathlib, sys\nimport aiogram_nav as sdk\nfrom aiogram_nav import ConversationKey, ManualClock, MemoryNavigationRepository, NavigationConfig, NavigationIntent, NavigationMutation, RenderResult, VersionConflict\n\nasync def smoke():\n    assert NavigationConfig().engine == 'python'\n    repo = MemoryNavigationRepository(clock=ManualClock(1000), storage_format=3)\n    key = ConversationKey('standalone', 1, 42, 42)\n    try:\n        first = await repo.prepare(key, expected_version=None, intent=NavigationIntent('first', 'main'))\n        one = await repo.commit(key, expected_version=first.expected_version, mutation=NavigationMutation('first', first.session_id, RenderResult(first.view_id)))\n        source = {'page': [1]}\n        second = await repo.prepare(key, expected_version=one.version, intent=NavigationIntent('second', 'form', params=source))\n        source['page'].append(2)\n        assert second.params['page'] == (1,)\n        two = await repo.commit(key, expected_version=second.expected_version, mutation=NavigationMutation('second', second.session_id, RenderResult(second.view_id)))\n        assert two.snapshot.node_id == 'form' and two.snapshot.history[0].node_id == 'main'\n        duplicate = await repo.commit(key, expected_version='stale', mutation=NavigationMutation('second', second.session_id, RenderResult(second.view_id)))\n        assert duplicate.duplicate and duplicate.snapshot == two.snapshot\n        try:\n            await repo.prepare(key, expected_version=one.version, intent=NavigationIntent('stale-operation', 'main'))\n        except VersionConflict:\n            pass\n        else:\n            raise AssertionError('stale navigation version accepted')\n        assert (await repo.load(key)).snapshot == two.snapshot\n        return ['default Python engine', 'standalone prepare/commit', 'immutable detached parameters', 'navigation history', 'completion replay before stale version check', 'stale version fencing']\n    finally:\n        await repo.close()\n\nchecks = asyncio.run(smoke())\nabsent = ('aiogram_idle', 'redis', 'aiogram_idle_native', 'aiogram_nav_native', 'aiogram_sentinel_native', '_aiogram_cmds_native')\nassert all(importlib.util.find_spec(name) is None for name in absent)\nassert not any(name.startswith('aiogram_idle') or name.startswith('redis') or name.startswith('aiogram_nav_native') for name in sys.modules)\ndist = metadata.distribution('aiogram-nav')\nassert sdk.__version__ == dist.version\nroot = pathlib.Path('/Users/armanavanesyan/oss/own/aiogram-kit/packages/aiogram-nav/src')\nfiles = []\nfor rel in dist.files:\n    if str(rel).startswith('aiogram_nav/') and str(rel).endswith(('.py', '.pyi', 'py.typed')):\n        installed = pathlib.Path(dist.locate_file(rel)); source = root / rel\n        assert installed.read_bytes() == source.read_bytes(), str(rel)\n        files.append({'path': str(rel), 'sha256': hashlib.sha256(installed.read_bytes()).hexdigest()})\nresult = {'package': 'aiogram-nav', 'version': dist.version, 'python': sys.version, 'executable': sys.executable, 'module_file': sdk.__file__, 'direct_url': json.loads(dist.read_text('direct_url.json')), 'installed_versions': {d.metadata['Name']: d.version for d in metadata.distributions()}, 'absent_modules': {name: True for name in absent}, 'checks': checks, 'runtime_files_match_current_source': True, 'runtime_files': files, 'result': 'pass'}\npathlib.Path('/tmp/standalone-final-nav-result.json').write_text(json.dumps(result, indent=2) + '\\n')\nprint('Nav standalone Python memory lifecycle: passed')\n",
+      "exit_code": 0,
+      "referenced_local_wheel": {
+        "path": "/tmp/kit-native-parallel-20261118/lifetime-wheels/aiogram_nav-0.3.1-py3-none-any.whl",
+        "sha256": "ef372d41e4aff4fb56509ec01f7bdb63538e30a507f5c5abf778aeb15522a20f",
+        "note": "Existing environment inspected before reuse; every installed runtime file independently compared byte-for-byte to unchanged qualified source."
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "filename": "aiogram_cmds-0.3.1-py3-none-any.whl",
+    "sha256": "b2ea5ab0c0267264d7a4d1756f86d55b991603dacc1e0cf7e40a07a4322396ba"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "8d2464866ca03c717b67fe3ca615dd93b82a16408a0c03ee1da4794bcd4a2af3"
+  },
+  {
+    "filename": "aiogram_coordination-0.1.1-py3-none-any.whl",
+    "sha256": "e3968449faee82324774f7b9cde8608b842923913e097d362955be5d468c1f68"
+  },
+  {
+    "filename": "aiogram_idle-0.3.1-py3-none-any.whl",
+    "sha256": "32fb92397ae7a6f89ace423cd7e9d556c4080130857700f101a87c94844f006e"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "5b634d7f817a52828948619bbbc0433a1133dffeb33c67521986612393352d9d"
+  },
+  {
+    "filename": "aiogram_nav-0.3.1-py3-none-any.whl",
+    "sha256": "4d7193604af113e15c037c9eaf737e3cced5d966fd4c3032e39512d1a52e77b0"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "e3695ff27a28df84d305c91a7ae0f06c5b1aae7e3a36105652ff7c07c57e9ce0"
+  },
+  {
+    "filename": "aiogram_sentinel-1.3.1-py3-none-any.whl",
+    "sha256": "c97a7fefb617bd27a413a1c624581976b70807f7000caac1d2d4cdd42779ce5d"
+  },
+  {
+    "filename": "aiogram_sentinel_native-1.3.1-cp310-abi3-macosx_10_12_x86_64.whl",
+    "sha256": "6da13d91c1e05375e9519d851e5a0cc4945c9de51005677015dd9c9e1b780b0a"
+  }
+]

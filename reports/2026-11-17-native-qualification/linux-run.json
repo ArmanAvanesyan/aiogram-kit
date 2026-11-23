@@ -1,0 +1,10 @@
+{
+  "run_id": 44054131749,
+  "url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44054131749",
+  "source_commit": "361f530a7dbc3660f776679f95ed54d87d9a160f",
+  "artifact_id": 14315104047,
+  "artifact_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/44054131749/artifacts/14315104047",
+  "artifact_zip_sha256": "2a8989d404c4c9588bd87fd33c2752ea8bb3f882c293d865fe742c0c3475634f",
+  "wheel_hashes_verified": true,
+  "result": "All builds and measurements completed; performance qualification failed for all four packages. No publication."
+}

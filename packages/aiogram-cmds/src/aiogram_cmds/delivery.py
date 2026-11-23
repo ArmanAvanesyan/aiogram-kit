@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass
 from enum import Enum
 from typing import Literal, cast
 
 from aiogram.types import BotCommand
 
-from .engines import Engine, native_engine
+from .engines import Engine, NativeModule, native_engine
 
 
 class LanguageCode(Enum):
@@ -50,6 +51,28 @@ def payload_fingerprint(
     if type(bot_id) is not int or bot_id <= 0:
         raise ValueError("A positive bot identity is required for fingerprints")
     module = native_engine(engine)
+    if module is not None and not (
+        len(commands) > 10
+        or not isinstance(cast(object, scope), dict)
+        or not (language_code is None or isinstance(cast(object, language_code), str))
+    ):
+        module = None
+    return resolved_fingerprint(bot_id, scope, language_code, commands, module=module)
+
+
+def resolved_fingerprint(
+    bot_id: int,
+    scope: dict[str, object],
+    language_code: str | None,
+    commands: list[BotCommand],
+    *,
+    module: NativeModule | None,
+) -> str:
+    """Internal boundary after identity, engine and input-shape selection.
+
+    Small payloads deterministically select CPython before this boundary. Unknown
+    native errors propagate; they never cause a fallback after an attempted call.
+    """
     if module is not None:
         return module.fingerprint(
             str(bot_id),
@@ -94,7 +117,16 @@ class CommandBatchResult:
     error: Exception | None = None
 
 
+_HEX_DIGEST = re.compile(r"[0-9a-f]{64}")
+
+
 def validate_fingerprint(previous_fingerprint: str | None) -> None:
+    if type(previous_fingerprint) is str:
+        if _HEX_DIGEST.fullmatch(previous_fingerprint) is None:
+            raise ValueError(
+                "previous_fingerprint must be a confirmed SHA256 hex string"
+            )
+        return
     if previous_fingerprint is not None and (
         not isinstance(cast(object, previous_fingerprint), str)
         or len(previous_fingerprint) != 64

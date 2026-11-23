@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import hashlib
 import importlib
-import json
 import math
 from functools import lru_cache
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
+from ._json_scope import JsonCore
+from ._wire import wire as _wire
 from .errors import ActivityConflict, ConfigurationError
 
 if TYPE_CHECKING:
@@ -20,7 +21,25 @@ ActivityTuple = tuple[str, str, int, float]
 SessionTuple = tuple[str, int, float]
 
 
+class CanonicalCore(JsonCore, Protocol):
+    def fork(self) -> CanonicalCore: ...
+
+    def fingerprint(self, value: object) -> str: ...
+
+
 class NativeCore(Protocol):
+    def Canonicalizer(
+        self,
+        enum_type: object,
+        mapping_type: object,
+        fields: object,
+        datetime_type: object = None,
+        view_type: object = None,
+        render_type: object = None,
+        immutable_types: object = None,
+    ) -> CanonicalCore: ...
+
+    InvalidJson: type[Exception]
     API_VERSION: int
     ENGINE_VERSION: str
     OwnershipLost: type[Exception]
@@ -52,6 +71,8 @@ def native_core() -> NativeCore:
     except (ImportError, OSError) as error:
         raise ConfigurationError("engine='rust' requires aiogram-idle-native==0.3.1") from error
     required = (
+        "Canonicalizer",
+        "InvalidJson",
         "DeadlineCore",
         "phase_transition",
         "fingerprint_canonical",
@@ -69,6 +90,17 @@ def native_core() -> NativeCore:
         or any(not callable(getattr(module, name, None)) for name in required)
     ):
         raise ConfigurationError("Incompatible aiogram-idle-native engine ABI/version")
+    invalid = getattr(module, "InvalidJson", None)
+    codec = getattr(module, "Canonicalizer", None)
+    if (
+        not isinstance(invalid, type)
+        or not issubclass(invalid, Exception)
+        or not all(
+            callable(getattr(codec, name, None))
+            for name in ("fingerprint", "freeze", "clear_cache", "cache_stats", "fork")
+        )
+    ):
+        raise ConfigurationError("Incompatible native codec ABI/version")
     try:
         probe = module.DeadlineCore()
         queue_methods = (
@@ -80,8 +112,10 @@ def native_core() -> NativeCore:
             "schedule",
             "check",
             "claim",
+            "claim_objects",
             "renew",
             "release",
+            "release_values",
             "reconcile",
             "keys",
             "heap",
@@ -252,10 +286,6 @@ def claim_guard(
     return (
         None if actual is not None and actual[:2] == expected and actual[2] > now else "ownership"
     )
-
-
-def _wire(value: str) -> str:
-    return json.dumps(value, ensure_ascii=True)
 
 
 def make_queue(engine: EngineName = "python") -> DeadlineQueue:

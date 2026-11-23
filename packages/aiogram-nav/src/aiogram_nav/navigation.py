@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, cast
 from aiogram import Bot
 from aiogram_coordination import ExternalSession, SessionAuthority
 
+from ._json_scope import JsonEngine, construct
 from .clock import Clock
 from .config import NavigationConfig
 from .context import NavigationContext
@@ -32,11 +33,12 @@ from .models import (
     RenderResult,
 )
 from .protocols import Coordinator
-from .registry import NavigationRegistry
+from .registry import NavigationRegistry, parameter_values
 from .rejections import CallbackRejection, CallbackRejectionResponder, RejectionReason
 from .rendering.base import NavigationPresenter
 from .sessions import SessionValidator
 from .storage.base import NavigationRepository
+from .storage.memory import MemoryNavigationRepository
 
 if TYPE_CHECKING:
     from aiogram import Dispatcher, Router
@@ -74,6 +76,9 @@ class Navigation:
         session_validator: SessionValidator | None = None,
     ) -> None:
         self.registry, self.repository, self.presenter = registry, repository, presenter
+        self.json_processor: JsonEngine | None = (
+            repository.json_processor if type(repository) is MemoryNavigationRepository else None
+        )
         self.config = config or repository.config
         self.registry = registry.with_engine(self.config.engine)
         for field in fields(self.config):
@@ -205,13 +210,15 @@ class Navigation:
         await self.authorize_session(prepared.key, prepared.session_id)
         current = await self.repository.load(prepared.key)
         node = self.registry.get(prepared.node_id)
-        params = self.registry.validate_params(node.id, prepared.params)
+        params = parameter_values(self.registry, node.id, prepared.params, self.json_processor)
         if fingerprint(params) != fingerprint(prepared.params):
             raise InvalidParameters("Prepared parameters cannot be reinterpreted")
         await self.allowed(prepared.key, node, params, prepared.intent.source)
         if prepared.expires_at <= self.clock.now():
             raise SessionExpired("The prepared session expired before rendering")
-        return RenderRequest(
+        return construct(
+            self.json_processor,
+            RenderRequest,
             key=prepared.key,
             operation_id=prepared.operation_id,
             node=node,

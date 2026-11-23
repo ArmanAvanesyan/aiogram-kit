@@ -1,0 +1,11 @@
+{
+  "aiogram_idle_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "3255e18490432af4e060d13a2ff76a3536c0723dc602b9ad7981b3cb3cb591db",
+  "aiogram_coordination-0.1.1-py3-none-any.whl": "e3968449faee82324774f7b9cde8608b842923913e097d362955be5d468c1f68",
+  "aiogram_nav_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "8b2c0e5ad7ce097b4825a52cf5a6d492f29121a3f706ee34d8a2d6b8eaa89704",
+  "aiogram_cmds-0.3.1-py3-none-any.whl": "dbf9676180d40cc0d1180affa50b96e9ee52ec9d8206e7947d5813820ce3435e",
+  "aiogram_sentinel_native-1.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "9731708bd65cff29c35567728dface3021d78bdedf5f3eb013ac2c9cda654af9",
+  "aiogram_sentinel-1.3.1-py3-none-any.whl": "c97a7fefb617bd27a413a1c624581976b70807f7000caac1d2d4cdd42779ce5d",
+  "aiogram_cmds_native-0.3.1-cp310-abi3-macosx_10_12_x86_64.whl": "470909541b4f4ef9345436e5ca0b3324740b0a08ab17937765043ceae2408990",
+  "aiogram_idle-0.3.1-py3-none-any.whl": "af8c5a459374f86063988a66e950f194c3769a605550ddc5def7795b34552c9c",
+  "aiogram_nav-0.3.1-py3-none-any.whl": "d70ef0679db4cfe48092345ba7356b4f5a175b84f1b91873b7765f90295e47e7"
+}
