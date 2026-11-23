@@ -47,7 +47,9 @@ class RecordingSession(BaseSession):
     ) -> TelegramType:
         self.methods.append(method)
         if isinstance(method, GetMe):
-            return User(id=bot.id, is_bot=True, first_name="Test", username="TestBot")
+            return User(
+                id=bot.id, is_bot=True, first_name="Test", username="TestBot", active_usernames=[]
+            )
         if isinstance(method, GetChat):
             return ChatFullInfo.model_validate(
                 {

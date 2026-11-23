@@ -25,7 +25,9 @@ from aiogram_nav.registry import NavigationRegistry
 async def bot():
     value = Bot("1:ABC")
     value.me = AsyncMock(
-        return_value=User(id=1, is_bot=True, first_name="Demo", username="DemoBot")
+        return_value=User(
+            id=1, is_bot=True, first_name="Demo", username="DemoBot", active_usernames=[]
+        )
     )
     yield value
     await value.session.close()
