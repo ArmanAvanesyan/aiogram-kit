@@ -12,6 +12,11 @@ from pathlib import Path
 from compare_results import compare, load
 from verify_native_artifacts import verify as verify_artifacts
 
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
+
 PACKAGES = frozenset(f"aiogram-{name}" for name in ("sentinel", "cmds", "nav", "idle"))
 PROTOCOL_SHA256 = "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0"
 
@@ -19,6 +24,31 @@ PROTOCOL_SHA256 = "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
+
+
+def source_matches(source: Path, expected: str, entry: dict, reconciliation: dict) -> bool:
+    """Reconcile only reviewed non-distributed TOML changes, never runtime source."""
+    current = source.read_bytes()
+    if hashlib.sha256(current).hexdigest() == expected:
+        return True
+    if source.name != "pyproject.toml" or source.parent.name not in PACKAGES:
+        return False
+    original = reconciliation.get("original_pyproject")
+    if not isinstance(original, str):
+        return False
+    if (
+        hashlib.sha256(original.encode()).hexdigest() != expected
+        or reconciliation.get("current_sha256") != hashlib.sha256(current).hexdigest()
+        or reconciliation.get("sdk_wheel_sha256") != entry["sdk"]["sha256"]
+    ):
+        return False
+    try:
+        before, after = tomllib.loads(original), tomllib.loads(current.decode())
+    except (UnicodeError, tomllib.TOMLDecodeError):
+        return False
+    before.pop("dependency-groups", None)
+    after.pop("dependency-groups", None)
+    return before == after
 
 
 def verify(
@@ -70,6 +100,17 @@ def verify(
         "Qualification input manifest changed",
     )
     entry = json.loads(manifest_bytes)["packages"][package]
+    reconciliation_file = report / "source-reconciliation.json"
+    reconciliations = {}
+    if reconciliation_file.exists():
+        require(not reconciliation_file.is_symlink(), "Unsafe source reconciliation")
+        reconciliation_data = json.loads(reconciliation_file.read_text())
+        require(
+            reconciliation_data["baseline_manifest_sha256"]
+            == readiness["performance_manifest_sha256"],
+            "Source reconciliation refers to different evidence",
+        )
+        reconciliations = reconciliation_data["packages"]
     require(
         entry["version"] == row["version"] and entry["native_manifest_sha256"] == manifest_sha256,
         "Artifact/version readiness mismatch",
@@ -85,7 +126,8 @@ def verify(
         )
         source = root / path
         require(
-            not source.is_symlink() and hashlib.sha256(source.read_bytes()).hexdigest() == digest,
+            not source.is_symlink()
+            and source_matches(source, digest, entry, reconciliations.get(package, {})),
             "Performance-qualified source changed",
         )
     folder = report / "shipping-qualification/native-qualification" / package

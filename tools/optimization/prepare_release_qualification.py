@@ -13,6 +13,7 @@ import zipfile
 from pathlib import Path
 
 from verify_native_artifacts import verify
+from verify_release_readiness import source_matches
 
 REPOSITORY = "ArmanAvanesyan/aiogram-kit"
 PACKAGES = {f"aiogram-{name}" for name in ("sentinel", "cmds", "nav", "idle")}
@@ -31,6 +32,7 @@ def read_manifest(path: Path, expected: str, root: Path) -> dict:
     require(re.fullmatch(r"[a-f0-9]{64}", expected) is not None, "Invalid manifest digest")
     require(not path.is_symlink() and digest(path) == expected, "Release manifest changed")
     data = json.loads(path.read_text())
+    reconciliations = data.get("source_reconciliation", {})
     require(data["repository"] == REPOSITORY, "Unexpected release repository")
     require(
         bool(data["packages"]) and set(data["packages"]) <= PACKAGES,
@@ -54,7 +56,9 @@ def read_manifest(path: Path, expected: str, root: Path) -> dict:
             require(filename.startswith(f"packages/{package}/"), "Unrelated release source")
             path = root / rel
             require(
-                not path.is_symlink() and digest(path) == expected_hash, "Release source changed"
+                not path.is_symlink()
+                and source_matches(path, expected_hash, entry, reconciliations.get(package, {})),
+                "Release source changed",
             )
         require(len(entry["artifacts"]) == 8, "Expected seven wheels and one source artifact")
         require(type(entry["run_id"]) is int and entry["run_id"] > 0, "Invalid release run")

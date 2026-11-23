@@ -1,6 +1,7 @@
 //! CPU-only native boundaries. Python resolves all translator callbacks first.
 use pyo3::exceptions::{PyRuntimeError, PyValueError};
 use pyo3::prelude::*;
+use pyo3::types::{PyString, PyStringMethods};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::collections::{HashMap, HashSet};
@@ -52,13 +53,13 @@ struct Command<'a> {
     description: &'a str,
 }
 
-pub fn encode_rows(rows: &[(String, String)]) -> String {
+pub fn encode_rows<S: AsRef<str>>(rows: &[(S, S)]) -> String {
     serde_json::to_string(
         &rows
             .iter()
             .map(|(command, description)| Command {
-                command,
-                description,
+                command: command.as_ref(),
+                description: description.as_ref(),
             })
             .collect::<Vec<_>>(),
     )
@@ -197,10 +198,21 @@ fn fingerprint(
     bot_id: String,
     scope_json: String,
     language_json: String,
-    rows: Rows,
+    rows: Vec<(Bound<'_, PyString>, Bound<'_, PyString>)>,
 ) -> PyResult<String> {
-    fingerprint_encoded(&bot_id, &scope_json, &language_json, &encode_rows(&rows))
-        .map_err(PyValueError::new_err)
+    // Borrow only while the input strings are alive and the GIL is held.
+    // No borrowed reference escapes this call or enters a cache.
+    let borrowed: PyResult<Vec<_>> = rows
+        .iter()
+        .map(|(command, description)| Ok((command.to_cow()?, description.to_cow()?)))
+        .collect();
+    fingerprint_encoded(
+        &bot_id,
+        &scope_json,
+        &language_json,
+        &encode_rows(&borrowed?),
+    )
+    .map_err(PyValueError::new_err)
 }
 #[pyfunction(name = "compile")]
 fn compile_py(rows: Profiles) -> PyResult<NativeSnapshot> {

@@ -1,0 +1,24 @@
+[
+  {
+    "boundary": "tuple-boundary",
+    "iterations": 10000,
+    "cpu_seconds": 0.8004439999999997,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42"
+  },
+  {
+    "boundary": "model-boundary",
+    "iterations": 10000,
+    "cpu_seconds": 1.1194119999999996,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42"
+  }
+]

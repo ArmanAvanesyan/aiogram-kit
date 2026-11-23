@@ -182,3 +182,29 @@ def test_independent_single_package_release_is_supported(module, manifest):
     data["packages"] = {"aiogram-nav": data["packages"]["aiogram-nav"]}
     path.write_text(json.dumps(data))
     assert set(module.read_manifest(path, module.digest(path), root)["packages"]) == {"aiogram-nav"}
+
+
+def test_staging_reconciliation_is_bound_into_reviewed_manifest(module, manifest):
+    path, root = manifest
+    data = json.loads(path.read_text())
+    entry = data["packages"]["aiogram-nav"]
+    source = root / "packages/aiogram-nav/pyproject.toml"
+    original = '[project]\nname="aiogram-nav"\n[dependency-groups]\ndev=["pytest>=8"]\n'
+    source.write_text(original.replace("pytest>=8", "pytest>=9"))
+    entry["source_files"]["packages/aiogram-nav/pyproject.toml"] = hashlib.sha256(
+        original.encode()
+    ).hexdigest()
+    data["source_reconciliation"] = {
+        "aiogram-nav": {
+            "original_pyproject": original,
+            "current_sha256": module.digest(source),
+            "sdk_wheel_sha256": entry["sdk"]["sha256"],
+        }
+    }
+    path.write_text(json.dumps(data))
+    module.read_manifest(path, module.digest(path), root)
+    source.write_text(source.read_text().replace("aiogram-nav", "other"))
+    data["source_reconciliation"]["aiogram-nav"]["current_sha256"] = module.digest(source)
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="source changed"):
+        module.read_manifest(path, module.digest(path), root)

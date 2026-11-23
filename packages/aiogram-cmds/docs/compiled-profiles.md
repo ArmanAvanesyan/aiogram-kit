@@ -37,6 +37,11 @@ sending, and only literal Bot API `True` confirms a new fingerprint.
 
 ## Native candidate
 
+Live fingerprint hashing borrows the resolved command strings during the native
+call instead of copying them into Rust-owned strings. Inputs stay alive while
+the GIL is held; hashes, ordering and live translation semantics remain the same.
+No caller-owned models or mutable menu results are cached by this boundary.
+
 The separate `aiogram-cmds-native` companion contains a Rust resolved-profile and
 fingerprint CPU core. It has no dependency on this Python package. It is a
 candidate, not an advertised dependency extra or published installation promise.

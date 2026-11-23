@@ -1,5 +1,13 @@
 # Architecture
 
+Redis scheduling and commit authority remain in Redis. Its ephemeral per-read
+domain reducer uses the audited Python executor for both engine selections;
+allocating an unused native queue and codec on every read provides no benefit.
+The public engine selection is preserved and an explicitly selected native
+companion is still validated before backend use. Long-lived memory backends
+retain the native queue and codec when selected. No error triggers a fallback,
+and this selection changes neither persisted formats nor fencing/lease rules.
+
 An idle conversation owns an absolute session expiry and a sequence of activity
 generations. Accepted activity arms a deadline according to its named policy.
 Workers claim due work, inspect authorization and resumability, then use guarded

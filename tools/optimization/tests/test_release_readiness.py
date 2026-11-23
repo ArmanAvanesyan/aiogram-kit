@@ -165,3 +165,47 @@ def test_changed_evidence_cannot_authorize_publication(proof, change):
 def test_wrong_release_or_manifest_is_rejected(proof, change):
     with pytest.raises(ValueError):
         verify(proof, **change)
+
+
+def test_reconciliation_only_permits_bound_development_configuration(proof):
+    module, root, _, _, _ = proof
+    source = root / "packages/aiogram-nav/pyproject.toml"
+    original = (
+        '[project]\nname="aiogram-nav"\nversion="1.0.0"\n[dependency-groups]\ndev=["pytest>=8"]\n'
+    )
+    source.write_text(original.replace("pytest>=8", "pytest>=9"))
+    expected = hashlib.sha256(original.encode()).hexdigest()
+    entry = {"sdk": {"sha256": "a" * 64}}
+    certificate = {
+        "original_pyproject": original,
+        "current_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        "sdk_wheel_sha256": "a" * 64,
+    }
+    assert module.source_matches(source, expected, entry, certificate)
+    assert not module.source_matches(source, expected, entry, {})
+    for field in ("original_pyproject", "current_sha256", "sdk_wheel_sha256"):
+        assert not module.source_matches(source, expected, entry, {**certificate, field: "changed"})
+    source.write_text(original.replace("1.0.0", "2.0.0"))
+    certificate["current_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
+    assert not module.source_matches(source, expected, entry, certificate)
+
+
+@pytest.mark.parametrize(
+    "section", ["project", "build-system", "tool.hatch", "project.optional-dependencies"]
+)
+def test_reconciliation_does_not_exempt_published_or_build_metadata(proof, section):
+    module, root, _, _, _ = proof
+    source = root / "packages/aiogram-nav/pyproject.toml"
+    original = f'[{section}]\nvalue="original"\n'
+    source.write_text(original.replace("original", "changed"))
+    certificate = {
+        "original_pyproject": original,
+        "current_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+        "sdk_wheel_sha256": "a" * 64,
+    }
+    assert not module.source_matches(
+        source,
+        hashlib.sha256(original.encode()).hexdigest(),
+        {"sdk": {"sha256": "a" * 64}},
+        certificate,
+    )

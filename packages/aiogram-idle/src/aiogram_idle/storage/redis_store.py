@@ -6,6 +6,7 @@ import hashlib
 import math
 from collections.abc import Awaitable, Callable, Hashable, Mapping
 from contextlib import AbstractAsyncContextManager
+from dataclasses import replace
 from typing import Literal, Protocol, TypeVar, cast
 
 from ..config import IdleConfig
@@ -60,6 +61,12 @@ class RedisStore:
         self.requested_format = requested_format
         self.prefix = prefix
         self.config = config
+        # Redis owns scheduling/CAS. A scratch reducer never benefits from a
+        # native deadline queue or per-read canonicalizer allocation. Select its
+        # pure-Python executor once; retain the requested public engine config.
+        self.reducer_config = (
+            replace(config, engine="python") if config.engine == "rust" else config
+        )
         self.deployment = deployment
         self.format_version = 1
         self.clock = RedisClock()
@@ -257,7 +264,7 @@ class RedisStore:
             job=job,
             manifest=self.config_value(config),
             now=now,
-            config=self.config,
+            config=self.reducer_config,
             created_at=self.created_at,
             disarm_epoch=cast(str, self.config_envelope(config)["disarm_epoch"]) if config else "",
             storage_format=self.format_version,
@@ -499,7 +506,7 @@ class RedisStore:
                 job="",
                 manifest=self.config_value(raw),
                 now=now,
-                config=self.config,
+                config=self.reducer_config,
                 created_at=self.created_at,
             )
             if raw:
