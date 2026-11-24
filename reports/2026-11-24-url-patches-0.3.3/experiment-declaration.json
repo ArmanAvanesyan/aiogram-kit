@@ -24,5 +24,8 @@
   "artifact_policy": "Download the complete successful seven-platform wheel/source CI set, bind SDK/native/source digests and commit the input manifest before timing. Never qualify host-built substitutes.",
   "publication_authorized": true,
   "publication_order": "Cmds SDK/native; Nav SDK/native; Idle SDK/native. SDK before its native companion; Nav before Idle.",
-  "prior_evidence": "All 0.3.2 qualified data and files remain unchanged."
+  "prior_evidence": "All 0.3.2 qualified data and files remain unchanged.",
+  "runner_policy": "One separate GitHub runner and owned disposable Redis per package. Each runner executes its four engine profiles serially in the declared ABBA order. No concurrent benchmarks share a runner.",
+  "source_commit": "6bf56eb5ced318b3ca0f9d92bb6ab161bdcf2223",
+  "input_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e"
 }
