@@ -159,9 +159,10 @@ else:
 
         asyncio.run(check())
     if not paired:
+        expected_error = sdk.NativeEngineError if short == "cmds" else sdk.ConfigurationError
         try:
             select("rust")
-        except Exception as error:
+        except expected_error as error:
             assert "native" in str(error).lower(), str(error)
         else:
             raise AssertionError("Missing native must fail before effects")
