@@ -1,51 +1,49 @@
-# Repository and historical link migration
+# Retired repositories and preserved Git history
 
-The surviving repository is the original Sentinel repository, renamed to aiogram-kit.
-GitHub's Sentinel repository redirects follow that identity. Do not recreate aiogram-sentinel.
+The active repository is [aiogram-kit](https://github.com/ArmanAvanesyan/aiogram-kit),
+the original Sentinel repository renamed during consolidation. Do not recreate
+`aiogram-sentinel`: its existing repository redirect follows the surviving identity.
 
-The original aiogram-kit repository is retained as aiogram-kit-legacy. Reusing its former name
-means old original-Kit issue and PR URLs must be mapped explicitly rather than trusted to redirect:
+The owner authorized removing the following five legacy repositories on 24 November
+2026, without creating any new backups, exports, release-asset copies or archive site.
+They are no longer current development or publishing destinations.
 
-| Original Kit record | Retained historical record after cutover |
-| --- | --- |
-| `aiogram-kit/pull/1` | [Original Kit PR 1](https://github.com/ArmanAvanesyan/aiogram-kit-legacy/pull/1) |
-| `aiogram-kit/pull/2` | [Original Kit PR 2](https://github.com/ArmanAvanesyan/aiogram-kit-legacy/pull/2) |
-| `aiogram-kit/pull/3` | [Original Kit PR 3](https://github.com/ArmanAvanesyan/aiogram-kit-legacy/pull/3) |
-
-Original Kit's historical [v0.0.1 release](https://github.com/ArmanAvanesyan/aiogram-kit-legacy/releases/tag/v0.0.1)
-and its assets also remain in the legacy repository. For original Kit branch, tag, workflow-run
-and source-file links, replace the repository segment with `aiogram-kit-legacy`; source commit IDs
-also remain reachable through the imported histories in the monorepo.
-
-These destinations were verified after the repository renames. The current Sentinel issue and PR
-numbers remain attached to its surviving repository identity. Cmds, Coordination, Nav and Idle
-historical PRs and release assets remain in their original repositories after archival.
-
-GitHub Pages sites do not inherit repository URL redirects. The unified Kit site includes package
-source documentation. Historical site URLs require separate verification and migration notices.
-The complete machine-readable identity and record inventory is under `reports/monorepo-migration/`.
-
-## Documentation URL mapping
-
-| Historical site | Maintained location | Cutover observation |
+| Retired repository | Retained source directory | Original source history in Kit |
 | --- | --- | --- |
-| `armanavanesyan.github.io/aiogram-kit/` | [Unified Kit documentation](https://armanavanesyan.github.io/aiogram-kit/) | 200; the name now serves the monorepo site |
-| `armanavanesyan.github.io/aiogram-sentinel/` | [Sentinel documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-sentinel/) | 404 after the repository rename; GitHub Pages does not supply a repository-rename redirect |
-| `armanavanesyan.github.io/aiogram-cmds/` | [Cmds documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/) | Historical site still responds; use the maintained Kit section for current releases |
+| `aiogram-idle` | `packages/aiogram-idle` | [original main](https://github.com/ArmanAvanesyan/aiogram-kit/tree/04a753ab1ce04086d2dabe4f4381cf188553a8e1) |
+| `aiogram-nav` | `packages/aiogram-nav` | [original main](https://github.com/ArmanAvanesyan/aiogram-kit/tree/a5a0696c495b66350446923715de82256f8dfde1) |
+| `aiogram-cmds` | `packages/aiogram-cmds` | [original main](https://github.com/ArmanAvanesyan/aiogram-kit/tree/1457341dca31565335c9d53e22b9ae534dce9031) |
+| `aiogram-coordination` | `packages/aiogram-coordination` | [original main](https://github.com/ArmanAvanesyan/aiogram-kit/tree/7dcb06e2e46a57e8b826279c744ab51d368a997d) |
+| `aiogram-kit-legacy` | `packages/aiogram-kit` | [original main](https://github.com/ArmanAvanesyan/aiogram-kit/tree/f279f964371b95133a331b99c385855f8f0ef534) |
 
-Recreating `aiogram-sentinel` to restore the old Pages address would interfere with
-the GitHub repository redirect and is deliberately excluded. Update bookmarks,
-badges and consumers to the maintained URLs above. Native companions remain
-unpublished until their independent performance and platform gates pass.
+Original commit IDs and the 100 published historical branch/tag references remain
+in Kit. `tools/verify_migration.py --historical-objects --remote-refs` verifies their
+objects, source ancestry, remote targets and the protected original Kit working documents.
+Existing migration reports and source snapshots retain their original bytes and dates;
+their old repository URLs are historical evidence, not maintained destinations.
 
-## Completed archival
+## Records that Git does not preserve
 
-Cmds, Coordination, Nav, Idle and original Kit (`aiogram-kit-legacy`) were archived
-on 2026-11-17 after publisher retirement and preservation verification. The surviving
-Kit repository remains active. All six package cutover releases remain on PyPI and
-have independent monorepo GitHub releases.
+Repository removal makes legacy PRs, comments, workflow pages, releases and attached
+asset URLs unavailable. These records are not recreated by importing Git history.
+No new copies are created for retirement. Previously retained evidence is left alone.
 
-Cmds' old GitHub `v0.1.1` release remains a draft. GitHub hides draft releases in
-archived repositories; temporarily unarchive Cmds to access it. Its original release
-ID and four assets were verified intact through an archive/unarchive roundtrip and
-backed up. The migration did not publish or recreate that draft.
+Original Kit PR numbers 1, 2 and 3 refer to the former Kit repository, not to those
+numbers in the surviving repository. Original Kit's `v0.0.1` Git tag remains preserved;
+its legacy GitHub release/asset URL is not a replacement download location. Do not
+remap old PR or release numbers to unrelated records in Kit.
+
+Older PyPI distributions and external bookmarks can retain legacy URLs permanently.
+Current source metadata points at Kit for future releases; already published package
+files are not replaced. Current package downloads remain available from PyPI, and
+maintained releases/assets are under Kit's independent package-qualified tags.
+
+## Maintained documentation
+
+Use [Kit documentation](https://armanavanesyan.github.io/aiogram-kit/) and its
+[Cmds](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/),
+[Coordination](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-coordination/),
+[Nav](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/) and
+[Idle](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/) sections.
+GitHub Pages addresses do not acquire redirects automatically when repositories
+are renamed or removed. Historical site addresses are not supported destinations.

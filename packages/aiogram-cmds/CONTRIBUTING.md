@@ -4,8 +4,8 @@ Use Python 3.10 or newer and [uv](https://docs.astral.sh/uv/). Fork the reposito
 create a branch from `main`, and install the locked development environment:
 
 ```bash
-git clone https://github.com/ArmanAvanesyan/aiogram-cmds.git
-cd aiogram-cmds
+git clone https://github.com/ArmanAvanesyan/aiogram-kit.git
+cd aiogram-kit/packages/aiogram-cmds
 uv sync --all-extras --all-groups --frozen
 ```
 

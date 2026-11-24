@@ -19,8 +19,8 @@ from PyPI; applications can also use either library independently.
 ## Source development
 
 ```sh
-git clone https://github.com/ArmanAvanesyan/aiogram-idle.git
-cd aiogram-idle
+git clone https://github.com/ArmanAvanesyan/aiogram-kit.git
+cd aiogram-kit/packages/aiogram-idle
 uv sync --frozen --python 3.12
 uv run --no-sync python examples/demo.py --help
 ```

@@ -44,8 +44,8 @@ locks, persistence or multi-worker safety. Applications implement these explicit
 For contributing to the project:
 
 ```bash
-git clone https://github.com/ArmanAvanesyan/aiogram-cmds.git
-cd aiogram-cmds
+git clone https://github.com/ArmanAvanesyan/aiogram-kit.git
+cd aiogram-kit/packages/aiogram-cmds
 pip install -e ".[dev]"
 ```
 
@@ -125,8 +125,8 @@ services:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/ArmanAvanesyan/aiogram-cmds.git
-   cd aiogram-cmds
+   git clone https://github.com/ArmanAvanesyan/aiogram-kit.git
+   cd aiogram-kit/packages/aiogram-cmds
    ```
 
 2. **Create virtual environment:**
@@ -148,7 +148,7 @@ services:
    ```
 
 No pre-commit hooks are configured. See the
-[contribution guide](https://github.com/ArmanAvanesyan/aiogram-cmds/blob/main/CONTRIBUTING.md)
+[contribution guide](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CONTRIBUTING.md)
 for documentation and packaging checks.
 
 ## 📋 System Requirements
@@ -251,7 +251,7 @@ After installation:
 
 1. **[Quickstart Guide](quickstart.md)** - Get started in 5 minutes
 2. **[Configuration](configuration.md)** - Configure your bot
-3. **[Examples](https://github.com/ArmanAvanesyan/aiogram-cmds/tree/main/examples)** - See working examples
+3. **[Examples](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/examples)** - See working examples
 4. **[API Reference](api/core.md)** - Explore the API
 
 ## 💡 Tips

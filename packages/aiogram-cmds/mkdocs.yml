@@ -1,8 +1,9 @@
 site_name: aiogram-cmds
 site_description: Command management library for aiogram v3
-site_url: https://aiogram-cmds.dev
-repo_url: https://github.com/ArmanAvanesyan/aiogram-cmds
-repo_name: ArmanAvanesyan/aiogram-cmds
+site_url: https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/
+repo_url: https://github.com/ArmanAvanesyan/aiogram-kit
+edit_uri: edit/main/packages/aiogram-cmds/docs/
+repo_name: ArmanAvanesyan/aiogram-kit
 
 theme:
   name: material
@@ -93,6 +94,6 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/ArmanAvanesyan/aiogram-cmds
+      link: https://github.com/ArmanAvanesyan/aiogram-kit
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/aiogram-cmds/

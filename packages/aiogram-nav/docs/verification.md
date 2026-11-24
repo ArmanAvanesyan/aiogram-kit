@@ -149,6 +149,6 @@ relabel the older minimum-version and installed-artifact matrix results above.
 
 Strict source/example Pyright and Ruff lint/format passed. Packaging checks
 verify installed version agreement, `py.typed` and base installs without Redis or
-aiogram-idle. [Security scan policy and local evidence](https://github.com/ArmanAvanesyan/aiogram-nav/blob/main/reports/README.md)
+aiogram-idle. [Security scan policy and local evidence](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/reports/README.md)
 describe the full Bandit inventory, the medium/high severity gate and Linux
 dependency audit. Generated JSON is retained as CI artifacts, not committed.

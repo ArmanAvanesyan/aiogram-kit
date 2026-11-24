@@ -495,10 +495,10 @@ Provide the following information:
 
 ### Where to Get Help
 
-- [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-cmds/discussions) - Community help
-- [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-cmds/issues) - Bug reports
-- [Documentation](https://aiogram-cmds.dev) - Complete guides
+- [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions) - Community help
+- [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-kit/issues) - Bug reports
+- [Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/) - Complete guides
 
 ---
 
-**Still having issues?** Check out our [FAQ](faq.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-cmds/issues) with the information above!
+**Still having issues?** Check out our [FAQ](faq.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-kit/issues) with the information above!

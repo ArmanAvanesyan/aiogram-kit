@@ -19,8 +19,9 @@ an independently reviewed SHA256 digest of the release's `SHA256SUMS`. The workf
 verifies and publishes the exact reviewed wheel and sdist; it never rebuilds them.
 
 Native companions retain their separate projects and performance gates. Their proposed tag
-format is `<distribution>-native-v<version>`. Native publication remains withheld until the
-existing benchmark and platform gates pass; base migration releases do not enable it.
+format is `<distribution>-native-v<version>`. Native publication requires independent benchmark and platform qualification. Sentinel
+1.3.2 and Cmds/Nav/Idle 0.3.2 SDK/native pairs were published on 24 November 2026;
+Python remains the default and native installation stays optional.
 
 ## Historical records
 
@@ -31,7 +32,9 @@ Git history does not contain GitHub issues, PRs, projects, releases or assets. T
 separate inventory and cutover checklist. The five retiring repositories were archived on
 2026-11-17 after the preservation and release gates passed. The six obsolete publisher bindings
 were removed; each package publishes only through its matching monorepo workflow.
-See the migration status report for verified evidence. Do not reuse the old Sentinel repository name.
+Repository deletion without new backups was authorized on 24 November 2026. Imported
+Git history stays in Kit; GitHub-only records and old URLs are not preserved by that history.
+See [retired repository boundaries](legacy-links.md). Do not reuse the old Sentinel repository name.
 
 The migration patch changes native identity versions without changing their ABI or kernel behavior.
 Applications opting into source-built native engines must rebuild the matching companion.

@@ -26,7 +26,7 @@ review of the artifacts being released.
 
 ## Verify the exact candidate
 
-Follow [CONTRIBUTING.md](https://github.com/ArmanAvanesyan/aiogram-nav/blob/main/CONTRIBUTING.md) and require successful CI quality,
+Follow [CONTRIBUTING.md](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CONTRIBUTING.md) and require successful CI quality,
 compatibility, real-Redis and security jobs. Run strict documentation and typed
 source/example checks. Record which platform/dependency combinations were
 actually executed; configured CI jobs are not local evidence.
@@ -41,7 +41,7 @@ Install each wheel and sdist into a fresh environment outside the checkout.
 Copy `tools/check_install.py` there and run it to verify version agreement,
 typed markers and memory initialization with Redis and aiogram-idle absent.
 Repeat with the Redis extra and `--redis`, plus the full real-server tests.
-CI performs these isolated checks; see [tools](https://github.com/ArmanAvanesyan/aiogram-nav/blob/main/tools/README.md).
+CI performs these isolated checks; see [tools](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/tools/README.md).
 
 ## Publish deliberately
 
