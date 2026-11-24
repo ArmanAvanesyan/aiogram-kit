@@ -59,16 +59,37 @@ def test_other_threads_move_but_controller_affinity_does_not(monkeypatch, tmp_pa
     assert proof["physical_hardware_exclusivity_claimed"] is False
 
 
-def test_permissions_failure_never_starts_measurement(monkeypatch, tmp_path):
-    _, commands = fake_runner(monkeypatch, tmp_path)
+def test_permission_failure_uses_checked_explicit_runner_privilege(monkeypatch, tmp_path):
+    state, commands = fake_runner(monkeypatch, tmp_path)
+
+    def denied(*args):
+        raise PermissionError("runner service thread")
+
+    def privileged(command, **kwargs):
+        commands.append(command)
+        if command[2] == "taskset":
+            state[int(command[-1])] = [2, 3]
+
+    monkeypatch.setattr(MODULE.os, "sched_setaffinity", denied)
+    monkeypatch.setattr(MODULE.subprocess, "run", privileged)
+    proof = MODULE.isolate_runner([0], LAYOUT, tmp_path)
+    assert all(row["method"] == "sudo-taskset" for row in proof["moved_threads"])
+    assert state[222] == state[223] == [2, 3]
+
+
+def test_privileged_failure_never_starts_measurement(monkeypatch, tmp_path):
+    fake_runner(monkeypatch, tmp_path)
 
     def denied(*args):
         raise PermissionError("denied")
 
+    def failed(command, **kwargs):
+        raise MODULE.subprocess.CalledProcessError(1, command)
+
     monkeypatch.setattr(MODULE.os, "sched_setaffinity", denied)
-    with pytest.raises(PermissionError):
+    monkeypatch.setattr(MODULE.subprocess, "run", failed)
+    with pytest.raises(MODULE.subprocess.CalledProcessError):
         MODULE.isolate_runner([0], LAYOUT, tmp_path)
-    assert not commands
 
 
 def test_foreign_owner_is_not_changed(monkeypatch, tmp_path):

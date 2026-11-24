@@ -44,12 +44,42 @@ def isolate_runner(client: list[int], layout: list[dict], proc: Path = Path("/pr
             for thread in threads:
                 tid = int(thread.name)
                 before = sorted(os.sched_getaffinity(tid))
-                os.sched_setaffinity(tid, housekeeping)
+                method = "owner-sched"
+                try:
+                    os.sched_setaffinity(tid, housekeeping)
+                except PermissionError:
+                    # Some runner service threads are owned by the runner UID
+                    # but require CAP_SYS_NICE. Recheck ownership before using
+                    # the runner's explicit passwordless scheduling privilege.
+                    if thread.stat().st_uid != uid:
+                        raise PermissionError(
+                            "Thread ownership changed before scheduling"
+                        ) from None
+                    subprocess.run(
+                        [
+                            "sudo",
+                            "-n",
+                            "taskset",
+                            "-pc",
+                            ",".join(map(str, housekeeping)),
+                            str(tid),
+                        ],
+                        check=True,
+                        capture_output=True,
+                        timeout=30,
+                    )
+                    method = "sudo-taskset"
                 after = sorted(os.sched_getaffinity(tid))
                 if after != housekeeping:
                     raise RuntimeError("Housekeeping thread affinity was not applied")
                 changed.append(
-                    {"pid": int(process.name), "tid": tid, "before": before, "after": after}
+                    {
+                        "pid": int(process.name),
+                        "tid": tid,
+                        "before": before,
+                        "after": after,
+                        "method": method,
+                    }
                 )
                 if len(changed) > 4096:
                     raise RuntimeError("Runner thread inventory exceeds its bound")

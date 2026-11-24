@@ -25,5 +25,6 @@
   "prior_evidence": "Two experiments retained in initial and repeatability reports. Extended Rust-a confirmation_hit/100 has localized p95 spikes at observations 21000..27000, involuntary context switches 1425 versus 662/661 for rust-b/python-b, and CPU pressure delta about 8.2s versus 1.2s. Median Rust latency is faster. Test owned-runner scheduling contention; do not remove these observations.",
   "runner_policy": "Owned disposable GitHub-hosted VM only. Pin other owned user threads away from the client physical core and its sibling. Controller/benchmark nice -20, fixed CPU 0 selected once by topology, no real-time scheduling. All 30000 latency observations and unchanged GC, ABI, workloads and gates retained. No claim of exclusive hypervisor hardware.",
   "source_commit": "6bf56eb5ced318b3ca0f9d92bb6ab161bdcf2223",
-  "input_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e"
+  "input_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e",
+  "setup_correction": "Run 45337425850 stopped before first engine profile. Same-UID protected threads use ownership-checked sudo taskset. No measurements discarded; experiment and gates unchanged."
 }
