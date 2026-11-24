@@ -33,6 +33,12 @@ def main() -> None:
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--uv", default="uv")
+    parser.add_argument(
+        "--packages",
+        nargs="+",
+        choices=("sentinel", "cmds", "nav", "idle"),
+        default=["sentinel", "cmds", "nav", "idle"],
+    )
     parser.add_argument("--native-artifacts", type=Path)
     parser.add_argument("--native-manifest", type=Path)
     parser.add_argument("--native-manifest-sha256")
@@ -63,7 +69,7 @@ def main() -> None:
     }
     with tempfile.TemporaryDirectory(prefix="paired-refresh-") as temporary:
         scratch = Path(temporary)
-        for short in ("sentinel", "cmds", "nav", "idle"):
+        for short in args.packages:
             name = "aiogram-" + short
             module = name.replace("-", "_")
             version = "1.3.2" if short == "sentinel" else "0.3.2"

@@ -1,0 +1,59 @@
+{
+  "source_commit": "058520682455e2effd0a98135bf3fa95414d00aa",
+  "publishing_performed": false,
+  "historical_artifacts_verified": 40,
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/revision-0585206/aiogram-cmds",
+      "manifest_sha256": "5e415bff56ed84e94f9562ea68b29b5cf0e5935af0c1c31b9ce50810c956485f",
+      "files": [
+        {
+          "filename": "aiogram_cmds-0.3.2-py3-none-any.whl",
+          "sha256": "7dbf013637d4c43cb91769202ce312dfab58f4d17476fead74ee4e4987da67ce"
+        },
+        {
+          "filename": "aiogram_cmds-0.3.2.tar.gz",
+          "sha256": "a6ab736fe74ef0679b78a8993af2b508614aa293a2badb62cd011e957618b701"
+        }
+      ],
+      "wheel_bytes_unchanged": false,
+      "wheel_payload_unchanged": false,
+      "changed_qualified_source_files": [
+        "packages/aiogram-cmds/native/src/lib.rs",
+        "packages/aiogram-cmds/pyproject.toml",
+        "packages/aiogram-cmds/src/aiogram_cmds/compiled.py",
+        "packages/aiogram-cmds/src/aiogram_cmds/compiled_delivery.py",
+        "packages/aiogram-cmds/src/aiogram_cmds/manager.py"
+      ],
+      "profiles": [
+        {
+          "profile": "wheel-latest",
+          "result": "pass",
+          "aiogram": "3.34.0"
+        },
+        {
+          "profile": "wheel-minimum",
+          "result": "pass",
+          "aiogram": "3.0.0"
+        },
+        {
+          "profile": "source",
+          "result": "pass",
+          "aiogram": "3.34.0"
+        },
+        {
+          "profile": "native-only",
+          "result": "pass",
+          "aiogram": "native-only"
+        },
+        {
+          "profile": "paired",
+          "result": "pass",
+          "aiogram": "3.34.0"
+        }
+      ]
+    }
+  ]
+}

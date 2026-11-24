@@ -16,5 +16,8 @@
   "repeat_policy": "One declared qualification of this changed SDK/native pair; retain all prior failures. Bind and commit exact SDK/native inputs before dispatch.",
   "prior_failed_run": 45291905439,
   "prior_failure": "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100 (Rust p95 9946 ns and 11710 ns); all latency ratios and selected CPU gates passed.",
-  "publishing_performed": false
+  "publishing_performed": false,
+  "sdk_source_commit": "058520682455e2effd0a98135bf3fa95414d00aa",
+  "sdk_wheel_sha256": "7dbf013637d4c43cb91769202ce312dfab58f4d17476fead74ee4e4987da67ce",
+  "input_manifest_sha256": "127758dcde1ca60d065ea08a8022892732aebd0840755ea85c6291cf23964c42"
 }
