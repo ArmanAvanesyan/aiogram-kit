@@ -38,8 +38,19 @@ uses the checksum-bound platform CI binaries through
 `tools/optimization/prepare_release_qualification.py`; it never substitutes a
 host-rebuilt companion.
 
-The release evidence is recorded in `reports/2026-11-18-paired-release/`. The
-artifact directories themselves are retained outside Git with SHA256 manifests.
+All four current candidates pass the unchanged performance gates. Sentinel and
+Nav retain their original qualification with narrowly checked provenance
+reconciliation; Idle passes its changed Redis reducer candidate, and Cmds passes
+its changed compiled SDK boundary with the exact verified native binaries. The
+earlier failed candidates and raw observations remain retained.
+
+The source reports in the repository are:
+
+- `reports/2026-11-18-paired-release/`: original measurements and Sentinel/Nav qualification.
+- `reports/2026-11-24-native-release-fixes/`: Idle qualification and the first changed Cmds candidate.
+- `reports/2026-11-24-cmds-compiled-boundary/`: passing final Cmds qualification, all-four publisher preflight and the final 40-artifact index.
+
+The artifact directories themselves are retained outside Git with SHA256 manifests.
 No candidate is ready to publish until all its gates and publisher bindings are
 verified. A successful build alone is insufficient.
 
@@ -56,15 +67,17 @@ and their `SHA256SUMS` to the corresponding GitHub release. Review the checksum
 manifest digest independently. Manual package-specific publishing workflows
 recheck identity, tag, full native platform coverage and checksums after artifact
 handoff; publishing jobs never rebuild. They re-evaluate retained raw performance evidence
-and enforce exact SDK/native hashes before and after immutable handoff; the
-Cmds and Idle candidates are held by their measured performance gates. Native workflows are
+and enforce exact SDK/native hashes before and after immutable handoff. All four
+current publisher preflights pass. Native workflows are
 `publish-aiogram-<package>-native.yml`, bound to environment `pypi`.
 
 Four native PyPI project Trusted Publishers need verification against
 `ArmanAvanesyan/aiogram-kit`, the matching native publishing workflow and `pypi`.
-The SDK bindings must also remain valid. Publisher registration and release/tag
-creation are outside this preparation and have not been performed. Source and
-build verification do not grant publishing credentials.
+The SDK bindings must also remain valid. All four approved native tag patterns
+are configured in GitHub alongside the six SDK patterns. PyPI publisher bindings
+remain unverified while browser access is unavailable; this is a publication hold
+even though the technical qualification passes. No release tags or uploads have
+been created. Source and build verification do not grant publishing credentials.
 
 After publication, verify public-index downloads, metadata, exact versions and
 standalone/paired installs again. Do not replace reviewed artifacts with rebuilt
