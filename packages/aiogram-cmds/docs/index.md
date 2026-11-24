@@ -144,9 +144,9 @@ those concerns; installing the extra does not make updates atomic.
 
 ## 🤝 Community
 
-- 💬 **[Discussions](https://github.com/ArmanAvanesyan/aiogram-cmds/discussions)** - Questions, ideas, and community chat
-- 🐛 **[Issues](https://github.com/ArmanAvanesyan/aiogram-cmds/issues)** - Bug reports and feature requests
-- 📖 **[Documentation](https://aiogram-cmds.dev)** - Complete guides and API reference
+- 💬 **[Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions)** - Questions, ideas, and community chat
+- 🐛 **[Issues](https://github.com/ArmanAvanesyan/aiogram-kit/issues)** - Bug reports and feature requests
+- 📖 **[Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/)** - Complete guides and API reference
 
 ## 📊 Project Status
 
@@ -159,4 +159,4 @@ those concerns; installing the extra does not make updates atomic.
 
 ---
 
-**Ready to get started?** Check out our [Quickstart Guide](quickstart.md) or browse the [Examples](https://github.com/ArmanAvanesyan/aiogram-cmds/tree/main/examples)!
+**Ready to get started?** Check out our [Quickstart Guide](quickstart.md) or browse the [Examples](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/examples)!

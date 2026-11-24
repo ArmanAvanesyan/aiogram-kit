@@ -1,5 +1,6 @@
 site_name: aiogram-coordination
-repo_url: https://github.com/ArmanAvanesyan/aiogram-coordination
+repo_url: https://github.com/ArmanAvanesyan/aiogram-kit
+edit_uri: edit/main/packages/aiogram-coordination/docs/
 theme:
   name: material
 nav:

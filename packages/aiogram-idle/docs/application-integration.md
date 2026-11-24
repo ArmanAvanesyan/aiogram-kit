@@ -2,7 +2,7 @@
 
 Idle does not require navigation. The public `FlowAdapter` describes resumability,
 resume, abandon and tray restoration; the application continues to own business
-drafts, authentication and FSM data. Use the [external session example](https://github.com/ArmanAvanesyan/aiogram-idle/blob/main/examples/external_sessions.py)
+drafts, authentication and FSM data. Use the [external session example](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/examples/external_sessions.py)
 for an executable ordinary-handler or FSM integration:
 
 ```sh

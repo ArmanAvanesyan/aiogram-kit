@@ -50,7 +50,7 @@ explicit recovery evidence; they are not automatically replayed by this adapter.
 Stop idle workers before closing shared FSM stores when managing shutdown yourself.
 
 See the adapter's
-[full guide](https://github.com/ArmanAvanesyan/aiogram-idle/blob/main/docs/navigation.md)
+[full guide](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/docs/navigation.md)
 for policy inheritance, accepted activity, memory/Redis examples and recovery.
 Its integration tests and optional typing profile live in aiogram-idle; ordinary
 navigation tests and installation checks continue without that peer package.

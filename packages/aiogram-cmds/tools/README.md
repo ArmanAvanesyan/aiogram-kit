@@ -328,4 +328,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 ---
 
-**Need help with the tools?** Check the [Troubleshooting Guide](../docs/troubleshooting.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-cmds/issues)!
+**Need help with the tools?** Check the [Troubleshooting Guide](../docs/troubleshooting.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-kit/issues)!
+## Retired standalone deployment
+
+`deploy.sh` and `deploy.ps1` exit without creating or pushing tags. Use the package-specific publishing workflows in the monorepo, with qualified tags and reviewed artifact manifests; see [monorepo releases](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/docs/monorepo.md).

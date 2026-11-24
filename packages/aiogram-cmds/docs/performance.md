@@ -634,4 +634,4 @@ dashboard.print_dashboard()
 
 ---
 
-**Need help optimizing?** Check out our [Troubleshooting Guide](troubleshooting.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-cmds/issues) with performance questions!
+**Need help optimizing?** Check out our [Troubleshooting Guide](troubleshooting.md) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-kit/issues) with performance questions!

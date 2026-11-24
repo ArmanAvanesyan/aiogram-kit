@@ -9,7 +9,7 @@ support commitment. No response-time or remediation SLA is promised.
 Do not open a public issue containing an exploit, credentials, bot tokens,
 conversation content or private Redis URLs. If GitHub private vulnerability
 reporting is available, use
-[Report a vulnerability](https://github.com/ArmanAvanesyan/aiogram-coordination/security/advisories/new).
+[Report a vulnerability](https://github.com/ArmanAvanesyan/aiogram-kit/security/advisories/new).
 If it is unavailable, contact the maintainer privately at
 [arman.avanesyan@yahoo.com](mailto:arman.avanesyan@yahoo.com).
 

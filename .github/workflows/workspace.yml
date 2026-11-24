@@ -32,6 +32,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: uv run --no-sync python tools/check_news.py --base "$BASE_SHA"
+      - run: uv run --no-sync python tools/check_retired_references.py
       - run: uv run --no-sync pytest tests/integration -q
       - run: uv run --no-sync python tools/verify_migration.py --historical-objects --remote-refs
       - name: Build documentation on its supported toolchain

@@ -1,15 +1,17 @@
 # Standalone library release verification
 
+Historical verification record from 10 November 2026. Legacy workflow/release identifiers below are provenance, not live links: the five legacy repositories were retired without new backups in November 2026. Current releases are listed in [paired releases](../releases/paired-native-2026-11-18.md).
+
 Verified 10 November 2026. All releases use tags and exact reviewed wheel/sdist
 bytes, with checksum manifests and verification evidence attached to GitHub releases.
 
 | Package | Version | Publish workflow | GitHub release |
 | --- | --- | --- | --- |
 | Sentinel | 1.2.0 | [42797158079](https://github.com/ArmanAvanesyan/aiogram-sentinel/actions/runs/42797158079) | [v1.2.0](https://github.com/ArmanAvanesyan/aiogram-sentinel/releases/tag/v1.2.0) |
-| Cmds | 0.2.0 | [42796263349](https://github.com/ArmanAvanesyan/aiogram-cmds/actions/runs/42796263349) | [v0.2.0](https://github.com/ArmanAvanesyan/aiogram-cmds/releases/tag/v0.2.0) |
-| Coordination | 0.1.0 | [42817944342](https://github.com/ArmanAvanesyan/aiogram-coordination/actions/runs/42817944342) | [v0.1.0](https://github.com/ArmanAvanesyan/aiogram-coordination/releases/tag/v0.1.0) |
-| Nav | 0.2.0 | [42818873054](https://github.com/ArmanAvanesyan/aiogram-nav/actions/runs/42818873054) | [v0.2.0](https://github.com/ArmanAvanesyan/aiogram-nav/releases/tag/v0.2.0) |
-| Idle | 0.2.0 | [42820645415](https://github.com/ArmanAvanesyan/aiogram-idle/actions/runs/42820645415) | [v0.2.0](https://github.com/ArmanAvanesyan/aiogram-idle/releases/tag/v0.2.0) |
+| Cmds | 0.2.0 | `legacy aiogram-cmds actions/runs/42796263349` | `legacy aiogram-cmds releases/tag/v0.2.0` |
+| Coordination | 0.1.0 | `legacy aiogram-coordination actions/runs/42817944342` | `legacy aiogram-coordination releases/tag/v0.1.0` |
+| Nav | 0.2.0 | `legacy aiogram-nav actions/runs/42818873054` | `legacy aiogram-nav releases/tag/v0.2.0` |
+| Idle | 0.2.0 | `legacy aiogram-idle actions/runs/42820645415` | `legacy aiogram-idle releases/tag/v0.2.0` |
 
 ## Verification
 

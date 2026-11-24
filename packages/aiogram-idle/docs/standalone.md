@@ -49,7 +49,7 @@ Configure storage capacities on MemoryIdleBackend(config=...). Scheduling and wo
 
 ## Running examples
 
-The shared [demo](https://github.com/ArmanAvanesyan/aiogram-idle/blob/main/examples/demo.py) has `--controls` and `--fsm` switches. It keeps sample drafts in process, just like the package's memory backend. It demonstrates the four control styles; it is not a durable draft-store implementation.
+The shared [demo](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/examples/demo.py) has `--controls` and `--fsm` switches. It keeps sample drafts in process, just like the package's memory backend. It demonstrates the four control styles; it is not a durable draft-store implementation.
 
 Use `/draft`, type sample text, wait for the prompt and exercise Continue, Cancel and grace expiry. `/status` shows safe lifecycle metadata. Set a short delay only for development. Tokens are supplied through `BOT_TOKEN`; never commit them.
 

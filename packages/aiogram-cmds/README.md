@@ -159,13 +159,13 @@ config = CmdsConfig(
 
 ## 📚 Documentation
 
-👉 **[Full Documentation](https://aiogram-cmds.dev)** ← Start here!
+👉 **[Full Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/)** ← Start here!
 
-* **[Quickstart](https://aiogram-cmds.dev/quickstart/)** - Get started in 5 minutes
-* **[Configuration](https://aiogram-cmds.dev/configuration/)** - Complete configuration guide
-* **[API Reference](https://aiogram-cmds.dev/api/)** - Full API documentation
-* **[Tutorials](https://aiogram-cmds.dev/tutorials/)** - Step-by-step guides
-* **[Examples](https://aiogram-cmds.dev/examples/)** - Complete working examples
+* **[Quickstart](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/docs/quickstart/)** - Get started in 5 minutes
+* **[Configuration](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/docs/configuration/)** - Complete configuration guide
+* **[API Reference](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/docs/api/core/)** - Full API documentation
+* **[Tutorials](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/docs/tutorials/basic-setup/)** - Step-by-step guides
+* **[Examples](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/examples)** - Complete working examples
 
 ## 🏗️ Architecture
 
@@ -219,7 +219,7 @@ uv run ruff format .
 
 * 💬 **[Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions)** - Questions, ideas, and community chat
 * 🐛 **[Issues](https://github.com/ArmanAvanesyan/aiogram-kit/issues)** - Bug reports and feature requests
-* 📖 **[Documentation](https://aiogram-cmds.dev)** - Complete guides and API reference
+* 📖 **[Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/)** - Complete guides and API reference
 
 ## 🔒 Security
 

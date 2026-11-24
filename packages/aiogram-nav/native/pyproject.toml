@@ -12,6 +12,13 @@ readme = "README.md"
 authors = [{name = "Arman Avanesyan"}]
 classifiers = ["Programming Language :: Rust", "Typing :: Typed"]
 
+[project.urls]
+Homepage = "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native"
+Repository = "https://github.com/ArmanAvanesyan/aiogram-kit"
+Issues = "https://github.com/ArmanAvanesyan/aiogram-kit/issues"
+Documentation = "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/"
+Changelog = "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md"
+
 [tool.maturin]
 python-source = "python"
 module-name = "aiogram_nav_native._aiogram_nav_native"

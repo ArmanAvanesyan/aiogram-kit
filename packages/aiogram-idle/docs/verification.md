@@ -4,7 +4,7 @@ This page retains dated implementation/audit evidence. Statements about local-on
 work describe those runs, not the repository's current publication or push status.
 Repository-alignment verification subsequently passed 508 existing tests with
 89.27% combined coverage, plus three new distribution-contract tests separately.
-See the [alignment report](https://github.com/ArmanAvanesyan/aiogram-idle/blob/main/reports/2026-11-10-repository-alignment.md)
+See the [alignment report](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/reports/2026-11-10-repository-alignment.md)
 for its exact commands, security scope and remaining boundaries.
 
 The following historical checks ran locally before publication on 10 November 2026 for 0.1.0,

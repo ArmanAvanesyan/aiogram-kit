@@ -1,7 +1,7 @@
 # Security and deployment boundaries
 
-Report vulnerabilities using [SECURITY.md](https://github.com/ArmanAvanesyan/aiogram-nav/blob/main/SECURITY.md). See the
-[security scan policy](https://github.com/ArmanAvanesyan/aiogram-nav/blob/main/reports/README.md) for scan commands, report retention
+Report vulnerabilities using [SECURITY.md](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/SECURITY.md). See the
+[security scan policy](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/reports/README.md) for scan commands, report retention
 and severity thresholds. These scans supplement the ownership and recovery
 boundaries below; they do not establish application security.
 

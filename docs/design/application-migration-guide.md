@@ -90,11 +90,11 @@ timeout does not turn unfinished effects into successful ones.
 
 ## Executable public examples and detailed contracts
 
-- [Sentinel documentation](https://github.com/ArmanAvanesyan/aiogram-sentinel/tree/main/docs)
-- [Cmds documentation](https://github.com/ArmanAvanesyan/aiogram-cmds/tree/main/docs)
-- [Coordination contracts](https://github.com/ArmanAvanesyan/aiogram-coordination)
-- [Nav application integration](https://github.com/ArmanAvanesyan/aiogram-nav/blob/v0.2.0/docs/application-integration.md)
-- [Idle application integration](https://github.com/ArmanAvanesyan/aiogram-idle/blob/v0.2.0/docs/application-integration.md)
+- [Sentinel documentation](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-sentinel/docs)
+- [Cmds documentation](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/docs)
+- [Coordination contracts](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-coordination)
+- [Nav application integration](https://github.com/ArmanAvanesyan/aiogram-kit/blob/history/aiogram-nav/v0.2.0/docs/application-integration.md)
+- [Idle application integration](https://github.com/ArmanAvanesyan/aiogram-kit/blob/history/aiogram-idle/v0.2.0/docs/application-integration.md)
 
 Use tagged examples against matching published versions after the release gate.
 Examples cover ordinary/FSM handlers and reply, inline, command and hybrid controls.

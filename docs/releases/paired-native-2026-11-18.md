@@ -1,6 +1,8 @@
-# Paired SDK and native release candidates
+# Paired SDK and native releases
 
-No package, release or tag is published by this preparation. Candidate versions:
+Published on 24 November 2026 after explicit owner authorization, SDK before native
+companion, with Nav before Idle. All publishing and release-tag verification workflows
+passed against source commit `7939442484daa915ae8ebf60efda902d72d32021`. Versions:
 
 | SDK | SDK and companion version | Native companion |
 | --- | --- | --- |
@@ -17,8 +19,7 @@ Idle's navigation integration remains an optional extra.
 
 Install the SDK by itself for Python operation. For Rust operation, install its
 exact companion wheel separately and select `engine="rust"` in the documented
-configuration. Until publication, use the reviewed local artifacts rather than
-asking PyPI for these candidate versions. Do not use editable installs to qualify
+configuration. These versions are available from PyPI. Do not use editable installs to qualify
 release artifacts.
 
 ## Gates and artifact handoff
@@ -51,10 +52,11 @@ The source reports in the repository are:
 - `reports/2026-11-24-cmds-compiled-boundary/`: passing final Cmds qualification, all-four publisher preflight and the final 40-artifact index.
 
 The artifact directories themselves are retained outside Git with SHA256 manifests.
-No candidate is ready to publish until all its gates and publisher bindings are
-verified. A successful build alone is insufficient.
+All eight published distributions were verified from PyPI against the reviewed hashes.
+Standalone/paired installs and optional integration profiles passed. A future version
+still needs its own exact-artifact qualification; these reports do not authorize a new build.
 
-## Publication after a separate go-ahead
+## Publication procedure for future versions
 
 Use independent tags `aiogram-<package>-v<version>` and
 `aiogram-<package>-native-v<version>`, all pointing at the reviewed release source.
@@ -71,13 +73,17 @@ and enforce exact SDK/native hashes before and after immutable handoff. All four
 current publisher preflights pass. Native workflows are
 `publish-aiogram-<package>-native.yml`, bound to environment `pypi`.
 
-Four native PyPI project Trusted Publishers need verification against
-`ArmanAvanesyan/aiogram-kit`, the matching native publishing workflow and `pypi`.
-The SDK bindings must also remain valid. All four approved native tag patterns
-are configured in GitHub alongside the six SDK patterns. PyPI publisher bindings
-remain unverified while browser access is unavailable; this is a publication hold
-even though the technical qualification passes. No release tags or uploads have
-been created. Source and build verification do not grant publishing credentials.
+All ten project-specific SDK/native publishers target `ArmanAvanesyan/aiogram-kit`,
+their matching publishing workflows and environment `pypi`. The four native bindings
+were exercised successfully by the 24 November releases. Existing Coordination and Kit
+cutover publishers were verified during migration. No publishing workflow fetches a
+retired repository. The five legacy repositories are covered by the owner's retirement
+instruction; see [retired repository boundaries](../legacy-links.md).
+
+Future native metadata now points at Kit. Already published files retain their original
+metadata: some native 0.3.2 project links are absent or refer to retired repositories.
+Do not overwrite those files or weaken source-hash checks. Qualify fresh artifacts
+from the new source before publishing any future version.
 
 After publication, verify public-index downloads, metadata, exact versions and
 standalone/paired installs again. Do not replace reviewed artifacts with rebuilt

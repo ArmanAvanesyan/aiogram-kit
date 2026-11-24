@@ -1,7 +1,8 @@
 site_name: aiogram-idle
 site_description: Standalone inactivity policies and recoverable prompts for aiogram 3
-repo_url: https://github.com/ArmanAvanesyan/aiogram-idle
-repo_name: ArmanAvanesyan/aiogram-idle
+repo_url: https://github.com/ArmanAvanesyan/aiogram-kit
+edit_uri: edit/main/packages/aiogram-idle/docs/
+repo_name: ArmanAvanesyan/aiogram-kit
 theme:
   name: material
 markdown_extensions:

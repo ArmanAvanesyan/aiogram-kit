@@ -354,7 +354,7 @@ pytest --cov=src/aiogram_cmds
 - [Quickstart Guide](quickstart.md) - Get started in 5 minutes
 - [API Reference](api/core.md) - Complete API documentation
 - [Tutorials](tutorials/basic-setup.md) - Step-by-step guides
-- [Examples](https://github.com/ArmanAvanesyan/aiogram-cmds/tree/main/examples) - Working bot examples
+- [Examples](https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/examples) - Working bot examples
 
 ### How do I report documentation issues?
 
@@ -364,9 +364,9 @@ Create an issue on GitHub or submit a pull request with improvements.
 
 ### Where can I get help?
 
-- [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-cmds/discussions) - Community help
-- [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-cmds/issues) - Bug reports
-- [Documentation](https://aiogram-cmds.dev) - Complete guides
+- [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions) - Community help
+- [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-kit/issues) - Bug reports
+- [Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/) - Complete guides
 
 ### How do I report bugs?
 
@@ -387,4 +387,4 @@ Create an issue on GitHub or submit a pull request with improvements.
 
 ---
 
-**Still have questions?** Check out our [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-cmds/discussions) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-cmds/issues)!
+**Still have questions?** Check out our [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions) or [create an issue](https://github.com/ArmanAvanesyan/aiogram-kit/issues)!

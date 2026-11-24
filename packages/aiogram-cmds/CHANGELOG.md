@@ -49,7 +49,7 @@
   Successful operations return True. Added generic application-selected
   update_profile.
   Corrected runtime version export, strict typing, plural i18n and scope
-  validation. ([#9](https://github.com/ArmanAvanesyan/aiogram-cmds/issues/9))
+  validation. (legacy Cmds PR #9; repository retired)
 - Use aiogram's locale context when translating command menus, so real gettext
   catalogs are applied instead of silently falling back to untranslated text.
 
@@ -58,7 +58,7 @@
 - Clarify that the Redis extra installs a client only; no storage or
   coordination backend exists.
   Document failure migration and preserve flag-based APIs as compatibility
-  interfaces. ([#9](https://github.com/ArmanAvanesyan/aiogram-cmds/issues/9))
+  interfaces. (legacy Cmds PR #9; repository retired)
 - Document the shared repository responsibilities, canonical release process,
   private vulnerability reporting and reproducible contribution checks. Keep
   generated scan reports out of source control.
@@ -67,7 +67,7 @@
 
 - Fix changelog tooling: towncrier now sees fragments in ``CHANGES/``, the CI
   changelog check passes, and project contact addresses point to a working
-  mailbox. ([#8](https://github.com/ArmanAvanesyan/aiogram-cmds/issues/8))
+  mailbox. (legacy Cmds PR #8; repository retired)
 
 ## [0.1.1] - 2024-01-XX
 
@@ -290,7 +290,7 @@ If you're migrating from aiogram's built-in command management:
 ## Support
 
 For questions about releases and migrations:
-- Check the [Documentation](https://aiogram-cmds.dev)
-- Review [Migration Guides](https://aiogram-cmds.dev/migration/)
-- Ask in [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-cmds/discussions)
-- Report issues in [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-cmds/issues)
+- Check the [Documentation](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/)
+- Review [Migration Guides](https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/docs/migration-0.2/)
+- Ask in [GitHub Discussions](https://github.com/ArmanAvanesyan/aiogram-kit/discussions)
+- Report issues in [GitHub Issues](https://github.com/ArmanAvanesyan/aiogram-kit/issues)

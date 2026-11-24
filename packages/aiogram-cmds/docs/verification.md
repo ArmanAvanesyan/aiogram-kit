@@ -1,7 +1,7 @@
 # Verification records
 
 The 0.2 implementation is covered by the current migration guide and
-[verification report](https://github.com/ArmanAvanesyan/aiogram-cmds/blob/main/reports/application-profiles-0.2.md).
+[verification report](https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/reports/application-profiles-0.2.md).
 The following 0.1.1 record is historical; it is not a claim about the current
 release candidate.
 

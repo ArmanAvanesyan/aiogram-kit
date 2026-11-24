@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Do not disclose bot tokens, credentials, private messages or exploit details in
-public issues. Use [GitHub private vulnerability reporting](https://github.com/ArmanAvanesyan/aiogram-cmds/security/advisories/new)
+public issues. Use [GitHub private vulnerability reporting](https://github.com/ArmanAvanesyan/aiogram-kit/security/advisories/new)
 if it is enabled for this repository. If unavailable, contact the maintainer at
 arman.avanesyan@yahoo.com, the contact already published in this repository.
 

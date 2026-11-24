@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT"
 description = "Optional deterministic Rust core for aiogram-nav"
 repository = "https://github.com/ArmanAvanesyan/aiogram-kit"
-homepage = "https://github.com/ArmanAvanesyan/aiogram-nav"
+homepage = "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native"
 
 [lib]
 name = "_aiogram_nav_native"
