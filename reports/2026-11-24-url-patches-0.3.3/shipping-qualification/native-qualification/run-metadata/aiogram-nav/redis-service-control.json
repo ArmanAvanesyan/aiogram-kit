@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "mode": "docker-disjoint-logical",
+  "client_cpu_affinity": [
+    0
+  ],
+  "service": {
+    "container_id": "52cd76c56f0a1d0868310a34f9f19367459c7abf424689ab20fb86dba98c43e8",
+    "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+    "pid": 2339,
+    "cpuset_cpus": "2",
+    "cpu_affinity": [
+      2
+    ]
+  },
+  "available_topology": [
+    {
+      "cpu": 0,
+      "package": 0,
+      "core": 0
+    },
+    {
+      "cpu": 1,
+      "package": 0,
+      "core": 0
+    },
+    {
+      "cpu": 2,
+      "package": 0,
+      "core": 1
+    },
+    {
+      "cpu": 3,
+      "package": 0,
+      "core": 1
+    }
+  ],
+  "physical_core_disjoint": true,
+  "physical_isolation_claimed": false
+}

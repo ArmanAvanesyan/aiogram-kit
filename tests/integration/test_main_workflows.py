@@ -36,6 +36,11 @@ def test_workspace_checks_cover_minimum_and_latest_python():
 
 def test_manual_native_qualification_is_read_only_and_retains_failures():
     data, triggers = workflow("optimization-tools.yml")
+    assert "inputs.native_package" in data["concurrency"]["group"]
+    assert (
+        data["concurrency"]["cancel-in-progress"]
+        == "${{ github.event_name != 'workflow_dispatch' }}"
+    )
     choices = triggers["workflow_dispatch"]["inputs"]["native_package"]
     assert choices["default"] == "none"
     assert set(choices["options"]) == {

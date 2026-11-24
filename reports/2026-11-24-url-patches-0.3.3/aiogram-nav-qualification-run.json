@@ -1,0 +1,12 @@
+{
+  "run_id": 45330137949,
+  "workflow_conclusion": "failure",
+  "source_commit": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+  "artifact_id": 14891962654,
+  "archive_sha256": "dd186ac081ae769288eb472fe4df68875dc1d0180e50ecd899f1b13a32ad6ae7",
+  "qualified": false,
+  "failures": [
+    "Latency repeat spread exceeds 10%: redis-dispatch-noop/50",
+    "Latency repeat spread exceeds 10%: redis-dispatch-track/50"
+  ]
+}

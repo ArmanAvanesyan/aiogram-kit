@@ -27,6 +27,9 @@ def main():
         "--package", choices=["aiogram-cmds", "aiogram-nav", "aiogram-idle"], required=True
     )
     parser.add_argument("--run", type=int, required=True)
+    parser.add_argument(
+        "--artifact-id", type=int, help="Explicit artifact after a pre-timing retry"
+    )
     parser.add_argument("--artifacts", type=Path, required=True)
     args = parser.parse_args()
     endpoint = f"repos/ArmanAvanesyan/aiogram-kit/actions/runs/{args.run}"
@@ -35,6 +38,8 @@ def main():
         raise ValueError("Qualification must finish; failures are retained too")
     available = json.loads(gh(endpoint + "/artifacts?per_page=100"))["artifacts"]
     rows = [a for a in available if a["name"] == f"native-qualification-{args.package}-{args.run}"]
+    if args.artifact_id is not None:
+        rows = [a for a in rows if a["id"] == args.artifact_id]
     if len(rows) != 1 or rows[0]["expired"]:
         raise ValueError("Missing or expired qualification artifact")
     item = rows[0]
@@ -107,6 +112,7 @@ def main():
     readiness_path.write_text(json.dumps(readiness, indent=2) + "\n")
     proof = {
         "run_id": args.run,
+        "run_attempt": run["run_attempt"],
         "workflow_conclusion": run["conclusion"],
         "source_commit": run["head_sha"],
         "artifact_id": item["id"],

@@ -1,0 +1,32 @@
+[
+  {
+    "package": "aiogram-cmds",
+    "version": "0.3.3",
+    "published": false
+  },
+  {
+    "package": "aiogram-cmds-native",
+    "version": "0.3.3",
+    "published": false
+  },
+  {
+    "package": "aiogram-nav",
+    "version": "0.3.3",
+    "published": false
+  },
+  {
+    "package": "aiogram-nav-native",
+    "version": "0.3.3",
+    "published": false
+  },
+  {
+    "package": "aiogram-idle",
+    "version": "0.3.3",
+    "published": false
+  },
+  {
+    "package": "aiogram-idle-native",
+    "version": "0.3.3",
+    "published": false
+  }
+]

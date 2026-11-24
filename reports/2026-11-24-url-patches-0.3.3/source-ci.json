@@ -1,0 +1,100 @@
+[
+  {
+    "conclusion": "success",
+    "databaseId": 45330101722,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-sentinel: Native wheels",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101823,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-cmds: CI",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101756,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-idle: CI",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101613,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-coordination: CI",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101636,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-sentinel: CI",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101676,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "Shared optimization evidence tools",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101546,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "Workspace preservation and release verification",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101619,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-nav: CI",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101630,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-idle: Optional navigation integration",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101575,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "Unified documentation",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101572,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "Kit marker distribution artifacts",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101645,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-cmds: Native candidate",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101564,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-nav: Native companion verification",
+    "status": "completed"
+  },
+  {
+    "conclusion": "success",
+    "databaseId": 45330101570,
+    "headSha": "320a55207b5ff6ea0b022673bbcdae8fcdd9740d",
+    "name": "aiogram-idle: Native companion verification",
+    "status": "completed"
+  }
+]

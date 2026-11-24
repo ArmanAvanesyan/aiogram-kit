@@ -1,0 +1,17 @@
+{
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "publication_performed": false,
+  "requested_cpu_affinity": [
+    0
+  ],
+  "host_control_declaration": "host-controls.json",
+  "packages_selected": [
+    "aiogram-idle"
+  ],
+  "performance_gates": {
+    "aiogram-idle": {
+      "qualified": true,
+      "failures": []
+    }
+  }
+}
