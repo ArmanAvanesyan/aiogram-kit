@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "packages": [
+    "aiogram-cmds",
+    "aiogram-nav",
+    "aiogram-idle"
+  ],
+  "version": "0.3.3",
+  "purpose": "Qualify exact new SDK/native artifacts after monorepo URL metadata correction and paired version bump; no runtime algorithm changes.",
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "thresholds": {
+    "max_cpu_ratio": 0.8,
+    "max_individual_p95_ratio": 1.05,
+    "max_repeat_spread": 0.1
+  },
+  "order": [
+    "python-a",
+    "rust-a",
+    "rust-b",
+    "python-b"
+  ],
+  "sampling": "Existing robust preset: fixed auto client affinity, disjoint owned Redis CPU, 30 CPU samples for state libraries, 31 command CPU repeats, 10 state latency windows and 3000 command latency observations. Same workload selection, state age, GC policy and tails.",
+  "repeat_policy": "One declared exact-artifact qualification per package. Retain all failed inputs and results; no retries of unchanged candidates to select a passing run.",
+  "artifact_policy": "Download the complete successful seven-platform wheel/source CI set, bind SDK/native/source digests and commit the input manifest before timing. Never qualify host-built substitutes.",
+  "publication_authorized": true,
+  "publication_order": "Cmds SDK/native; Nav SDK/native; Idle SDK/native. SDK before its native companion; Nav before Idle.",
+  "prior_evidence": "All 0.3.2 qualified data and files remain unchanged."
+}

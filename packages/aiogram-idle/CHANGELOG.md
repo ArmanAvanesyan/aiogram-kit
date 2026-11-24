@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 — 2026-11-24
+
+- Correct the optional native companion's Homepage, Repository, Issues, Documentation
+  and Changelog metadata to use aiogram-kit after legacy repository retirement.
+- Keep SDK/native versions aligned at 0.3.3 with ABI 1. Python remains the default;
+  Redis and peer-library integrations remain optional.
+- Preserve the existing runtime behavior and unchanged native performance gates.
+
 <!-- towncrier release notes start -->
 
 ## [0.3.2] - 2026-11-18

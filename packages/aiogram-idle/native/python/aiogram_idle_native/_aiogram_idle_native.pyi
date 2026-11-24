@@ -2,7 +2,7 @@ from collections.abc import Callable
 from typing import Any, Literal, TypeVar
 
 API_VERSION: Literal[1]
-ENGINE_VERSION: Literal["0.3.2"]
+ENGINE_VERSION: Literal["0.3.3"]
 
 T = TypeVar("T")
 

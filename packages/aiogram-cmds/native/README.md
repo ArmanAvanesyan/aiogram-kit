@@ -1,6 +1,6 @@
-# Paired 0.3.2 release candidate
+# Paired 0.3.3 release candidate
 
-This candidate requires `aiogram-cmds==0.3.2` when used with the SDK.
+This candidate requires `aiogram-cmds==0.3.3` when used with the SDK.
 It is unpublished. See the monorepo paired-release readiness report for exact
 artifacts, compatibility checks and publication gates. Historical findings below
 remain provenance; they do not describe the current candidate qualification.

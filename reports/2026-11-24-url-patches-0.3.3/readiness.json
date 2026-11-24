@@ -1,0 +1,44 @@
+{
+  "performance_manifest_sha256": "",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "companion": "aiogram-cmds-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pending",
+      "native_platform_and_artifacts": "pending",
+      "native_performance": "pending",
+      "performance_failures": [
+        "Fresh exact-artifact qualification has not run"
+      ],
+      "native_manifest_sha256": "",
+      "publishing_authorized": true
+    },
+    {
+      "sdk": "aiogram-nav",
+      "companion": "aiogram-nav-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pending",
+      "native_platform_and_artifacts": "pending",
+      "native_performance": "pending",
+      "performance_failures": [
+        "Fresh exact-artifact qualification has not run"
+      ],
+      "native_manifest_sha256": "",
+      "publishing_authorized": true
+    },
+    {
+      "sdk": "aiogram-idle",
+      "companion": "aiogram-idle-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pending",
+      "native_platform_and_artifacts": "pending",
+      "native_performance": "pending",
+      "performance_failures": [
+        "Fresh exact-artifact qualification has not run"
+      ],
+      "native_manifest_sha256": "",
+      "publishing_authorized": true
+    }
+  ]
+}
