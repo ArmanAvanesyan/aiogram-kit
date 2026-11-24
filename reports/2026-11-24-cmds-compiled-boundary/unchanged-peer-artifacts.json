@@ -1,0 +1,20 @@
+[
+  {
+    "package": "aiogram-sentinel",
+    "source_and_wheel_bytes_unchanged": true,
+    "reused_profile_count": 5,
+    "previous_evidence": "reports/2026-11-24-native-release-fixes/final-install-verification.json"
+  },
+  {
+    "package": "aiogram-nav",
+    "source_and_wheel_bytes_unchanged": true,
+    "reused_profile_count": 5,
+    "previous_evidence": "reports/2026-11-24-native-release-fixes/final-install-verification.json"
+  },
+  {
+    "package": "aiogram-idle",
+    "source_and_wheel_bytes_unchanged": true,
+    "reused_profile_count": 5,
+    "previous_evidence": "reports/2026-11-24-native-release-fixes/final-install-verification.json"
+  }
+]

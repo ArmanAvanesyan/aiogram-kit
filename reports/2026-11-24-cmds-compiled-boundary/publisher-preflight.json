@@ -1,0 +1,26 @@
+[
+  {
+    "package": "aiogram-sentinel-native",
+    "version": "1.3.2",
+    "qualified": true,
+    "manifest_sha256": "f17b55a16006b255bf536cb8788597bc665412ab8c1127dc831a9a7e891b810b"
+  },
+  {
+    "package": "aiogram-nav-native",
+    "version": "0.3.2",
+    "qualified": true,
+    "manifest_sha256": "44ed367daadcd357539b0972f6086fc4b0c1d385fa1fb184625bb5c52b0c6a27"
+  },
+  {
+    "package": "aiogram-idle-native",
+    "version": "0.3.2",
+    "qualified": true,
+    "manifest_sha256": "358ca3cf945b8b750359d11df67bf85eeb3eaa57b075a222e12569e65c936290"
+  },
+  {
+    "package": "aiogram-cmds-native",
+    "version": "0.3.2",
+    "qualified": true,
+    "manifest_sha256": "a60a0e9eda8dd1f7c7a2a249544dddb7a41f99abe261ad7380f47ebafe283a29"
+  }
+]

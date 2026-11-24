@@ -1,0 +1,16 @@
+{
+  "performance_manifest_sha256": "127758dcde1ca60d065ea08a8022892732aebd0840755ea85c6291cf23964c42",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "companion": "aiogram-cmds-native",
+      "version": "0.3.2",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "pass",
+      "performance_failures": [],
+      "native_manifest_sha256": "a60a0e9eda8dd1f7c7a2a249544dddb7a41f99abe261ad7380f47ebafe283a29",
+      "publishing_authorized": false
+    }
+  ]
+}

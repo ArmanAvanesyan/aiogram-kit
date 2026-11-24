@@ -1,5 +1,23 @@
 # Cmds compiled-boundary follow-up — unpublished
 
+Shipping run **45296610199 passed**. Independent publisher preflight recomputes
+the complete raw data and passes for all four libraries. Cmds' selected batch
+CPU ratio is **0.4923**; compiled-confirmation/100 p95 ratio is **1.0012** and
+live-confirmation/100 is **0.9212**. All latency and repeatability rows pass.
+These results describe the recorded Linux/Python 3.12 workloads only.
+
+`final-artifact-index.json` binds all **40 artifacts across 8 distributions**.
+All 32 wheels pass CRC and all 451 RECORD entries verify; strict ABI3 audit
+passes for all 28 native wheels, and Twine passes for all 40 distributions.
+Five fresh Cmds isolated profiles pass; `unchanged-peer-artifacts.json` verifies
+byte-identical peer SDK archives and retains their 15 prior passing profiles.
+All binary backups remain outside Git. No tag or package has been published.
+
+GitHub now permits the four explicitly approved native tag patterns, preserving
+all six SDK patterns. PyPI Trusted Publisher bindings remain unverified while
+the browser kernel cannot connect. Final source CI/merge, publisher verification
+and a separate publishing instruction remain required.
+
 The first changed Cmds shipping run 45291905439 passed every selected CPU and
 latency ratio, but failed repeatability for `compiled_confirmation_hit/100`:
 Rust p95 values were 9,946 and 11,710 ns, a 17.7% spread. The Python repeats were

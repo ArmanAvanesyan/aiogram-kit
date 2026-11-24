@@ -1,0 +1,277 @@
+{
+  "publishing_performed": false,
+  "sdk_source_commit": "058520682455e2effd0a98135bf3fa95414d00aa",
+  "artifact_count": 40,
+  "distribution_count": 8,
+  "wheel_crc_and_record_audit": {
+    "wheels": 32,
+    "record_entries": 451,
+    "result": "pass"
+  },
+  "distributions": [
+    {
+      "distribution": "aiogram-sentinel",
+      "version": "1.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-sentinel",
+      "manifest_sha256": "052b66e712afd23fa01379f9c993102886cab2358e676ec729edabb5e91b2f37",
+      "files": [
+        {
+          "filename": "aiogram_sentinel-1.3.2-py3-none-any.whl",
+          "sha256": "bc2784c9ee7970736c8a45b6dbbf71b6e52b7359b2dbc91d4936a424fbf79248",
+          "bytes": 40129
+        },
+        {
+          "filename": "aiogram_sentinel-1.3.2.tar.gz",
+          "sha256": "9fd6c5562d51eab7b6d65878a312412d3f38161eaf977751a8ee45e2c87956c9",
+          "bytes": 360693
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-sentinel-native",
+      "version": "1.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-sentinel-native",
+      "manifest_sha256": "f17b55a16006b255bf536cb8788597bc665412ab8c1127dc831a9a7e891b810b",
+      "files": [
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+          "sha256": "c2f0c82b01fb1d6b805e4311de3995e79df6fcccc11ca9aa02dee9919d5dd624",
+          "bytes": 244047
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+          "sha256": "0dc5c1a28bba09f66ff48a3030374388bc92f0f32686c2ce16cc259934c2e2be",
+          "bytes": 241780
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "6635e73d73f98b7e56ab7e6136b3d64ed7b826f99ec843a43f76d87def381d21",
+          "bytes": 266592
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "31a714677002be6a8c4e59a2f443dc4777145602297faf55f88e939b9988c4a8",
+          "bytes": 267769
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+          "sha256": "c24680d71cbf290a2ba120edfb72cff3a264cc5c856bfb1b9fc1124adc1896bf",
+          "bytes": 445255
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+          "sha256": "dde172f5c82f564917d2b2cc4fb8cd7a01e295da1dec6f47697d996dc8ce8bbe",
+          "bytes": 480110
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-win_amd64.whl",
+          "sha256": "955ed83f6b312cf870d65d65af219e9d09139e1cc486947af499365c903824cb",
+          "bytes": 146936
+        },
+        {
+          "filename": "aiogram_sentinel_native-1.3.2.tar.gz",
+          "sha256": "c524871e592c6403c05939751b03665d195a0534e6eaa0352f71f4f74b0a0ffe",
+          "bytes": 11604
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-cmds",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-cmds",
+      "manifest_sha256": "5e415bff56ed84e94f9562ea68b29b5cf0e5935af0c1c31b9ce50810c956485f",
+      "files": [
+        {
+          "filename": "aiogram_cmds-0.3.2-py3-none-any.whl",
+          "sha256": "7dbf013637d4c43cb91769202ce312dfab58f4d17476fead74ee4e4987da67ce",
+          "bytes": 32435
+        },
+        {
+          "filename": "aiogram_cmds-0.3.2.tar.gz",
+          "sha256": "a6ab736fe74ef0679b78a8993af2b508614aa293a2badb62cd011e957618b701",
+          "bytes": 375193
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-cmds-native",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-cmds-native",
+      "manifest_sha256": "a60a0e9eda8dd1f7c7a2a249544dddb7a41f99abe261ad7380f47ebafe283a29",
+      "files": [
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+          "sha256": "ec77a4d890515b36d2333c5b314947f43370c3d0e09e782fb88ccc63fb3e6f26",
+          "bytes": 325254
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+          "sha256": "6f7c9965d899d59918c877b720ce08a1f16c7981e7cdbbd4bb9f3c0a668c6a9a",
+          "bytes": 324062
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "f010ca0f78f661201bdb85c227bd813392bed0b4910250da054764d200b21346",
+          "bytes": 355314
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "d3ba6aab08f020fa28a6eecc0192a6094c831b19bb96fbce43992a97f929e5b1",
+          "bytes": 371876
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+          "sha256": "72dc5ae458f0aa815ed57845c8bb1950b276bb322f9e021a297a87dce9308ef2",
+          "bytes": 534314
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+          "sha256": "6caa4ef44aeaa9a017f9f788ecee6f29cd21585628cadd4842355fcb82c43d4d",
+          "bytes": 573820
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-win_amd64.whl",
+          "sha256": "e6055fc4fd06c02ac16ec6121b581074ac428a9139f57ed4a0b885bd505b915d",
+          "bytes": 221562
+        },
+        {
+          "filename": "aiogram_cmds_native-0.3.2.tar.gz",
+          "sha256": "633283ea882a3360d71b36ce7f0a45a9cb525ac5be4f39182d83690c55cc34ac",
+          "bytes": 11724
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-nav",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-nav",
+      "manifest_sha256": "c077d6acdbc1ae559d870b9a0c27678f7efb9c70c241e1a0a6a123e6550a4927",
+      "files": [
+        {
+          "filename": "aiogram_nav-0.3.2-py3-none-any.whl",
+          "sha256": "5ff5d14eb07ff664764230367135d65189e66ecab6a256eb6d65b27d4d4ec2a9",
+          "bytes": 108464
+        },
+        {
+          "filename": "aiogram_nav-0.3.2.tar.gz",
+          "sha256": "eb7c598f09eea91e86c14b6b4b141c598c9747c8847d8e5a6177437e375cfb6b",
+          "bytes": 473328
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-nav-native",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-nav-native",
+      "manifest_sha256": "44ed367daadcd357539b0972f6086fc4b0c1d385fa1fb184625bb5c52b0c6a27",
+      "files": [
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+          "sha256": "943475457e27f367177d64580b94074886f50dc191aff49588f49a0ad3dcabca",
+          "bytes": 410904
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+          "sha256": "15f54734cff60a15a035c886d532ac625dbd42a612565b650418e5e0fdc9e995",
+          "bytes": 398449
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "a3cb5c6f8c01a245b098d7e6a54ebeb5427b0c5a39b1dd33becbb6e2df309782",
+          "bytes": 433884
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "89188f034aeb7c0da69ab03be1fcd5356a989fb1d84c9823371f9f6bcacd1d06",
+          "bytes": 447537
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+          "sha256": "43c03ffce80278827653ae06b85f5728e5eed3fb94559bb845369d0c3167fb91",
+          "bytes": 611049
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+          "sha256": "60bbc4e3e95e29f72727fffd28c63b9ce9c4fa412bffa220e3ef6d0cabe0c8cc",
+          "bytes": 659639
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2-cp310-abi3-win_amd64.whl",
+          "sha256": "3e81209574a35b086ff95e0085ff6c57bacd441ca0f6c114a393fb1cdc8e640d",
+          "bytes": 317864
+        },
+        {
+          "filename": "aiogram_nav_native-0.3.2.tar.gz",
+          "sha256": "aa44ce8f766dc8db715337b9021440f0ae38b20c7d1c34101ad7f95e55a61c4c",
+          "bytes": 30223
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-idle",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-idle",
+      "manifest_sha256": "db3bd4e3501791601ce13d3fa48e178d90b3780b083b0d54bdca126b469af9c6",
+      "files": [
+        {
+          "filename": "aiogram_idle-0.3.2-py3-none-any.whl",
+          "sha256": "00e7d7690adaa8456241fe4eabde73f4f40852d523387070014d98ad733e67be",
+          "bytes": 202870
+        },
+        {
+          "filename": "aiogram_idle-0.3.2.tar.gz",
+          "sha256": "9ccd4c349a04705e161420ca55578ef625ffa0acdf1a0de42d8a453e7ab6c6f0",
+          "bytes": 577019
+        }
+      ]
+    },
+    {
+      "distribution": "aiogram-idle-native",
+      "version": "0.3.2",
+      "directory": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/final-0585206/aiogram-idle-native",
+      "manifest_sha256": "358ca3cf945b8b750359d11df67bf85eeb3eaa57b075a222e12569e65c936290",
+      "files": [
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+          "sha256": "6b83fa61d6bec45f64758a76147b4ad30e4c58c3f63dc4ed33517ed87f19a89c",
+          "bytes": 389204
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+          "sha256": "616ff2257afea730ceecc3607b8361b48737d4e8776e705c4b30f8279ac3d746",
+          "bytes": 374700
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+          "sha256": "64ed7e90e9541c5f83dfc0624334c486d6db1517249a8618a6ac972451d93ddf",
+          "bytes": 401295
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "sha256": "21439ee1b79c78e2f6bbcabc1a2a5600d22fabf3859f8d1681cf2ba41441d7ae",
+          "bytes": 411055
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+          "sha256": "8ae523405095829fab06536cbfdf12bb72b8cf793dca9f14e1890cb3b05618ff",
+          "bytes": 578672
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+          "sha256": "7db575a67dfe8156e157114b36668a5505512b914a0eec5dae4d4cd39d4133a7",
+          "bytes": 623347
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2-cp310-abi3-win_amd64.whl",
+          "sha256": "810a47107122a2c497565b922ac3105bb66968cc39ad91d9addf384ccc5b6757",
+          "bytes": 294917
+        },
+        {
+          "filename": "aiogram_idle_native-0.3.2.tar.gz",
+          "sha256": "d91e2757797ab18a264da917823a19d041984012e7561fc86f148597697ac0e6",
+          "bytes": 27968
+        }
+      ]
+    }
+  ]
+}

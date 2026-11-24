@@ -37,11 +37,10 @@ def test_paired_metadata_and_manual_native_publisher(short):
         commands = "\n".join(step.get("run", "") for step in job["steps"])
         assert "verify_release_readiness.py" in commands
         assert f"--package {package}" in commands
-        report = (
-            "reports/2026-11-24-native-release-fixes"
-            if short == "idle"
-            else "reports/2026-11-18-paired-release"
-        )
+        report = {
+            "idle": "reports/2026-11-24-native-release-fixes",
+            "cmds": "reports/2026-11-24-cmds-compiled-boundary",
+        }.get(short, "reports/2026-11-18-paired-release")
         assert f"--report {report}" in commands
         for step in job["steps"]:
             if step.get("uses", "").startswith("actions/checkout@"):
