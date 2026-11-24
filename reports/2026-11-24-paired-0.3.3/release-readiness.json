@@ -1,0 +1,137 @@
+{
+  "version": "0.3.3",
+  "artifact_source_commit": "6bf56eb5ced318b3ca0f9d92bb6ab161bdcf2223",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "native": "aiogram-cmds-native",
+      "version": "0.3.3",
+      "report": "reports/2026-11-24-cmds-isolation-0.3.3",
+      "manifest_sha256": "db123169c3227297f1bc6c19c7bb58edffe0d7c0305d439e1bd3381099572f09",
+      "performance": "pass",
+      "comparisons": [
+        {
+          "workload": "compiled_batch/100/10_profiles/30_targets",
+          "rust_over_python_cpu": 0.5152861075696982
+        },
+        {
+          "workload": "compiled_confirmation_hit/1",
+          "rust_over_python_p95": 1.0030926924096493
+        },
+        {
+          "workload": "compiled_confirmation_hit/10",
+          "rust_over_python_p95": 1.0057183073810152
+        },
+        {
+          "workload": "compiled_confirmation_hit/100",
+          "rust_over_python_p95": 1.008007786577003
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/1",
+          "rust_over_python_p95": 1.002054410333861
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/10",
+          "rust_over_python_p95": 1.001043918941212
+        },
+        {
+          "workload": "compiled_fake_telegram_1ms/100",
+          "rust_over_python_p95": 0.9997914447183375
+        },
+        {
+          "workload": "confirmation_hit/1",
+          "rust_over_python_p95": 0.9865681665547347
+        },
+        {
+          "workload": "confirmation_hit/10",
+          "rust_over_python_p95": 0.9942367152392153
+        },
+        {
+          "workload": "confirmation_hit/100",
+          "rust_over_python_p95": 0.9056072525630491
+        },
+        {
+          "workload": "fake_telegram_1ms/1",
+          "rust_over_python_p95": 1.0006781626683794
+        },
+        {
+          "workload": "fake_telegram_1ms/10",
+          "rust_over_python_p95": 1.0007801275312729
+        },
+        {
+          "workload": "fake_telegram_1ms/100",
+          "rust_over_python_p95": 0.9699759681343907
+        }
+      ]
+    },
+    {
+      "sdk": "aiogram-nav",
+      "native": "aiogram-nav-native",
+      "version": "0.3.3",
+      "report": "reports/2026-11-24-repeatability-0.3.3",
+      "manifest_sha256": "804938d595ca8d5c0deafed555cfa9b1e441ed0a27170448c138836466e6da96",
+      "performance": "pass",
+      "comparisons": [
+        {
+          "workload": "memory-track/50",
+          "rust_over_python_cpu": 0.7612616226565032,
+          "rust_over_python_p95": 0.7906097550556614
+        },
+        {
+          "workload": "redis-dispatch-noop/50",
+          "rust_over_python_p95": 1.0233402117719463
+        },
+        {
+          "workload": "redis-dispatch-track/50",
+          "rust_over_python_p95": 0.9923776733999418
+        }
+      ]
+    },
+    {
+      "sdk": "aiogram-idle",
+      "native": "aiogram-idle-native",
+      "version": "0.3.3",
+      "report": "reports/2026-11-24-url-patches-0.3.3",
+      "manifest_sha256": "a657bd57e6f96c9683a0e09c83d920e4568548005ebede64d10c13e049f32245",
+      "performance": "pass",
+      "comparisons": [
+        {
+          "workload": "memory-activate-touch/50",
+          "rust_over_python_cpu": 0.7787228346979196,
+          "rust_over_python_p95": 0.9148444849434808
+        },
+        {
+          "workload": "memory-deadline-claims/16",
+          "rust_over_python_p95": 0.9705802052135943
+        },
+        {
+          "workload": "memory-track/50",
+          "rust_over_python_p95": 1.0296835096704777
+        },
+        {
+          "workload": "redis-activate-touch/50",
+          "rust_over_python_p95": 0.9875116450031487
+        },
+        {
+          "workload": "redis-dispatcher-noop/1",
+          "rust_over_python_p95": 0.9847094935694602
+        },
+        {
+          "workload": "redis-track/50",
+          "rust_over_python_p95": 1.0281631514409308
+        }
+      ]
+    }
+  ],
+  "artifact_index": "reports/2026-11-24-url-patches-0.3.3/final-artifact-index.json",
+  "publication_order": [
+    "aiogram-cmds",
+    "aiogram-cmds-native",
+    "aiogram-nav",
+    "aiogram-nav-native",
+    "aiogram-idle",
+    "aiogram-idle-native"
+  ],
+  "publication_authorized": true,
+  "status": "Qualified; publish only after final PR and release-source CI"
+}

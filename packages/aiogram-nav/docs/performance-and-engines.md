@@ -7,7 +7,7 @@ configuration parameters; the new engine option is keyword only. Memory and Redi
 constructors also accept `engine=` explicitly.
 
 `engine="rust"` requires the separately built, exactly matching
-`aiogram-nav-native==0.3.2` candidate companion. There is no native dependency or installation
+`aiogram-nav-native==0.3.3` candidate companion. There is no native dependency or installation
 extra in the base package. The companion is not published until the measured
 performance gate passes. Presence of Rust source or a successful wheel build is
 not evidence of a speedup. Local development can build it with Maturin from

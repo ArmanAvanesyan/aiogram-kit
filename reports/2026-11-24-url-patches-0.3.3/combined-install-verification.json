@@ -1,0 +1,30 @@
+[
+  {
+    "idle_engine": "python",
+    "nav_engine": "python",
+    "result": "pass",
+    "log": "combined-python-python.log",
+    "scope": "exact candidate memory integration, handler isolation, FSM and recovery; Redis covered by release-tag CI"
+  },
+  {
+    "idle_engine": "python",
+    "nav_engine": "rust",
+    "result": "pass",
+    "log": "combined-python-rust.log",
+    "scope": "exact candidate memory integration, handler isolation, FSM and recovery; Redis covered by release-tag CI"
+  },
+  {
+    "idle_engine": "rust",
+    "nav_engine": "python",
+    "result": "pass",
+    "log": "combined-rust-python.log",
+    "scope": "exact candidate memory integration, handler isolation, FSM and recovery; Redis covered by release-tag CI"
+  },
+  {
+    "idle_engine": "rust",
+    "nav_engine": "rust",
+    "result": "pass",
+    "log": "combined-rust-rust.log",
+    "scope": "exact candidate memory integration, handler isolation, FSM and recovery; Redis covered by release-tag CI"
+  }
+]

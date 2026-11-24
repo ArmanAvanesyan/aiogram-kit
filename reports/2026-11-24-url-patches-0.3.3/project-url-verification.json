@@ -1,0 +1,72 @@
+[
+  {
+    "url": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+    "status": 200,
+    "resolved": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/"
+  },
+  {
+    "url": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+    "status": 200,
+    "resolved": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/"
+  },
+  {
+    "url": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+    "status": 200,
+    "resolved": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/issues"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav"
+  },
+  {
+    "url": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+    "status": 200,
+    "resolved": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native"
+  }
+]

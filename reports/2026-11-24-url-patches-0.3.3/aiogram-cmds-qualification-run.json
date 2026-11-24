@@ -1,0 +1,13 @@
+{
+  "run_id": 45329822396,
+  "workflow_conclusion": "failure",
+  "source_commit": "95ea55418bf5996d21c7c80fb0ec3ed038ee064e",
+  "artifact_id": 14891976509,
+  "archive_sha256": "95b387606ddf92d92b398fcdc6247bd5c902c5a00977a28a4fbb7a9e9d8010bf",
+  "qualified": false,
+  "failures": [
+    "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100",
+    "Latency repeat spread exceeds 10%: confirmation_hit/1",
+    "Latency repeat spread exceeds 10%: confirmation_hit/100"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": "0.3.3",
+  "publication_performed": false,
+  "tags_created": false,
+  "pairs": {
+    "aiogram-cmds": {
+      "decision": "hold",
+      "reason": "Three latency repeatability failures"
+    },
+    "aiogram-nav": {
+      "decision": "hold",
+      "reason": "Two Redis latency repeatability failures"
+    },
+    "aiogram-idle": {
+      "performance": "pass",
+      "decision": "hold",
+      "reason": "Nav 0.3.3 pair must qualify and publish first"
+    }
+  },
+  "next_step": "Investigate reproducible benchmark conditions without changing gates or selecting passing unchanged reruns; retain existing measurements and re-declare any changed experiment before timing."
+}

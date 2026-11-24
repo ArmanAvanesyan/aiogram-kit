@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "packages": [
+    "aiogram-cmds",
+    "aiogram-nav"
+  ],
+  "version": "0.3.3",
+  "purpose": "Qualify exact new SDK/native artifacts after monorepo URL metadata correction and paired version bump; no runtime algorithm changes.",
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "thresholds": {
+    "max_cpu_ratio": 0.8,
+    "max_individual_p95_ratio": 1.05,
+    "max_repeat_spread": 0.1
+  },
+  "order": [
+    "python-a",
+    "rust-a",
+    "rust-b",
+    "python-b"
+  ],
+  "sampling": "Fixed 30 state CPU repeats / 31 command CPU repeats, 100 fresh fixed-age Redis windows of 100 updates and 30000 individual Cmds observations. No dropped tails, same GC and ABBA. Same shipping artifacts.",
+  "repeat_policy": "One predeclared extended-sampling experiment per package. Prior failed 10-window/3000-observation experiment remains retained; do not rerun this experiment unchanged to select a pass.",
+  "artifact_policy": "Download the complete successful seven-platform wheel/source CI set, bind SDK/native/source digests and commit the input manifest before timing. Never qualify host-built substitutes.",
+  "publication_authorized": true,
+  "publication_order": "Cmds SDK/native; Nav SDK/native; Idle SDK/native. SDK before its native companion; Nav before Idle.",
+  "prior_evidence": "reports/2026-11-24-url-patches-0.3.3 retains all initial failures and the passing Idle qualification. Only measurement duration changes, not package source, workload shape or gates.",
+  "runner_policy": "One separate GitHub runner and owned disposable Redis per package. Each runner executes its four engine profiles serially in the declared ABBA order. No concurrent benchmarks share a runner.",
+  "source_commit": "6bf56eb5ced318b3ca0f9d92bb6ab161bdcf2223",
+  "input_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e"
+}

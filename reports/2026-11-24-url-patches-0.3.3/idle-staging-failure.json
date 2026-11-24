@@ -1,0 +1,13 @@
+{
+  "run_id": 45329830666,
+  "attempt": 1,
+  "stage": "Build locked companion wheels before timing",
+  "error": "GitHub artifact metadata API request failed before any timing",
+  "failed_endpoint": "repos/ArmanAvanesyan/aiogram-kit/actions/artifacts/14890547365",
+  "benchmark_step": "skipped",
+  "log_sha256": "6d2ab1f2cc52d00b2a53c9be9cc5c82e415890cf69366a4e17d611c4d51747db",
+  "retry": "Failed infrastructure job only; no discarded benchmark observations",
+  "artifact_id": 14892136915,
+  "artifact_sha256": "sha256:8746bfb0ead96940f2b2418eaf8d7c3330f00ad292b081e9a5cab8da3bf63ec9",
+  "artifact_retained": true
+}

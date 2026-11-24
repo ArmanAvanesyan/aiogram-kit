@@ -1,0 +1,179 @@
+[
+  {
+    "package": "aiogram-cmds",
+    "profile": "sdk-wheel",
+    "inputs": [
+      {
+        "filename": "aiogram_cmds-0.3.3-py3-none-any.whl",
+        "sha256": "bc29321d4f88a03c01fa51bb69a67cbb817355a98fbb5386bd7b2dff634e7188"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "sdk-minimum",
+    "inputs": [
+      {
+        "filename": "aiogram_cmds-0.3.3-py3-none-any.whl",
+        "sha256": "bc29321d4f88a03c01fa51bb69a67cbb817355a98fbb5386bd7b2dff634e7188"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "sdk-source",
+    "inputs": [
+      {
+        "filename": "aiogram_cmds-0.3.3.tar.gz",
+        "sha256": "f6e11be0d4d1b0bed680c45aa132014b8d93c94b646123f67ad97d703c9dd307"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "native-only",
+    "inputs": [
+      {
+        "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "cb329230eef8d0b2ac1289d886d841f93931cf582e8fe4be0f4d3bc4fecb1781"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-cmds",
+    "profile": "paired",
+    "inputs": [
+      {
+        "filename": "aiogram_cmds-0.3.3-py3-none-any.whl",
+        "sha256": "bc29321d4f88a03c01fa51bb69a67cbb817355a98fbb5386bd7b2dff634e7188"
+      },
+      {
+        "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "cb329230eef8d0b2ac1289d886d841f93931cf582e8fe4be0f4d3bc4fecb1781"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "sdk-wheel",
+    "inputs": [
+      {
+        "filename": "aiogram_nav-0.3.3-py3-none-any.whl",
+        "sha256": "13d3fcd6f181a65255895854fa6b40d5d4e54603ccb4601e4988b413ddf42873"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "sdk-minimum",
+    "inputs": [
+      {
+        "filename": "aiogram_nav-0.3.3-py3-none-any.whl",
+        "sha256": "13d3fcd6f181a65255895854fa6b40d5d4e54603ccb4601e4988b413ddf42873"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "sdk-source",
+    "inputs": [
+      {
+        "filename": "aiogram_nav-0.3.3.tar.gz",
+        "sha256": "77abd2d55b384126021bba85d02b98f0254f06547b98b10ecdc3341d3ee76130"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "native-only",
+    "inputs": [
+      {
+        "filename": "aiogram_nav_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "3de78f86da5bbf45684579422bd8229176339a06543f5d58e458f75fb7ed1929"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-nav",
+    "profile": "paired",
+    "inputs": [
+      {
+        "filename": "aiogram_nav-0.3.3-py3-none-any.whl",
+        "sha256": "13d3fcd6f181a65255895854fa6b40d5d4e54603ccb4601e4988b413ddf42873"
+      },
+      {
+        "filename": "aiogram_nav_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "3de78f86da5bbf45684579422bd8229176339a06543f5d58e458f75fb7ed1929"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "sdk-wheel",
+    "inputs": [
+      {
+        "filename": "aiogram_idle-0.3.3-py3-none-any.whl",
+        "sha256": "d2a996f740de0220f802fb0225178ef4e82a9fa599a30134bfaa675afcb1a20c"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "sdk-minimum",
+    "inputs": [
+      {
+        "filename": "aiogram_idle-0.3.3-py3-none-any.whl",
+        "sha256": "d2a996f740de0220f802fb0225178ef4e82a9fa599a30134bfaa675afcb1a20c"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "sdk-source",
+    "inputs": [
+      {
+        "filename": "aiogram_idle-0.3.3.tar.gz",
+        "sha256": "564cb5de3de62926a826ec5dad22038485ff9b5ea4c824a7f0a841737014398f"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "native-only",
+    "inputs": [
+      {
+        "filename": "aiogram_idle_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "a54872ff2404623dc062feea5099f91b6bb0a46f2e7bb223e3efa2942aac586e"
+      }
+    ],
+    "result": "pass"
+  },
+  {
+    "package": "aiogram-idle",
+    "profile": "paired",
+    "inputs": [
+      {
+        "filename": "aiogram_idle-0.3.3-py3-none-any.whl",
+        "sha256": "d2a996f740de0220f802fb0225178ef4e82a9fa599a30134bfaa675afcb1a20c"
+      },
+      {
+        "filename": "aiogram_idle_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+        "sha256": "a54872ff2404623dc062feea5099f91b6bb0a46f2e7bb223e3efa2942aac586e"
+      }
+    ],
+    "result": "pass"
+  }
+]

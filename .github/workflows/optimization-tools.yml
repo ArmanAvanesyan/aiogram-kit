@@ -2,7 +2,7 @@ name: Shared optimization evidence tools
 permissions:
   contents: read
 concurrency:
-  group: optimization-tools-${{ github.ref }}-${{ github.event_name }}
+  group: optimization-tools-${{ github.ref }}-${{ github.event_name }}-${{ inputs.native_package || 'none' }}
   cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   verify:
@@ -81,6 +81,8 @@ jobs:
           NATIVE_PACKAGE: ${{ inputs.native_package }}
           NATIVE_CPU_AFFINITY: ${{ inputs.cpu_affinity }}
           ROBUST_SAMPLING: ${{ inputs.robust_sampling }}
+          PRECISION_SAMPLING: ${{ inputs.precision_sampling }}
+          ISOLATE_RUNNER: ${{ inputs.isolate_runner }}
           REDIS_SERVICE_CONTAINER_ID: ${{ job.services.redis.id }}
         run: |
           selection=()
@@ -102,12 +104,28 @@ jobs:
             sampling=(--cpu-samples 30 --latency-windows 10 --individual-latency-samples 3000
                       --redis-container-id "$REDIS_SERVICE_CONTAINER_ID")
           fi
+          if [ "$PRECISION_SAMPLING" = true ]; then
+            if [ "$ROBUST_SAMPLING" != true ] || { [ "$NATIVE_PACKAGE" != aiogram-cmds ] && [ "$NATIVE_PACKAGE" != aiogram-nav ]; }; then
+              echo "precision_sampling requires robust_sampling and a single Cmds or Nav selection"
+              exit 2
+            fi
+            sampling=(--cpu-samples 30 --latency-windows 100 --individual-latency-samples 30000
+                      --redis-container-id "$REDIS_SERVICE_CONTAINER_ID")
+          fi
+          isolation=()
+          if [ "$ISOLATE_RUNNER" = true ]; then
+            if [ "$PRECISION_SAMPLING" != true ] || [ "$NATIVE_PACKAGE" != aiogram-cmds ]; then
+              echo "isolate_runner requires precision_sampling and a single Cmds selection"
+              exit 2
+            fi
+            isolation=(--isolate-runner)
+          fi
           result=0
           python3 tools/optimization/qualify_native.py \
             --python "$RUNNER_TEMP/native-env/bin/python" \
             --redis-url redis://127.0.0.1:6379/0 \
             --protocol reports/2026-11-17-native-qualification/protocol.json \
-            --output "$RUNNER_TEMP/native-qualification" "${selection[@]}" "${affinity[@]}" "${sampling[@]}" || result=$?
+            --output "$RUNNER_TEMP/native-qualification" "${selection[@]}" "${affinity[@]}" "${sampling[@]}" "${isolation[@]}" || result=$?
           cp "$RUNNER_TEMP/native-wheels/SHA256SUMS" "$RUNNER_TEMP/native-qualification/"
           exit "$result"
       - name: Retain successes, failures and exact artifacts
@@ -142,6 +160,14 @@ jobs:
         default: none
       robust_sampling:
         description: Stronger declared samples and disjoint owned Redis CPU (requires cpu_affinity)
+        type: boolean
+        default: false
+      precision_sampling:
+        description: Predeclared longer Cmds/Nav latency observation windows; unchanged gates and workloads
+        type: boolean
+        default: false
+      isolate_runner:
+        description: Reserve the Cmds client core from owned runner tasks and use nice -20; disposable runner only
         type: boolean
         default: false
       release_manifest_sha256:

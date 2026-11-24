@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "mode": "owned-runner-housekeeping-and-nice",
+  "client_cpus": [
+    0
+  ],
+  "available_cpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "housekeeping_cpus": [
+    2,
+    3
+  ],
+  "nice": -20,
+  "moved_threads": [
+    {
+      "pid": 1375,
+      "tid": 1375,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "sudo-taskset"
+    },
+    {
+      "pid": 1391,
+      "tid": 1391,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2187,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2190,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2191,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2192,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2193,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2196,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2197,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2198,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2199,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2234,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2187,
+      "tid": 2331,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2333,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2334,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2335,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2336,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2337,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2338,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2340,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2341,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2342,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2343,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2344,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2345,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2346,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2350,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 2352,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2333,
+      "tid": 3465,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2351,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2353,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2354,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2355,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2356,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2357,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2359,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2360,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2361,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2362,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2363,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2366,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2368,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2370,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 2703,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 3374,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 2351,
+      "tid": 3478,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    },
+    {
+      "pid": 3528,
+      "tid": 3528,
+      "before": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "after": [
+        2,
+        3
+      ],
+      "method": "owner-sched"
+    }
+  ],
+  "exited_processes": [],
+  "physical_hardware_exclusivity_claimed": false,
+  "gc_policy": "unchanged"
+}

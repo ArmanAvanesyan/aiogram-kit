@@ -1,0 +1,65 @@
+[
+  {
+    "workload": "compiled_confirmation_hit/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          25738,
+          12524
+        ],
+        "repeat_spread_percent": 105.50942190993294
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          12563,
+          12313
+        ],
+        "repeat_spread_percent": 2.0303744010395475
+      }
+    ]
+  },
+  {
+    "workload": "confirmation_hit/1",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          20378,
+          20669
+        ],
+        "repeat_spread_percent": 1.4280105996663073
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          18666,
+          20689
+        ],
+        "repeat_spread_percent": 10.837887067395258
+      }
+    ]
+  },
+  {
+    "workload": "confirmation_hit/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          794363,
+          505775
+        ],
+        "repeat_spread_percent": 57.05857347634817
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          472202,
+          463046
+        ],
+        "repeat_spread_percent": 1.977341344056538
+      }
+    ]
+  }
+]

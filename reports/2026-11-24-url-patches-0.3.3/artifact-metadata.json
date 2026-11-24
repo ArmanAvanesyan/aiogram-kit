@@ -1,0 +1,332 @@
+[
+  {
+    "filename": "aiogram_cmds-0.3.3.tar.gz",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds-0.3.3-py3-none-any.whl",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3.tar.gz",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-musllinux_1_2_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-musllinux_1_2_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-win_amd64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_cmds_native-0.3.3-cp310-abi3-macosx_11_0_arm64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-cmds/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-cmds/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-cmds/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav-0.3.3-py3-none-any.whl",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav-0.3.3.tar.gz",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-musllinux_1_2_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-musllinux_1_2_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3.tar.gz",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-win_amd64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_nav_native-0.3.3-cp310-abi3-macosx_11_0_arm64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-nav/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-nav/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-nav/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle-0.3.3-py3-none-any.whl",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle-0.3.3.tar.gz",
+    "project_urls": {
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3.tar.gz",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-win_amd64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-macosx_10_12_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-musllinux_1_2_aarch64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-musllinux_1_2_x86_64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  },
+  {
+    "filename": "aiogram_idle_native-0.3.3-cp310-abi3-macosx_11_0_arm64.whl",
+    "project_urls": {
+      "Changelog": "https://github.com/ArmanAvanesyan/aiogram-kit/blob/main/packages/aiogram-idle/CHANGELOG.md",
+      "Documentation": "https://armanavanesyan.github.io/aiogram-kit/libraries/aiogram-idle/",
+      "Homepage": "https://github.com/ArmanAvanesyan/aiogram-kit/tree/main/packages/aiogram-idle/native",
+      "Issues": "https://github.com/ArmanAvanesyan/aiogram-kit/issues",
+      "Repository": "https://github.com/ArmanAvanesyan/aiogram-kit"
+    },
+    "result": "pass"
+  }
+]

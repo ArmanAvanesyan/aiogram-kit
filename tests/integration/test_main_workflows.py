@@ -36,6 +36,11 @@ def test_workspace_checks_cover_minimum_and_latest_python():
 
 def test_manual_native_qualification_is_read_only_and_retains_failures():
     data, triggers = workflow("optimization-tools.yml")
+    assert "inputs.native_package" in data["concurrency"]["group"]
+    assert (
+        data["concurrency"]["cancel-in-progress"]
+        == "${{ github.event_name != 'workflow_dispatch' }}"
+    )
     choices = triggers["workflow_dispatch"]["inputs"]["native_package"]
     assert choices["default"] == "none"
     assert set(choices["options"]) == {
@@ -67,3 +72,17 @@ def test_manual_native_qualification_is_read_only_and_retains_failures():
     )[0]
     assert "selection=(--package aiogram-sentinel --package aiogram-cmds)" in pair_branch
     assert "aiogram-nav" not in pair_branch and "aiogram-idle" not in pair_branch
+
+
+def test_precision_sampling_retains_gates_and_is_opt_in():
+    data, triggers = workflow("optimization-tools.yml")
+    option = triggers["workflow_dispatch"]["inputs"]["precision_sampling"]
+    assert option["type"] == "boolean" and option["default"] is False
+    command = next(
+        s["run"]
+        for s in data["jobs"]["qualify-native"]["steps"]
+        if s.get("name") == "Run serial unchanged performance gates"
+    )
+    assert "--latency-windows 100 --individual-latency-samples 30000" in command
+    assert '"$ROBUST_SAMPLING" != true' in command
+    assert "--maximum" not in command

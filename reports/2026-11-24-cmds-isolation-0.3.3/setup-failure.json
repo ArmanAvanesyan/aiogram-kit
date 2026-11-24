@@ -1,0 +1,11 @@
+{
+  "run_id": 45337425850,
+  "stage": "runner scheduling before first engine profile",
+  "failure": "same-UID service thread requires CAP_SYS_NICE",
+  "observations_taken": 0,
+  "artifact_id": 14894213988,
+  "artifact_sha256": "47e1004d888fc794b924e0d72b94f1464a293facead197b5821e3759225bf791",
+  "artifact_retained": true,
+  "log_sha256": "594a45d09d0911cc356e20665ef08f56f2cdf4d3e888d1448752f4963cd062f5",
+  "fix": "Recheck thread ownership, then use explicit passwordless sudo taskset on only that thread; confirm resulting affinity. Still fail closed."
+}

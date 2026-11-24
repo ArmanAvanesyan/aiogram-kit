@@ -66,7 +66,7 @@ def _load_native() -> NativeModule:
             type(abi) is not int
             or abi != 1
             or type(version) is not str
-            or version != "0.3.2"
+            or version != "0.3.3"
             or any(not callable(getattr(module, name, None)) for name in required)
         ):
             raise NativeEngineError(

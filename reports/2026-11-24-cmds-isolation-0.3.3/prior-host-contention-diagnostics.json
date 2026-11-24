@@ -1,0 +1,86 @@
+[
+  {
+    "profile": "python-a",
+    "workload": "confirmation_hit/100",
+    "retained_observations": 30000,
+    "median_ns": 480948.0,
+    "p95_ns": 504743,
+    "p95_by_3000_observation_block_ns": [
+      503020,
+      503040,
+      507237,
+      505625,
+      503410,
+      503892,
+      505003,
+      502669,
+      504502,
+      509151
+    ],
+    "involuntary_context_switch_delta": 803,
+    "host_cpu_some_pressure_delta_microseconds": 1179194
+  },
+  {
+    "profile": "rust-a",
+    "workload": "confirmation_hit/100",
+    "retained_observations": 30000,
+    "median_ns": 448647.5,
+    "p95_ns": 694357,
+    "p95_by_3000_observation_block_ns": [
+      470779,
+      471330,
+      474987,
+      472503,
+      474867,
+      473144,
+      474486,
+      730364,
+      711758,
+      472813
+    ],
+    "involuntary_context_switch_delta": 1425,
+    "host_cpu_some_pressure_delta_microseconds": 8219539
+  },
+  {
+    "profile": "rust-b",
+    "workload": "confirmation_hit/100",
+    "retained_observations": 30000,
+    "median_ns": 439796.0,
+    "p95_ns": 464964,
+    "p95_by_3000_observation_block_ns": [
+      465835,
+      466537,
+      466116,
+      466677,
+      465014,
+      462529,
+      465314,
+      461738,
+      465805,
+      460345
+    ],
+    "involuntary_context_switch_delta": 662,
+    "host_cpu_some_pressure_delta_microseconds": 1164217
+  },
+  {
+    "profile": "python-b",
+    "workload": "confirmation_hit/100",
+    "retained_observations": 30000,
+    "median_ns": 474207.5,
+    "p95_ns": 498483,
+    "p95_by_3000_observation_block_ns": [
+      495678,
+      497371,
+      499995,
+      499104,
+      497201,
+      497421,
+      498302,
+      501628,
+      498582,
+      499024
+    ],
+    "involuntary_context_switch_delta": 659,
+    "host_cpu_some_pressure_delta_microseconds": 1169984
+  }
+]

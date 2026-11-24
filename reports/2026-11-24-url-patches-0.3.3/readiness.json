@@ -1,0 +1,45 @@
+{
+  "performance_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "companion": "aiogram-cmds-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "hold",
+      "performance_failures": [
+        "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100",
+        "Latency repeat spread exceeds 10%: confirmation_hit/1",
+        "Latency repeat spread exceeds 10%: confirmation_hit/100"
+      ],
+      "native_manifest_sha256": "db123169c3227297f1bc6c19c7bb58edffe0d7c0305d439e1bd3381099572f09",
+      "publishing_authorized": true
+    },
+    {
+      "sdk": "aiogram-nav",
+      "companion": "aiogram-nav-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "hold",
+      "performance_failures": [
+        "Latency repeat spread exceeds 10%: redis-dispatch-noop/50",
+        "Latency repeat spread exceeds 10%: redis-dispatch-track/50"
+      ],
+      "native_manifest_sha256": "804938d595ca8d5c0deafed555cfa9b1e441ed0a27170448c138836466e6da96",
+      "publishing_authorized": true
+    },
+    {
+      "sdk": "aiogram-idle",
+      "companion": "aiogram-idle-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "pass",
+      "performance_failures": [],
+      "native_manifest_sha256": "a657bd57e6f96c9683a0e09c83d920e4568548005ebede64d10c13e049f32245",
+      "publishing_authorized": true
+    }
+  ]
+}

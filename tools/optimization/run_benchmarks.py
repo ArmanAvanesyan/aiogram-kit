@@ -79,6 +79,7 @@ def host_observation():
     result = {
         "cpu_affinity": sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
         "host_cpu_count": os.cpu_count(),
+        "process_nice": os.getpriority(os.PRIO_PROCESS, 0) if hasattr(os, "getpriority") else None,
         "gc_enabled": gc.isenabled(),
         "gc_thresholds": list(gc.get_threshold()),
         "gc_counts": list(gc.get_count()),
