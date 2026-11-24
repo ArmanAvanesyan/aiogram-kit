@@ -1,0 +1,128 @@
+[
+  {
+    "id": 45337902541,
+    "name": "Kit marker distribution artifacts",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902541"
+  },
+  {
+    "id": 45337902345,
+    "name": "Shared optimization evidence tools",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902345"
+  },
+  {
+    "id": 45337902401,
+    "name": "Unified documentation",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902401"
+  },
+  {
+    "id": 45337902369,
+    "name": "Workspace preservation and release verification",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902369"
+  },
+  {
+    "id": 45337902377,
+    "name": "aiogram-cmds: CI",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902377"
+  },
+  {
+    "id": 45337902343,
+    "name": "aiogram-cmds: Native candidate",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902343"
+  },
+  {
+    "id": 45337902602,
+    "name": "aiogram-coordination: CI",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902602"
+  },
+  {
+    "id": 45337902374,
+    "name": "aiogram-idle: CI",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902374"
+  },
+  {
+    "id": 45337902596,
+    "name": "aiogram-idle: Native companion verification",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902596"
+  },
+  {
+    "id": 45337902349,
+    "name": "aiogram-idle: Optional navigation integration",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902349"
+  },
+  {
+    "id": 45337902603,
+    "name": "aiogram-nav: CI",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902603"
+  },
+  {
+    "id": 45337905021,
+    "name": "aiogram-nav: Native companion verification",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337905021"
+  },
+  {
+    "id": 45337902429,
+    "name": "aiogram-sentinel: CI",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902429"
+  },
+  {
+    "id": 45337902398,
+    "name": "aiogram-sentinel: Native wheels",
+    "head_sha": "e646b46f14e579ae089c59e785c1b374b0fb86a6",
+    "event": "pull_request",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/ArmanAvanesyan/aiogram-kit/actions/runs/45337902398"
+  }
+]

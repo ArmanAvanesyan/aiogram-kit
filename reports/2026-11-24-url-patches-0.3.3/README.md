@@ -1,5 +1,7 @@
 # Paired URL patch releases 0.3.3
 
+This report retains the initial experiment and release decision. The [final qualification rollup](../2026-11-24-paired-0.3.3/) supersedes its historical holds; all raw evidence remains unchanged.
+
 Package source is frozen at `6bf56eb5ced318b3ca0f9d92bb6ab161bdcf2223`.
 All 0.3.2 release artifacts and measurements remain unchanged. No gates are weakened.
 

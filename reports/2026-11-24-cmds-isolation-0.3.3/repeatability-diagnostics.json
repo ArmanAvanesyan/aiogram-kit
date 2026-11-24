@@ -1,0 +1,254 @@
+[
+  {
+    "workload": "fake_telegram_1ms/1",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1113940,
+          1114139
+        ],
+        "repeat_spread_percent": 0.01786451693988056
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1113838,
+          1115752
+        ],
+        "repeat_spread_percent": 0.1718382745067082
+      }
+    ]
+  },
+  {
+    "workload": "confirmation_hit/1",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          16234,
+          16524
+        ],
+        "repeat_spread_percent": 1.7863742762104229
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          16274,
+          16044
+        ],
+        "repeat_spread_percent": 1.4335577162802204
+      }
+    ]
+  },
+  {
+    "workload": "compiled_confirmation_hit/1",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          11357,
+          11277
+        ],
+        "repeat_spread_percent": 0.7094085306375897
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          11457,
+          11247
+        ],
+        "repeat_spread_percent": 1.8671645772205814
+      }
+    ]
+  },
+  {
+    "workload": "compiled_fake_telegram_1ms/1",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1099949,
+          1103603
+        ],
+        "repeat_spread_percent": 0.3321972200529322
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1102212,
+          1105867
+        ],
+        "repeat_spread_percent": 0.3316058979579317
+      }
+    ]
+  },
+  {
+    "workload": "fake_telegram_1ms/10",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1161579,
+          1162400
+        ],
+        "repeat_spread_percent": 0.07067965243860996
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1162460,
+          1163332
+        ],
+        "repeat_spread_percent": 0.07501333379213992
+      }
+    ]
+  },
+  {
+    "workload": "confirmation_hit/10",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          63744,
+          64655
+        ],
+        "repeat_spread_percent": 1.4291541164658694
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          63935,
+          63724
+        ],
+        "repeat_spread_percent": 0.33111543531478826
+      }
+    ]
+  },
+  {
+    "workload": "compiled_confirmation_hit/10",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          11227,
+          11507
+        ],
+        "repeat_spread_percent": 2.493987708203438
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          11547,
+          11317
+        ],
+        "repeat_spread_percent": 2.032340726340909
+      }
+    ]
+  },
+  {
+    "workload": "compiled_fake_telegram_1ms/10",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1136021,
+          1137144
+        ],
+        "repeat_spread_percent": 0.09885380639971242
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1137864,
+          1137674
+        ],
+        "repeat_spread_percent": 0.01670074204034311
+      }
+    ]
+  },
+  {
+    "workload": "fake_telegram_1ms/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1594906,
+          1601267
+        ],
+        "repeat_spread_percent": 0.39883228227870493
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1555288,
+          1544923
+        ],
+        "repeat_spread_percent": 0.6709072232078839
+      }
+    ]
+  },
+  {
+    "workload": "confirmation_hit/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          490231,
+          485755
+        ],
+        "repeat_spread_percent": 0.9214521723914348
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          444033,
+          439827
+        ],
+        "repeat_spread_percent": 0.9562850848174431
+      }
+    ]
+  },
+  {
+    "workload": "compiled_confirmation_hit/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          11186,
+          11417
+        ],
+        "repeat_spread_percent": 2.0650813516896127
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          11467,
+          11317
+        ],
+        "repeat_spread_percent": 1.325439604135381
+      }
+    ]
+  },
+  {
+    "workload": "compiled_fake_telegram_1ms/100",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1395714,
+          1394913
+        ],
+        "repeat_spread_percent": 0.05742293605408566
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1396094,
+          1393951
+        ],
+        "repeat_spread_percent": 0.15373567650511788
+      }
+    ]
+  }
+]
