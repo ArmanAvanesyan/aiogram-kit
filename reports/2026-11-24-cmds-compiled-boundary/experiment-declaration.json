@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package": "aiogram-cmds",
+  "purpose": "Qualify the changed SDK single-target immutable-payload cache and captured compiled engine binding. Both Python and Rust paths benefit; live configuration and delivery confirmations are not cached.",
+  "native_source_commit": "87a28811c9c633abdea012228a2a1e190975605f",
+  "native_platform_run": 45289854108,
+  "native_manifest_sha256": "a60a0e9eda8dd1f7c7a2a249544dddb7a41f99abe261ad7380f47ebafe283a29",
+  "native_binary_policy": "Reuse the exact unchanged seven-platform set; the SDK artifact changes on the failed compiled-confirmation path.",
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "thresholds": {
+    "max_cpu_ratio": 0.8,
+    "max_individual_p95_ratio": 1.05,
+    "max_repeat_spread": 0.1
+  },
+  "sampling": "Same robust ABBA preset, 31 CPU trials, 3000 command latency samples, unchanged GC and pinned client/disjoint Redis CPUs. No rows or tails removed.",
+  "repeat_policy": "One declared qualification of this changed SDK/native pair; retain all prior failures. Bind and commit exact SDK/native inputs before dispatch.",
+  "prior_failed_run": 45291905439,
+  "prior_failure": "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100 (Rust p95 9946 ns and 11710 ns); all latency ratios and selected CPU gates passed.",
+  "publishing_performed": false,
+  "sdk_source_commit": "058520682455e2effd0a98135bf3fa95414d00aa",
+  "sdk_wheel_sha256": "7dbf013637d4c43cb91769202ce312dfab58f4d17476fead74ee4e4987da67ce",
+  "input_manifest_sha256": "127758dcde1ca60d065ea08a8022892732aebd0840755ea85c6291cf23964c42"
+}

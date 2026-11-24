@@ -1,0 +1,50 @@
+Downloading nh3 (1.4MiB)
+ Downloaded nh3
+Installed 22 packages in 62ms
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-cmds-native/aiogram_cmds_nati
+ve-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-cmds/aiogram_cmds-0.3.2-py3-n
+one-any.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-idle-native/aiogram_idle_nati
+ve-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-idle/aiogram_idle-0.3.2-py3-n
+one-any.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-nav-native/aiogram_nav_native
+-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-nav/aiogram_nav-0.3.2-py3-non
+e-any.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-sentinel-native/aiogram_senti
+nel_native-1.3.2-cp310-abi3-macosx_10_12_x86_64.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-sentinel/aiogram_sentinel-1.3
+.2-py3-none-any.whl: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-cmds-native/aiogram_cmds_nati
+ve-0.3.2.tar.gz: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-cmds/aiogram_cmds-0.3.2.tar.g
+z: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-idle-native/aiogram_idle_nati
+ve-0.3.2.tar.gz: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-idle/aiogram_idle-0.3.2.tar.g
+z: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-nav-native/aiogram_nav_native
+-0.3.2.tar.gz: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-nav/aiogram_nav-0.3.2.tar.gz:PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-sentinel-native/aiogram_senti
+nel_native-1.3.2.tar.gz: PASSED
+Checking 
+/tmp/kit-paired-release-20261118/artifacts/aiogram-sentinel/aiogram_sentinel-1.3
+.2.tar.gz: PASSED

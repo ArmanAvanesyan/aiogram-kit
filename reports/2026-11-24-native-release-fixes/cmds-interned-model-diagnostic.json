@@ -1,0 +1,68 @@
+[
+  {
+    "cpu_seconds": 0.6932330000000002,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-old",
+    "boundary": "tuple"
+  },
+  {
+    "cpu_seconds": 0.6153180000000003,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-new",
+    "boundary": "tuple"
+  },
+  {
+    "cpu_seconds": 0.5936750000000002,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-intern",
+    "boundary": "model"
+  },
+  {
+    "cpu_seconds": 0.5578349999999994,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-intern",
+    "boundary": "model"
+  },
+  {
+    "cpu_seconds": 0.5557469999999998,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-new",
+    "boundary": "tuple"
+  },
+  {
+    "cpu_seconds": 0.5950990000000003,
+    "gc_collections": [
+      0,
+      0,
+      0
+    ],
+    "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42",
+    "candidate": "compare-old",
+    "boundary": "tuple"
+  }
+]

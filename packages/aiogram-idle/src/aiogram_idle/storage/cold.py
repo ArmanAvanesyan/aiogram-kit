@@ -247,7 +247,7 @@ async def read(
         job=job,
         manifest=store.config_value(config),
         now=now,
-        config=store.config,
+        config=store.reducer_config,
         created_at=store.created_at,
         disarm_epoch=cast(str, store.config_envelope(config)["disarm_epoch"]) if config else "",
         storage_format=3,

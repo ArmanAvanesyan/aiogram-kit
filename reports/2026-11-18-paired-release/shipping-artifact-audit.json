@@ -1,0 +1,38 @@
+{
+  "scope": "Exact CI artifacts and SDK digests, complete raw input integrity and independent recomputation; no timing rerun",
+  "result": "pass",
+  "packages": [
+    {
+      "package": "aiogram-sentinel",
+      "exact_sdk_digest_verified": true,
+      "exact_native_ci_digest_verified": true,
+      "all_platform_artifact_digests_verified": true,
+      "raw_inputs_verified": 4,
+      "independent_gate_recalculation_matches": true
+    },
+    {
+      "package": "aiogram-cmds",
+      "exact_sdk_digest_verified": true,
+      "exact_native_ci_digest_verified": true,
+      "all_platform_artifact_digests_verified": true,
+      "raw_inputs_verified": 4,
+      "independent_gate_recalculation_matches": true
+    },
+    {
+      "package": "aiogram-nav",
+      "exact_sdk_digest_verified": true,
+      "exact_native_ci_digest_verified": true,
+      "all_platform_artifact_digests_verified": true,
+      "raw_inputs_verified": 4,
+      "independent_gate_recalculation_matches": true
+    },
+    {
+      "package": "aiogram-idle",
+      "exact_sdk_digest_verified": true,
+      "exact_native_ci_digest_verified": true,
+      "all_platform_artifact_digests_verified": true,
+      "raw_inputs_verified": 4,
+      "independent_gate_recalculation_matches": true
+    }
+  ]
+}

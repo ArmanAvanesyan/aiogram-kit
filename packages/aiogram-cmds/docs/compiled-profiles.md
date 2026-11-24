@@ -30,12 +30,22 @@ or uncompiled locales fail before Telegram operations.
 `ProfileRequest` and `build_profile_batch(snapshot, requests)` resolve ordered
 menus and fingerprints without network calls. `ResolvedPayload.bot_commands()`
 returns fresh SDK objects. Duplicate commands and ordering remain significant.
+Single-target resolution retains only its last immutable payload and a key of
+at most 4096 characters. This applies to both engines, not live configuration.
+Every request still validates its bot, profile, locale and scope. The cache
+contains no BotCommand models or delivery confirmations: only the caller's
+confirmed fingerprint can suppress delivery, and every send gets fresh models.
 `manager.build_batch(requests)` additionally checks that each bot identity matches
 its manager. Batch application still reports partial success; Telegram has no
 transactional multi-menu API. A matching caller-owned confirmed fingerprint skips
 sending, and only literal Bot API `True` confirms a new fingerprint.
 
 ## Native candidate
+
+Live fingerprint hashing borrows the resolved command strings during the native
+call instead of copying them into Rust-owned strings. Inputs stay alive while
+the GIL is held; hashes, ordering and live translation semantics remain the same.
+No caller-owned models or mutable menu results are cached by this boundary.
 
 The separate `aiogram-cmds-native` companion contains a Rust resolved-profile and
 fingerprint CPU core. It has no dependency on this Python package. It is a
@@ -49,7 +59,7 @@ snapshot once. Native ABI/version mismatches and missing modules raise
 `NativeEngineError` before effects; the library never silently falls back after
 an explicit request. Rust receives resolved strings, never translators, async
 callbacks, Telegram clients or application business logic. The supported native
-ABI is 1 and candidate companion version is 0.3.1. Snapshot capabilities include
+ABI is 1 and candidate companion version is 0.3.2. Snapshot capabilities include
 `resolve_one` and `resolve_batch`; incomplete companions are rejected before
 translation or delivery effects.
 
@@ -146,6 +156,9 @@ engine or missing/incompatible companion now fails at assignment, leaving the
 previous selection active. A selection change during a translator callback affects
 subsequent operations, not the already captured selection of the current one.
 Compiled snapshots are not changed or retranslated by assigning an engine.
+Compiled manager delivery also captures the validated engine binding rather than
+repeating the module lookup on every operation; direct public APIs still validate
+their explicit engine choice before effects.
 
 The 3,000-observation run 44217592129 still failed one-command dynamic latency
 and repeatability. Its Rust-a raw vector contains clustered tails largely absent

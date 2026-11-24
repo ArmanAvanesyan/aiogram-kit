@@ -1,0 +1,199 @@
+{
+  "wheel_count": 32,
+  "total_record_entries": 451,
+  "result": "pass",
+  "wheels": [
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "fe0f6e94c101b72a7411e67e692dd63860f3db317d03f69404e1fd17564e9357",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "sha256": "84c70382f2ee7ffee2182bc71d9f9d21edb4376a7e481a0d8baa81aa924f687b",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+      "sha256": "85745276386fb13bb22eafb3fa172edc33d20d21deff93a5441c73fdb8013607",
+      "record_entries": 8,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "322cb68664c4869ee2af1b11252df3f4415bf703944968c65af84e515c02f2b7",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "sha256": "60ec7cae8f50da73933373b3a833c9932540f3933134a3586c02f1dd08a05a7c",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-win_amd64.whl",
+      "sha256": "cec1fae9c385011bf5563b9ab14b73d510df040d58d666464c75d522a940e95f",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+      "sha256": "b604c2f915c2052fe999caeec9b8e5e30ef29680b265517e2ef496a4cc7d5cf2",
+      "record_entries": 8,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "0dc5c1a28bba09f66ff48a3030374388bc92f0f32686c2ce16cc259934c2e2be",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+      "sha256": "c24680d71cbf290a2ba120edfb72cff3a264cc5c856bfb1b9fc1124adc1896bf",
+      "record_entries": 8,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "c2f0c82b01fb1d6b805e4311de3995e79df6fcccc11ca9aa02dee9919d5dd624",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "sha256": "6635e73d73f98b7e56ab7e6136b3d64ed7b826f99ec843a43f76d87def381d21",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-win_amd64.whl",
+      "sha256": "955ed83f6b312cf870d65d65af219e9d09139e1cc486947af499365c903824cb",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "sha256": "31a714677002be6a8c4e59a2f443dc4777145602297faf55f88e939b9988c4a8",
+      "record_entries": 7,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel_native-1.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+      "sha256": "dde172f5c82f564917d2b2cc4fb8cd7a01e295da1dec6f47697d996dc8ce8bbe",
+      "record_entries": 8,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "15f54734cff60a15a035c886d532ac625dbd42a612565b650418e5e0fdc9e995",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "943475457e27f367177d64580b94074886f50dc191aff49588f49a0ad3dcabca",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "sha256": "a3cb5c6f8c01a245b098d7e6a54ebeb5427b0c5a39b1dd33becbb6e2df309782",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+      "sha256": "43c03ffce80278827653ae06b85f5728e5eed3fb94559bb845369d0c3167fb91",
+      "record_entries": 10,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-win_amd64.whl",
+      "sha256": "3e81209574a35b086ff95e0085ff6c57bacd441ca0f6c114a393fb1cdc8e640d",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+      "sha256": "60bbc4e3e95e29f72727fffd28c63b9ce9c4fa412bffa220e3ef6d0cabe0c8cc",
+      "record_entries": 10,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "sha256": "89188f034aeb7c0da69ab03be1fcd5356a989fb1d84c9823371f9f6bcacd1d06",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-win_amd64.whl",
+      "sha256": "5c20042387c57a7946ef95a23e912dabf2afc6dcd5493667907860a5633bd6aa",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "95f255613817c00d78ad178a74a3aad01e780dd4870e8bad228838e29fdbe3f3",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+      "sha256": "90f65ec66351f271a4b7170ee2e8b281e470a15c1124d4635a08647c2fa59a0a",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-musllinux_1_2_x86_64.whl",
+      "sha256": "d66b7c60d9cee44f132a0bc3a07edd8fc72fc0561900ddf7f0fb00b10ad1b17a",
+      "record_entries": 10,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-musllinux_1_2_aarch64.whl",
+      "sha256": "e1149ce5a7de453f9326875f00e135d9537fb6c7abb6e69f748182c14774de90",
+      "record_entries": 10,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-macosx_10_12_x86_64.whl",
+      "sha256": "359ee1226a5c16f26f60644c4e8c010b0a408096cd4368fb9567ad017805f829",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle_native-0.3.2-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "sha256": "758e2cc4a14ac181165932c600da8e384564cc1e157b21105c121985bdfb1dcf",
+      "record_entries": 9,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_sentinel-1.3.2-py3-none-any.whl",
+      "sha256": "bc2784c9ee7970736c8a45b6dbbf71b6e52b7359b2dbc91d4936a424fbf79248",
+      "record_entries": 33,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_cmds-0.3.2-py3-none-any.whl",
+      "sha256": "8b89646ca6279d5ead65846b9dd83e44a0608d96c899f2e69ad47ead34f40a2d",
+      "record_entries": 24,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_nav-0.3.2-py3-none-any.whl",
+      "sha256": "5ff5d14eb07ff664764230367135d65189e66ecab6a256eb6d65b27d4d4ec2a9",
+      "record_entries": 65,
+      "crc_and_record": "pass"
+    },
+    {
+      "filename": "aiogram_idle-0.3.2-py3-none-any.whl",
+      "sha256": "d3ed3078204426af968a1c605ec6230b62179287cbfbd5dc3700a2b3b557c1ae",
+      "record_entries": 97,
+      "crc_and_record": "pass"
+    }
+  ]
+}

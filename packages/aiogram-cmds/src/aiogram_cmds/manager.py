@@ -21,7 +21,7 @@ from .compiled import (
     ResolvedPayload,
     build_profile_batch,
 )
-from .compiled_delivery import apply_compiled_profile
+from .compiled_delivery import resolved_compiled_profile
 from .delivery import UNSET, CommandApplyResult, CommandBatchResult, LanguageCode
 from .dynamic import clear_language_variants, resolved_profile, set_user_profile
 from .engines import Engine, NativeModule, native_engine
@@ -183,7 +183,7 @@ class CommandScopeManager:
             if self.config is None:
                 raise ValueError("update_profile requires CmdsConfig")
             if self.compiled is not None and profile in self.compiled.profiles:
-                result = await apply_compiled_profile(
+                result = await resolved_compiled_profile(
                     self.bot,
                     self.compiled,
                     user_id=user_id,
@@ -192,7 +192,7 @@ class CommandScopeManager:
                     chat_id=chat_id,
                     language_code=language_code,
                     best_effort=self.best_effort,
-                    engine=self.engine,
+                    module=self._engine_selection[1],
                 )
                 return result.status != "failed"
             await set_user_profile(
@@ -285,7 +285,7 @@ class CommandScopeManager:
                 raise error
             return CommandApplyResult("failed", error=error)
         if self.compiled is not None:
-            return await apply_compiled_profile(
+            return await resolved_compiled_profile(
                 self.bot,
                 self.compiled,
                 user_id=user_id,
@@ -295,7 +295,7 @@ class CommandScopeManager:
                 language_code=language_code,
                 previous_fingerprint=previous_fingerprint,
                 best_effort=self.best_effort,
-                engine=self.engine,
+                module=self._engine_selection[1],
             )
         return await resolved_profile(
             self.bot,

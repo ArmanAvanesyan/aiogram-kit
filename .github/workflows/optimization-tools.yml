@@ -29,6 +29,9 @@ jobs:
   qualify-native:
     if: github.event_name == 'workflow_dispatch' && inputs.native_package != 'none'
     needs: verify
+    permissions:
+      contents: read
+      actions: read
     runs-on: ubuntu-latest
     timeout-minutes: 60
     services:
@@ -47,16 +50,27 @@ jobs:
           python-version: '3.12'
       - name: Build locked companion wheels before timing
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_MANIFEST_SHA256: ${{ inputs.release_manifest_sha256 }}
+          RELEASE_MANIFEST_PATH: ${{ inputs.release_manifest_path }}
         run: |
           for package in coordination sentinel cmds nav idle; do
             uv build --package "aiogram-$package" --wheel --out-dir "$RUNNER_TEMP/native-wheels"
           done
-          for package in sentinel cmds nav idle; do
-            (
-              cd "packages/aiogram-$package/native"
-              uvx --from 'maturin>=1.9,<2' maturin build --release --locked --out "$RUNNER_TEMP/native-wheels"
-            )
-          done
+          if [ -n "$RELEASE_MANIFEST_SHA256" ]; then
+            python tools/optimization/prepare_release_qualification.py \
+              --manifest "$RELEASE_MANIFEST_PATH" \
+              --manifest-sha256 "$RELEASE_MANIFEST_SHA256" \
+              --output "$RUNNER_TEMP/native-wheels" --reviewed "$RUNNER_TEMP/reviewed-native"
+          else
+            for package in sentinel cmds nav idle; do
+              (
+                cd "packages/aiogram-$package/native"
+                uvx --from 'maturin>=1.9,<2' maturin build --release --locked --out "$RUNNER_TEMP/native-wheels"
+              )
+            done
+          fi
           sha256sum "$RUNNER_TEMP/native-wheels/"*.whl > "$RUNNER_TEMP/native-wheels/SHA256SUMS"
           uv venv --python 3.12 "$RUNNER_TEMP/native-env"
           uv pip install --python "$RUNNER_TEMP/native-env/bin/python" "$RUNNER_TEMP/native-wheels/"*.whl 'redis>=5.0.8,<8' psutil pyperf orjson
@@ -104,6 +118,7 @@ jobs:
           path: |
             ${{ runner.temp }}/native-qualification/
             ${{ runner.temp }}/native-wheels/
+            ${{ runner.temp }}/reviewed-native/
           if-no-files-found: error
 'on':
   push:
@@ -129,3 +144,11 @@ jobs:
         description: Stronger declared samples and disjoint owned Redis CPU (requires cpu_affinity)
         type: boolean
         default: false
+      release_manifest_sha256:
+        description: Optional reviewed release manifest digest; downloads exact CI wheels instead of rebuilding companions
+        type: string
+        default: ''
+      release_manifest_path:
+        description: Versioned report manifest under reports (supports independently qualified package sets)
+        type: string
+        default: reports/2026-11-18-paired-release/ci-artifact-manifest.json

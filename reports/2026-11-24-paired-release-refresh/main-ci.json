@@ -1,0 +1,95 @@
+{
+  "commit": "4ce836c009b7263a92b997331f63d17b02beca27",
+  "all_workflows_passed": true,
+  "retry": {
+    "run_id": 45283076653,
+    "original_job_id": 138072271152,
+    "cause": "DNS ENOTFOUND raw.githubusercontent.com during setup-python"
+  },
+  "runs": [
+    {
+      "conclusion": "success",
+      "databaseId": 45283076548,
+      "status": "completed",
+      "workflowName": "Kit marker distribution artifacts"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076991,
+      "status": "completed",
+      "workflowName": "aiogram-cmds: CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076667,
+      "status": "completed",
+      "workflowName": "aiogram-sentinel: CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076660,
+      "status": "completed",
+      "workflowName": "Unified documentation"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076770,
+      "status": "completed",
+      "workflowName": "Shared optimization evidence tools"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076567,
+      "status": "completed",
+      "workflowName": "Workspace preservation and release verification"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283077009,
+      "status": "completed",
+      "workflowName": "aiogram-nav: CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076995,
+      "status": "completed",
+      "workflowName": "aiogram-coordination: CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283077022,
+      "status": "completed",
+      "workflowName": "aiogram-idle: Optional navigation integration"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076551,
+      "status": "completed",
+      "workflowName": "aiogram-idle: Native companion verification"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076773,
+      "status": "completed",
+      "workflowName": "aiogram-idle: CI"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076844,
+      "status": "completed",
+      "workflowName": "aiogram-cmds: Native candidate"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283077043,
+      "status": "completed",
+      "workflowName": "aiogram-nav: Native companion verification"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 45283076653,
+      "status": "completed",
+      "workflowName": "aiogram-sentinel: Native wheels"
+    }
+  ]
+}

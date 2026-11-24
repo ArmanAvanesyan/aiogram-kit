@@ -1,0 +1,22 @@
+[
+  {
+    "cpu_seconds": 1.295162,
+    "module": "/tmp/aiogram-ci-fixes-20261124/compare-old/_aiogram_cmds_native/__init__.py",
+    "candidate": "old"
+  },
+  {
+    "cpu_seconds": 1.119976,
+    "module": "/tmp/aiogram-ci-fixes-20261124/compare-new/_aiogram_cmds_native/__init__.py",
+    "candidate": "new"
+  },
+  {
+    "cpu_seconds": 1.121946,
+    "module": "/tmp/aiogram-ci-fixes-20261124/compare-new/_aiogram_cmds_native/__init__.py",
+    "candidate": "new"
+  },
+  {
+    "cpu_seconds": 1.299271,
+    "module": "/tmp/aiogram-ci-fixes-20261124/compare-old/_aiogram_cmds_native/__init__.py",
+    "candidate": "old"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "package": "aiogram-sentinel-native",
+    "status": "held",
+    "reason": "Performance-qualified source changed"
+  },
+  {
+    "package": "aiogram-cmds-native",
+    "status": "held",
+    "reason": "Native release is held by performance qualification"
+  },
+  {
+    "package": "aiogram-nav-native",
+    "status": "held",
+    "reason": "Performance-qualified source changed"
+  },
+  {
+    "package": "aiogram-idle-native",
+    "status": "held",
+    "reason": "Native release is held by performance qualification"
+  }
+]

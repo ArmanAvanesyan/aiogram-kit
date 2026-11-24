@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "purpose": "Qualify changed Cmds borrowed-string native hashing and Idle preselected Redis scratch execution. Not an unchanged-candidate rerun.",
+  "packages": [
+    "aiogram-cmds",
+    "aiogram-idle"
+  ],
+  "protocol_path": "reports/2026-11-17-native-qualification/protocol.json",
+  "protocol_sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+  "thresholds": {
+    "max_cpu_ratio": 0.8,
+    "max_individual_p95_ratio": 1.05,
+    "max_repeat_spread": 0.1
+  },
+  "execution": "Exact seven-platform CI release sets, select hashed glibc x86_64 wheel; SDK digests checked before install. One declared shipping run per changed pair.",
+  "sampling": "Same robust preset: 31 CPU trials, 3000 individual command latency samples, 30 idle CPU samples, 10 fresh latency windows; automatic fixed CPU affinity and disjoint Redis service CPU; ABBA order; unchanged GC.",
+  "retention": "Retain every success/failure, raw sample, command log, exact artifact and input manifest. No best-of sampling or threshold changes.",
+  "timing_precondition": "Commit the source/artifact manifest with completed platform CI IDs and independent hashes before dispatching timing.",
+  "publishing_performed": false
+}

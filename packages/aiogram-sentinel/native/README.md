@@ -1,3 +1,10 @@
+# Paired 1.3.2 release candidate
+
+This candidate requires `aiogram-sentinel==1.3.2` when used with the SDK.
+It is unpublished. See the monorepo paired-release readiness report for exact
+artifacts, compatibility checks and publication gates. Historical findings below
+remain provenance; they do not describe the current candidate qualification.
+
 # aiogram-sentinel-native
 
 Optional ABI1 synchronous memory kernels for aiogram-sentinel 1.3.1. The base

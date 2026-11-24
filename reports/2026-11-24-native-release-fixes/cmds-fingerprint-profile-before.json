@@ -1,0 +1,50 @@
+[
+  {
+    "commands": 1,
+    "iterations": 10000,
+    "results": [
+      {
+        "engine": "python",
+        "cpu_seconds": 0.07134399999999985,
+        "digest": "71c8ebd78845d9a4e24b5b210ca7447493dc14f9a820d91ac56a1e77f247d160"
+      },
+      {
+        "engine": "rust",
+        "cpu_seconds": 0.07757400000000025,
+        "digest": "71c8ebd78845d9a4e24b5b210ca7447493dc14f9a820d91ac56a1e77f247d160"
+      }
+    ]
+  },
+  {
+    "commands": 10,
+    "iterations": 10000,
+    "results": [
+      {
+        "engine": "python",
+        "cpu_seconds": 0.17080000000000073,
+        "digest": "038811949ad24dd83c767b18833a4bd238b2f72c6f37aeacd62abc30311229cc"
+      },
+      {
+        "engine": "rust",
+        "cpu_seconds": 0.1529910000000001,
+        "digest": "038811949ad24dd83c767b18833a4bd238b2f72c6f37aeacd62abc30311229cc"
+      }
+    ]
+  },
+  {
+    "commands": 100,
+    "iterations": 10000,
+    "results": [
+      {
+        "engine": "python",
+        "cpu_seconds": 1.0031380000000008,
+        "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42"
+      },
+      {
+        "engine": "rust",
+        "cpu_seconds": 0.6321240000000001,
+        "digest": "99e37069860b0b5a65549a40d8b32dcb11fc837417e94cd8e1eba3efc2c9ce42"
+      }
+    ]
+  }
+]

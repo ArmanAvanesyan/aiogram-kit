@@ -1,0 +1,14 @@
+[
+  {
+    "selection": "python",
+    "scratch_engine": "python",
+    "constructors": 10000,
+    "cpu_seconds": 0.11218499999999931
+  },
+  {
+    "selection": "rust",
+    "scratch_engine": "python",
+    "constructors": 10000,
+    "cpu_seconds": 0.12680299999999978
+  }
+]

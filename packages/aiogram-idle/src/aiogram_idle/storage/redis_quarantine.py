@@ -60,7 +60,7 @@ class Quarantine:
                     job=job,
                     manifest=manifest,
                     now=now,
-                    config=store.config,
+                    config=store.reducer_config,
                     created_at=store.created_at,
                     disarm_epoch=cast(str, store.config_envelope(config)["disarm_epoch"])
                     if config

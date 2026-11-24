@@ -1,0 +1,57 @@
+{
+  "checked_at_utc": "2026-11-23T23:03:25.344609+00:00",
+  "packages": [
+    {
+      "package": "aiogram-sentinel",
+      "latest": "1.3.1",
+      "candidate": "1.3.2",
+      "candidate_published": false,
+      "status": 200
+    },
+    {
+      "package": "aiogram-sentinel-native",
+      "candidate": "1.3.2",
+      "candidate_published": false,
+      "status": 404
+    },
+    {
+      "package": "aiogram-cmds",
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 200
+    },
+    {
+      "package": "aiogram-cmds-native",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 404
+    },
+    {
+      "package": "aiogram-nav",
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 200
+    },
+    {
+      "package": "aiogram-nav-native",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 404
+    },
+    {
+      "package": "aiogram-idle",
+      "latest": "0.3.1",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 200
+    },
+    {
+      "package": "aiogram-idle-native",
+      "candidate": "0.3.2",
+      "candidate_published": false,
+      "status": 404
+    }
+  ]
+}

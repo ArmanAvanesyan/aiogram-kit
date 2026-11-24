@@ -42,6 +42,7 @@ nav:
       - Storage and verification: design/storage-and-verification.md
       - Pre-implementation review: design/review.md
   - Monorepo and releases: monorepo.md
+  - Paired release candidates: releases/paired-native-2026-11-18.md
   - Libraries:
       - Coordination: libraries/aiogram-coordination/README.md
       - Sentinel: libraries/aiogram-sentinel/README.md
