@@ -6,6 +6,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import re
 import tempfile
 from pathlib import Path
 
@@ -100,6 +101,12 @@ def verify(
         "Qualification input manifest changed",
     )
     entry = json.loads(manifest_bytes)["packages"][package]
+    if "source_commit" in entry["sdk"]:
+        sdk_commit = entry["sdk"]["source_commit"]
+        require(
+            isinstance(sdk_commit, str) and re.fullmatch(r"[a-f0-9]{40}", sdk_commit) is not None,
+            "Invalid independent SDK source commit",
+        )
     reconciliation_file = report / "source-reconciliation.json"
     reconciliations = {}
     if reconciliation_file.exists():

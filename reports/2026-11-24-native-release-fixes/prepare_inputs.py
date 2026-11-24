@@ -30,14 +30,19 @@ def gh(endpoint: str) -> bytes:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--artifacts", required=True, type=Path)
+    parser.add_argument("--sdk-source-commit", default=SOURCE)
+    parser.add_argument("--packages", nargs="+", choices=sorted(RUNS), default=list(RUNS))
+    parser.add_argument("--base-manifest", type=Path)
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     original = ROOT / "reports/2026-11-18-paired-release"
     report = Path(__file__).parent
-    data = json.loads((original / "ci-artifact-manifest.json").read_text())
+    data = json.loads((args.base_manifest or original / "ci-artifact-manifest.json").read_text())
     data["source_reconciliation"] = json.loads(
         (original / "source-reconciliation.json").read_text()
     )["packages"]
-    for package, run_id in RUNS.items():
+    for package in args.packages:
+        run_id = RUNS[package]
         endpoint = f"repos/ArmanAvanesyan/aiogram-kit/actions/runs/{run_id}"
         run = json.loads(gh(endpoint))
         if (
@@ -114,7 +119,8 @@ def main() -> None:
         ).splitlines()
         sources = {}
         for filename in filenames:
-            raw = subprocess.check_output(["git", "show", SOURCE + ":" + filename], cwd=ROOT)
+            commit = SOURCE if "/native/" in filename else args.sdk_source_commit
+            raw = subprocess.check_output(["git", "show", commit + ":" + filename], cwd=ROOT)
             if (ROOT / filename).read_bytes() != raw:
                 raise ValueError("Runtime source differs from the platform commit")
             sources[filename] = digest(raw)
@@ -128,9 +134,14 @@ def main() -> None:
             "native_manifest_sha256": digest(manifest.read_bytes()),
             "artifacts": rows,
         }
+        if args.sdk_source_commit != SOURCE:
+            data["packages"][package]["sdk"]["source_commit"] = args.sdk_source_commit
         print(package, "exact platform set and SDK input verified", flush=True)
-    output = report / "ci-artifact-manifest.json"
-    output.write_text(json.dumps(data, indent=2) + "\n")
+    output = args.output or report / "ci-artifact-manifest.json"
+    content = json.dumps(data, indent=2) + "\n"
+    if output.exists() and output.read_text() != content:
+        raise ValueError("Refusing to overwrite reviewed evidence; select a new report")
+    output.write_text(content)
     print("Manifest SHA256:", digest(output.read_bytes()))
 
 

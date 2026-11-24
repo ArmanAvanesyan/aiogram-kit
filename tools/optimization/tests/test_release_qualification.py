@@ -208,3 +208,16 @@ def test_staging_reconciliation_is_bound_into_reviewed_manifest(module, manifest
     path.write_text(json.dumps(data))
     with pytest.raises(ValueError, match="source changed"):
         module.read_manifest(path, module.digest(path), root)
+
+
+@pytest.mark.parametrize("commit", ["b" * 40, "invalid", None, 123])
+def test_independent_sdk_source_commit_has_strict_identity(module, manifest, commit):
+    path, root = manifest
+    data = json.loads(path.read_text())
+    data["packages"]["aiogram-cmds"]["sdk"]["source_commit"] = commit
+    path.write_text(json.dumps(data))
+    if commit == "b" * 40:
+        module.read_manifest(path, module.digest(path), root)
+    else:
+        with pytest.raises(ValueError, match="SDK source commit"):
+            module.read_manifest(path, module.digest(path), root)

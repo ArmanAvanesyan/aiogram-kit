@@ -1,5 +1,9 @@
 # Paired release refresh — unpublished
 
+For subsequent provenance fixes and new shipping measurements, see the
+[native release follow-up](../2026-11-24-native-release-fixes/README.md). The
+table below records the earlier checkpoint, not current publication approval.
+
 Refresh of draft PR #88 after PRs #69 and #89 merged. Candidate versions remain
 Sentinel SDK/native **1.3.2**, and Cmds/Nav/Idle SDK/native **0.3.2**. This work
 does not publish, create tags/releases, change publisher permissions, or merge

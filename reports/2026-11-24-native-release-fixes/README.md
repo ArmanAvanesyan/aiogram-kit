@@ -1,5 +1,13 @@
 # Changed native release candidates — unpublished
 
+Shipping qualification completed: Idle run 45291922712 passed; Cmds run
+45291905439 passed CPU/latency ratios but failed compiled-confirmation repeatability.
+Both full datasets, original hashes and artifact backups are retained below.
+The [next Cmds SDK candidate](../2026-11-24-cmds-compiled-boundary/README.md)
+changes the affected compiled boundary; the failed result remains a hold.
+Four native GitHub tag policies were added only after explicit user approval;
+PyPI publisher bindings remain unverified because browser automation exits.
+
 This follow-up retains the November 18/24 reports and their failed measurements.
 The earlier PR #88 head passed 250 checks after a one-job retry of the existing
 filesystem settings-load smoke test (1.11 seconds against its 1-second bound).

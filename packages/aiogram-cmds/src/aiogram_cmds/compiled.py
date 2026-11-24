@@ -58,6 +58,12 @@ class ResolvedPayload:
         ]
 
 
+@dataclass
+class _PayloadCache:
+    # One immutable derived result, never a delivery confirmation or SDK model.
+    entry: tuple[tuple[bool, str, str, str, str, str], ResolvedPayload] | None = None
+
+
 @dataclass(frozen=True)
 class CompiledCommands:
     config_revision: str
@@ -70,6 +76,9 @@ class CompiledCommands:
     per_language: bool
     native: NativeSnapshot | None = field(
         default=None, init=False, repr=False, compare=False
+    )
+    _payload_cache: _PayloadCache = field(
+        default_factory=_PayloadCache, init=False, repr=False, compare=False
     )
 
     def __post_init__(self) -> None:
@@ -266,6 +275,23 @@ def resolved_payload(
     slot = menu_slot(language, language_code, per_language=compiled.per_language)
     rows = compiled.rows(profile, language)
     language_json = json.dumps(slot, ensure_ascii=False)
+    request = (
+        module is not None,
+        profile,
+        language,
+        str(bot_id),
+        canonical_scope,
+        language_json,
+    )
+    cacheable = (
+        type(profile) is str
+        and type(language) is str
+        and type(canonical_scope) is str
+        and (slot is None or type(slot) is str)
+    )
+    previous = compiled._payload_cache.entry  # pyright: ignore[reportPrivateUsage]
+    if cacheable and previous is not None and previous[0] == request:
+        return previous[1]
     if module is None:
         commands = compiled.encoded[profile][language]
         value = f'{{"bot_id":{bot_id},"commands":{commands},"language_code":{language_json},"scope":{canonical_scope}}}'
@@ -275,7 +301,10 @@ def resolved_payload(
         digest = native.resolve_one(
             profile, language, str(bot_id), canonical_scope, language_json
         )
-    return ResolvedPayload(rows, digest, canonical_scope, slot)
+    payload = ResolvedPayload(rows, digest, canonical_scope, slot)
+    if cacheable and sum(len(value) for value in request[1:]) <= 4096:
+        compiled._payload_cache.entry = (request, payload)  # pyright: ignore[reportPrivateUsage]
+    return payload
 
 
 def build_profile_batch(

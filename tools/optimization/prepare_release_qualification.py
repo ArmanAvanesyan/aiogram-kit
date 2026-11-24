@@ -46,6 +46,12 @@ def read_manifest(path: Path, expected: str, root: Path) -> dict:
         require(
             re.fullmatch(r"[a-f0-9]{64}", entry["sdk"]["sha256"]) is not None, "Invalid SDK digest"
         )
+        if "source_commit" in entry["sdk"]:
+            require(
+                isinstance(entry["sdk"]["source_commit"], str)
+                and re.fullmatch(r"[a-f0-9]{40}", entry["sdk"]["source_commit"]) is not None,
+                "Invalid independent SDK source commit",
+            )
         require(
             re.fullmatch(r"[a-f0-9]{40}", entry["source_commit"]) is not None,
             "Invalid source commit",

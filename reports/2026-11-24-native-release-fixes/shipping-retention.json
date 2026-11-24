@@ -1,0 +1,354 @@
+[
+  {
+    "package": "aiogram-cmds",
+    "run_id": 45291905439,
+    "archive": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439.zip",
+    "archive_sha256": "9b611277016c46ee2d814f696da26b7b3236605b1616d086c490b2d742de06b3",
+    "files": [
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/qualification-summary.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/cmds/qualification-summary.json",
+        "sha256": "3db9d8919a45a6fe685e6d25c9c52a2e38e5eee02e190743614e923537175a1d",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/redis-service-control.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/cmds/redis-service-control.json",
+        "sha256": "5b41fd29a94ff072523881532881625ffb9458f52f97e7de2df343ae6e787110",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/protocol.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/protocol.json",
+        "sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/host-controls.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/cmds/host-controls.json",
+        "sha256": "48c3059d1c6b79a71cc090d1b65f17f1fed31bf66e21ab141aa198a384cc9d9c",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/SHA256SUMS",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/cmds/SHA256SUMS",
+        "sha256": "6f128b4580f2417f356eff37037d0d41ae59117b3dedda576b143f47edf5cd77",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b.log",
+        "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/native-gate.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/native-gate.json",
+        "sha256": "15a5b06c7cf27532ac5529d4dfbefde2c9b7c4c698b913c8a5a1fb426fcc7893",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a.log",
+        "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b.log",
+        "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a.log",
+        "sha256": "2af20a6d5c55f27592db94b8c8f9be250d79a5db047fe271a0ffafba3bd1b8e7",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.json.gz",
+        "sha256": "7bd4b56e878b88af4f8f552511b38aa0ab7ca56577504b4eb66277a141b9e1dc",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.pyperf.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.pyperf.json",
+        "sha256": "e4db400fe48202636f45fabc2e36782f551c6bc239c87c9a9b18a4b953e719d7",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.host.json",
+        "sha256": "082a3bb2fff7a69064fc878bffbca9ff9d4e3101ac18525bada76ea783c23021",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.log",
+        "sha256": "9edce3fadd23e5edeb0c38ffff83b5bce91e7472ffbeb31d1cb453c72ef0d6e3",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-a/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-a/run-manifest.json.gz",
+        "sha256": "abfe17b1c52283fa597f5bc4a896020bfdb3cd73d2a9f30c885228ae7750ac1e",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b/aiogram-cmds.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b/aiogram-cmds.json.gz",
+        "sha256": "071011ffdff3dab05cdd68512bed8975da680820b0e2debf2ecc11c04dc75adf",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b/aiogram-cmds.pyperf.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b/aiogram-cmds.pyperf.json",
+        "sha256": "d651345536becc42a1dbacfac51b5620141614bd34eee9d4c277173979c5426f",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b/aiogram-cmds.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b/aiogram-cmds.host.json",
+        "sha256": "c8e9b6c8c75069db01fa29feef1e8504e6683dc0d92c1641eefc76b18b12b52b",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b/aiogram-cmds.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b/aiogram-cmds.log",
+        "sha256": "49c9f0a4267c545fd142713bf67699f6605ac36a06dd96d254d5a989256aa6ad",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-b/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-b/run-manifest.json.gz",
+        "sha256": "bc1ac60d9835ef36c9af49e6e49454e842ebdfff8b0835e58f027bd026deca2e",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.json.gz",
+        "sha256": "092b8a4eeefb4af5faafce5aba165fc0b09fadf25f9298cc07b91a00d7f4a6e2",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.pyperf.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.pyperf.json",
+        "sha256": "5d2493aa2630a3a7f77936880a88f9ed51b9fdf873aa5e74d48fb8b1752567c2",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.host.json",
+        "sha256": "aa8d02757f888b5f2d4816455a80dca701a8ac72e1741491b35e45da437ac6d8",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.log",
+        "sha256": "7d355c6cf3c8440107f135d7c4324c4f0aa6f4accde5793621f7e865aa47cb93",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/rust-b/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/rust-b/run-manifest.json.gz",
+        "sha256": "42564fad9c78ed7e52d924cc5af5541bc5859b0351a53309a257a1519ea02c8a",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a/aiogram-cmds.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a/aiogram-cmds.json.gz",
+        "sha256": "73942a10267660a5943893face4d744edc88ea05fff30d4d08a10d78b5fd0d73",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a/aiogram-cmds.pyperf.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a/aiogram-cmds.pyperf.json",
+        "sha256": "d55d7fe439bd35e0ed1bdef432ccce10b61ede1d8958121784bb3ba2cd99b64f",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a/aiogram-cmds.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a/aiogram-cmds.host.json",
+        "sha256": "2f1223a1dab8b896173132cfa0d0e2101052c5b9a10e8d3f28d2942cafc47778",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a/aiogram-cmds.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a/aiogram-cmds.log",
+        "sha256": "691c1778476c0a5d5203227d26186d0592c28c070e019b7b6705dbef10fa7fb5",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/cmds-qualification-45291905439/native-qualification/aiogram-cmds/python-a/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-cmds/python-a/run-manifest.json.gz",
+        "sha256": "57909221185bd14c1917c29c3a67ffa5a9d4c7d422c661db4263f04865255bc6",
+        "gzip": true
+      }
+    ]
+  },
+  {
+    "package": "aiogram-idle",
+    "run_id": 45291922712,
+    "archive": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712.zip",
+    "archive_sha256": "a90d5e59ed6a5bae4e4a8e9ebe7c109d2aa5b84fa5eb9cd304e535684cd64925",
+    "files": [
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/qualification-summary.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/idle/qualification-summary.json",
+        "sha256": "2cbbe0349e986b29356d3c3dc06b9af63071246419092da91aef32a23fcbd874",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/redis-service-control.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/idle/redis-service-control.json",
+        "sha256": "da4c0f24b999111c4ef85ae5593e60066da40b64667fb7176da1c8ac55849ac5",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/protocol.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/protocol.json",
+        "sha256": "2ffc522b54182bbcb90397aed7342eb67ef94def9d5adb21c15f5f76b2ce2bd0",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/host-controls.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/idle/host-controls.json",
+        "sha256": "699ea9134eeee477f07476ac57d80117b64bf9424a1d0c5c3a4c71b5a0951155",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/SHA256SUMS",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/run-metadata/idle/SHA256SUMS",
+        "sha256": "6f128b4580f2417f356eff37037d0d41ae59117b3dedda576b143f47edf5cd77",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-b.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-b.log",
+        "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/native-gate.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/native-gate.json",
+        "sha256": "8ddb68722c6fb7301461f8f1c65bdd72131ee9a8d13581cf01ab4ac96bda0a0d",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-a.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-a.log",
+        "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-b.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-b.log",
+        "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-a.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-a.log",
+        "sha256": "3b40f846fde595c3635216c27bed553064f592c87e47cad5040e24cc7b58512c",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-a/aiogram-idle.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-a/aiogram-idle.json.gz",
+        "sha256": "3daf2ffa2cb6c47e74d457071be5f15cf7baf8060eb8eb87ede6582da9cf7f1f",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-a/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-a/run-manifest.json.gz",
+        "sha256": "09045d83ef54a93d3edbc325f4c9b8eb1f14bd66d23479fd79fa779894dd92c0",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-a/aiogram-idle.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-a/aiogram-idle.host.json",
+        "sha256": "31bb5c3fb164f1752b2cc2bcb6b5cb7efc32a61d96af6fb93f1c07478af6323e",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-a/aiogram-idle.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-a/aiogram-idle.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-b/aiogram-idle.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-b/aiogram-idle.json.gz",
+        "sha256": "bccb75dd1ece9ec6e4323801aa67f41a83fb8c8cbf46553ef8ad225bcfe7b0cd",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-b/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-b/run-manifest.json.gz",
+        "sha256": "a2e4caea42fcd70984d7f7d3d7aca79fb790cd66bc330b72ddf3cb749c8c80e3",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-b/aiogram-idle.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-b/aiogram-idle.host.json",
+        "sha256": "40c7a4689b760d89fd1c054684095b15ef43a779ed2f29e7c36b3fb8519ac109",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-b/aiogram-idle.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-b/aiogram-idle.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-b/aiogram-idle.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-b/aiogram-idle.json.gz",
+        "sha256": "2ce9a5a75292b2eebb07eafac2e785029f973677618bbdd29f35877b24c56df5",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-b/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-b/run-manifest.json.gz",
+        "sha256": "41173c0b2a971630fd759e6cce1f96adfc50f0caa071ffb9406bc76960700278",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-b/aiogram-idle.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-b/aiogram-idle.host.json",
+        "sha256": "c11a04fa32c93b55d4885ce94e7ce40daa34d84b7875547cf93c5311183b5412",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/rust-b/aiogram-idle.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/rust-b/aiogram-idle.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-a/aiogram-idle.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-a/aiogram-idle.json.gz",
+        "sha256": "180b74feb5e3b8555b8b014efd52ab41f306b386f5a647fbb96c63aacdb8ac36",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-a/run-manifest.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-a/run-manifest.json.gz",
+        "sha256": "c1b1b8472ccd0b351b999dd71a743a914b5ff66f596b3c159b24b9bdacfd7200",
+        "gzip": true
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-a/aiogram-idle.host.json",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-a/aiogram-idle.host.json",
+        "sha256": "8da57d882315fe1a939849388b3d3711cfaf1d9d7788ba907f4e758fc767ae5e",
+        "gzip": false
+      },
+      {
+        "original": "/Users/armanavanesyan/oss/own/aiogram-paired-release-candidates-2026-11-24/idle-qualification-45291922712/native-qualification/aiogram-idle/python-a/aiogram-idle.log",
+        "retained": "reports/2026-11-24-native-release-fixes/shipping-qualification/native-qualification/aiogram-idle/python-a/aiogram-idle.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "gzip": false
+      }
+    ]
+  }
+]

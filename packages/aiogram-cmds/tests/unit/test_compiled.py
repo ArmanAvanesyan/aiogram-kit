@@ -664,3 +664,94 @@ async def test_live_manager_failed_engine_change_is_atomic_and_before_callbacks(
     mock_bot.set_my_commands.assert_not_called()
     assert (await manager.apply_profile(42, "member")).status == "applied"
     assert len(calls) == 2
+
+
+def test_single_resolved_payload_cache_is_bounded_and_snapshot_owned(monkeypatch):
+    import aiogram_cmds.compiled as implementation
+
+    snapshot = compile_config(sample(), config_revision="cache")
+    calls = []
+    original = implementation.hashlib.sha256
+
+    def tracked(value):
+        calls.append(value)
+        return original(value)
+
+    monkeypatch.setattr(implementation.hashlib, "sha256", tracked)
+
+    def resolve(bot=123, scope='{"chat_id":42,"type":"chat"}'):
+        return implementation.resolved_payload(
+            snapshot,
+            profile="member",
+            language="en",
+            bot_id=bot,
+            canonical_scope=scope,
+            language_code=None,
+            module=None,
+        )
+
+    first = resolve()
+    assert resolve() is first and len(calls) == 1
+    changed = resolve(bot=124)
+    assert changed.fingerprint != first.fingerprint and len(calls) == 2
+    assert (
+        resolve() == first and len(calls) == 3
+    )  # One last result, not a per-user map.
+    models = first.bot_commands()
+    models[0].description = "Changed model"
+    assert resolve().bot_commands()[0].description != "Changed model"
+    with pytest.raises(ValueError, match="bot identity"):
+        resolve(bot=True)
+    entry = snapshot._payload_cache.entry
+    resolve(scope='{"chat_id":"' + "x" * 5000 + '"}')
+    assert (
+        snapshot._payload_cache.entry is entry
+    )  # Oversized identities are never retained.
+    rebuilt = compile_config(sample(), config_revision="new-cache")
+    assert rebuilt._payload_cache.entry is None
+
+
+async def test_cached_payload_is_never_a_delivery_confirmation(mock_bot):
+    mock_bot.id = 123
+    mock_bot.set_my_commands.side_effect = [False, True]
+    manager = CommandScopeManager(
+        mock_bot,
+        compiled=compile_config(sample(), config_revision="delivery"),
+        best_effort=True,
+    )
+    failed = await manager.apply_profile(42, "member", language_code=None)
+    assert failed.status == "failed" and failed.confirmed_fingerprint is None
+    mock_bot.set_my_commands.call_args.args[0][0].description = "Caller mutation"
+    applied = await manager.apply_profile(42, "member", language_code=None)
+    assert applied.status == "applied" and mock_bot.set_my_commands.await_count == 2
+    assert (
+        mock_bot.set_my_commands.call_args.args[0][0].description != "Caller mutation"
+    )
+    unchanged = await manager.apply_profile(
+        42,
+        "member",
+        language_code=None,
+        previous_fingerprint=applied.confirmed_fingerprint,
+    )
+    assert unchanged.status == "unchanged" and mock_bot.set_my_commands.await_count == 2
+
+
+def test_compiled_payload_does_not_retain_language_scalar_subclasses():
+    from aiogram_cmds.compiled import resolved_payload
+
+    class CustomLanguage(str):
+        pass
+
+    snapshot = compile_config(sample(), config_revision="scalar")
+    kwargs = {
+        "profile": "member",
+        "language": "en",
+        "bot_id": 123,
+        "canonical_scope": '{"chat_id":42}',
+        "module": None,
+    }
+    first = resolved_payload(snapshot, language_code="hy", **kwargs)
+    scalar = CustomLanguage("hy")
+    second = resolved_payload(snapshot, language_code=scalar, **kwargs)
+    assert second is not first and second.language_code is scalar
+    assert resolved_payload(snapshot, language_code="hy", **kwargs) is first

@@ -1,0 +1,29 @@
+{
+  "performance_manifest_sha256": "9e5d3afa580167d84bd3d605604dae0d480d43d2ff4da9f049ca0da56dd38b6f",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "companion": "aiogram-cmds-native",
+      "version": "0.3.2",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "hold",
+      "performance_failures": [
+        "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100"
+      ],
+      "native_manifest_sha256": "a60a0e9eda8dd1f7c7a2a249544dddb7a41f99abe261ad7380f47ebafe283a29",
+      "publishing_authorized": false
+    },
+    {
+      "sdk": "aiogram-idle",
+      "companion": "aiogram-idle-native",
+      "version": "0.3.2",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "pass",
+      "performance_failures": [],
+      "native_manifest_sha256": "358ca3cf945b8b750359d11df67bf85eeb3eaa57b075a222e12569e65c936290",
+      "publishing_authorized": false
+    }
+  ]
+}

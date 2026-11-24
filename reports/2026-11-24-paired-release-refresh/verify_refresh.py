@@ -33,7 +33,18 @@ def main() -> None:
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--uv", default="uv")
+    parser.add_argument("--native-artifacts", type=Path)
+    parser.add_argument("--native-manifest", type=Path)
+    parser.add_argument("--native-manifest-sha256")
     args = parser.parse_args()
+    reviewed = None
+    if args.native_artifacts or args.native_manifest or args.native_manifest_sha256:
+        if not (args.native_artifacts and args.native_manifest and args.native_manifest_sha256):
+            parser.error("Native artifact override requires its reviewed manifest and checksum")
+        sys.path.insert(0, str(ROOT / "tools/optimization"))
+        from prepare_release_qualification import read_manifest
+
+        reviewed = read_manifest(args.native_manifest, args.native_manifest_sha256, ROOT)
     baseline = ROOT / "reports/2026-11-18-paired-release"
     old = json.loads((baseline / "final-artifact-index.json").read_text())
     inventory = json.loads((baseline / "ci-artifact-manifest.json").read_text())["packages"]
@@ -77,10 +88,19 @@ def main() -> None:
                 if digest(ROOT / filename) != expected
             ]
             native = next(r for r in old["distributions"] if r["distribution"] == name + "-native")
+            native_directory = Path(native["directory"])
+            if args.native_artifacts and (args.native_artifacts / (name + "-native")).exists():
+                assert reviewed is not None
+                entry = reviewed["packages"][name]
+                native_directory = args.native_artifacts / (name + "-native")
+                assert digest(native_directory / "SHA256SUMS") == entry["native_manifest_sha256"]
+                assert digest(wheel) == entry["sdk"]["sha256"]
+                for artifact in entry["artifacts"]:
+                    assert digest(native_directory / artifact["filename"]) == artifact["sha256"]
             if platform.system() != "Darwin":
                 raise RuntimeError("This retained shipping-wheel install probe requires macOS")
             architecture = "arm64" if platform.machine() == "arm64" else "x86_64"
-            native_wheel = next(Path(native["directory"]).glob(f"*macosx*_{architecture}.whl"))
+            native_wheel = next(native_directory.glob(f"*macosx*_{architecture}.whl"))
             native_module = (
                 "_" + module + "_native" if short in {"sentinel", "cmds"} else module + "_native"
             )

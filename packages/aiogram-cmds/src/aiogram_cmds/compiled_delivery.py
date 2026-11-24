@@ -14,7 +14,7 @@ from .delivery import (
     LanguageCode,
     validate_fingerprint,
 )
-from .engines import Engine, native_engine
+from .engines import Engine, NativeModule, native_engine
 
 
 async def apply_compiled_profile(
@@ -31,6 +31,34 @@ async def apply_compiled_profile(
     engine: Engine = "python",
 ) -> CommandApplyResult:
     module = native_engine(engine)
+    return await resolved_compiled_profile(
+        bot,
+        compiled,
+        user_id=user_id,
+        profile=profile,
+        chat_id=chat_id,
+        language=language,
+        language_code=language_code,
+        previous_fingerprint=previous_fingerprint,
+        best_effort=best_effort,
+        module=module,
+    )
+
+
+async def resolved_compiled_profile(
+    bot: Bot,
+    compiled: CompiledCommands,
+    *,
+    user_id: int,
+    profile: str,
+    chat_id: int | None = None,
+    language: str = "en",
+    language_code: str | None | LanguageCode = UNSET,
+    previous_fingerprint: str | None = None,
+    best_effort: bool = False,
+    module: NativeModule | None,
+) -> CommandApplyResult:
+    """Execute after the caller captured and validated its engine selection."""
     if type(best_effort) is not bool:
         raise TypeError("best_effort must be a boolean")
     validate_fingerprint(previous_fingerprint)

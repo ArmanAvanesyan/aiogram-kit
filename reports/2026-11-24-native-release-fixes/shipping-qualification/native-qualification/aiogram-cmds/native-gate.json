@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "qualified": false,
+  "identity": [
+    "aiogram-cmds",
+    "0.3.2",
+    "3.12.16",
+    "Linux-7.0.0-1016-aws-x86_64-with-glibc2.43",
+    "",
+    4,
+    1729
+  ],
+  "measurement_controls": {
+    "schema_version": 2,
+    "affinity_policy": "pinned",
+    "cpu_affinity": [
+      0
+    ],
+    "host_cpu_count": 4,
+    "effective_cpu_count": 1,
+    "gc_policy": "unchanged",
+    "gc_enabled": true,
+    "gc_thresholds": [
+      700,
+      10,
+      10
+    ],
+    "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+    "sampling_plan": {
+      "additional_latency_windows": null,
+      "cpu_repeats": 31,
+      "individual_latency_samples": 3000,
+      "operations_per_window": null,
+      "state_age": null
+    },
+    "service_cpu_control": {
+      "schema_version": 1,
+      "mode": "docker-disjoint-logical",
+      "client_cpu_affinity": [
+        0
+      ],
+      "service": {
+        "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+        "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+        "pid": 2415,
+        "cpuset_cpus": "1",
+        "cpu_affinity": [
+          1
+        ]
+      },
+      "available_topology": [
+        {
+          "cpu": 0,
+          "package": 0,
+          "core": 0
+        },
+        {
+          "cpu": 1,
+          "package": 0,
+          "core": 1
+        },
+        {
+          "cpu": 2,
+          "package": 0,
+          "core": 0
+        },
+        {
+          "cpu": 3,
+          "package": 0,
+          "core": 1
+        }
+      ],
+      "physical_core_disjoint": true,
+      "physical_isolation_claimed": false
+    }
+  },
+  "cpu_workloads_selected": [
+    "compiled_batch/100/10_profiles/30_targets"
+  ],
+  "required_latency_workloads": [
+    "confirmation_hit/1",
+    "confirmation_hit/10",
+    "confirmation_hit/100",
+    "fake_telegram_1ms/1",
+    "fake_telegram_1ms/10",
+    "fake_telegram_1ms/100"
+  ],
+  "inputs": [
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-cmds/python-a/aiogram-cmds.json",
+      "sha256": "73942a10267660a5943893face4d744edc88ea05fff30d4d08a10d78b5fd0d73",
+      "engine": "python",
+      "run_id": "4b836be5-00e2-4fba-99a3-34ef198b47a0",
+      "qualification_provenance": {
+        "base_artifact_sha256": "8b89646ca6279d5ead65846b9dd83e44a0608d96c899f2e69ad47ead34f40a2d",
+        "native_artifact_sha256": null,
+        "driver_sha256": "24abd44d55a3628ec032cd5a069f52551cb9a9ca13fddc2d6bc25f3d781297c6"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": null,
+          "cpu_repeats": 31,
+          "individual_latency_samples": 3000,
+          "operations_per_window": null,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2415,
+            "cpuset_cpus": "1",
+            "cpu_affinity": [
+              1
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-cmds/python-b/aiogram-cmds.json",
+      "sha256": "071011ffdff3dab05cdd68512bed8975da680820b0e2debf2ecc11c04dc75adf",
+      "engine": "python",
+      "run_id": "4b2475df-07e0-4bbd-b222-65a7ae6ef954",
+      "qualification_provenance": {
+        "base_artifact_sha256": "8b89646ca6279d5ead65846b9dd83e44a0608d96c899f2e69ad47ead34f40a2d",
+        "native_artifact_sha256": null,
+        "driver_sha256": "24abd44d55a3628ec032cd5a069f52551cb9a9ca13fddc2d6bc25f3d781297c6"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": null,
+          "cpu_repeats": 31,
+          "individual_latency_samples": 3000,
+          "operations_per_window": null,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2415,
+            "cpuset_cpus": "1",
+            "cpu_affinity": [
+              1
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-cmds/rust-a/aiogram-cmds.json",
+      "sha256": "7bd4b56e878b88af4f8f552511b38aa0ab7ca56577504b4eb66277a141b9e1dc",
+      "engine": "rust",
+      "run_id": "66d05d07-fb76-40ab-9f6f-6c0ce5ddc89a",
+      "qualification_provenance": {
+        "base_artifact_sha256": "8b89646ca6279d5ead65846b9dd83e44a0608d96c899f2e69ad47ead34f40a2d",
+        "native_artifact_sha256": "d3ba6aab08f020fa28a6eecc0192a6094c831b19bb96fbce43992a97f929e5b1",
+        "driver_sha256": "24abd44d55a3628ec032cd5a069f52551cb9a9ca13fddc2d6bc25f3d781297c6"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": null,
+          "cpu_repeats": 31,
+          "individual_latency_samples": 3000,
+          "operations_per_window": null,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2415,
+            "cpuset_cpus": "1",
+            "cpu_affinity": [
+              1
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    },
+    {
+      "path": "/home/runner/work/_temp/native-qualification/aiogram-cmds/rust-b/aiogram-cmds.json",
+      "sha256": "092b8a4eeefb4af5faafce5aba165fc0b09fadf25f9298cc07b91a00d7f4a6e2",
+      "engine": "rust",
+      "run_id": "8acca2c5-1dca-42b4-9c90-5e5f0c649f48",
+      "qualification_provenance": {
+        "base_artifact_sha256": "8b89646ca6279d5ead65846b9dd83e44a0608d96c899f2e69ad47ead34f40a2d",
+        "native_artifact_sha256": "d3ba6aab08f020fa28a6eecc0192a6094c831b19bb96fbce43992a97f929e5b1",
+        "driver_sha256": "24abd44d55a3628ec032cd5a069f52551cb9a9ca13fddc2d6bc25f3d781297c6"
+      },
+      "measurement_controls": {
+        "schema_version": 2,
+        "affinity_policy": "pinned",
+        "cpu_affinity": [
+          0
+        ],
+        "host_cpu_count": 4,
+        "effective_cpu_count": 1,
+        "gc_policy": "unchanged",
+        "gc_enabled": true,
+        "gc_thresholds": [
+          700,
+          10,
+          10
+        ],
+        "controller_sha256": "25d73485ccf623a502030244b1377c64ef9ac623831ae8a8e217b50105fc1c0c",
+        "sampling_plan": {
+          "additional_latency_windows": null,
+          "cpu_repeats": 31,
+          "individual_latency_samples": 3000,
+          "operations_per_window": null,
+          "state_age": null
+        },
+        "service_cpu_control": {
+          "schema_version": 1,
+          "mode": "docker-disjoint-logical",
+          "client_cpu_affinity": [
+            0
+          ],
+          "service": {
+            "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+            "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+            "pid": 2415,
+            "cpuset_cpus": "1",
+            "cpu_affinity": [
+              1
+            ]
+          },
+          "available_topology": [
+            {
+              "cpu": 0,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 1,
+              "package": 0,
+              "core": 1
+            },
+            {
+              "cpu": 2,
+              "package": 0,
+              "core": 0
+            },
+            {
+              "cpu": 3,
+              "package": 0,
+              "core": 1
+            }
+          ],
+          "physical_core_disjoint": true,
+          "physical_isolation_claimed": false
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "workload": "compiled_batch/100/10_profiles/30_targets",
+      "rust_over_python_cpu": 0.4929703450115435
+    },
+    {
+      "workload": "compiled_confirmation_hit/1",
+      "rust_over_python_p95": 0.946414499605989
+    },
+    {
+      "workload": "compiled_confirmation_hit/10",
+      "rust_over_python_p95": 0.91607253935595
+    },
+    {
+      "workload": "compiled_confirmation_hit/100",
+      "rust_over_python_p95": 0.7536453801983644
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/1",
+      "rust_over_python_p95": 0.9999981786929846
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/10",
+      "rust_over_python_p95": 0.9989605459191364
+    },
+    {
+      "workload": "compiled_fake_telegram_1ms/100",
+      "rust_over_python_p95": 0.996674004704766
+    },
+    {
+      "workload": "confirmation_hit/1",
+      "rust_over_python_p95": 0.9979645684131172
+    },
+    {
+      "workload": "confirmation_hit/10",
+      "rust_over_python_p95": 1.0283273336207848
+    },
+    {
+      "workload": "confirmation_hit/100",
+      "rust_over_python_p95": 0.9220479535434161
+    },
+    {
+      "workload": "fake_telegram_1ms/1",
+      "rust_over_python_p95": 1.0002856951176713
+    },
+    {
+      "workload": "fake_telegram_1ms/10",
+      "rust_over_python_p95": 0.9995262814549776
+    },
+    {
+      "workload": "fake_telegram_1ms/100",
+      "rust_over_python_p95": 0.9808169527907458
+    }
+  ],
+  "failures": [
+    "Latency repeat spread exceeds 10%: compiled_confirmation_hit/100"
+  ],
+  "scope": "Measured host/workloads only; functional platform CI and independent review remain separate release gates."
+}

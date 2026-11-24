@@ -1,0 +1,66 @@
+{
+  "schema_version": 2,
+  "sampling_plans": {
+    "aiogram-cmds": {
+      "cpu_repeats": 31,
+      "additional_latency_windows": null,
+      "operations_per_window": null,
+      "individual_latency_samples": 3000,
+      "state_age": null
+    }
+  },
+  "redis_service_control": {
+    "schema_version": 1,
+    "mode": "docker-disjoint-logical",
+    "client_cpu_affinity": [
+      0
+    ],
+    "service": {
+      "container_id": "03eff6bfa87781bc5be0bb2ba12ec58554194ac5fe1c2b524261332d7022e57c",
+      "image_id": "sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe",
+      "pid": 2415,
+      "cpuset_cpus": "1",
+      "cpu_affinity": [
+        1
+      ]
+    },
+    "available_topology": [
+      {
+        "cpu": 0,
+        "package": 0,
+        "core": 0
+      },
+      {
+        "cpu": 1,
+        "package": 0,
+        "core": 1
+      },
+      {
+        "cpu": 2,
+        "package": 0,
+        "core": 0
+      },
+      {
+        "cpu": 3,
+        "package": 0,
+        "core": 1
+      }
+    ],
+    "physical_core_disjoint": true,
+    "physical_isolation_claimed": false
+  },
+  "affinity_request": "auto",
+  "resolved_cpu_affinity": [
+    0
+  ],
+  "selection_policy": "lowest available physical-package/core/CPU tuple; first allowed CPU if topology unavailable",
+  "available_cpu_affinity": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "host_cpu_count": 4,
+  "physical_isolation_claimed": false,
+  "gc_policy": "unchanged"
+}
