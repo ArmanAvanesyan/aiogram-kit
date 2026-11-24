@@ -1,0 +1,44 @@
+[
+  {
+    "workload": "redis-dispatch-noop/50",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          1902766.0,
+          1876677.0
+        ],
+        "repeat_spread_percent": 1.3901699653163568
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          1965779.9999999998,
+          1901876.0
+        ],
+        "repeat_spread_percent": 3.360050812986737
+      }
+    ]
+  },
+  {
+    "workload": "redis-dispatch-track/50",
+    "engines": [
+      {
+        "engine": "python",
+        "p95_ns": [
+          7946073.999999999,
+          7826537.999999999
+        ],
+        "repeat_spread_percent": 1.5273164201081046
+      },
+      {
+        "engine": "rust",
+        "p95_ns": [
+          7819230.999999999,
+          7833157.0
+        ],
+        "repeat_spread_percent": 0.1780993552946697
+      }
+    ]
+  }
+]

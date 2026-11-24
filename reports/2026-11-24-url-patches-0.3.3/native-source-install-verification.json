@@ -1,0 +1,23 @@
+[
+  {
+    "package": "aiogram-cmds-native",
+    "profile": "native-source-build-install",
+    "result": "pass",
+    "filename": "aiogram_cmds_native-0.3.3.tar.gz",
+    "sha256": "636820ddfb405a17809f6eb2e75080d0df4ac78cfd7f278e44c65e4e19bb4ce8"
+  },
+  {
+    "package": "aiogram-nav-native",
+    "profile": "native-source-build-install",
+    "result": "pass",
+    "filename": "aiogram_nav_native-0.3.3.tar.gz",
+    "sha256": "9555fd7040851f480bcb6b8edf285d231a80bbd53b287c317b703775bafc4872"
+  },
+  {
+    "package": "aiogram-idle-native",
+    "profile": "native-source-build-install",
+    "result": "pass",
+    "filename": "aiogram_idle_native-0.3.3.tar.gz",
+    "sha256": "968404cee8eee67a3e3f2321c51130c255f609e0b411a292f089f126aeef0f3b"
+  }
+]

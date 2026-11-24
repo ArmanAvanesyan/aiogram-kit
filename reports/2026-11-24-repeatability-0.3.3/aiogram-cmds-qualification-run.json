@@ -1,0 +1,13 @@
+{
+  "run_id": 45334006147,
+  "run_attempt": 1,
+  "workflow_conclusion": "failure",
+  "source_commit": "15c6e2135eb0bd1825dc60ae62ef47db07d1530d",
+  "artifact_id": 14893838196,
+  "archive_sha256": "40c64585a288b9bf9befb86e59ef7bd4d055062c30d01b6dee77faea6dc9290b",
+  "qualified": false,
+  "failures": [
+    "End-to-end p95 regression exceeds 5%: confirmation_hit/100",
+    "Latency repeat spread exceeds 10%: confirmation_hit/100"
+  ]
+}

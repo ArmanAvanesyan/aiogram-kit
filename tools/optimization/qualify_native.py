@@ -26,6 +26,8 @@ REDIS_CONTROL = runpy.run_path(
 )
 
 
+RUNNER_CONTROL = runpy.run_path(str(HERE / "runner_cpu_control.py"))
+
 PACKAGES = frozenset({"aiogram-sentinel", "aiogram-cmds", "aiogram-nav", "aiogram-idle"})
 ORDER = ["python-a", "rust-a", "rust-b", "python-b"]
 GATE = {
@@ -202,6 +204,7 @@ def resolve_affinity(value: str | None) -> list[int] | None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--isolate-runner", action="store_true")
     parser.add_argument("--python", type=Path, required=True)
     parser.add_argument("--redis-url", required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -243,6 +246,13 @@ def main() -> int:
         (output / "redis-service-control.json").write_text(
             json.dumps(service_control, indent=2) + "\n"
         )
+    if args.isolate_runner:
+        if requested != {"aiogram-cmds"} or affinity is None:
+            raise ValueError("Runner isolation requires one explicit Cmds client")
+        isolation = RUNNER_CONTROL["isolate_runner"](
+            affinity, REDIS_CONTROL["topology"](sorted(os.sched_getaffinity(0)))
+        )
+        (output / "runner-scheduling.json").write_text(json.dumps(isolation, indent=2) + "\n")
     plans = {
         package: sampling_plan(
             package, args.cpu_samples, args.latency_windows, args.individual_latency_samples
@@ -309,6 +319,12 @@ def main() -> int:
                 process = subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT)
             if process.returncode:
                 raise RuntimeError(f"Benchmark failed: {package} {label}; see retained log")
+            if args.isolate_runner:
+                observed = json.loads((directory / label / f"{package}.host.json").read_text())
+                if any(observed[phase].get("process_nice") != -20 for phase in ("before", "after")):
+                    raise RuntimeError(
+                        "Measured benchmark priority differs from declared isolation"
+                    )
         command = [sys.executable, str(HERE / "compare_results.py")]
         for label in protocol["order"]:
             engine = label.split("-")[0]

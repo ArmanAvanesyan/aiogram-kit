@@ -1,0 +1,10 @@
+{
+  "run_id": 45334009819,
+  "run_attempt": 1,
+  "workflow_conclusion": "success",
+  "source_commit": "15c6e2135eb0bd1825dc60ae62ef47db07d1530d",
+  "artifact_id": 14893447737,
+  "archive_sha256": "a9d5ec68da96b90a9c557460f3ff8842720c16dd6df3053b2db4b20d7561705d",
+  "qualified": true,
+  "failures": []
+}

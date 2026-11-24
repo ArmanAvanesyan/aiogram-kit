@@ -29,7 +29,7 @@ jobs:
     - name: Enforce exact artifact, platform and recomputed performance qualification
       env: &id003
         MANIFEST_SHA256: ${{ inputs.manifest_sha256 }}
-      run: python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-24-repeatability-0.3.3
+      run: python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-24-cmds-isolation-0.3.3
         --directory verified-input --tag "$GITHUB_REF_NAME" --manifest-sha256 "$MANIFEST_SHA256"
     - run: uvx twine check verified-input/*.whl verified-input/*.tar.gz
     - run: uvx abi3audit --strict verified-input/*.whl
@@ -57,7 +57,7 @@ jobs:
         merge-multiple: true
     - name: Recheck qualification and stage only reviewed artifacts
       env: *id003
-      run: "python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-24-repeatability-0.3.3\
+      run: "python tools/optimization/verify_release_readiness.py --package aiogram-cmds --report reports/2026-11-24-cmds-isolation-0.3.3\
         \ --directory verified-input --tag \"$GITHUB_REF_NAME\" --manifest-sha256 \"$MANIFEST_SHA256\"\npython -\
         \ <<'PYTHON'\nfrom pathlib import Path\nimport shutil\nsource = Path(\"verified-input\")\ntarget = Path(\"\
         publish-dist\")\ntarget.mkdir()\nfor line in (source / \"SHA256SUMS\").read_text().splitlines():\n    _,\
