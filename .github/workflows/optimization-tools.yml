@@ -2,7 +2,7 @@ name: Shared optimization evidence tools
 permissions:
   contents: read
 concurrency:
-  group: optimization-tools-${{ github.ref }}-${{ github.event_name }}
+  group: optimization-tools-${{ github.ref }}-${{ github.event_name }}-${{ inputs.native_package || 'none' }}
   cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   verify:
