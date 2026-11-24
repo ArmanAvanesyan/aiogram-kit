@@ -41,6 +41,8 @@ def test_paired_metadata_and_manual_native_publisher(short):
             "reports/2026-11-18-paired-release"
             if short == "sentinel"
             else "reports/2026-11-24-url-patches-0.3.3"
+            if short == "idle"
+            else "reports/2026-11-24-repeatability-0.3.3"
         )
         assert f"--report {report}" in commands
         for step in job["steps"]:

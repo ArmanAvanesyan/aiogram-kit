@@ -81,6 +81,7 @@ jobs:
           NATIVE_PACKAGE: ${{ inputs.native_package }}
           NATIVE_CPU_AFFINITY: ${{ inputs.cpu_affinity }}
           ROBUST_SAMPLING: ${{ inputs.robust_sampling }}
+          PRECISION_SAMPLING: ${{ inputs.precision_sampling }}
           REDIS_SERVICE_CONTAINER_ID: ${{ job.services.redis.id }}
         run: |
           selection=()
@@ -100,6 +101,14 @@ jobs:
               exit 2
             fi
             sampling=(--cpu-samples 30 --latency-windows 10 --individual-latency-samples 3000
+                      --redis-container-id "$REDIS_SERVICE_CONTAINER_ID")
+          fi
+          if [ "$PRECISION_SAMPLING" = true ]; then
+            if [ "$ROBUST_SAMPLING" != true ] || { [ "$NATIVE_PACKAGE" != aiogram-cmds ] && [ "$NATIVE_PACKAGE" != aiogram-nav ]; }; then
+              echo "precision_sampling requires robust_sampling and a single Cmds or Nav selection"
+              exit 2
+            fi
+            sampling=(--cpu-samples 30 --latency-windows 100 --individual-latency-samples 30000
                       --redis-container-id "$REDIS_SERVICE_CONTAINER_ID")
           fi
           result=0
@@ -142,6 +151,10 @@ jobs:
         default: none
       robust_sampling:
         description: Stronger declared samples and disjoint owned Redis CPU (requires cpu_affinity)
+        type: boolean
+        default: false
+      precision_sampling:
+        description: Predeclared longer Cmds/Nav latency observation windows; unchanged gates and workloads
         type: boolean
         default: false
       release_manifest_sha256:

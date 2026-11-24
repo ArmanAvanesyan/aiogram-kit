@@ -1,0 +1,31 @@
+{
+  "performance_manifest_sha256": "29b411bd0171862f0f21495ba4605b0504050d0c2d3cc23cf68eca133a6eeb0e",
+  "packages": [
+    {
+      "sdk": "aiogram-cmds",
+      "companion": "aiogram-cmds-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "pending",
+      "performance_failures": [
+        "Declared extended sampling has not run"
+      ],
+      "native_manifest_sha256": "db123169c3227297f1bc6c19c7bb58edffe0d7c0305d439e1bd3381099572f09",
+      "publishing_authorized": true
+    },
+    {
+      "sdk": "aiogram-nav",
+      "companion": "aiogram-nav-native",
+      "version": "0.3.3",
+      "sdk_packaging_and_standalone": "pass",
+      "native_platform_and_artifacts": "pass",
+      "native_performance": "pending",
+      "performance_failures": [
+        "Declared extended sampling has not run"
+      ],
+      "native_manifest_sha256": "804938d595ca8d5c0deafed555cfa9b1e441ed0a27170448c138836466e6da96",
+      "publishing_authorized": true
+    }
+  ]
+}
